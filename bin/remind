@@ -1,0 +1,73 @@
+#!/bin/sh
+
+show_help() {
+	cat <<EOF
+
+NAME
+
+  ${0##*/} - Set a reminder for -n seconds
+
+SYNOPSIS
+
+  ${0##*/} [options] message
+
+DESCRIPTION
+
+  ${0##*/} is a utility to set a reminder which sends a notification after -n
+  seconds.
+
+OPTIONS
+  -h, --help       Show this help message.
+  -n               Number of seconds to wait.
+
+EOF
+}
+
+remind() {
+	message="$1"
+	wait="$2"
+	if echo "$wait" | grep -E "^[0-9]+$" >/dev/null; then
+		sleep "$wait"
+		terminal-notifier -title "Reminder" -message "$message" -sound default
+	else
+		echo "This program accepts only an integer as an argument"
+	fi
+}
+
+# ---
+
+[ "$1" = "--help" ] && show_help && exit 0
+
+_guard() {
+	error_msg="$1 option was passed more than one times."
+	[ -n "$2" ] && echo "$error_msg" 1>&2 && show_help && exit 1
+}
+
+while getopts ':n:h' opt; do
+	case "$opt" in
+	h) show_help && exit 0 ;;
+	n)
+		_guard -n "$wait"
+		wait="$OPTARG"
+		;;
+	\?)
+		echo "Invalid option: -$OPTARG" >&2
+		show_help
+		exit 1
+		;;
+	:)
+		echo "Option -$OPTARG requires an argument" >&2
+		show_help
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+
+if [ -z "$wait" ]; then
+	echo "-n is a required argument"
+	show_help
+	exit 1
+fi
+
+remind "$*" "$wait" &

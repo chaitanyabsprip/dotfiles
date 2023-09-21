@@ -1,0 +1,15 @@
+#!/bin/sh
+#
+# Spawn a pane to the right of the current pane with the git log on it being
+# updated continuously. This way one can keep track of the commits they're
+# making and the ones that came before them. Focus remains on the pane the
+# script was invoked in.
+#
+# Should only be invoked from within a git working tree.
+#
+# Depends on: tmux, git
+
+tmux split-window -h -l 67 -c '#{pane_current_path}' \
+  watch -c -t -n 2 git log --oneline --color --graph --decorate=false
+
+exec tmux last-pane

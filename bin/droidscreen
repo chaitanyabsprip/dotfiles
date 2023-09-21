@@ -1,0 +1,89 @@
+#!/bin/sh
+#        _                        _            ___  _  _   
+#   __ _| | _____  _____ ___   __| | ___ _ __ / _ \| || |  
+#  / _` | |/ _ \ \/ / __/ _ \ / _` |/ _ \ '__| | | | || |_ 
+# | (_| | |  __/>  < (_| (_) | (_| |  __/ |  | |_| |__   _|
+#  \__,_|_|\___/_/\_\___\___/ \__,_|\___|_|   \___/   |_|  
+# 
+# Copyright (c) 2022 alexcoder04 <https://github.com/alexcoder04>
+# 
+# mirror android screen to linux desktop with adb and scrcpy
+
+. libsh || exit 1
+
+LOG_FILE="${TMPDIR:-/tmp}/scrcpy.log"
+
+mode="$(echo "wired\nwifi" | prompt_gui "mode")"
+
+case "$mode" in
+    wifi)
+        ip="$(prompt_gui "ip")"
+        pair_port="$(prompt_gui "pair port")"
+        code="$(prompt_gui "code")"
+
+        [ -z "$ip" ] && die "ip not entered"
+        [ -z "$pair_port" ] && die "port not entered"
+        [ -z "$code" ] && die "code not entered"
+
+        printf '%s' "$code" | adb pair "$ip:$pair_port" \
+          && inform_gui "paired" \
+          || die "pair failed"
+
+        con_port="$(prompt_gui "con port")"
+
+        [ -z "$con_port" ] && die "code not entered"
+
+        adb connect "$ip:$con_port" \
+          && inform_gui "connected" \
+          || die "connect failed"
+        ;;
+    wired)
+        inform_gui "$(adb devices)"
+        ans="$(echo "yes\nno" | prompt_gui "continue")"
+        [ "$ans" = "yes" ] || exit 0
+        ;;
+    *)
+        exit 0
+        ;;
+esac
+
+ans="$(echo "no\nyes-bar\nyes-fullscreen" | prompt_gui "adjust")"
+scrcpy_args=""
+
+# adjust android ui to big screen
+case "$ans" in
+yes-*)
+    adb shell settings put system accelerometer_rotation 0
+    adb shell settings put system user_rotation 1
+    adb shell wm density 250
+    adb shell settings put system font_scale 0.85
+    [ "$ans" = "yes-bar" ] \
+        && resolution="1055x1920" \
+        || resolution="1080x1920"
+    adb shell wm size "$resolution"
+    case "$mode" in
+        wifi)
+            adb shell pm disable-user org.dslul.openboard.inputmethod.latin
+            adb shell pm disable-user com.android.inputmethod.latin ;;
+        wired)
+            ##scrcpy_args="--hid-keyboard --hid-mouse" ;;
+            scrcpy_args="--hid-keyboard" ;;
+    esac
+;;
+esac
+
+scrcpy --shortcut-mod lctrl $scrcpy_args >>"$LOG_FILE"
+
+# reset android ui afterwards
+case "$ans" in
+yes-*)
+    if "$mode" = "wifi"; then
+        adb shell pm enable org.dslul.openboard.inputmethod.latin
+    fi
+    adb shell settings put system user_rotation 0
+    adb shell settings put system accelerometer_rotation 1
+    adb shell wm size 1080x2340
+    adb shell settings put system font_scale 1
+    adb shell wm density 420
+;;
+esac

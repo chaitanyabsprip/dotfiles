@@ -1,0 +1,23 @@
+#!/bin/sh
+
+sessiondir="$HOME/.local/share/ffsessions"
+
+[ -d "$sessiondir" ] || { echo "No sessions found" && exit 1; }
+
+_have() { type "$1" >/dev/null 2>&1; }
+
+_have firefox || {
+	echo "This script requires firefox, please install and try again" && exit 1
+}
+
+_firefox() {
+	for url in "$@"; do
+		echo "$url"
+	done
+	firefox "$@"
+}
+
+while read -r line; do
+	[ -z "$line" ] && continue
+	_firefox "$line"
+done <"$(find "$sessiondir" | sort | tail -n 1)"

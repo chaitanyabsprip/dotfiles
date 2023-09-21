@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# A simple script that logs the content of a file and refreshes upon change in
+# the file.
+# I couldn't use tail -n $file because that doesn't update when some preview
+# line is deleted. It only updates on new lines.
+
+_have() { type "$1" >/dev/null 2>&1; }
+_have entr || { echo "${0##*/} depends on entr" && exit 127; }
+
+{ _have glow && cmd="glow"; } || { _have bat && cmd="bat -p"; } || { cmd="cat"; }
+
+# Create the command here so that entr accepts "bat -p" argument as multiple
+# argument and not as a single string argument
+cmd="entr -rcc ""$cmd"" ""$1"""
+
+[ -r "$1" ] && echo "$1" | $cmd && clear || echo "$1 is not a valid file path"

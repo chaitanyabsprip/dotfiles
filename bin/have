@@ -1,0 +1,58 @@
+#!/bin/sh
+
+_have() { type "$1" >/dev/null 2>&1; }
+
+_help() {
+	cat <<EOF
+
+NAME
+
+${0##*/} - check if a commands are in the PATH
+
+SYNOPSIS
+
+${0##*/} [options] [commands...]
+
+OPTIONS
+
+-v, --verbose
+Be verbose. Print a message if a command is not found in the PATH.
+
+-h, --help
+Display this help message.
+
+DESCRIPTION
+
+The ${0##*/} script checks if a command is in the PATH. If the command is found,
+the script exits with a status of 0. If the command is not found, the script
+exits with a status of 1.
+
+The -v option causes the script to be verbose and print a message if a command
+is not found in the PATH.
+
+The -h, --help option displays this help message.
+
+EOF
+}
+
+VERBOSE=
+while getopts 'vh' opt; do
+	case "$opt" in
+	v) VERBOSE=true ;;
+	h) _help && exit 0 ;;
+	\? | : | *) _help && exit 1 ;;
+	esac
+done
+shift $((OPTIND - 1))
+
+if [ $# -gt 0 ]; then
+	for cmd in "$@"; do
+		if _have "$cmd"; then
+			[ -n "$VERBOSE" ] && type "$cmd"
+			true
+		else
+			[ -n "$VERBOSE" ] && echo "$cmd not found in PATH"
+			exit 1
+		fi
+	done
+fi

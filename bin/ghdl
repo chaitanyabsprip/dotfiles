@@ -1,0 +1,147 @@
+#!/bin/sh
+
+show_help() {
+	cat <<EOF
+
+NAME
+
+  ${0##*/} - Download latest release from github repository. The asset to be
+  downloaded is guessed based on OS and architecture.
+
+SYNOPSIS
+
+  ghdl [options] -r repository_name -f filename
+
+DESCRIPTION
+
+  ghdl is a utility to download latest releases from github repositories.
+  The repository name must be in the format user/repo.
+
+OPTIONS
+  -h, --help       Show this help message.
+  -p               Preserve the downloaded artifact
+  -r               Github Repository slug in the form user/repo
+  -f               Name of the file to download
+  -o               Output filepath
+
+EXAMPLES
+
+  ghdl -r my_user/my_repo -f my_file.tar.gz
+
+EOF
+}
+
+_arch_matcher() {
+	case "$(uname -m)" in
+	arm64 | aarch64) echo "arm\|aarch" && return ;;
+	x86_64 | amd64) echo "x86_64\|amd" && return ;;
+	esac
+}
+
+_os_matcher() {
+	case "$(uname -s)" in
+	Darwin) echo "darwin\|macos" ;;
+	Linux) echo "linux" ;;
+	esac
+}
+
+_guess_dl_url() {
+	repo="$1"
+	api="https://api.github.com/repos/$repo/releases"
+	if [ "$(curl -s "$api")" = "$(printf "[\n\n]")" ]; then
+		echo "$repo has no releases."
+		return 1
+	fi
+	resp=$(curl -s "$api"/latest)
+	urls="$(echo "$resp" | grep browser_download_url)"
+	os_url=$(echo "$urls" | grep -i "$(_os_matcher)")
+	arch_url=$(echo "${os_url:-"$urls"}" | grep -i "$(_arch_matcher)")
+	url=$(echo "$arch_url" | cut -d '"' -f 4 | head -1)
+	echo "$url"
+}
+
+OUTPUT_FILE=
+download() {
+	repo="$1"
+	filename="$2"
+	url=
+	if [ -z "$filename" ]; then
+		url="$(_guess_dl_url "$repo")"
+	else
+		url="https://github.com/$repo/releases/latest/download/$filename"
+	fi
+	if echo "$url" | grep tar.gz$ >/dev/null; then
+		OUTPUT_FILE="${3:-"${filename:-"$(basename "$repo")-latest.tar.gz"}"}"
+	elif echo "$url" | grep zip$ >/dev/null; then
+		OUTPUT_FILE="${3:-"${filename:-"$(basename "$repo")-latest.zip"}"}"
+	else
+		OUTPUT_FILE="${3:-"${filename:-"$(basename "$repo")-latest"}"}"
+	fi
+	curl -sL "$url" -o "$OUTPUT_FILE"
+	echo "Artifact downloaded to $OUTPUT_FILE"
+}
+
+unzip_and_clear_artifact() {
+	filename="${1:-$OUTPUT_FILE}"
+	preserve="$2"
+	if [ -n "$preserve" ]; then exit 0; fi
+	if echo "$filename" | grep 'tar.gz$' >/dev/null; then
+		contents="$(tar -tf "$filename")"
+		tar -xf "$filename"
+		echo "$contents" | xargs rm -r
+		rm "$filename"
+	elif echo "$filename" | grep 'zip$' >/dev/null; then
+		unzip "$filename"
+	fi
+}
+
+_guard() {
+	error_msg="$1 option was passed more than one times."
+	[ -n "$2" ] && echo "$error_msg" 1>&2 && show_help && exit 1
+}
+
+if [ "$1" = "--help" ]; then
+	show_help && exit 0
+elif ! { echo "$1" | grep -E ^- >/dev/null; }; then
+	reponame="$1"
+fi
+
+while getopts ":f:r:o:hp" opt; do
+	case $opt in
+	h) show_help && exit 0 ;;
+	p)
+		_guard -p "$preserve"
+		preserve=true
+		;;
+	f)
+		_guard -f "$filename"
+		filename="$OPTARG"
+		;;
+	r)
+		_guard -r "$reponame"
+		reponame="${reponame:-$OPTARG}"
+		;;
+	o)
+		_guard -o "$output_filepath"
+		output_filepath="$OPTARG"
+		;;
+	\?)
+		echo "Invalid option: -$OPTARG" >&2
+		show_help
+		exit 1
+		;;
+	:)
+		echo "Option -$OPTARG requires an argument" >&2
+		show_help
+		exit 1
+		;;
+	esac
+done
+
+if [ -z "$reponame" ]; then
+	echo "-r -f and -o are required arguments"
+	show_help
+	exit 1
+fi
+
+download "$reponame" "$filename" "$output_filepath"

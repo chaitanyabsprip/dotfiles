@@ -1,0 +1,43 @@
+#!/bin/sh
+
+# https://cocktailmake.github.io/posts/improvement-of-git-commands-with-fzf/
+
+# This script will open a fzf-tmux window and allow the user to choose a tag or
+# a branch to checkout.
+
+# _have() { type "$1" >/dev/null 2>&1; }
+#
+# _have tmux && tmux ls | grep scratch >/dev/null && tmux detach-client -s scratch
+#
+reset="\x1b[0m"
+blue="\x1b[34;1m"
+red="\x1b[31;1m"
+
+is_in_git_repo() { git rev-parse HEAD >/dev/null; }
+
+git_br_fzf() {
+	is_in_git_repo || return
+
+	tags=$(git tag | awk '{print "'"$red"'tag'"$reset"'\t" $1}') || return
+	branches=$(
+		git branch --all | grep -v HEAD |
+			sed "s/.* //" | sed "s#remotes/##" |
+			sort -u | awk '{print "'"$blue"'branch'"$reset"'\t" $1}'
+	) || return
+	options=$(
+		echo "$tags"
+		echo "$branches"
+	)
+	target=$(echo "$options" |
+		fzf --height 30% --no-hscroll --no-multi --delimiter="\t" -n 2 --ansi) || return
+	echo "$target" | awk -F "\t" '{print $2}'
+}
+
+git_co_fzf() {
+	is_in_git_repo || return
+	target="$(git_br_fzf)"
+	[ -z "$target" ] && exit 1
+	git checkout "$target"
+}
+
+git_co_fzf

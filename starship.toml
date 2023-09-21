@@ -1,0 +1,286 @@
+# format="""\
+# $memory_usage\
+# $golang\
+# $lua\
+# $directory\
+# $git_branch\
+# $line_break\
+# $character\
+# """
+
+# ${git_status}\
+format = """
+${character}\
+${dart}\
+${golang}\
+${lua}\
+${python}\
+\
+${directory}\
+${git_branch}\
+${git_state}\
+${git_commit}\
+\
+${fill}\
+${jobs}\
+${localip}\
+${sudo}\
+[ ](bg:hilow)\
+${shlvl}\
+${shell}\
+${time}\
+\
+${line_break}\
+${character} \
+"""
+
+palette = 'rosepine'
+
+[character]
+format="$symbol"
+success_symbol = "[▍](bold fg:green)"
+error_symbol = "[▍](bold fg:red)"
+
+[directory]
+format = "[ $path]($style)[$read_only]($read_only_style)[ ]($style)"
+home_symbol = "home"
+truncation_length=1
+style = "bold fg:cyan bg:hilow"
+
+[fill]
+symbol = ' '
+style = ''
+
+[git_branch]
+format = "[[on](fg:black bg:hilow) [$symbol$branch(:$remote_branch)]($style) ](bg:hilow)"
+symbol = " "
+style = "bold fg:black bg:hilow"
+
+[git_commit]
+format = '[$tag | $hash ]($style)'
+tag_disabled = false
+style = 'bold iris'
+
+[git_state]
+format = '[ $state ($progress_current/$progress_total) ]($style)'
+style = 'fg:iris bg:base'
+rebase = 'rebase'
+merge = 'merge'
+revert = 'revert'
+cherry_pick = 'cherry-pick'
+bisect = 'bisect'
+am = 'am'
+am_or_rebase = 'am/rebase'
+
+[git_status]
+disabled = true
+format = """([\
+[ ](bg:base)\
+$stashed\
+$deleted\
+$renamed\
+$modified\
+$staged\
+$untracked\
+$conflicted\
+$ahead_behind\
+]($style))"""
+style = 'fg:red bg:base'
+conflicted = '[! ](bold fg:gold bg:base)'
+ahead = '󰶼 '
+behind = '󰶹 '
+diverged = '󰄽$behind_count 󰄾$ahead_count '
+up_to_date = '[✓ ](bold fg:green bg:base)'
+untracked = '[? ](bold fg:red bg:base)'
+stashed = '[ ](bold fg:foam bg:base)'
+modified = '[M ](fg:gold bg:base)'
+staged = '[+$count ](fg:green bg:base)'
+renamed = '[R ](bold fg:purple bg:base)'
+deleted = '[- ](bold fg:red bg:base)'
+ignore_submodules = true
+
+
+[golang]
+format = "[$symbol]($style)"
+style = "fg:blue bg:himed"
+symbol = " "
+
+[jobs]
+format = '[$symbol]($style)[$number](blue) '
+
+[localip]
+
+[lua]
+format = "[$symbol]($style)"
+version_format = ''
+style = "bold fg:blue bg:himed"
+symbol = " "
+
+[python]
+format = "[$symbol]($style)"
+version_format = ''
+style = "bold fg:yellow bg:himed"
+symbol = " "
+
+[shell]
+zsh_indicator = "Z"
+format = '[$indicator ]($style)'
+style = 'fg:himed bg:hilow'
+disabled = false
+
+[shlvl]
+format = "[$symbol]($style)"
+symbol = ""
+style = 'fg:himed bg:hilow'
+threshold = 3
+repeat = true
+repeat_offset = 2
+disabled = false
+
+[sudo]
+[time]
+format = "[ $time ]($style)"
+time_format = "%H:%M"
+style = "fg:gold bg:himed"
+disabled = false
+
+[palettes.rosepine]
+base = "#191724"
+surface = "#1f1d2e"
+overlay = "#26233a"
+muted = "#6e6a86"
+subtle = "#908caa"
+text = "#e0def4"
+love = "#eb6f92"
+gold = "#f6c177"
+rose = "#ebbcba"
+pine = "#31748f"
+foam = "#9ccfd8"
+iris = "#c4a7e7"
+hilow = "#21202e"
+himed = "#403d52"
+hihigh = "#524f67"
+
+# Disable modules - it is more robust this way, simply omitting does not
+# necessarily disable the modules.
+[aws]
+disabled = true
+[battery]
+disabled = true
+[buf]
+disabled = true
+[bun]
+disabled = true
+[c]
+disabled = true
+[cmake]
+disabled = true
+[cobol]
+disabled = true
+[cmd_duration]
+disabled = true
+[conda]
+disabled = true
+[container]
+disabled = true
+[crystal]
+disabled = true
+[daml]
+disabled = true
+[dart]
+disabled = true
+[deno]
+disabled = true
+[docker_context]
+disabled = true
+[dotnet]
+disabled = true
+[elixir]
+disabled = true
+[elm]
+disabled = true
+[env_var]
+disabled = true
+[erlang]
+disabled = true
+[fennel]
+disabled = true
+[gcloud]
+disabled = true
+[guix_shell]
+disabled = true
+[gradle]
+disabled = true
+[haskell]
+disabled = true
+[haxe]
+disabled = true
+[helm]
+disabled = true
+[hostname]
+disabled = true
+[java]
+disabled = true
+[julia]
+disabled = true
+[kotlin]
+disabled = true
+[meson]
+disabled = true
+[hg_branch]
+disabled = true
+[nim]
+disabled = true
+[nix_shell]
+disabled = true
+[nodejs]
+disabled = true
+[ocaml]
+disabled = true
+[opa]
+disabled = true
+[openstack]
+disabled = true
+[package]
+disabled = true
+[perl]
+disabled = true
+[php]
+disabled = true
+[pulumi]
+disabled = true
+[purescript]
+disabled = true
+[rlang]
+disabled = true
+[raku]
+disabled = true
+[red]
+disabled = true
+[ruby]
+disabled = true
+[rust]
+disabled = true
+[scala]
+disabled = true
+[singularity]
+disabled = true
+[solidity]
+disabled = true
+[spack]
+disabled = true
+[swift]
+disabled = true
+[terraform]
+disabled = true
+[username]
+disabled = true
+[vagrant]
+disabled = true
+[vlang]
+disabled = true
+[vcsh]
+disabled = true
+[zig]
+disabled = false
+

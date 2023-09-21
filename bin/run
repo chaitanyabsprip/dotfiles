@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# [ -x ./run ] && exec ./run "$@"
+
+name=$1
+image=$name
+[ "$name" = opensuse ] && image=opensuse/tumbleweed
+[ "$name" = archlinux ] && platform="--platform linux/amd64"
+echo "$name" | grep '/' >/dev/null &&
+	name="$(echo "$name" | awk -F '/' '{ print $NF }')"
+
+shift
+
+# shellcheck disable=2086
+exec docker run -it --rm --privileged -h "$name" --name "$name" $platform "$image" "$@"

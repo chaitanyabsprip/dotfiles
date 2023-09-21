@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# Usage: You can pipe your input into this script like this:
+# cat input.txt | sh align.sh
+
+original_text=
+
+while IFS= read -r line; do
+	original_text="$original_text\n$line"
+done
+
+align_char="${1:-=}"
+max_len=0
+
+get_max_len() {
+	while IFS= read -r line; do
+		[ -z "$line" ] && continue
+		pre_align="${line%%"$align_char"*}"
+		pre_len="${#pre_align}"
+		if [ "$pre_len" -gt "$max_len" ]; then max_len="$pre_len"; fi
+	done <<EOF
+    $original_text
+EOF
+	echo "$((max_len + 1))"
+}
+
+max_len=$(get_max_len)
+echo "$original_text" | while IFS= read -r line; do
+	[ -z "$line" ] && continue
+	pre_align="${line%%"$align_char"*}"
+	pre_len="${#pre_align}"
+	post_align="${line#*"$align_char"}"
+	padding="$((max_len - pre_len))"
+	aligned_line="$pre_align$(printf "%${padding}s")$align_char$post_align"
+	echo "$aligned_line"
+done

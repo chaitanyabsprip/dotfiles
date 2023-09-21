@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# https://cocktailmake.github.io/posts/improvement-of-git-commands-with-fzf/
+
+_have() { type "$1" >/dev/null 2>&1; }
+
+_have tmux && tmux ls | grep scratch && tmux detach-client -s scratch
+
+is_in_git_repo() { git rev-parse HEAD >/dev/null; }
+
+git_log_fzf() {
+	is_in_git_repo || return
+
+	_gitLogLineToHash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1"
+	_viewGitLogLine="$_gitLogLineToHash | xargs -I % sh -c 'git show --color=always %'"
+	git log --graph --color=always \
+		--format="%C(auto)%h%d [%an] %s %C(black)%C(bold)%cr" "$@" |
+		fzf-tmux -p -h 90% -w 90% --ansi --no-sort --reverse --tiebreak=index \
+			--preview="$_viewGitLogLine" \
+			--bind=ctrl-s:toggle-sort \
+			--bind "ctrl-m:execute:
+		(grep -o '[a-f0-9]\{7\}' | head -1 |
+		xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+		{}
+FZF-EOF"
+}
+
+git_log_fzf "$@"

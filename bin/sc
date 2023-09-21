@@ -1,0 +1,23 @@
+#!/bin/sh
+
+[ $# -gt 1 ] && echo 'Usage: sc <errorcode> or program | sc' && exit 1
+
+_have() { type "$1" >/dev/null 2>&1; }
+_have pandoc || { echo "${0##*/} depends on pandoc" && exit 1; }
+_have glow || { echo "${0##*/} depends on glow, use it for better experience"; }
+
+preview() {
+	content=
+	[ -p /dev/stdin ] && while IFS= read -r line; do content="$content\n$line"; done
+	{ _have glow && echo "$content" | glow; } ||
+		{ _have bat && echo "$content" | bat -p; } ||
+		echo "$content" | cat
+}
+
+[ ! -p /dev/stdin ] && [ -z "$1" ] && printf 'shellcheck error: '
+[ -z "$1" ] && read -r code
+code="${code:-$1}"
+
+curl -s "https://www.shellcheck.net/wiki/SC$code" |
+	pandoc -f html -t markdown |
+	preview

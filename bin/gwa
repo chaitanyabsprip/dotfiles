@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# My branch names are usually of the format is
+# "feature|bugfix|refactor/<module-name>/<ticket-number>/three-word-description
+# from such a named branch I want to create a worktree with path
+# "feature|bugfix|refactor/three-word-description" in the root of the project
+#
+#
+# only complete when this successfully finds the root of the project.
+
+show_help() {
+	cat <<EOF
+Usage: create_worktree.sh <branch-name>
+Creates a worktree with the specified path from a branch name.
+The branch name must be in the format "feature|bugfix|refactor/<module-name>/<ticket-number>/three-word-description".
+The three-word description is used to create the worktree path.
+The worktree is created in the root of the project.
+EOF
+}
+
+[ "$#" -gt 1 ] && show_help && exit 1
+
+branch_name=$1
+desc=$(echo "$branch_name" | rev | cut -d '/' -f 1 | rev)
+
+branch_type=$(echo "$branch_name" | cut -d '/' -f 1)
+worktree_path="$branch_type/$desc"
+
+# Create the worktree
+git worktree add "$worktree_path" -b "$branch_name"

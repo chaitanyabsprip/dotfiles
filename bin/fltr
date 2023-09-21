@@ -1,0 +1,14 @@
+#!/bin/sh
+
+type entr >/dev/null 2>&1 || { echo "This program requires entr" && exit 1; }
+
+pidfile=/tmp/flutter-$$.pid
+touch $pidfile
+
+setup_hotreload() {
+	find lib -name '*.dart' | entr -p kill -USR1 "$(cat "$pidfile")"
+}
+
+setup_hotreload &
+
+exec "flutter \"$@\" --pid-file \"$pidfile\"; rm \"$pidfile\""

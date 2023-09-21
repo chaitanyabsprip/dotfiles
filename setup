@@ -1,0 +1,182 @@
+#!/bin/sh
+
+CURR_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)
+# shellcheck disable=2139
+alias ghdl="$CURR_DIR/bin/ghdl"
+
+_depends() { have "$1" ||
+	{ echo "${0##*/} depends on $1, please install and try again." && exit 1; }; }
+
+# Define ASCII color variables
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+# YELLOW='\033[0;33m'
+NC='\033[0m' # No Color
+
+_depends curl
+_depends git
+
+setup_env() {
+	# shellcheck disable=2016
+	echo 'export PATH=.:"$PATH"'
+	# shellcheck disable=2016
+	echo 'export PATH="$PATH":~/.config/bin'
+}
+
+eval "$(setup_env)"
+
+_starship() {
+	have starship && return
+	if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "Linux" ]; then
+		curl -sS https://starship.rs/install.sh -o starship.sh
+		sh starship.sh -y 1>/dev/null 2>&1
+		rm starship.sh
+	else
+		echo "${RED}Couldn't install starship${NC}"
+	fi
+	echo "${GREEN}starship successfully installed${NC}"
+}
+
+_zap_zsh() {
+	have zap && return
+	if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "Linux" ]; then
+		curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh -o install.zsh
+		zsh install.zsh --branch release-v1 --keep
+		rm install.zsh
+	else
+		echo "${RED}Couldn't install zap-zsh${NC}"
+	fi
+	echo "${GREEN}zap-zsh successfully installed${NC}"
+}
+
+_eza() {
+	have eza && return
+	ghdl eza-community/eza
+	tar -xf eza-latest*
+	mv eza ~/.config/bin
+	ln -sf ~/.config/bin/eza ~/.config/bin/exa
+	rm eza-latest*
+}
+
+_bat() {
+	have eza && return
+	if [ "$(uname)" = 'Darwin' ]; then
+		_depends brew
+		brew install bat
+		return
+	fi
+	ghdl sharkfp/bat
+	tar -xf bat-latest.tar.gz
+	install_path=~/.config/bin/bat
+	asset=$(find . -name 'bat-*' -type d)
+	mv "$asset"/bat $install_path
+	mv "$asset"/bat.1 /usr/local/share/man/
+	rm -r bat-*
+}
+
+_fd() {
+	have eza && return
+	if [ "$(uname)" = 'Darwin' ]; then
+		_depends brew
+		brew install fd
+		return
+	fi
+	ghdl sharkfp/fd
+	tar -xf fd-latest.tar.gz
+	install_path=~/.config/bin/fd
+	asset=$(find . -name 'fd-*' -type d)
+	mv "$asset"/fd $install_path
+	mv "$asset"/fd.1 /usr/local/share/man/
+	rm -r fd-*
+}
+
+setup_zsh() {
+	_depends zsh
+	echo export ZDOTDIR="$HOME"/.config/zsh >>"$HOME"/.profile
+	_starship
+	_zap_zsh
+	echo "${GREEN}base zsh shell setup complete${NC}"
+}
+
+setup_zsh_complete() {
+	setup_zsh
+	_eza
+	_bat
+}
+
+_gitmux() {
+	have gitmux && return
+	ghdl arl/gitmux
+	tar -xf gitmux-latest
+	rm gitmux-latest*
+	mv gitmux "$HOME"/.config/bin/gitmux
+	rm LICENSE README.md
+	echo "${GREEN}gitmux successfully installed${NC}"
+}
+
+_yq() {
+	have yq && return
+	ghdl mikefarah/yq
+	install_path="$HOME"/.config/bin/yq
+	asset=yq-latest
+	mv "$asset" "$install_path"
+	chmod +x "$install_path"
+	echo "${GREEN}yq successfully installed${NC}"
+}
+
+_gitui() {
+	have gitui && return
+	mkdir temp && { cd temp || true; }
+	ghdl extrawurst/gitui
+	tar -xf gitui-latest*
+	mv gitui ~/.config/bin
+	rm gitui-latest*
+	cd .. && rm -r temp
+}
+
+_fzf() {
+	spinner curl -LsS https://raw.githubusercontent.com/junegunn/fzf/master/install -o install
+	spinner bash ./install --no-key-bindings --completion --no-update-rc
+	rm ./install
+}
+
+setup_tmux() {
+	_depends tmux
+}
+
+setup_tmux_complete() {
+	setup_tmux
+	_yq
+	_gitmux
+	_gitui
+	_fd
+	_fzf
+}
+
+install_go() {
+	_depends wget
+	mkdir temp && { cd temp || :; }
+	wget https://git.io/go-installer.sh
+	chmod +x go-installer.sh
+	bash go-installer.sh
+	rm go*
+	cd ..
+}
+
+setup_neovim() {
+	bin/install-neovim.sh
+}
+
+case "$1" in
+zsh) setup_zsh ;;
+tmux) setup_tmux ;;
+nvim) setup_neovim ;;
+env) setup_env ;;
+go) install_go ;;
+all | '')
+	setup_zsh_complete
+	setup_tmux_complete
+	setup_neovim
+	;;
+*) echo "specify a target" && exit 1 ;;
+esac

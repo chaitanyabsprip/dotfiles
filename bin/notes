@@ -1,0 +1,104 @@
+#!/bin/sh
+
+show_help() {
+	cat <<EOF
+
+The ${0##*/} utility will write last -n number of notes/headings to standard
+output.
+
+Usage: ${0##*/} [-f FILE] [-n number] [-l number]
+  options:
+    -f path            Path to the mardkown file to dump headings from
+    -n number          Number of trailing headings to dump. Default 3
+    -l number[1..6]    Level of heading to match (default: 2, e.g. ##)
+    -h --help          Show this help message
+    -e                 Open notes file \$EDITOR
+EOF
+}
+
+_have() { type "$1" >/dev/null 2>&1; }
+
+preview() {
+	content="$1"
+	{ _have glow && echo "$content" | glow; } ||
+		{ _have bat && echo "$content" | bat -p; } ||
+		echo "$content" | cat
+}
+
+defaultfile=$HOME/projects/notes/notes.dump.md
+
+# if ever you want to match content from one heading to another use
+# (?:^|\n)#{1,2}\s[^\n]*\n(.*?)(?=\n##?\s|$) this regex
+grep_content() {
+	filepath="${1:-"$defaultfile"}"
+	level="${2:-2}"
+	num_of_headings="${3:-3}"
+	match_md_heading="^#\{1,$level\} .*"
+	linenr=$(
+		grep -n "$match_md_heading" "$filepath" |
+			tail -"$num_of_headings" |
+			head -1 | cut -d : -f 1
+	)
+	content=$(tail -n +"$linenr" "$filepath")
+	echo "$content"
+}
+
+notes() {
+	[ "$1" = "--help" ] && show_help && exit 1
+
+	_guard() {
+		error_msg="$1 option was passed more than one times."
+		[ -n "$2" ] && echo "$error_msg" 1>&2 && show_help && exit 1
+	}
+
+	while getopts ":f:n:l:he" opt; do
+		case $opt in
+		h) show_help && exit 0 ;;
+		e)
+			# Open file with default editor
+			# shellcheck disable=2153
+			/usr/bin/env "$EDITOR" "${filepath:-$defaultfile}"
+			exit 0
+			;;
+		f)
+			_guard -f "$filepath"
+			filepath="$OPTARG"
+			;;
+		n)
+			_guard -n "$num_of_headings"
+			num_of_headings="$OPTARG"
+			;;
+		l)
+			_guard -l "$level"
+			if [ "$OPTARG" -lt 1 ] || [ "$OPTARG" -gt 6 ]; then
+				show_help && exit 1
+			else
+				level="$OPTARG"
+			fi
+			;;
+		\?) echo "Invalid option: -$OPTARG" >&2 && show_help && exit 1 ;;
+		:)
+			echo "Option -$OPTARG requires an argument" >&2
+			show_help
+			exit 1
+			;;
+		esac
+		[ -f "${filepath:-$defaultfile}" ] || { echo "The notes file does not exist" && exit 1; }
+	done
+
+	shift $((OPTIND - 1))
+
+	if [ $# -gt 0 ]; then
+		echo "Invalid usage"
+		show_help
+		exit 1
+	fi
+
+	content=$(grep_content "$filepath" "$level" "$num_of_headings")
+	preview "$content"
+}
+
+# ---
+
+[ -p /dev/stdin ] && read -r filepath
+notes "$@"

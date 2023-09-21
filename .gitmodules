@@ -1,0 +1,7 @@
+[submodule "fish"]
+	path = fish
+	url = git@github.com:Chaitanyabsprip/fish-config.git
+[submodule "nvim"]
+	path = nvim
+	url = git@github.com:Chaitanyabsprip/nvim.git 
+	branch = refactor-v1

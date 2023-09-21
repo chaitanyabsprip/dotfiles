@@ -1,0 +1,90 @@
+#!/bin/sh
+# Shows a spinner while another command is running. Randomly picks one of 12 spinner styles.
+# @args command to run (with any parameters) while showing a spinner.
+#       E.g. ‹spinner sleep 10›
+
+shutdown() {
+	tput cnorm # reset cursor
+}
+trap shutdown EXIT
+
+cursorBack() {
+	printf "\033[%sD" "$1"
+}
+
+spinner() {
+	# # make sure we use non-unicode character type locale
+	# # (that way it works for any locale as long as the font supports the characters)
+	LC_CTYPE=C
+
+	pid=$1 # Process Id of the previous running command
+
+	random=$(awk 'BEGIN { srand(); print int(rand()*32768) }' /dev/null)
+	case $((random % 12)) in
+	0)
+		spin='⠈⠐⠠⢀⡀⠄⠂⠁'
+		charwidth=1
+		;;
+	1)
+		spin='-\|/'
+		charwidth=1
+		;;
+	2)
+		spin="▁▂▃▄▅▆▇█▇▆▅▄▃▂▁"
+		charwidth=3
+		;;
+	3)
+		spin="▉▊▋▌▍▎▏▎▍▌▋▊▉"
+		charwidth=1
+		;;
+	4)
+		spin='←↖↑↗→↘↓↙'
+		charwidth=1
+		;;
+	5)
+		spin='▖▘▝▗'
+		charwidth=1
+		;;
+	6)
+		spin='┤┘┴└├┌┬┐'
+		charwidth=1
+		;;
+	7)
+		spin='◢◣◤◥'
+		charwidth=1
+		;;
+	8)
+		spin='◰◳◲◱'
+		charwidth=1
+		;;
+	9)
+		spin='◴◷◶◵'
+		charwidth=1
+		;;
+	10)
+		spin='◐◓◑◒'
+		charwidth=1
+		;;
+	11)
+		spin='⣾⣽⣻⢿⡿⣟⣯⣷'
+		charwidth=1
+		;;
+	esac
+
+	i=0
+	tput civis # cursor invisible
+	while kill -0 "$pid" 2>/dev/null; do
+		i=$(((i + charwidth) % ${#spin}))
+		# printf "%s" "${spin:$i:$charwidth}"
+		printf "%s" "$(echo "$spin" | cut -c "$((i + 1))-$((i + charwidth))")"
+		cursorBack "$charwidth"
+		sleep .1
+	done
+	tput cnorm
+	wait "$pid"
+	return $?
+}
+
+("$@") &
+
+spinner $!

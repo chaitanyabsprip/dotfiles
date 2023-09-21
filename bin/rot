@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# Run On Touch™ (not an actual trademark)
+#
+# A script that takes a command and runs it when a given file is "opened" with
+# any program. The event is triggered by inotify, and the inotifywait program,
+# from the inotify-tools package, is used to listen for it. The event is sent by
+# the 'touch' command, which will usually be used as the trigger.
+#
+# The file is created by the first instance of this script that finds that it
+# doesn't exist, and it is also responsible for removing it upon exiting. The
+# file itself is /tmp/rot-trigger by default, but can be overriden by the
+# ROT_WATCH_FILE environment variable.
+#
+# Example use:
+#
+#   Edit some file on Vim in one terminal, run the command:
+#
+#     :set makeprg=touch\ /tmp/rot-trigger
+#
+#   Open a new terminal and run something like:
+#
+#     rot stack test
+#
+#   From Vim, run ':make', then watch as 'stack test' is executed elsewhere.
+#
+# Dependencies: inotify-tools
+
+watchFile="${ROT_WATCH_FILE:-/tmp/rot-trigger}"
+
+if [ ! -e "$watchFile" ]; then
+  echo "File '$watchFile' doesn't exist. Creating it..." && touch "$watchFile"
+  trap 'rm -f "$watchFile"' EXIT
+  trap exit INT HUP TERM
+fi
+
+while inotifywait -e open "$watchFile"; do
+  "$@"
+done

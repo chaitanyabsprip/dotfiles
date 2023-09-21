@@ -1,0 +1,6 @@
+#!/bin/sh
+
+cmd=$(which "$1")
+shift
+export PATH=
+exec "$cmd" "$@"

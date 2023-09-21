@@ -1,0 +1,59 @@
+#!/bin/sh
+
+help() {
+	echo "Usage:"
+	echo "    dotme /path/to/configuration    Track a configuration file"
+	echo "    dotme serve                     Server tracked configs throughout the system"
+	exit 1
+}
+
+if [ -z "$1" ] || { [ ! -e "$1" ] && [ "$1" != "serve" ] || [ "$1" = "help" ]; }; then help; fi
+
+script_dir=$(dirname "$(readlink -f "$0")")
+lock_file="$script_dir/.dotme.lock"
+
+track() {
+	name_clean=$(echo "$1" | sed "s|$HOME|\$HOME|")
+	if [ -d "$1/.git" ]; then
+		is_git_dir=true
+	fi
+	name_base=$(basename "$1")
+	entry="$name_base: $name_clean"
+	if grep "$entry" "$lock_file" >/dev/null; then
+		echo "Already tracking $name_clean" && exit 1
+	fi
+	mv "$1" "$script_dir"
+	ln -sf "$script_dir/$name_base" "$1"
+	if [ "$is_git_dir" ]; then git submodule add "$script_dir/$name_base"; fi
+	echo "$entry" >>"$lock_file"
+	echo "Configuration $name_clean is now being tracked"
+	unset name_clean name_bas entry
+}
+
+symlink() {
+	src="$1"
+	dest="$2"
+	ln -s "$src" "$dest" >/dev/null 2>&1
+	echo "linking $name to $dest"
+}
+
+serve() {
+	[ -d ~/.config ] || mkdir -p ~/.config
+	while IFS= read -r line; do
+		name="$(echo "$line" | cut -d ':' -f 1)"
+		src="$script_dir/$name"
+		dest="$(echo "$line" | cut -d ':' -f 2 | tr -d ' ' | sed "s|\$HOME|$HOME|")"
+		if [ -n "$name" ] && [ -n "$dest" ]; then
+			[ -f "$dest" ] && mv "$dest" "$dest.bak"
+			if [ -h "$dest" ]; then # file exists and is a symbolic link
+				# file exists then create link
+				[ ! -e "$dest" ] && symlink "$src" "$dest"
+			else
+				symlink "$src" "$dest"
+			fi
+		fi
+	done <"$lock_file"
+}
+
+if [ -e "$1" ]; then track "$@"; elif [ "$1" = "serve" ]; then serve; fi
+unset script_dir lock_file

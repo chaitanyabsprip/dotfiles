@@ -1,0 +1,37 @@
+#!/bin/sh
+
+current_dir=$(dirname "$(readlink -f "$0")")
+sessiondir="$HOME/.local/share/ffsessions"
+[ -d "$sessiondir" ] || mkdir -p "$sessiondir"
+
+echo "$current_dir" >/dev/null
+case $(uname) in
+Darwin)
+	ffpath="$HOME/Library/Application Support/Firefox/Profiles"
+	;;
+esac
+
+export FFRECOVERY
+FFRECOVERY=$(find "$ffpath" -regex ".*\.default.*/sessionstore-backups/recovery.jsonlz4")
+
+tabs=$(
+	python3 -c '
+import json
+import os
+
+import lz4.block
+
+f = open(os.environ["FFRECOVERY"], "rb")
+magic = f.read(8)
+jdata = json.loads(lz4.block.decompress(f.read()).decode("utf-8"))
+f.close()
+for win in jdata["windows"]:
+    for tab in win["tabs"]:
+        i = int(tab["index"]) - 1
+        urls = tab["entries"][i]["url"]
+        print(urls, end=" ")
+    print("")
+    '
+)
+
+echo "$tabs" >>"$sessiondir/$(date +"%Y-%m-%dT%H-%M-%S")"

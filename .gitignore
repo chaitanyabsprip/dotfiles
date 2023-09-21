@@ -1,0 +1,4 @@
+bin/bard-cli
+bin/gitmux
+zsh/.bardcli.yaml
+zsh/.zsh_history

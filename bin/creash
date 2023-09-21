@@ -1,0 +1,13 @@
+#!/bin/sh
+
+[ -z "$1" ] && echo "Usage: ${0##*/} <script-name>" && exit 1
+
+filename="$1"
+
+if /bin/ls "$filename" >/dev/null 2>&1; then echo "File already exists"; fi
+
+touch "$filename" && chmod +x "$filename"
+{
+	echo "#!/bin/sh"
+	echo ""
+} >"$filename"

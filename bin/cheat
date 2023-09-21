@@ -1,0 +1,25 @@
+#!/bin/sh
+
+_have() { type "$1" >/dev/null 2>&1; }
+_have fzf || { echo "${0##*/} depends on junegunn/fzf" && exit 127; }
+
+langpath=~/.config/tmux/bin/.tmux-cht-languages
+cmdpath=~/.config/tmux/bin/.tmux-cht-command
+langpath=~/.config/tmux/bin/.tmux-cht-languages
+
+if [ -p /dev/stdin ]; then
+	read -r selected
+elif [ -n "$1" ]; then
+	selected="$1"
+	shift
+	query="$*"
+else
+	selected=$(cat $langpath $cmdpath | fzf)
+fi
+
+[ -z "$selected" ] && exit 1
+
+[ -z "$query" ] && printf "Query: " && read -r query <&1
+query=$(echo "$query" | tr ' ' '+')
+if grep -qs "$selected" $langpath; then sep='/'; else sep='~'; fi
+curl -s "cht.sh/$selected$sep$query" | less -R

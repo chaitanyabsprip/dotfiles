@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# Diplay a popup on top of all other panes spanning 65% in width and height and
+# containing a short git log so one can easily "peek" at it. The popup window
+# should close the moment the user quits the log screen.
+#
+# Should be invoked only from within a git working tree.
+#
+# Depends on: tmux, git
+
+_have() { type "$1" >/dev/null 2>&1; }
+
+_have tmux && tmux ls | grep scratch && tmux detach-client -s scratch
+
+cd "$(tmux display-message -p -F '#{pane_current_path}')" || exit 1
+
+[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" != true ] &&
+	exec tmux display-message -d 1000 "Not in a Git repository!"
+
+tmux display-popup -E -w 65% -h 65% -d '#{pane_current_path}' \
+	git log --oneline --color --graph --decorate || true
