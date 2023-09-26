@@ -121,7 +121,7 @@ bookmark() {
 	filepath="$NOTESPATH/notes.bookmarks.md"
 	setup_file "$filepath" "To-do"
 
-	[ "$EDIT" = true ] && $EDITOR "$filepath" && exit 0
+	[ "$EDIT" = true ] && exec $EDITOR "$filepath" && exit 0
 	content="$1"
 	[ -z "$content" ] && echo "Nothing to note here :shrug:" && exit 1
 
@@ -146,7 +146,7 @@ dump() {
 	[ -n "$NOTE_FILEPATH" ] && label='Done'
 	setup_file "$filepath" "$label"
 
-	[ "$EDIT" = true ] && $EDITOR "$filepath" && exit 0
+	[ "$EDIT" = true ] && exec $EDITOR "$filepath" && exit 0
 	content="$1"
 	[ -z "$content" ] && echo "Nothing to note here :shrug:" && exit 1
 
@@ -176,7 +176,7 @@ todo() {
 	filepath="$NOTESPATH/notes.todo.md"
 	setup_file "$filepath" "To-do"
 
-	[ "$EDIT" = true ] && $EDITOR "$filepath" && exit 0
+	[ "$EDIT" = true ] && exec $EDITOR "$filepath" && exit 0
 	content="$1"
 	[ -z "$content" ] && echo "Nothing to note here :shrug:" && exit 1
 
@@ -201,21 +201,13 @@ daily() {
 	today="$(date '+%Y-%m-%d')"
 	today_long="$(date '+%B %m, %Y')"
 	filepath="$NOTESPATH/transient/$today.md"
-	[ -f "$filepath" ] && {
+	[ ! -f "$filepath" ] && {
 		setup_file "$filepath"
-		template="$(
-			echo '---'
-			echo "id: \"$today\""
-			echo 'aliases:'
-			echo "  - \"$today_long\""
-			echo 'tags:'
-			echo '  - "daily-notes"'
-			echo '---'
-			echo ''
-			echo "# $today_long"
-		)"
+		template="# $today_long"
 		echo "$template" >"$filepath"
 	}
+	[ "$EDIT" = true ] && exec $EDITOR "$filepath" && exit 0
+
 	content="$1"
 	[ -z "$content" ] && echo "Nothing to note here :shrug:" && exit 1
 	note=$(
@@ -223,8 +215,9 @@ daily() {
 			awk '{ print toupper(substr($0, 1, 1)) substr($0, 2) }' |
 			fold -sw 80
 	)
+	echo "$note" >>"$filepath"
 
-	[ "$EDIT" = true ] && $EDITOR "$filepath" && exit 0
+	preview "$(cat "$filepath")"
 }
 
 MODE='dump'
