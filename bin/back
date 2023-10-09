@@ -4,6 +4,42 @@
 
 _have() { type "$1" >/dev/null 2>&1; }
 _have pomo || { echo "${0##*/} depends on chaitanyabsprip/pomo" && exit 127; }
+_have br || { echo "${0##*/} depends on br utility" && exit 127; }
+_have bc || { echo "${0##*/} depends on bc utility" && exit 127; }
+
+validate_time() {
+	time_regex="^\([0-9]\{1,\}h\)\{0,1\}\([0-9]\{1,\}m\)\{0,1\}\([0-9]\{1,\}s\)\{0,1\}$"
+	if ! expr "$1" : "$time_regex"; then #>/dev/null 2>&1; then
+		echo "Usage: ${0##/} <time>"
+		exit 1
+	fi
+}
+
+[ -n "$1" ] && validate_time "$1"
+
+#strip_right
+stripr() { echo "${1%?}"; }
+
+# seconds_calculation
+secsc() {
+	timestr="$1"
+	h="$(stripr "$(echo "$timestr" | grep -o '[0-9]\+h')")"
+	m="$(stripr "$(echo "$timestr" | grep -o '[0-9]\+m')")"
+	s="$(stripr "$(echo "$timestr" | grep -o '[0-9]\+s')")"
+	# - 10 because I want to be notified 10 seconds earlier
+	echo "${h:-0} * 3600 + ${m:-0} * 60 + ${s:-0} - 10" | bc
+}
+
+if [ "$1" = "-c" ]; then
+	cont='-c'
+	shift
+fi
+duration="$1"
 
 [ -n "$(pomo)" ] && pomo stop >/dev/null 2>&1
-pomo start hr >/dev/null 2>&1
+
+if [ -n "$duration" ]; then
+	pomo start "$duration" >/dev/null 2>&1
+else
+	pomo start hr >/dev/null 2>&1
+fi
