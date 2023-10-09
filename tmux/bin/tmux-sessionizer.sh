@@ -11,8 +11,9 @@ if [ $# -eq 1 ]; then
 else
 	selected=$(
 		(
-			fd . -HIat d -d 1 -E .git \
+			fd . -HIatd -d 1 -E .git \
 				~/Programs \
+				~/projects \
 				~/projects/apps \
 				~/projects/forks \
 				~/projects/languages \
@@ -20,14 +21,13 @@ else
 				~/projects/languages/dart \
 				~/projects/languages/lua \
 				~/projects/languages/python
-			fd . -HIt d -d 2 -E .git -E root \
+			fd . -HItd -d 2 -E .git -E root \
 				~/projects/apps/prep \
 				~/projects/apps/work
-			fd root -d 1 -t d \
+			fd root -d 1 -td \
 				~/projects/apps/prep \
 				~/projects/apps/work
-			fd dotfiles ~ -at d -d 1
-			fd notes ~/projects -at d -d 1
+			fd '(dotfiles|projects)' ~ -atd -d 1
 			fd . -HIad 1 -E .git ~/.config
 		) | sort -u | fzf-tmux -p --border \
 			--border-label=" Sessionizer " \
