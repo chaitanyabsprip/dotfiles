@@ -1,0 +1,11 @@
+#!/bin/sh
+
+[ -d "$HOME/programs" ] || mkdir "$HOME/programs"
+cd "$HOME/programs/neovim" || exit 1
+git switch -
+git clean -fxd
+git fetch -apP
+git pull
+git checkout nightly
+make CMAKE_BUILD_TYPE=Release
+sudo make install
