@@ -119,7 +119,7 @@ bookmark() {
 	# ...
 	# 4.
 	filepath="$NOTESPATH/notes.bookmarks.md"
-	setup_file "$filepath" "To-do"
+	setup_file "$filepath" "Bookmarks"
 
 	[ "$EDIT" = true ] && exec $EDITOR "$filepath" && exit 0
 	content="$1"
