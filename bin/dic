@@ -1,0 +1,5 @@
+#!/bin/sh
+
+word="$1"
+
+spinner curl -sS dict://dict.org/d:"$word"
