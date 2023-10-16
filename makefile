@@ -13,6 +13,7 @@ BINDIR = ${HOME}/.config/bin
 MANPATH = /usr/local/share/man
 
 all: zsh neovim tmux go
+	@mkdir ~/projects
 
 build: Dockerfile makefile setup
 	@docker rmi dotfiles
