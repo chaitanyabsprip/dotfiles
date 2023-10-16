@@ -1,8 +1,10 @@
 #!/bin/sh
 
 [ -d "$HOME/programs" ] || mkdir "$HOME/programs"
-cd "$HOME/programs/neovim" || exit 1
-git switch -
+cd "$HOME/programs" || exit
+[ -d "$HOME/programs/neovim" ] || git clone http://github.com/neovim/neovim neovim
+cd neovim || exit
+[ "$(git rev-parse --symbolic-full-name HEAD)" = "HEAD" ] && git switch -
 git clean -fxd
 git fetch -apP
 git pull
