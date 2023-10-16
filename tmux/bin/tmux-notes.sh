@@ -19,7 +19,7 @@ fi
 if tmux has-session -t notes 2>/dev/null; then
 	filename=$(basename "$selected")
 	tmux switch-client -t notes
-	tmux new-window -P -c ~/projects/notes -t "notes:$filename" "/bin/dash -c 'nvim $selected'; zsh"
+	tmux new-window -c ~/projects/notes "/bin/dash -c 'nvim $selected'; zsh"
 else
 	tmux new-session -d -s notes -c ~/projects/notes "/bin/dash -c 'nvim $selected'; zsh"
 	tmux switch-client -t notes
