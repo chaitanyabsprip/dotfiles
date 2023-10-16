@@ -1,3 +1,9 @@
 #!/bin/sh
 
+show_help() {
+	echo "Usage:"
+	echo "    ${0##*/} [number of sentences]"
+}
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then show_help && exit 0; fi
 curl "http://metaphorpsum.com/sentences/$1"

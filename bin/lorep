@@ -1,3 +1,10 @@
 #!/bin/sh
 
+show_help() {
+	echo "Usage:"
+	echo "    ${0##*/} [number of paragraphs][/number of sentences per paragraph]"
+}
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then show_help && exit 0; fi
+
 exec curl -sSL "http://metaphorpsum.com/paragraphs/$1"
