@@ -25,7 +25,7 @@ _have /usr/bin/vim && alias vi=/usr/bin/vim
 _have nvim && alias vim=/usr/local/bin/nvim vimdiff='nvim -d'
 _have bat && alias cat='bat'
 _have bard-cli && alias \?='bard-cli -c ~/.config/zsh/.bardcli.yaml'
-_have jira && alias jim="jira issue list \
+_have jira && alias issues="jira issue list \
   -a\$(jira me) \
   -q\"statuscategory in (New,'In Progress')\" \
   --plain | \
