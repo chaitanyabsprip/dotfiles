@@ -16,6 +16,8 @@ ${golang}\
 ${lua}\
 ${python}\
 \
+${username}\
+${hostname}\
 ${directory}\
 ${git_branch}\
 ${git_state}\
@@ -40,6 +42,10 @@ palette = 'rosepine'
 format="$symbol"
 success_symbol = "[▍](bold fg:green)"
 error_symbol = "[▍](bold fg:red)"
+
+[hostname]
+disabled = false
+# format = "[$ssh_symbol$hostname]($style)@ "
 
 [directory]
 format = "[ $path]($style)[$read_only]($read_only_style)[ ]($style)"
@@ -217,8 +223,6 @@ disabled = true
 disabled = true
 [helm]
 disabled = true
-[hostname]
-disabled = true
 [java]
 disabled = true
 [julia]
@@ -273,8 +277,8 @@ disabled = true
 disabled = true
 [terraform]
 disabled = true
-[username]
-disabled = true
+# [username]
+# disabled = true
 [vagrant]
 disabled = true
 [vlang]
