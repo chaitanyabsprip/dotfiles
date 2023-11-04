@@ -22,7 +22,11 @@ fi
 if [ $# -eq 1 ]; then
 	selected=$1
 else
-	selected=$(tmux ls -F "#{session_name}" | fzf-tmux -p 30%,30% --reverse)
+	selected=$(
+		tmux ls -F "#{session_name}" | fzf-tmux -p 90%,70% --reverse \
+			--preview="$HOME"'/.config/tmux/bin/tmux-fzf-preview.sh -p {}' \
+			--preview-window=right,90%
+	)
 fi
 
 if [ "$current" = "$selected" ] || [ -z "$selected" ]; then
