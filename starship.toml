@@ -14,7 +14,6 @@ ${character}\
 ${dart}\
 ${golang}\
 ${lua}\
-${python}\
 \
 ${username}\
 ${hostname}\
@@ -25,6 +24,7 @@ ${git_commit}\
 \
 ${fill}\
 ${jobs}\
+${python}\
 ${localip}\
 ${sudo}\
 [ ](bg:hilow)\
@@ -123,9 +123,9 @@ style = "bold fg:blue bg:himed"
 symbol = " "
 
 [python]
-format = "[$symbol]($style)"
-version_format = ''
-style = "bold fg:yellow bg:himed"
+format = '[ $symbol${pyenv_prefix}($virtualenv)(\(${version}\) )]($style)'
+version_format = 'v${raw}'
+style = "bold fg:himed bg:base"
 symbol = " "
 
 [shell]
