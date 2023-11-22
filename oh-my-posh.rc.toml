@@ -1,0 +1,47 @@
+"$schema" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json"
+final_space = true
+version = 2
+
+[[blocks]]
+type = "prompt"
+alignment = "left"
+
+[[blocks.segments]]
+type = "status"
+style = "diamond"
+foreground = "green"
+background = "#21202e"
+foreground_templates = ["{{ if .Error }}red{{end}}"]
+template = "▍"
+
+[blocks.segments.properties]
+always_enabled = true
+
+[[blocks.segments]]
+type = "path"
+style = "plain"
+foreground = "cyan"
+background = "#21202e"
+
+[blocks.segments.properties]
+style = "folder"
+
+
+[[blocks]]
+type = "prompt"
+newline = true
+alignment = "left"
+
+[[blocks.segments]]
+type = "status"
+style = "diamond"
+foreground = "green"
+foreground_templates = ["{{ if .Error }}red{{end}}"]
+template = "▍"
+
+[blocks.segments.properties]
+always_enabled = true
+
+[[blocks]]
+type = "prompt"
+newline = true
