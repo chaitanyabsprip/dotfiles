@@ -15,6 +15,7 @@ setopt inc_append_history     # add commands to HISTFILE in order of execution
 stty stop undef               # Disable ctrl-s to freeze terminal.
 
 set -o vi
+bindkey -v
 
 _have() { type "$1" &>/dev/null; }
 
@@ -37,8 +38,14 @@ zle -N edit-command-line
 zsh-defer bindkey '^v' edit-command-line
 have jira && zsh-defer bindkey -s '^k' '^ujim\n'
 
+# initialisations
 have brew && zsh-defer eval "$(brew shellenv | grep -v 'export PATH')"
+have pyenv && {
+	export PYENV_ROOT="$HOME/.pyenv"
+	command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+	eval "$(pyenv init -)"
+}
+have rbenv && eval "$(rbenv init - zsh)"
 have starship && eval "$(starship init zsh)"
-zsh-defer unfunction _have
 
-bindkey -v
+zsh-defer unfunction _have
