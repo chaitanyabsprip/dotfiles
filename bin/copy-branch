@@ -1,0 +1,10 @@
+#!/bin/sh
+
+printf 'Prefix: '
+read -r suffix
+git_branch="$(git rev-parse --abbrev-ref HEAD)"
+new_branch="$git_branch-$suffix"
+printf "Creating and switching to branch %s\n" "$new_branch"
+
+git branch "$new_branch"
+git checkout "$new_branch"
