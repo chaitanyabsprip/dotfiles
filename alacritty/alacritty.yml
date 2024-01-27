@@ -10,7 +10,7 @@ env:
   LANG: en_US.UTF-8
 
 window:
-  opacity: 0.0
+  opacity: 1.0
   decorations: none
   option_as_alt: Both
   startup_mode: Maximized

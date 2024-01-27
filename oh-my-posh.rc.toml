@@ -1,16 +1,38 @@
 "$schema" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json"
 final_space = true
 version = 2
+[palette]
+base = "#191724"
+surface = "#1f1d2e"
+overlay = "#26233a"
+muted = "#6e6a86"
+subtle = "#908caa"
+text = "#e0def4"
+love = "#eb6f92"
+gold = "#f6c177"
+rose = "#ebbcba"
+pine = "#31748f"
+foam = "#9ccfd8"
+iris = "#c4a7e7"
+hilow = "#21202e"
+himed = "#403d52"
+hihigh = "#524f67"
 
 [[blocks]]
 type = "prompt"
 alignment = "left"
 
+# starting new line before the prompt. Used to disjoint two consecutive prompts
+[[blocks.segments]]
+type = "text"
+style = "plain"
+template = "\n"
+
 [[blocks.segments]]
 type = "status"
-style = "diamond"
+style = "plain"
 foreground = "green"
-background = "#21202e"
+background = "p:hilow"
 foreground_templates = ["{{ if .Error }}red{{end}}"]
 template = "▍"
 
@@ -21,12 +43,25 @@ always_enabled = true
 type = "path"
 style = "plain"
 foreground = "cyan"
-background = "#21202e"
+background = "p:hilow"
+template = " <b>{{ .Folder }}</b> "
 
 [blocks.segments.properties]
 style = "folder"
+home_icon = "home"
 
+[[blocks.segments]]
+type = "git"
+style = "plain"
+background = "p:hilow"
+foreground = "black"
+template = "<p:himed>on</> {{ if not .Detached }} <b>{{ .HEAD }} {{ .Detached }} </> {{ end }} "
 
+[blocks.segments.properties]
+branch_icon = " "
+tag_icon = "🏷  "
+
+# second line status symbol
 [[blocks]]
 type = "prompt"
 newline = true
@@ -34,14 +69,10 @@ alignment = "left"
 
 [[blocks.segments]]
 type = "status"
-style = "diamond"
+style = "plain"
 foreground = "green"
 foreground_templates = ["{{ if .Error }}red{{end}}"]
 template = "▍"
 
 [blocks.segments.properties]
 always_enabled = true
-
-[[blocks]]
-type = "prompt"
-newline = true

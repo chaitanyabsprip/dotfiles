@@ -58,7 +58,7 @@ symbol = ' '
 style = ''
 
 [git_branch]
-format = "[[on](fg:black bg:hilow) [$symbol$branch(:$remote_branch)]($style) ](bg:hilow)"
+format = "[[on](fg:himed bg:hilow) [$symbol$branch(:$remote_branch)]($style) ](bg:hilow)"
 symbol = " "
 style = "bold fg:black bg:hilow"
 
