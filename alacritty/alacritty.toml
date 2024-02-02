@@ -1,0 +1,60 @@
+import = ["/Users/chaitanyasharma/.config/alacritty/themes/material-rosepine.toml"]
+live_config_reload = true
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[cursor.style]
+shape = "Block"
+
+[env]
+EDITOR = "nvim"
+LANG = "en_US.UTF-8"
+LC_ALL = "en_US.UTF-8"
+TERM = "screen-256color"
+VISUAL = "nvim"
+
+[font]
+builtin_box_drawing = true
+size = 16
+
+[font.bold]
+family = "VictorMono Nerd Font Mono"
+style = "Bold"
+
+[font.bold_italic]
+family = "VictorMono Nerd Font Mono"
+style = "Bold Italic"
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font.italic]
+family = "VictorMono Nerd Font Mono"
+style = "Italic"
+
+[font.normal]
+family = "FiraCode Nerd Font Mono"
+style = "Light"
+
+[font.offset]
+x = 1
+y = 0
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[selection]
+save_to_clipboard = true
+
+[shell]
+args = ["-l", "-c", "/opt/homebrew/bin/tmux new -As home; /bin/zsh -l"]
+program = "/bin/zsh"
+
+[window]
+decorations = "none"
+opacity = 1.0
+option_as_alt = "Both"
+startup_mode = "Maximized"
