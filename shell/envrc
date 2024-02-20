@@ -16,19 +16,6 @@ append_path() {
 	esac
 }
 
-prepend_path "$HOME/.local/bin/overrides"
-append_path "$FLUTTER_SDK_ROOT/bin"
-append_path "$FLUTTER_SDK_ROOT/bin/cache/dart-sdk/bin"
-append_path "$HOME/.cargo/bin"
-append_path "$HOME/.pub-cache/bin"
-append_path "$HOME/Library/Android/sdk/platform-tools/"
-append_path "$HOME/go/bin"
-append_path "$HOME/.poetry/bin"
-append_path "$HOME/.config/bin"
-append_path "$HOME/.local/share/nvim/mason/bin"
-append_path "/opt/homebrew/bin"
-append_path "/opt/homebrew/sbin"
-
 export XDG_DATA_HOME="$HOME"/.local/share
 export XDG_STATE_HOME="$HOME"/.local/state
 export XDG_CACHE_HOME="$HOME"/.local/cache
@@ -79,3 +66,16 @@ export FZF_ALT_C_COMMAND="fd . -t d --hidden"
 export FZF_ALT_C_OPTS="
 --preview='tree -C {} | head -50'
 "
+
+prepend_path "$HOME/.local/bin/overrides"
+append_path "$FLUTTER_SDK_ROOT/bin"
+append_path "$FLUTTER_SDK_ROOT/bin/cache/dart-sdk/bin"
+append_path "$HOME/.cargo/bin"
+append_path "$HOME/.pub-cache/bin"
+append_path "$HOME/Library/Android/sdk/platform-tools/"
+append_path "$HOME/go/bin"
+append_path "$HOME/.poetry/bin"
+append_path "$HOME/.config/bin"
+append_path "$HOME/.local/share/nvim/mason/bin"
+append_path "/opt/homebrew/bin"
+append_path "/opt/homebrew/sbin"
