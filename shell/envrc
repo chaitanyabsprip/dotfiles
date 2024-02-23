@@ -79,3 +79,4 @@ export FZF_ALT_C_COMMAND="fd . -t d --hidden"
 export FZF_ALT_C_OPTS="
 --preview='tree -C {} | head -50'
 "
+append_path "$GOPATH/bin"
