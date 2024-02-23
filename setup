@@ -59,7 +59,7 @@ _eza() {
 }
 
 _bat() {
-	have eza && return
+	have bat && return
 	if [ "$(uname)" = 'Darwin' ]; then
 		_depends brew
 		brew install bat
@@ -172,6 +172,7 @@ zsh) setup_zsh ;;
 tmux) setup_tmux ;;
 nvim) setup_neovim ;;
 env) setup_env ;;
+bat) _bat ;;
 go) install_go ;;
 all | '')
 	setup_zsh_complete
