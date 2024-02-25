@@ -1,3 +1,3 @@
 #!/bin/bash
 
-source shell/envrc
+source ~/dotfiles/shell/envrc

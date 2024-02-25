@@ -23,6 +23,7 @@ export XDG_CONFIG_HOME="$HOME"/.config
 
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+export LC_TYPE=UTF-8
 export VISUAL=nvim
 export EDITOR=$VISUAL
 export ANDROID_SDK_ROOT="$HOME"/Library/Android/Sdk
@@ -73,7 +74,7 @@ append_path "$FLUTTER_SDK_ROOT/bin/cache/dart-sdk/bin"
 append_path "$HOME/.cargo/bin"
 append_path "$HOME/.pub-cache/bin"
 append_path "$HOME/Library/Android/sdk/platform-tools/"
-append_path "$HOME/go/bin"
+append_path "$GOPATH/bin"
 append_path "$HOME/.poetry/bin"
 append_path "$HOME/.config/bin"
 append_path "$HOME/.local/share/nvim/mason/bin"
