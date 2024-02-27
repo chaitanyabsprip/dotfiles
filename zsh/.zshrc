@@ -49,3 +49,6 @@ have rbenv && eval "$(rbenv init - zsh)"
 have starship && eval "$(starship init zsh)"
 
 zsh-defer unfunction _have
+
+[ -s "$HOME/.config/nvm/" ] && export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
