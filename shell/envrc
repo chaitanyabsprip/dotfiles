@@ -29,6 +29,7 @@ export EDITOR=$VISUAL
 export ANDROID_SDK_ROOT="$HOME"/Library/Android/Sdk
 export FLUTTER_SDK_ROOT="$HOME"/fvm/default
 export GOPATH="$HOME"/go
+export GOBIN="$GOPATH"/bin
 export NOTESPATH="$HOME"/projects/notes
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home/"
 export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
