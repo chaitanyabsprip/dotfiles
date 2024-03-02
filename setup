@@ -172,6 +172,7 @@ zsh) setup_zsh ;;
 tmux) setup_tmux ;;
 nvim) setup_neovim ;;
 env) setup_env ;;
+fzf) _fzf ;;
 bat) _bat ;;
 go) install_go ;;
 all | '')
