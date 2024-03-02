@@ -1,10 +1,10 @@
 #!/bin/zsh
 
 fzf-history-widget-accept() {
-  fzf-history-widget
-  zle accept-line
+	fzf-history-widget
+	zle accept-line
 }
-zle     -N     fzf-history-widget-accept
+zle -N fzf-history-widget-accept
 bindkey '^X' fzf-history-widget-accept
 
 # man page search widget for zsh
