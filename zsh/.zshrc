@@ -17,13 +17,14 @@ stty stop undef               # Disable ctrl-s to freeze terminal.
 set -o vi
 bindkey -v
 
-_have() { type "$1" &>/dev/null; }
+# _have() { type "$1" &>/dev/null; }
 
 # Load seperated config files
 plugin_file=$HOME/.config/zsh/plugs.zsh
 config_dir=$HOME/.config/zsh/conf.d
 
 [ -r $plugin_file ] && source $plugin_file
+
 for conf in "$config_dir/"*.sh; do
 	[ -r "$conf" ] && zsh-defer source "$conf"
 done
@@ -40,15 +41,19 @@ have jira && zsh-defer bindkey -s '^k' '^ujim\n'
 
 # initialisations
 have brew && zsh-defer eval "$(brew shellenv | grep -v 'export PATH')"
-have pyenv && {
+{
 	export PYENV_ROOT="$HOME/.pyenv"
-	command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-	eval "$(pyenv init -)"
+	[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+	zsh-defer eval "$(pyenv init -)"
 }
-have rbenv && eval "$(rbenv init - zsh)"
+have rbenv && zsh-defer eval "$(rbenv init - zsh)"
+{
+	NVM_DIR="$HOME"/programs/nvm
+	[ -s $NVM_DIR ] && export NVM_DIR=$NVM_DIR
+	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+}
 have starship && eval "$(starship init zsh)"
 
-zsh-defer unfunction _have
+# zsh-defer unfunction _have
 
-[ -s "$HOME/.config/nvm/" ] && export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+[[ $TMUX ]] || tmux new -As home
