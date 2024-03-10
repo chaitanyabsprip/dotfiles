@@ -10,3 +10,4 @@ lsd: $HOME/.config/lsd
 fish: $HOME/.config/fish
 nvim: $HOME/.config/nvim
 bashrc: $HOME/.bashrc
+hypr: $HOME/.config/hypr
