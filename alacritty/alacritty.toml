@@ -53,7 +53,7 @@ multiplier = 3
 save_to_clipboard = true
 
 [shell]
-args = ["-l", "-c", "/opt/homebrew/bin/tmux new -As home; /bin/zsh -l"]
+args = ["-l", "-c", "tmux new -As home; /bin/zsh -l"]
 program = "/bin/zsh"
 
 [window]
