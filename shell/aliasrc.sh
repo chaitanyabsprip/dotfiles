@@ -11,6 +11,8 @@ _have nvim && alias nvim='donothing'
 
 _have pbcopy && alias pbc='pbcopy'
 _have pbpaste && alias pbp='pbpaste'
+_have wl-copy && alias pbc='wl-copy'
+_have wl-paste && alias pbp='wl-paste'
 
 alias mkdir='mkdir -pv'
 alias chmox='chmod +x'
