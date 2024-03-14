@@ -12,22 +12,9 @@ else
 	selected=$(
 		(
 			fd . -HIatd -d 1 -E .git \
-				~/Programs \
-				~/projects \
-				~/projects/apps \
-				~/projects/forks \
-				~/projects/languages \
-				~/projects/languages/go \
-				~/projects/languages/dart \
-				~/projects/languages/lua \
-				~/projects/languages/python
-			fd . -HItd -d 2 -E .git -E root \
-				~/projects/apps/prep \
-				~/projects/apps/work
-			fd root -d 1 -td \
-				~/projects/apps/prep \
-				~/projects/apps/work
-			fd '(dotfiles|projects)' ~ -atd -d 1
+				~/programs \
+				~/projects
+			fd '(dotfiles|projects|programs)' ~ -atd -d 1
 			fd . -HIad 1 -E .git ~/.config
 		) | sort -u | fzf-tmux -p --border \
 			--border-label=" Sessionizer " \
