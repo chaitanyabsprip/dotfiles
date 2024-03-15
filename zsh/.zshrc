@@ -1,7 +1,8 @@
 #!/bin/zsh
 
-export HISTORY_IGNORE="(la|ls|cd|pwd|exit|history|cd -|cd ..|q|c|vim|nvim)"
-export HISTSIZE=200000
+HISTORY_IGNORE="(la|ls|cd|pwd|exit|history|cd -|cd ..|q|c|vim|nvim)"
+SAVEHIST=200000
+HISTFILE=~/.config/zsh/.zsh-history
 
 # Cannot use autocd option along with CDPATH
 # setopt autocd                 # Automatically cd into typed directory.
