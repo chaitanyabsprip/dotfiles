@@ -16,6 +16,20 @@ append_path() {
 	esac
 }
 
+_ismac() {
+	if [ "$(uname)" = "Darwin" ]; then
+		return 0
+	fi
+	return 1
+}
+
+_islinux() {
+	if [ "$(uname -s | cut -c 1-5)" = "Linux" ]; then
+		return 0
+	fi
+	return 1
+}
+
 export XDG_DATA_HOME="$HOME"/.local/share
 export XDG_STATE_HOME="$HOME"/.local/state
 export XDG_CACHE_HOME="$HOME"/.local/cache
@@ -26,14 +40,14 @@ export LC_ALL=en_US.UTF-8
 export LC_TYPE=UTF-8
 export VISUAL=nvim
 export EDITOR=$VISUAL
-export ANDROID_SDK_ROOT="$HOME"/Library/Android/Sdk
 export FLUTTER_SDK_ROOT="$HOME"/fvm/default
 export GOPATH="$HOME"/go
 export GOBIN="$GOPATH"/bin
 export NOTESPATH="$HOME"/projects/notes
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home/"
-export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+_ismac && export ANDROID_SDK_ROOT="$HOME"/Library/Android/Sdk
+_ismac && export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home/"
+_ismac && export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+_ismac && export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 
 export BAT_THEME="Visual Studio Dark+"
 export FZF_DEFAULT_COMMAND='fd --type file --hidden --exclude .git'
