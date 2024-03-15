@@ -9,6 +9,9 @@ _have nvim && alias nvim='donothing'
 # alias clear='donothing'
 # alias exit='donothing'
 
+ismac() { [ "$(uname)" = "Darwin" ]; }
+islinux() { [ "$(uname -s | cut -c 1-5)" = "Linux" ]; }
+
 _have pbcopy && alias pbc='pbcopy'
 _have pbpaste && alias pbp='pbpaste'
 _have wl-copy && alias pbc='wl-copy'
@@ -24,7 +27,7 @@ _have note && alias todo='note -t'
 
 _have gitui && alias gitui='gitui -t mocha.ron'
 _have /usr/bin/vim && alias vi=/usr/bin/vim
-_have nvim && alias vim=/usr/local/bin/nvim vimdiff='nvim -d'
+_have nvim && alias vim=/usr/local/bin/nvim vimdiff='vim -d'
 _have bat && alias cat='bat'
 _have bard-cli && alias \?='bard-cli -c ~/.config/zsh/.bardcli.yaml'
 _have jira && alias issues="jira issue list \
