@@ -16,19 +16,8 @@ append_path() {
 	esac
 }
 
-_ismac() {
-	if [ "$(uname)" = "Darwin" ]; then
-		return 0
-	fi
-	return 1
-}
-
-_islinux() {
-	if [ "$(uname -s | cut -c 1-5)" = "Linux" ]; then
-		return 0
-	fi
-	return 1
-}
+_ismac() { [ "$(uname)" = "Darwin" ]; }
+_islinux() { [ "$(uname -s | cut -c 1-5)" = "Linux" ]; }
 
 export XDG_DATA_HOME="$HOME"/.local/share
 export XDG_STATE_HOME="$HOME"/.local/state
@@ -41,7 +30,7 @@ export LC_TYPE=UTF-8
 export VISUAL=nvim
 export EDITOR=$VISUAL
 export FLUTTER_SDK_ROOT="$HOME"/fvm/default
-export GOPATH="$HOME"/go
+export GOPATH="$HOME"/programs/go
 export GOBIN="$GOPATH"/bin
 export NOTESPATH="$HOME"/projects/notes
 _ismac && export ANDROID_SDK_ROOT="$HOME"/Library/Android/Sdk
