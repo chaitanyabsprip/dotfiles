@@ -1,0 +1,14 @@
+#!/bin/sh
+
+WALLPAPER="$(realpath "$1")"
+SETWALL_EXE=hyprctl
+setwall_hyprpaper() {
+	ln -sf "$WALLPAPER" ~/.wallpaper
+	($SETWALL_EXE hyprpaper unload "$WALLPAPER" && hyprctl hyprpaper preload "$WALLPAPER") 2>&1
+	# for now brute-force on all known monitors, because monitor wildcard doesn't work right
+	$SETWALL_EXE monitors -j | jq -r '.[0].name' | while read -r m; do
+		$SETWALL_EXE hyprpaper wallpaper "$m,$WALLPAPER" 2>&1
+	done
+}
+
+setwall_hyprpaper "$1"

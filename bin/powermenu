@@ -1,0 +1,40 @@
+#!/usr/bin/bash
+
+# used to display the power menu with options like 'Logout, Shutdown,
+# Sleep' etc.
+
+# depends on:
+# - rofi
+# - systemd
+
+set -e
+
+[[ -x rofi ]] && exit
+
+action=$(echo -e '  Shut Down\n  Reboot\n  Log Out\n  Lock Screen\n  Suspend' \
+        | rofi -dmenu)
+
+declare -A actionmap=(\
+  ["  Log Out"]="logout" \
+  ["  Shut Down"]="power-off" \
+  ["  Reboot"]="reboot" \
+  ["  Lock Screen"]="lock" \
+  ["  Suspend"]="suspend" \
+)
+action="${actionmap[$action]}"
+
+
+confirm="Confirm"
+if [[ $action =~ power-off|logout|reboot ]]; then
+  confirm=$(echo -e 'Confirm\nCancel' \
+          | rofi -p "Are You Sure You Want to $action ?" -dmenu)
+fi
+if [[ $confirm == "Confirm" ]]; then
+  case "$action" in
+    power-off) systemctl poweroff ;;
+    logout) loginctl terminate-user "$USER" ;;
+    reboot) systemctl reboot ;;
+    suspend) systemctl suspend ;;
+    lock) ;;
+  esac
+fi

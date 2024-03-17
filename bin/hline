@@ -1,0 +1,39 @@
+#!/usr/bin/bash
+
+# This script takes a sting as input and outputs the same string
+# centered and padded with a character (dashes '-' by default) can be
+# used to create section headings in source files and scripts like the
+# headings in this file
+
+#-------------------------Environment Variables-------------------------
+
+# The width of the screen, to fill with padding
+: "${PAD_SCREEN_WIDTH:=72}"
+
+
+#--------------------------Function definitions-------------------------
+
+section-head(){
+  local pad_char="-"
+  [[ -n "$1" ]] && pad_char="${1:0:1}"
+
+  read -r text
+
+  local padding
+  padding="$(
+    for i in $(seq 0 $PAD_SCREEN_WIDTH); do 
+      printf "%s" "$pad_char"; 
+    done)" 
+
+  local text_len=${#text}
+  local start_i=$(( (PAD_SCREEN_WIDTH - text_len)/2 ))
+  printf "%s%s%s\n" "${padding:0:$start_i}" "$text" "${padding:0:$start_i}"
+
+}
+#--------------------------------Execute--------------------------------
+
+section-head "$@"
+
+
+
+

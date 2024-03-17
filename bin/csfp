@@ -1,0 +1,4 @@
+#!/bin/sh
+
+wl-paste >"$1"
+chmod +x "$1"
