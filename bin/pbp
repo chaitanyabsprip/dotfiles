@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if have pbpaste; then
+	paste_cmd='pbpaste'
+elif have xclip; then
+	paste_cmd='xclip -selection clipboard -o'
+elif have wl-paste; then
+	paste_cmd='wl-paste'
+else
+	exit 1
+fi
+
+# Output pasted text to stdout
+$paste_cmd

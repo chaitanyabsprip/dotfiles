@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if have pbcopy; then
+	copy_cmd='pbcopy'
+elif have xclip; then
+	copy_cmd='xclip -selection clipboard'
+elif have wl-copy; then
+	copy_cmd='wl-copy'
+else
+	echo "No suitable copy command found."
+	exit 1
+fi
+
+if [ -p /dev/stdin ]; then
+	input=$(cat)
+	$copy_cmd <<EOF
+$input
+EOF
+else
+	$copy_cmd "$@"
+fi
