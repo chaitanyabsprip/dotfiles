@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=SC2059
 
 # This is a script that formats anything that I type in the command line after
 # the command and appends it to a notes.dump.md file in my notes folder. This
@@ -83,7 +84,7 @@ setup_file() {
 	dirpath="$(dirname "$filepath")"
 	mkdir -pv "$dirpath"
 	touch "$filepath"
-	echo "# $(echo "$label" | awk '{ print toupper(substr($0, 1, 1)) substr($0, 2) }')" >"$filepath"
+	printf "# $(echo "$label" | awk '{ print toupper(substr($0, 1, 1)) substr($0, 2) }')" >"$filepath"
 }
 
 preview() {
@@ -134,7 +135,7 @@ bookmark() {
 	if [ ! "$datestamp" = "$last_date" ] || [ "$first_entry" = true ]; then
 		note="\n## $datestamp\n\n$note"
 	fi
-	echo "$note" >>"$filepath"
+	printf "$note" >>"$filepath"
 
 	todos="$(tail -n +"$(grep -n "$last_date" "$filepath" | tail -1 | cut -d : -f 1)" "$filepath")"
 	preview "$todos"
@@ -165,7 +166,7 @@ dump() {
 	if [ ! "$datestamp" = "$last_date" ] || [ "$first_entry" = true ]; then
 		note="\n## $datestamp\n\n$note"
 	fi
-	echo "$note" >>"$filepath"
+	printf "$note" >>"$filepath"
 
 	dump="$(tail -n +"$(grep -n "$last_date" "$filepath" | tail -1 | cut -d : -f 1)" "$filepath")"
 	preview "$dump"
@@ -191,7 +192,7 @@ todo() {
 	if [ ! "$datestamp" = "$last_date" ] || [ "$first_entry" = true ]; then
 		note="\n## $datestamp\n\n$note"
 	fi
-	echo "$note" >>"$filepath"
+	printf "$note" >>"$filepath"
 
 	todos="$(tail -n +"$(grep -n "$last_date" "$filepath" | tail -1 | cut -d : -f 1)" "$filepath")"
 	preview "$todos"
@@ -204,18 +205,18 @@ daily() {
 	[ ! -f "$filepath" ] && {
 		setup_file "$filepath"
 		template="# $today_long"
-		echo "$template" >"$filepath"
+		printf "$template" >"$filepath"
 	}
 	[ "$EDIT" = true ] && exec $EDITOR "$filepath" && exit 0
 
 	content="$1"
 	[ -z "$content" ] && echo "Nothing to note here :shrug:" && exit 1
 	note=$(
-		echo "$content" |
+		printf "$content" |
 			awk '{ print toupper(substr($0, 1, 1)) substr($0, 2) }' |
 			fold -sw 80
 	)
-	echo "$note" >>"$filepath"
+	printf "$note" >>"$filepath"
 
 	preview "$(cat "$filepath")"
 }

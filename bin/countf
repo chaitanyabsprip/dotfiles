@@ -1,0 +1,12 @@
+#!/bin/sh
+
+path="$1"
+[ -z "$path" ] && echo "Usage: ${0##*/} <path> [regex]" && exit 1
+extensions="$2"
+
+if [ -z "$extensions" ]; then
+	find "$path" | wc -l
+	exit 0
+fi
+
+find "$path" -name "$extensions" | wc -l

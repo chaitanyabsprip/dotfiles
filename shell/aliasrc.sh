@@ -9,14 +9,6 @@ _have nvim && alias nvim='donothing'
 # alias clear='donothing'
 # alias exit='donothing'
 
-ismac() { [ "$(uname)" = "Darwin" ]; }
-islinux() { [ "$(uname -s | cut -c 1-5)" = "Linux" ]; }
-
-_have pbcopy && alias pbc='pbcopy'
-_have pbpaste && alias pbp='pbpaste'
-_have wl-copy && alias pbc='wl-copy'
-_have wl-paste && alias pbp='wl-paste'
-
 alias mkdir='mkdir -pv'
 alias chmox='chmod +x'
 alias view='vi -R'

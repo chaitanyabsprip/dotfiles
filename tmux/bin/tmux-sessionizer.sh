@@ -15,6 +15,8 @@ else
 				~/programs \
 				~/projects
 			fd '(dotfiles|projects|programs)' ~ -atd -d 1
+			echo "$SCRIPTS"
+			echo "$DOWNLOADS"
 			fd . -HIad 1 -E .git ~/.config
 		) | sort -u | fzf-tmux -p --border \
 			--border-label=" Sessionizer " \

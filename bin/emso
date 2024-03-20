@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+	echo "To be used in documents, for piping a written command"
+	exit 0
+fi
+
+inp="$(cat)"
+mark="#${0##*/}| "
+printf "%s\n" "$inp" | grep -v "^$mark"
+printf "%s\n" "$inp" | grep -v "^$mark" | sh 2>&1 | sed "s/^/$mark/"

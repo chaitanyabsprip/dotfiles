@@ -33,6 +33,8 @@ export FLUTTER_SDK_ROOT="$HOME"/fvm/default
 export GOPATH="$HOME"/programs/go
 export GOBIN="$GOPATH"/bin
 export NOTESPATH="$HOME"/projects/notes
+export DOWNLOADS="$HOME/downloads"
+export SCRIPTS="$HOME/.local/bin"
 _ismac && export ANDROID_SDK_ROOT="$HOME"/Library/Android/Sdk
 _ismac && export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home/"
 _ismac && export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
@@ -79,8 +81,8 @@ append_path "$HOME/.pub-cache/bin"
 append_path "$HOME/Library/Android/sdk/platform-tools/"
 append_path "$GOPATH/bin"
 append_path "$HOME/.poetry/bin"
-append_path "$HOME/.config/bin"
-prepend_path "$HOME/.config/bin/overrides"
+prepend_path "$SCRIPTS"
+prepend_path "$SCRIPTS/overrides"
 append_path "$HOME/.local/share/nvim/mason/bin"
 append_path "/opt/homebrew/bin"
 append_path "/opt/homebrew/sbin"
