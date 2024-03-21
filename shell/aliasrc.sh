@@ -5,7 +5,7 @@ _have() { type "$1" >/dev/null 2>&1; }
 # Only to be used as an alias to disable commands
 donothing() { echo "$*" >/dev/null 2>&1; }
 
-_have nvim && alias nvim='donothing'
+# _have nvim && alias nvim='donothing'
 # alias clear='donothing'
 # alias exit='donothing'
 
