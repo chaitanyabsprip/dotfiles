@@ -1,7 +1,7 @@
 alacritty: $HOME/.config/alacritty
 zsh: $HOME/.config/zsh
 zsh/.zshenv: $HOME/.zshenv
-bin: $HOME/.config/bin
+bin: $HOME/.local/bin
 kitty: $HOME/.config/kitty
 tmux: $HOME/.config/tmux
 starship.toml: $HOME/.config/starship.toml

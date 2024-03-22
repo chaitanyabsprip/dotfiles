@@ -8,7 +8,7 @@ RUN yes | unminimize && \
     apt-get install -y --no-install-recommends \
     build-essential ca-certificates vim curl wget \
     git zsh tmux make ssh fd-find bat man-db
-ENV PATH=.:$PATH:/root/.config/bin
+ENV PATH=.:$PATH:/root/.local/bin
 ENV TERM=xterm-256color
 COPY . /root/dotfiles
 RUN ./dotme serve && make all

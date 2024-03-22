@@ -8,11 +8,9 @@ draw_bold_text_with_bright_colors = true
 shape = "Block"
 
 [env]
-EDITOR = "nvim"
 LANG = "en_US.UTF-8"
 LC_ALL = "en_US.UTF-8"
 TERM = "screen-256color"
-VISUAL = "nvim"
 
 [font]
 builtin_box_drawing = true

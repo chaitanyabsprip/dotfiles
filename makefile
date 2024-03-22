@@ -9,7 +9,7 @@ YELLOW       := $(shell tput -Txterm setaf 3)
 BLUE         := $(shell tput -Txterm setaf 6)
 NC := $(shell tput -Txterm sgr0)
 
-BINDIR = ${HOME}/.config/bin
+BINDIR = ${HOME}/.local/bin
 MANPATH = /usr/local/share/man
 
 all: zsh neovim tmux go
@@ -67,7 +67,7 @@ else
 	@mkdir temp && { cd temp || true; } && \
 		spinner ghdl extrawurst/gitui && \
 		tar -xf gitui-latest* && \
-		mv gitui ~/.config/bin && \
+		mv gitui ~/.local/bin && \
 		cd .. && rm -r temp;
 	@echo "${GREEN}✔ gitui installed${NC}"
 endif
@@ -117,7 +117,7 @@ else
 --yq:
 	@echo "${YELLOW}◉ Installing yq${NC}"
 	@ghdl mikefarah/yq
-	@install_path="$$HOME"/.config/bin/yq && \
+	@install_path="$$HOME"/.local/bin/yq && \
 		mv yq-latest "$$install_path" && \
 		chmod +x "$$install_path"
 	@echo "${GREEN}✔ yq installed${NC}"
@@ -163,8 +163,8 @@ else
 	@echo "${YELLOW}◉ Installing eza${NC}"
 	@spinner ghdl eza-community/eza
 	@tar -xf eza-latest*
-	@mv eza ~/.config/bin
-	@ln -sf ~/.config/bin/eza ~/.config/bin/exa
+	@mv eza ~/.local/bin
+	@ln -sf ~/.local/bin/eza ~/.local/bin/exa
 	@rm eza-latest*
 	@echo "${GREEN}✔ eza installed${NC}"
 endif

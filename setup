@@ -20,7 +20,7 @@ setup_env() {
 	# shellcheck disable=2016
 	echo 'export PATH=.:"$PATH"'
 	# shellcheck disable=2016
-	echo 'export PATH="$PATH":~/.config/bin'
+	echo 'export PATH="$PATH":~/.local/bin'
 }
 
 eval "$(setup_env)"
@@ -53,8 +53,8 @@ _eza() {
 	have eza && return
 	ghdl eza-community/eza
 	tar -xf eza-latest*
-	mv eza ~/.config/bin
-	ln -sf ~/.config/bin/eza ~/.config/bin/exa
+	mv eza ~/.local/bin
+	ln -sf ~/.local/bin/eza ~/.local/bin/exa
 	rm eza-latest*
 }
 
@@ -67,7 +67,7 @@ _bat() {
 	fi
 	ghdl sharkfp/bat
 	tar -xf bat-latest.tar.gz
-	install_path=~/.config/bin/bat
+	install_path=~/.local/bin/bat
 	asset=$(find . -name 'bat-*' -type d)
 	mv "$asset"/bat $install_path
 	mv "$asset"/bat.1 /usr/local/share/man/
@@ -83,7 +83,7 @@ _fd() {
 	fi
 	ghdl sharkfp/fd
 	tar -xf fd-latest.tar.gz
-	install_path=~/.config/bin/fd
+	install_path=~/.local/bin/fd
 	asset=$(find . -name 'fd-*' -type d)
 	mv "$asset"/fd $install_path
 	mv "$asset"/fd.1 /usr/local/share/man/
@@ -109,7 +109,7 @@ _gitmux() {
 	ghdl arl/gitmux
 	tar -xf gitmux-latest
 	rm gitmux-latest*
-	mv gitmux "$HOME"/.config/bin/gitmux
+	mv gitmux "$HOME"/.local/bin/gitmux
 	rm LICENSE README.md
 	echo "${GREEN}gitmux successfully installed${NC}"
 }
@@ -117,7 +117,7 @@ _gitmux() {
 _yq() {
 	have yq && return
 	ghdl mikefarah/yq
-	install_path="$HOME"/.config/bin/yq
+	install_path="$HOME"/.local/bin/yq
 	asset=yq-latest
 	mv "$asset" "$install_path"
 	chmod +x "$install_path"
@@ -129,7 +129,7 @@ _gitui() {
 	mkdir temp && { cd temp || true; }
 	ghdl extrawurst/gitui
 	tar -xf gitui-latest*
-	mv gitui ~/.config/bin
+	mv gitui ~/.local/bin
 	rm gitui-latest*
 	cd .. && rm -r temp
 }
