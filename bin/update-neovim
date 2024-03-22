@@ -2,15 +2,10 @@
 
 [ -d "$HOME/programs" ] || mkdir "$HOME/programs"
 cd "$HOME/programs" || exit
-[ -d "$HOME/programs/neovim" ] || git clone http://github.com/neovim/neovim neovim
+[ -d "$HOME/programs/neovim" ] || git clone --depth 1 --branch nightly https://github.com/neovim/neovim neovim
 cd neovim || exit
-# [ "$(git rev-parse --symbolic-full-name HEAD)" = "HEAD" ] && git switch -
-git clean -fxd
-git fetch -apP &&
-	git pull &&
-	git checkout nightly &&
-	make CMAKE_BUILD_TYPE=Release &&
-	sudo make install
+make CMAKE_BUILD_TYPE=Release &&
+sudo make install
 
 cd .. || exit
 [ -d "./neovim" ] && rm -rf neovim || exit
