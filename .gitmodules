@@ -4,4 +4,4 @@
 [submodule "nvim"]
 	path = nvim
 	url = git@github.com:Chaitanyabsprip/nvim.git 
-	branch = refactor-v1
+	branch = master

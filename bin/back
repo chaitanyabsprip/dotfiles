@@ -4,7 +4,6 @@
 
 _have() { type "$1" >/dev/null 2>&1; }
 _have pomo || { echo "${0##*/} depends on chaitanyabsprip/pomo" && exit 127; }
-_have br || { echo "${0##*/} depends on br utility" && exit 127; }
 _have bc || { echo "${0##*/} depends on bc utility" && exit 127; }
 
 validate_time() {
