@@ -1,0 +1,28 @@
+[user]
+    name = Chaitanya Sharma
+
+[core]
+    editor = nvim
+    pager = delta
+    ; autocrlf = input
+
+[alias]
+    # Thanks r00k, this creates a pretty graph view of the log
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+
+[delta]
+    line-numbers = true
+    syntax-theme = Visual Studio Dark+
+    navigate = true
+    hyperlinks = true
+    side-by-side = false
+    file-modified-label = modified:
+
+[interactive]
+    diffFilter = delta --color-only
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
