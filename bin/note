@@ -84,7 +84,7 @@ setup_file() {
 	dirpath="$(dirname "$filepath")"
 	mkdir -pv "$dirpath"
 	touch "$filepath"
-	printf "# $(echo "$label" | awk '{ print toupper(substr($0, 1, 1)) substr($0, 2) }')" >"$filepath"
+	printf "# $(echo "$label" | awk '{ print toupper(substr($0, 1, 1)) substr($0, 2) }')\n" >"$filepath"
 }
 
 preview() {
@@ -135,7 +135,7 @@ bookmark() {
 	if [ ! "$datestamp" = "$last_date" ] || [ "$first_entry" = true ]; then
 		note="\n## $datestamp\n\n$note"
 	fi
-	printf "$note" >>"$filepath"
+	printf "$note\n" >>"$filepath"
 
 	todos="$(tail -n +"$(grep -n "$last_date" "$filepath" | tail -1 | cut -d : -f 1)" "$filepath")"
 	preview "$todos"
@@ -166,7 +166,7 @@ dump() {
 	if [ ! "$datestamp" = "$last_date" ] || [ "$first_entry" = true ]; then
 		note="\n## $datestamp\n\n$note"
 	fi
-	printf "$note" >>"$filepath"
+	printf "$note\n" >>"$filepath"
 
 	dump="$(tail -n +"$(grep -n "$last_date" "$filepath" | tail -1 | cut -d : -f 1)" "$filepath")"
 	preview "$dump"
@@ -192,7 +192,7 @@ todo() {
 	if [ ! "$datestamp" = "$last_date" ] || [ "$first_entry" = true ]; then
 		note="\n## $datestamp\n\n$note"
 	fi
-	printf "$note" >>"$filepath"
+	printf "$note\n" >>"$filepath"
 
 	todos="$(tail -n +"$(grep -n "$last_date" "$filepath" | tail -1 | cut -d : -f 1)" "$filepath")"
 	preview "$todos"
@@ -205,7 +205,7 @@ daily() {
 	[ ! -f "$filepath" ] && {
 		setup_file "$filepath"
 		template="# $today_long"
-		printf "$template" >"$filepath"
+		printf "$template\n" >"$filepath"
 	}
 	[ "$EDIT" = true ] && exec $EDITOR "$filepath" && exit 0
 
@@ -216,7 +216,7 @@ daily() {
 			awk '{ print toupper(substr($0, 1, 1)) substr($0, 2) }' |
 			fold -sw 80
 	)
-	printf "$note" >>"$filepath"
+	printf "$note\n" >>"$filepath"
 
 	preview "$(cat "$filepath")"
 }
