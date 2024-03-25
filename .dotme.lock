@@ -11,3 +11,4 @@ fish: $HOME/.config/fish
 nvim: $HOME/.config/nvim
 bashrc: $HOME/.bashrc
 hypr: $HOME/.config/hypr
+git: $HOME/.config/git
