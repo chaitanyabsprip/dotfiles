@@ -1,0 +1,31 @@
+#!/bin/sh
+
+pkg_install() {
+	case "$DISTRO" in
+	Debian | Ubuntu) return ;;
+	Fedora | CentOS | RHEL) sudo dnf install gitui -y ;;
+	openSUSE | SUSE) sudo zypper install gitui -y ;;
+	Arch\ Linux) sudo pacman -S --noconfirm gitui ;;
+	*) return 1 ;;
+	esac
+}
+
+gh_install() {
+	depends gh
+	archi=$(uname -sm)
+	repo='extrawurst/gitui'
+	case "$archi" in
+	Darwin\ arm64) gh release download -R $repo -p 'gitui-mac.tar.gz' ;;
+	Darwin\ x86_64) gh release download -R $repo -p 'gitui-mac.tar.gz' ;;
+	Linux\ armv7*) gh release download -R $repo -p 'gitui-linux-armv7.tar.gz' ;;
+	Linux\ aarch64*) gh release download -R $repo -p 'gitui-linux-aarch64.tar.gz' ;;
+	Linux\ *64) gh release download -R $repo -p 'gitui-linux-musl.tar.gz' ;;
+	*) return 1 ;;
+	esac
+	tar -xf gitui*.tar.gz &&
+		mv gitui "$SCRIPTS" && rm gitui*.tar.gz
+}
+
+DISTRO=$(distro | cut -d ':' -f1)
+
+{ pkg_install || gh_install; } && success "Succesfully installed gitui"

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+pkg_install() {
+	case "$DISTRO" in
+	Debian | Ubuntu) return 1 ;;
+	Fedora | CentOS | RHEL) return 1 ;;
+	openSUSE | SUSE) return 1 ;;
+	Arch\ Linux) paru -S --noconfirm gitmux ;;
+	*) return 1 ;;
+	esac
+}
+
+gh_install() {
+	depends gh
+	archi=$(uname -sm)
+	repo='arl/gitmux'
+	case "$archi" in
+	Darwin\ arm64) gh download -R=$repo -p 'gitmux_*_macOS_arm64.tar.gz' ;;
+	Darwin\ x86_64) gh download -R=$repo -p 'gitmux_*_macOS_amd64.tar.gz' ;;
+	Linux\ aarch64*) gh download -R=$repo -p 'gitmux_*_linux_arm64.tar.gz' ;;
+	Linux\ *64) gh download -R=$repo -p 'gitmux_*_linux_amd64.tar.gz' ;;
+	*) return 1 ;;
+	esac
+	tar -xf gitmux*.tar.gz &&
+		mv gitmux "$SCRIPTS" &&
+		rm LICENSE README.md
+}
+
+DISTRO=$(distro | cut -d ':' -f1)
+
+{ pkg_install || gh_install; } && success "Succesfully installed gitmux"

@@ -1,0 +1,29 @@
+#!/bin/sh
+
+pkg_install() {
+	case "$DISTRO" in
+	Debian | Ubuntu) sudo apt install bat -y ;;
+	Fedora | CentOS | RHEL) dnf install bat -y ;;
+	openSUSE | SUSE) zypper install bat -y ;;
+	Arch\ Linux) sudo pacman -S --nocomfirm bat ;;
+	*) return 1 ;;
+	esac
+}
+
+gh_install() {
+	depends gh
+	archi=$(uname -sm)
+	repo='sharkdp/bat'
+	case "$archi" in
+	Darwin\ x86_64) gh release download -R $repo -p 'bat-*-x86_64-apple-darwin.tar.gz' ;;
+	Linux\ aarch64*) gh release download -R $repo -p 'bat-*-aarch64-unknown-linux-gnu.tar.gz' ;;
+	Linux\ *64) gh release download -R $repo -p 'bat-*-x86_64-unknown-linux-gnu.tar.gz' ;;
+	*) return 1 ;;
+	esac
+	tar -xf bat*.tar.gz && mv bat*/bat "$SCRIPTS" && rm -r bat*
+
+}
+
+DISTRO=$(distro | cut -d ':' -f1)
+
+{ pkg_install || gh_install; } && success "Succesfully installed bat"

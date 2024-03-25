@@ -1,0 +1,36 @@
+#!/bin/sh
+
+pkg_install() {
+	case "$DISTRO" in
+	Debian | Ubuntu)
+		sudo apt install fd-find -y &&
+			ln -sf "$(which fdfind)" "$SCRIPTS"/fd
+		;;
+	Fedora | CentOS | RHEL)
+		sudo dnf install fd-find -y &&
+			ln -sf "$(which fdfind)" "$SCRIPTS"/fd
+		;;
+	openSUSE | SUSE) sudo zypper install fd -y ;;
+	Arch\ Linux) sudo pacman -S --noconfirm fd ;;
+	*) return 1 ;;
+	esac
+}
+
+gh_install() {
+	depends gh
+	archi=$(uname -sm)
+	repo='sharkdp/fd'
+	case "$archi" in
+	Darwin\ x86_64) gh release download -R $repo -p 'fd-*-x86_64-apple-darwin.tar.gz' ;;
+	Linux\ aarch64*) gh release download -R $repo -p 'fd-*-aarch64-unknown-linux-gnu.tar.gz' ;;
+	Linux\ *64) gh release download -R $repo -p 'fd-*-x86_64-unknown-linux-gnu.tar.gz' ;;
+	*) return 1 ;;
+	esac
+	tar -xf fd*.tar.gz && mv fd*/fd "$SCRIPTS" && rm -r fd*
+	echo "!WARN!: No completions or man pages were installed"
+
+}
+
+DISTRO=$(distro | cut -d ':' -f1)
+
+{ pkg_install || gh_install; } && success "Succesfully installed fd"
