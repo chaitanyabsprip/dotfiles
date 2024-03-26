@@ -24,9 +24,11 @@ export XDG_STATE_HOME="$HOME"/.local/state
 export XDG_CACHE_HOME="$HOME"/.local/cache
 export XDG_CONFIG_HOME="$HOME"/.config
 
-export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
 export LC_TYPE=UTF-8
+export LC_CTYPE=UTF-8
 export VISUAL="nvim"
 export EDITOR="$VISUAL"
 export FLUTTER_SDK_ROOT="$HOME"/fvm/default
