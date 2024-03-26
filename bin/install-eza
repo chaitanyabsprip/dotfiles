@@ -1,5 +1,7 @@
 #!/bin/sh
 
+have eza && exit 1
+
 pkg_install() {
 	case "$DISTRO" in
 	Debian | Ubuntu)
@@ -21,14 +23,15 @@ pkg_install() {
 }
 
 gh_install() {
-	depends gh
 	archi=$(uname -sm)
 	repo='eza-community/eza'
+	tarname=''
 	case "$archi" in
-	Linux\ aarch64*) gh release download -R $repo -p 'eza_aarch64-unknown-linux-gnu.tar.gz' ;;
-	Linux\ *64) gh release download -R $repo -p 'eza_x86_64-unknown-linux-gnu.tar.gz' ;;
+	Linux\ aarch64*) tarname='eza_aarch64-unknown-linux-gnu.tar.gz' ;;
+	Linux\ *64) tarname='eza_x86_64-unknown-linux-gnu.tar.gz' ;;
 	*) return 1 ;;
 	esac
+	curl -sSLO "https://github.com/$repo/releases/download/latest/$tarname"
 	tar -xf eza* && mv eza "$SCRIPTS" && rm eza*
 
 }

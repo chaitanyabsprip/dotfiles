@@ -1,0 +1,35 @@
+#!/bin/sh
+
+have jq && exit 1
+
+pkg_install() {
+	case "$DISTRO" in
+	Debian | Ubuntu) sudo apt install jq -y ;;
+	Fedora | CentOS | RHEL) sudo dnf install jq -y ;;
+	openSUSE | SUSE) sudo zypper install jq -y ;;
+	Arch\ Linux) sudo pacman -S --nocomfirm jq ;;
+	*) return 1 ;;
+	esac
+}
+
+gh_install() {
+	archi=$(uname -sm)
+	repo='jqlang/jq'
+	tarname=''
+	case "$archi" in
+	Darwin\ arm64) tarname="jq-macos-arm64" ;;
+	Darwin\ x86_64) tarname="jq-macos-amd64" ;;
+	Linux\ aarch64*) tarname="jq-linux-arm64" ;;
+	Linux\ ppc64le) tarname='jq-linux-ppc64le' ;;
+	Linux\ s390x) tarname='jq-linux-s390x' ;;
+	Linux\ *64) tarname="jq-linux-amd64" ;;
+	*) return 1 ;;
+	esac
+	curl -sSLO "https://github.com/$repo/releases/download/latest/$tarname"
+	mv "$tarname" "$SCRIPTS"/jq
+
+}
+
+DISTRO=$(distro | cut -d ':' -f1)
+
+{ pkg_install || gh_install; } && success "Succesfully installed jq"

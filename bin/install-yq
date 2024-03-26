@@ -1,5 +1,7 @@
 #!/bin/sh
 
+have yq && exit 1
+
 pkg_install() {
 	case "$DISTRO" in
 	Debian | Ubuntu) return 1 ;;
@@ -11,17 +13,19 @@ pkg_install() {
 }
 
 gh_install() {
-	depends gh
+	depends jq || exit 1
 	archi=$(uname -sm)
 	repo='mikefarah/yq'
+	tarname=''
 	case "$archi" in
-	Darwin\ arm64) gh release download -R $repo -p 'yq_darwin_arm64.tar.gz' ;;
-	Darwin\ x86_64) gh release download -R $repo -p 'yq_darwin_amd64.tar.gz' ;;
-	Linux\ aarch64*) gh release download -R $repo -p 'yq_linux_arm64.tar.gz' ;;
-	Linux\ ppc64le) gh release download -R $repo -p 'yq_linux_ppc64le.tar.gz' ;;
-	Linux\ *64) gh release download -R $repo -p 'yq_linux_amd64.tar.gz' ;;
+	Darwin\ arm64) tarname='yq_darwin_arm64.tar.gz' ;;
+	Darwin\ x86_64) tarname='yq_darwin_amd64.tar.gz' ;;
+	Linux\ aarch64*) tarname='yq_linux_arm64.tar.gz' ;;
+	Linux\ ppc64le) tarname='yq_linux_ppc64le.tar.gz' ;;
+	Linux\ *64) tarname='yq_linux_amd64.tar.gz' ;;
 	*) return 1 ;;
 	esac
+	curl -sSLO "https://github.com/$repo/releases/download/latest/$tarname"
 	tar -xf yq*.tar.gz && mv yq*/yq_* "$SCRIPTS"/yq && rm -r yq* install-man-page.sh
 }
 

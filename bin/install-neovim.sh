@@ -35,11 +35,10 @@ install_neovim() {
 	mkdir ~/programs && {
 		cd ~/programs || { echo "${RED}Failed to install neovim${NC}" && return; }
 	}
-	git clone https://github.com/neovim/neovim
-	git checkout nightly
+	git clone --depth 1 --branch nightly https://github.com/neovim/neovim
 	cd neovim && make CMAKE_BUILD_TYPE=Release
 	# shellcheck disable=2086
-	have $runas || echo "Requires $runas to install"
+	[ -n "$runas" ] && have $runas || echo "Requires $runas to install"
 	$runas make install
 	rm -r ~/programs/neovim || true
 	echo "${GREEN}neovim successfully installed${NC}"
