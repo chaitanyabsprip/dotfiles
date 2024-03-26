@@ -39,6 +39,7 @@ symlink() {
 
 serve() {
 	[ -d ~/.config ] || mkdir -p ~/.config
+	[ -d ~/.local ] || mkdir -p ~/.local
 	while IFS= read -r line; do
 		name="$(echo "$line" | cut -d ':' -f 1)"
 		src="$script_dir/$name"
