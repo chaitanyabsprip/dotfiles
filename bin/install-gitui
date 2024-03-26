@@ -36,5 +36,5 @@ gh_install() {
 
 DISTRO=$(distro | cut -d ':' -f1)
 
-{ gh_install; } && success "Succesfully installed gitui"
+{ pkg_install || gh_install; } && success "Succesfully installed gitui"
 set +x
