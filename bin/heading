@@ -1,0 +1,14 @@
+#!/bin/sh
+
+_heading() {
+	text="$1"
+	bold=$(tput bold)
+	reset=$(tput sgr0)
+	bgcolor=$(tput setab 63) # Background color (4 is for blue)
+	fgcolor=$(tput setaf 255)
+	printf "\n"
+	printf "  %s%s%s %s %s\n" "$bgcolor" "$bold" "$fgcolor" "$text" "$reset"
+	printf "\n"
+}
+
+_heading "$*"
