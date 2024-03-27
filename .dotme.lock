@@ -12,3 +12,4 @@ nvim: $HOME/.config/nvim
 bashrc: $HOME/.bashrc
 hypr: $HOME/.config/hypr
 git: $HOME/.config/git
+waybar: $HOME/.config/waybar
