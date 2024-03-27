@@ -1,0 +1,42 @@
+#!/bin/sh
+
+pkg_install() {
+	case "$DISTRO" in
+	Debian | Ubuntu) sudo apt-get install ripgrep -y ;;
+	Fedora) sudo dnf install ripgrep -y ;;
+	openSUSE | SUSE) sudo zypper install ripgrep -y ;;
+	Arch\ Linux) sudo pacman -S --nocomfirm ripgrep ;;
+	*) return 1 ;;
+	esac
+}
+
+gh_install() {
+	depends jq || exit 1
+	archi=$(uname -sm)
+	repo='BurntSushi/ripgrep'
+	latest="https://api.github.com/repos/$repo/releases/latest"
+	ver=$(curl -sS "$latest" | jq -r .zipball_url) && test -n "$ver"
+	ver=${ver##*/}
+	tarname=''
+	case "$archi" in
+	Darwin\ arm64) tarname="ripgrep-$ver-aarch64-apple-darwin.tar.gz" ;;
+	Darwin\ x86_64) tarname="ripgrep-$ver-x86_64-apple-darwin.tar.gz" ;;
+	Linux\ armv7*) tarname="ripgrep-$ver-armv7-unknown-linux-gnueabihf.tar.gz" ;;
+	Linux\ aarch64*) tarname="ripgrep-$ver-aarch64-unknown-linux-gnu.tar.gz" ;;
+	Linux\ s390x) tarname="ripgrep-$ver-s390x-unknown-linux-gnu.tar.gz" ;;
+	Linux\ *64) tarname="ripgrep-$ver-x86_64-unknown-linux-musl.tar.gz" ;;
+	*) return 1 ;;
+	esac
+	curl -sSLO "https://github.com/$repo/releases/download/latest/$tarname"
+	tar -xf rg*.tar.gz && mv rg*/rg_* "$SCRIPTS"/rg && rm -r rg* install-man-page.sh
+}
+
+DISTRO=$(distro | cut -d ':' -f1)
+
+inprogress Installing rg
+
+if pkg_install || gh_install; then
+	success "Succesfully installed rg"
+else
+	error "Could not install rg"
+fi

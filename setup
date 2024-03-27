@@ -107,6 +107,11 @@ _jq() {
 	have jq || install-jq
 }
 
+_rg() {
+	heading rg
+	have rg || install-rg
+}
+
 _starship() {
 	heading starship
 	have starship && return
@@ -186,6 +191,7 @@ setup_zsh_complete() {
 	_fzf
 	_gitui # --
 	_eza
+	_rg
 	success "base zsh shell setup complete"
 }
 
