@@ -1,0 +1,10 @@
+#!/usr/bin/awk -f
+
+{
+    gsub("_", " ")
+    for (i = 1; i <= NF; i++) {
+        $i = (i == 1 ? tolower(substr($i, 1, 1)) : toupper(substr($i, 1, 1))) substr($i, 2)
+    }
+    gsub(" ", "")
+    print
+}

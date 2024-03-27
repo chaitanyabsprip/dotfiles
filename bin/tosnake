@@ -1,0 +1,13 @@
+#!/usr/bin/awk -f
+
+{
+    for (i = 1; i <= length($0); i++) {
+        char = substr($0, i, 1)
+        if (char ~ /[[:upper:]]/) {
+            printf "_%s", tolower(char)
+        } else {
+            printf "%s", char
+        }
+    }
+    print ""
+}
