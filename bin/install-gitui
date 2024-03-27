@@ -30,7 +30,7 @@ gh_install() {
 	cd temp || :
 	curl -sSLO "https://github.com/$repo/releases/download/$ver/$tarname"
 	tar -xf gitui*.tar.gz &&
-		mv gitui "$SCRIPTS" && rm gitui*.tar.gz
+		mv gitui "${SCRIPTS:-"$HOME/.local/bin"}" && rm gitui*.tar.gz
 	cd .. && rm -d temp
 }
 

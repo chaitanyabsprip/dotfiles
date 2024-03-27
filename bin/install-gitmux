@@ -27,7 +27,7 @@ gh_install() {
 	esac
 	curl -sSLO "https://github.com/$repo/releases/download/$ver/$tarname"
 	tar -xf gitmux*.tar.gz &&
-		mv gitmux "$SCRIPTS" &&
+		mv gitmux "${SCRIPTS:-"$HOME/.local/bin"}" &&
 		rm LICENSE README.md gitmux*
 }
 
