@@ -5,13 +5,24 @@
 # install brew on mac
 # install curl and git on *unix systems
 
-depends curl && exit 1
-depends git && exit 1
+_depends() {
+	have "$1" ||
+		{ warning "utility depends on $1, please install and try again." && exit 1; }
+}
+
+_depends curl
+_depends git
+
+_essentials() {
+	_git
+	_curl
+}
 
 _bat() {
+	heading bat
 	have bat && return
 	if [ "$(uname)" = 'Darwin' ]; then
-		depends brew && return 1
+		_depends brew || return 1
 		brew install bat
 		return
 	elif [ "$(uname)" = 'Linux' ]; then
@@ -28,9 +39,10 @@ _curl() {
 }
 
 _eza() {
+	heading eza
 	have eza && return
 	if [ "$(uname)" = 'Darwin' ]; then
-		depends brew && return 1
+		_depends brew
 		brew install eza
 		return
 	elif [ "$(uname)" = 'Linux' ]; then
@@ -40,9 +52,10 @@ _eza() {
 }
 
 _fd() {
+	heading fd
 	have fd && return
 	if [ "$(uname)" = 'Darwin' ]; then
-		depends brew && return 1
+		_depends brew
 		brew install fd
 		return
 	elif [ "$(uname)" = 'Linux' ]; then
@@ -51,6 +64,7 @@ _fd() {
 }
 
 _fzf() {
+	heading fzf
 	have fzf && return
 	spinner curl -LsS https://raw.githubusercontent.com/junegunn/fzf/master/install -o install
 	spinner bash ./install --all
@@ -58,6 +72,7 @@ _fzf() {
 	have fzf-tmux && return
 	spinner curl -LsS https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux -o "$SCRIPTS"/fzf-tmux
 	chmox "$SCRIPTS"/fzf-tmux
+	success "successfully installed fzf"
 }
 
 _git() {
@@ -65,26 +80,35 @@ _git() {
 }
 
 _gitmux() {
-	have gitmux && return
-	install-gitmux
+	heading gitmux
+	have gitmux || install-gitmux
 }
 
 _gitui() {
-	have gitui && return
-	install-gitui
+	heading gitui
+	_depends git
+	have gitui || install-gitui
 }
 
 _go() {
-	depends wget && return 1
+	heading go
+	_depends wget
 	mkdir temp && { cd temp || :; }
 	wget https://git.io/go-installer.sh
 	chmox go-installer.sh
 	bash go-installer.sh
 	rm go*
 	cd ..
+	rm -d temp
+}
+
+_jq() {
+	heading jq
+	have jq || install-jq
 }
 
 _starship() {
+	heading starship
 	have starship && return
 	if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "Linux" ]; then
 		curl -sS https://starship.rs/install.sh -o starship.sh
@@ -97,6 +121,7 @@ _starship() {
 }
 
 _tmux() {
+	heading tmux
 	case "$DISTRO" in
 	Debian | Ubuntu) sudo apt install tmux -y ;;
 	Fedora | CentOS | RHEL) dnf install tmux -y ;;
@@ -104,24 +129,28 @@ _tmux() {
 	Arch\ Linux) sudo pacman -S --nocomfirm tmux ;;
 	*) return 1 ;;
 	esac
-	depends tmux && return 1
+	_depends tmux
+	success "tmux successfully installed"
 }
 
 setup_tmux_complete() {
+	heading Complete TMUX setup
 	_tmux
 	_yq
 	_gitmux
 	_gitui
 	_fd
 	_fzf
+	success "tmux setup completed successfully"
 }
 
 _yq() {
-	have yq && return
-	install-yq
+	heading yq
+	have yq || install-yq
 }
 
-_zap_zsh() {
+_zap() {
+	heading zap
 	have zap && return
 	if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "Linux" ]; then
 		curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh -o install.zsh
@@ -134,7 +163,7 @@ _zap_zsh() {
 }
 
 _zsh() {
-	depends zsh && return 1
+	heading zsh
 	case "$DISTRO" in
 	Debian | Ubuntu) sudo apt install zsh -y ;;
 	Fedora | CentOS | RHEL) dnf install zsh -y ;;
@@ -142,21 +171,28 @@ _zsh() {
 	Arch\ Linux) sudo pacman -S --nocomfirm zsh ;;
 	*) return 1 ;;
 	esac
+	_depends zsh
 	echo export ZDOTDIR="$HOME"/.config/zsh >>"$HOME"/.profile
 	success "Successfully installed zsh"
 }
 
 setup_zsh_complete() {
+	heading Complete ZSH setup
 	_zsh
 	_starship
-	_zap_zsh
+	_zap
+	_bat # --
+	_fd
+	_fzf
+	_gitui # --
 	_eza
-	_bat
 	success "base zsh shell setup complete"
 }
 
 setup_neovim() {
+	heading Neovim
 	install-neovim.sh
+	success "successfully installed neovim"
 }
 
 DISTRO=$(distro | cut -d ':' -f1)
@@ -169,6 +205,8 @@ setup_env() {
 
 eval "$(setup_env)"
 
+echo "Running setup for $1"
+
 case "$1" in
 zsh) _zsh ;;
 tmux) _tmux ;;
@@ -178,9 +216,12 @@ fzf) _fzf ;;
 bat) _bat ;;
 go) _go ;;
 all | '')
+	_jq
 	setup_zsh_complete
 	setup_tmux_complete
 	setup_neovim
+	_go
+	_fzf
 	;;
 *) echo "specify a target" && exit 1 ;;
 esac
