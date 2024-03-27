@@ -1,7 +1,5 @@
 #!/bin/sh
 
-have eza && exit 1
-
 pkg_install() {
 	case "$DISTRO" in
 	Debian | Ubuntu)
@@ -38,4 +36,10 @@ gh_install() {
 
 DISTRO=$(distro | cut -d ':' -f1)
 
-{ pkg_install || gh_install; } && success "Succesfully installed eza"
+inprogress "Installing eza"
+
+if pkg_install || gh_install; then
+	success "Succesfully installed eza"
+else
+	warning "Could not install eza"
+fi

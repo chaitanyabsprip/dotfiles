@@ -1,7 +1,5 @@
 #!/bin/sh
 
-have fd && exit 1
-
 pkg_install() {
 	case "$DISTRO" in
 	Debian | Ubuntu)
@@ -40,4 +38,10 @@ gh_install() {
 
 DISTRO=$(distro | cut -d ':' -f1)
 
-{ pkg_install || gh_install; } && success "Succesfully installed fd"
+inprogress "Installing fd"
+
+if pkg_install || gh_install; then
+	success "Succesfully installed fd"
+else
+	warning "Could not install fd"
+fi

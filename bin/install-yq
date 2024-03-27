@@ -1,7 +1,5 @@
 #!/bin/sh
 
-have yq && exit 1
-
 pkg_install() {
 	case "$DISTRO" in
 	Debian | Ubuntu) return 1 ;;
@@ -31,4 +29,10 @@ gh_install() {
 
 DISTRO=$(distro | cut -d ':' -f1)
 
-{ pkg_install || gh_install; } && success "Succesfully installed yq"
+inprogress Installing yq
+
+if pkg_install || gh_install; then
+	success "Succesfully installed yq"
+else
+	error "Could not install yq"
+fi

@@ -1,11 +1,8 @@
 #!/bin/sh
-set -x
-
-# have gitui && exit 1
 
 pkg_install() {
 	case "$DISTRO" in
-	Debian | Ubuntu) return ;;
+	Debian | Ubuntu) return 1 ;;
 	Fedora | CentOS | RHEL) sudo dnf install gitui -y ;;
 	openSUSE | SUSE) sudo zypper install gitui -y ;;
 	Arch\ Linux) sudo pacman -S --noconfirm gitui ;;
@@ -29,12 +26,20 @@ gh_install() {
 	Linux\ *64) tarname='gitui-linux-musl.tar.gz' ;;
 	*) return 1 ;;
 	esac
+	mkdir temp
+	cd temp || :
 	curl -sSLO "https://github.com/$repo/releases/download/$ver/$tarname"
 	tar -xf gitui*.tar.gz &&
 		mv gitui "$SCRIPTS" && rm gitui*.tar.gz
+	cd .. && rm -d temp
 }
 
 DISTRO=$(distro | cut -d ':' -f1)
 
-{ pkg_install || gh_install; } && success "Succesfully installed gitui"
-set +x
+inprogress Installing gitui
+
+if pkg_install || gh_install; then
+	success "Succesfully installed gitui"
+else
+	error "Could not install gitui"
+fi

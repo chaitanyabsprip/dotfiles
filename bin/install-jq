@@ -1,7 +1,5 @@
 #!/bin/sh
 
-have jq && exit 1
-
 pkg_install() {
 	case "$DISTRO" in
 	Debian | Ubuntu) sudo apt install jq -y ;;
@@ -32,4 +30,10 @@ gh_install() {
 
 DISTRO=$(distro | cut -d ':' -f1)
 
-{ pkg_install || gh_install; } && success "Succesfully installed jq"
+inprogress Installing jq
+
+if pkg_install || gh_install; then
+	success "Succesfully installed jq"
+else
+	error "Could not install jq"
+fi
