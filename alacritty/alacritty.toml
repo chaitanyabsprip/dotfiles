@@ -58,4 +58,5 @@ program = "/bin/zsh"
 decorations = "none"
 opacity = 1.0
 option_as_alt = "Both"
+blur = true
 startup_mode = "Maximized"
