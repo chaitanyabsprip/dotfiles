@@ -3,7 +3,7 @@
 help() {
 	echo "Usage:"
 	echo "    dotme /path/to/configuration    Track a configuration file"
-	echo "    dotme serve                     Server tracked configs throughout the system"
+	echo "    dotme serve                     Serve tracked configs throughout the system"
 	exit 1
 }
 
@@ -45,7 +45,7 @@ serve() {
 		src="$script_dir/$name"
 		dest="$(echo "$line" | cut -d ':' -f 2 | tr -d ' ' | sed "s|\$HOME|$HOME|")"
 		if [ -n "$name" ] && [ -n "$dest" ]; then
-			[ -f "$dest" ] && mv "$dest" "$dest.bak"
+			[ -f "$dest" ] && echo "Making backup of existing $dest" && mv "$dest" "$dest.bak"
 			if [ -h "$dest" ]; then # file exists and is a symbolic link
 				# file exists then create link
 				[ ! -e "$dest" ] && symlink "$src" "$dest"
