@@ -37,7 +37,7 @@ git_co_fzf() {
 	is_in_git_repo || return
 	target="$(git_br_fzf)"
 	[ -z "$target" ] && exit 1
-	git checkout "$target"
+	git switch "$target"
 }
 
 git_co_fzf
