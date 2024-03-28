@@ -5,3 +5,9 @@ zsh/.zsh_history
 bin/creapr
 notes.todo.md
 zsh/.zsh-history
+bin/exa
+bin/eza
+bin/gh
+bin/yq
+bin/fzf
+bin/fzf-tmux
