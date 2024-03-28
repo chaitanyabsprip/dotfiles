@@ -1,34 +1,85 @@
 #!/bin/sh
 
 help() {
+	echo
 	echo "Usage:"
-	echo "    dotme /path/to/configuration    Track a configuration file"
-	echo "    dotme serve                     Serve tracked configs throughout the system"
-	exit 1
+	echo "    dotme [-m|-l] <path/to/configuration>    Track a configuration file"
+	echo "    dotme serve                              Serve tracked configs throughout the system"
+	echo "Options:"
+	echo "    -m    Track configuration for only MacOS"
+	echo "    -l    Track configuration for only Linux"
+	echo
+	echo "If no flags are passed then the configuration is tracked for both OS"
+	echo
+	echo
 }
 
-if [ -z "$1" ] || { [ ! -e "$1" ] && [ "$1" != "serve" ] || [ "$1" = "help" ]; }; then help; fi
-
-script_dir=$(dirname "$(readlink -f "$0")")
-lock_file="$script_dir/.dotme.lock"
-
 track() {
-	name_clean=$(echo "$1" | sed "s|$HOME|\$HOME|")
-	if [ -d "$1/.git" ]; then
+	prepare
+	config="$1"
+	name_clean=$(echo "$config" | sed "s|$HOME|\$HOME|")
+	name_base=$(basename "$config")
+	if [ -e "$script_dir/$name_base" ]; then
+		echo "A file or directory with the same name already exists in $script_dir" >&2
+		exit 1
+	fi
+	if [ -n "$os" ]; then
+		entry="$name_base: $name_clean: $os"
+	else
+		entry="$name_base: $name_clean"
+	fi
+	if [ -d "$config/.git" ]; then
 		is_git_dir=true
 	fi
-	name_base=$(basename "$1")
-	entry="$name_base: $name_clean"
-	if grep "$entry" "$lock_file" >/dev/null; then
+
+	if grep -q "$entry" "$lock_file"; then
 		echo "Already tracking $name_clean" && exit 1
 	fi
-	mv "$1" "$script_dir"
-	ln -sf "$script_dir/$name_base" "$1"
+	mv "$config" "$script_dir"
+	ln -sf "$script_dir/$name_base" "$config"
 	if [ "$is_git_dir" ]; then git submodule add "$script_dir/$name_base"; fi
 	echo "$entry" >>"$lock_file"
 	echo "Configuration $name_clean is now being tracked"
-	unset name_clean name_bas entry
+	unset name_clean name_base entry config
 }
+
+prepare() {
+	if [ ! -e "$lock_file" ]; then
+		touch "$lock_file" || {
+			echo "Failed to create lock file" >&2
+			exit 1
+		}
+	fi
+}
+
+serve() {
+	[ -d ~/.config ] || mkdir -p ~/.config
+	[ -d ~/.local ] || mkdir -p ~/.local
+	while IFS= read -r line; do
+		name="$(echo "$line" | cut -d ':' -f 1)"
+		dest="$(echo "$line" | cut -d ':' -f 2 | tr -d ' ' | sed "s|\$HOME|$HOME|")"
+		os="$(echo "$line" | cut -d ':' -f 3 | tr -d ' ')"
+		src="$script_dir/$name"
+		if [ -n "$name" ] && [ -e "$src" ] && [ -n "$dest" ]; then
+			if [ -f "$dest" ] || symlinkexists "$dest"; then
+				echo "Making backup of existing $dest" && mv "$dest" "$dest.bak"
+			fi
+			is_os_match "$os" && symlink "$src" "$dest"
+		fi
+	done <"$lock_file"
+}
+
+symlinkexists() {
+	dest="$1"
+	[ -h "$dest" ] && [ "$(dirname "$(readlink "$dest")")" != "$script_dir" ]
+}
+
+is_os_match() {
+	os="$1"
+	{ islinux && [ "$os" = linux ]; } || { ismac && [ "$os" = mac ]; } || [ -z "$os" ]
+}
+islinux() { [ "$(uname -s | cut -c 1-5)" = "Linux" ]; }
+ismac() { [ "$(uname -s)" = "Darwin" ]; }
 
 symlink() {
 	src="$1"
@@ -37,24 +88,54 @@ symlink() {
 	echo "linking $name to $dest"
 }
 
-serve() {
-	[ -d ~/.config ] || mkdir -p ~/.config
-	[ -d ~/.local ] || mkdir -p ~/.local
-	while IFS= read -r line; do
-		name="$(echo "$line" | cut -d ':' -f 1)"
-		src="$script_dir/$name"
-		dest="$(echo "$line" | cut -d ':' -f 2 | tr -d ' ' | sed "s|\$HOME|$HOME|")"
-		if [ -n "$name" ] && [ -n "$dest" ]; then
-			[ -f "$dest" ] && echo "Making backup of existing $dest" && mv "$dest" "$dest.bak"
-			if [ -h "$dest" ]; then # file exists and is a symbolic link
-				# file exists then create link
-				[ ! -e "$dest" ] && symlink "$src" "$dest"
-			else
-				symlink "$src" "$dest"
-			fi
-		fi
-	done <"$lock_file"
+validate_flags() {
+	error="$1"
+	if [ -n "$os" ]; then
+		echo "$error" >&2
+		help
+		exit 1
+	fi
 }
 
-if [ -e "$1" ]; then track "$@"; elif [ "$1" = "serve" ]; then serve; fi
-unset script_dir lock_file
+if [ "$1" = '--help' ]; then help && exit 0; fi
+
+error_both_flags="Options -m and -l cannot be used together."
+error_serve_with_flags="Option -m or -l cannot be used with 'serve'."
+script_dir=$(dirname "$(realpath "$0")")
+lock_file="$script_dir/.dotme.lock"
+
+os=""
+# Parse command line options
+while getopts ":mlh" opt; do
+	case $opt in
+	m)
+		validate_flags "$error_both_flags"
+		os="mac"
+		;;
+	l)
+		validate_flags "$error_both_flags"
+		os=linux
+		;;
+	h | :) help && exit 0 ;;
+	\?)
+		echo "Invalid option: -$OPTARG"
+		help
+		;;
+	esac
+done
+
+shift "$((OPTIND - 1))"
+
+if [ -z "$1" ]; then
+	help && exit 1
+elif [ "$1" = "help" ]; then
+	help && exit 0
+elif [ "$1" = "serve" ]; then
+	validate_flags "$error_serve_with_flags"
+	serve && exit 0
+elif [ ! -e "$1" ]; then
+	help && exit
+else
+	track "$@"
+fi
+unset script_dir lock_file os
