@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# https://cocktailmake.github.io/posts/improvement-of-git-commands-with-fzf/
+
+# This script will open a fzf-tmux window and allow the user to choose a tag or
+# a branch to checkout.
+
+reset="\x1b[0m"
+blue="\x1b[34;1m"
+
+isgitrepo() { git rev-parse HEAD >/dev/null; }
+
+git_target_branch() {
+	isgitrepo || return
+	branches=$(
+		git branch --all | grep -v HEAD |
+			sed "s/.* //" | sed "s#remotes/##" |
+			sort -u | awk '{print "'"$blue"'branch'"$reset"'\t" $1}'
+	) || return
+	target=$(echo "$branches" |
+		fzf-tmux -p --height 30% --no-hscroll -m --delimiter="\t" -n 2 --ansi) || return
+	echo "$target" | awk -F "\t" '{print $2}'
+}
+
+git_branch_delete() {
+	delete="-d"
+	[ "$1" = '-f' ] && delete="-D" && shift
+	isgitrepo || return
+	target="${1:-$(git_target_branch)}"
+	[ -z "$target" ] && exit 1
+	git branch "$delete" "$target"
+}
+
+git_branch_delete "$@"
