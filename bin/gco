@@ -25,19 +25,27 @@ git_br_fzf() {
 			sort -u | awk '{print "'"$blue"'branch'"$reset"'\t" $1}'
 	) || return
 	options=$(
-		echo "$tags"
+		[ -n "$tags" ] && echo "$tags"
 		echo "$branches"
 	)
 	target=$(echo "$options" |
-		fzf --height 30% --no-hscroll --no-multi --delimiter="\t" -n 2 --ansi) || return
-	echo "$target" | awk -F "\t" '{print $2}'
+		fzf --height 30% --no-hscroll --no-multi --print-query --delimiter="\t" -n 2 --ansi) || return
+	echo "$target" | tail -1 | awk -F "\t" '{print $2}'
 }
 
 git_co_fzf() {
+	create=""
+	[ "$1" = '-c' ] && create="-c" && shift
 	is_in_git_repo || return
-	target="$(git_br_fzf)"
+	target="${1:-$(git_br_fzf)}"
+	if ! git branch -a | grep -q "$target"; then create='-c'; fi
 	[ -z "$target" ] && exit 1
-	git switch "$target"
+
+	if [ -n "$create" ]; then
+		git switch "$create" "$target"
+	else
+		git switch "$target"
+	fi
 }
 
-git_co_fzf
+git_co_fzf "$@"
