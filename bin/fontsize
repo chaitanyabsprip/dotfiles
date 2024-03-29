@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Change the fontsize of alacrity instantly from anywhere without opening the
+# configuration file
+
+toml="$HOME/.config/alacritty/alacritty.toml"
+[ ! -f "$toml" ] && echo "Could not find alacritty config at $toml" && exit 1
+
+if [ "$#" -ne 1 ]; then
+	echo "Usage: ${0##/} <size>"
+	exit 1
+fi
+
+fontsize="\([0-9][0-9]*\(\.[0-9]\)\{0,1\}\)"
+
+if ! expr "$1" : "$fontsize" >/dev/null 2>&1; then
+	echo "Usage: ${0##/} <size>"
+	exit 1
+fi
+
+updated=$(sed "s/size = \([0-9]\{1,2\}\(\.[0-9]\)\{0,1\}\)/size = $1/" "$toml")
+echo "$updated" >"$toml"
+
+# can be an alternative way, maybe even better way, but I prefer the above
+# approach
+#
+# perl -p -i -e 's/^background_opacity:\s*\S+/background_opacity: .'$1'/' $toml
