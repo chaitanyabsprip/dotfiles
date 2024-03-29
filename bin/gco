@@ -5,17 +5,13 @@
 # This script will open a fzf-tmux window and allow the user to choose a tag or
 # a branch to checkout.
 
-# _have() { type "$1" >/dev/null 2>&1; }
-#
-# _have tmux && tmux ls | grep scratch >/dev/null && tmux detach-client -s scratch
-#
 reset="\x1b[0m"
 blue="\x1b[34;1m"
 red="\x1b[31;1m"
 
 is_in_git_repo() { git rev-parse HEAD >/dev/null; }
 
-git_br_fzf() {
+get_target_branch() {
 	is_in_git_repo || return
 
 	tags=$(git tag | awk '{print "'"$red"'tag'"$reset"'\t" $1}') || return
@@ -29,15 +25,15 @@ git_br_fzf() {
 		echo "$branches"
 	)
 	target=$(echo "$options" |
-		fzf --height 30% --no-hscroll --no-multi --print-query --delimiter="\t" -n 2 --ansi) || return
+		fzf-tmux -p --height 30% --no-hscroll --no-multi --print-query --delimiter="\t" -n 2 --ansi) || return
 	echo "$target" | tail -1 | awk -F "\t" '{print $2}'
 }
 
-git_co_fzf() {
+git_switch() {
 	create=""
 	[ "$1" = '-c' ] && create="-c" && shift
 	is_in_git_repo || return
-	target="${1:-$(git_br_fzf)}"
+	target="${1:-$(get_target_branch)}"
 	if ! git branch -a | grep -q "$target"; then create='-c'; fi
 	[ -z "$target" ] && exit 1
 
@@ -48,4 +44,4 @@ git_co_fzf() {
 	fi
 }
 
-git_co_fzf "$@"
+git_switch "$@"
