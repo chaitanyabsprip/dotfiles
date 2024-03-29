@@ -44,37 +44,51 @@ _ismac && export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 
 export BAT_THEME="Visual Studio Dark+"
 export FZF_DEFAULT_COMMAND='fd --type file --hidden --exclude .git'
-export FZF_DEFAULT_OPTS="
---cycle --info=hidden
---prompt='▍' --pointer='▍' --tabstop=4
---color=fg:#a6accd,bg:#0f111a,hl:#464b5d
---color=fg+:#a6accd,bg+:#0f111a,hl+:#89ddff
---color=info:#0f111a,prompt:#c792ea,pointer:#f07178
---color=marker:#c792ea,spinner:#c792ea,header:#464b5d
---color=preview-bg:#090b10,border:#464b5d"
+
+# Material deep ocean colors
+# export FZF_DEFAULT_OPTS="
+#    --cycle --info=hidden
+#    --prompt='▍' --pointer='▍' --tabstop=4
+#    --color=fg:#a6accd,bg:#0f111a,hl:#464b5d
+#    --color=fg+:#a6accd,bg+:#0f111a,hl+:#89ddff
+#    --color=info:#0f111a,prompt:#c792ea,pointer:#f07178
+#    --color=marker:#c792ea,spinner:#c792ea,header:#464b5d
+#    --color=preview-bg:#090b10,border:#464b5d"
+
 # Rose pine colors
 # export FZF_DEFAULT_OPTS="
-# 	--color=fg:#908caa,bg:#191724,hl:#ebbcba
-# 	--color=fg+:#e0def4,bg+:#26233a,hl+:#ebbcba
-# 	--color=border:#403d52,header:#31748f,gutter:#191724
-# 	--color=spinner:#f6c177,info:#9ccfd8,separator:#403d52
-# 	--color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
+#    --cycle --info=hidden
+#    --prompt='▍' --pointer='▍' --tabstop=4
+#    --color=fg:#908caa,bg:#191724,hl:#ebbcba
+#    --color=fg+:#e0def4,bg+:#26233a,hl+:#ebbcba
+#    --color=border:#403d52,header:#31748f,gutter:#191724
+#    --color=spinner:#f6c177,info:#9ccfd8,separator:#403d52
+#    --color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
+
+# Material rosepine colors
+export FZF_DEFAULT_OPTS="
+    --cycle --info=hidden
+    --prompt='▍' --pointer='▍' --tabstop=4
+    --color=fg:#908caa,bg:#0f111a,hl:#ebbcba
+    --color=fg+:#e0def4,bg+:#0f111a,hl+:#ebbcba
+    --color=border:#403d52,header:#31748f,gutter:#0f111a
+    --color=spinner:#f6c177,info:#9ccfd8,separator:#403d52
+    --color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
+
 export FZF_CTRL_R_OPTS="
---info=inline --border --reverse
---preview 'echo {}' --preview-window up:3:hidden:wrap
---bind 'ctrl-/:toggle-preview'
---bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
---color header:italic
---header 'Press CTRL-Y to copy command into clipboard'"
+    --info=inline --border --reverse
+    --preview 'echo {}' --preview-window up:3:hidden:wrap
+    --bind 'ctrl-/:toggle-preview'
+    --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+    --color header:italic
+    --header 'Press CTRL-Y to copy command into clipboard'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="
---info=hidden --border
---preview 'bat -n --color=always {}'
---bind 'ctrl-/:change-preview-window(down|hidden|)'"
+    --info=hidden --border
+    --preview 'bat -n --color=always {}'
+    --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 export FZF_ALT_C_COMMAND="fd . -t d --hidden"
-export FZF_ALT_C_OPTS="
---preview='tree -C {} | head -50'
-"
+export FZF_ALT_C_OPTS="--preview='tree -C {} | head -50'"
 
 append_path "$FLUTTER_SDK_ROOT/bin"
 append_path "$FLUTTER_SDK_ROOT/bin/cache/dart-sdk/bin"
