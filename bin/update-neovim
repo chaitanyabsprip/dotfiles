@@ -1,11 +1,13 @@
 #!/bin/sh
 
+tag="$1"
 [ -d "$HOME/programs" ] || mkdir "$HOME/programs"
 cd "$HOME/programs" || exit
-[ -d "$HOME/programs/neovim" ] || git clone --depth 1 --branch nightly https://github.com/neovim/neovim neovim
+[ -d "$HOME/programs/neovim" ] && rm -rf "$HOME"/programs/neovim
+git clone --depth 1 --branch "${tag:-nightly}" https://github.com/neovim/neovim neovim
 cd neovim || exit
 make CMAKE_BUILD_TYPE=Release &&
-sudo make install
+	sudo make install
 
 cd .. || exit
 [ -d "./neovim" ] && rm -rf neovim || exit
