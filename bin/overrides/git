@@ -1,0 +1,10 @@
+#! /bin/sh
+
+gitc=/usr/bin/git
+if [ "$1" = init ]; then
+	$gitc init
+	$gitc commit --allow-empty -m 'initial commit'
+	exit
+else
+	exec $gitc "$@"
+fi
