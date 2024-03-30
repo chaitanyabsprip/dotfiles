@@ -95,12 +95,8 @@ _go() {
 	heading go
 	_depends wget
 	mkdir temp && { cd temp || :; }
-	wget https://git.io/go-installer.sh
-	chmox go-installer.sh
-	bash go-installer.sh
-	rm go*
-	cd ..
-	rm -d temp
+	curl -SsL https://git.io/go-installer.sh | bash
+	cd .. && rm -rd temp
 }
 
 _jq() {
