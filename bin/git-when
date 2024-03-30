@@ -1,0 +1,76 @@
+#!/bin/sh
+
+help() {
+	cat <<EOF
+EOF
+}
+
+get_when() {
+	echo "$@" | while read -r file; do
+		if [ "$file" = ".git" ]; then
+			continue
+		fi
+
+		printf "%-20s\t" "$file"
+
+		status="$(git status --porcelain "$file")"
+
+		case "$status" in
+		??*) red Untracked ;;
+		A*) green Staged ;;
+		*)
+			if git check-ignore "$file" >/dev/null; then
+				grey Gitignored
+			else
+				git log -1 --color=always --pretty=format:"$FORMAT" -- "$file" |
+					tr "\n" "\t"
+			fi
+			;;
+		esac
+
+		echo
+	done
+}
+
+red() { printf '\033[0;31m%s\033[0m' "$1"; }
+green() { printf '\033[0;32m%s\033[0m' "$1"; }
+grey() { printf '\033[1;30m%s\033[0m' "$1"; }
+
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+	git rev-parse --is-inside-work-tree
+	exit 1
+fi
+
+# %ar: author date, relative
+# %h: abbreviated commit hash
+# %n: newline
+# %s: subject
+FORMAT="\
+%C(bold green)\
+%<(20)\
+%ar\
+%C(reset)\
+%C(bold blue)\
+%h\
+%C(reset)\
+%n\
+%C(yellow)\
+%s\
+%C(reset)"
+
+all=
+while getopts ":ha" opt; do
+	case $opt in
+	a) all='-A' ;;
+	h | :) help && exit 0 ;;
+	\?) echo "Invalid option: -$OPTARG" && help && exit 1 ;;
+	esac
+done
+
+shift "$((OPTIND - 1))"
+
+if [ "$#" -ne 0 ]; then
+	get_when "$@"
+else
+	get_when "$(ls $all)"
+fi

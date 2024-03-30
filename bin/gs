@@ -1,3 +1,31 @@
-#!/bin/sh
+#! /bin/sh
 
-exec git status
+deansi() { sed 's/\x1B\[[0-9;]*[JKmsu]//g'; }
+getmaxlen() {
+	max_length=0
+	while read -r line; do
+		[ -z "$line" ] && continue
+		length="${#line}"
+		if [ "$length" -gt "$max_length" ]; then
+			max_length="$length"
+		fi
+	done
+	echo "$max_length"
+}
+
+diff="$(git diff --color --stat HEAD 2>/dev/null)"
+gstatus="$(git -c color.status=always status -sb)"
+echo "$gstatus" | head -n1
+statuses="$(echo "$gstatus" | tail -n +2)"
+files="$(echo "$statuses" | awk '{print $2}')"
+unset gstatus
+max_len="$(echo "$files" | getmaxlen)"
+echo "$files" | while read -r line; do
+	printf '%10s ' "$(echo "$statuses" | grep -w "$line" | awk '{print $1}')"
+	printf '%s' "$line"
+	rpath="$(realpath -s --relative-to "$(git root)" "${line##* }")"
+	diffc="$(echo "$diff" | grep -w "$rpath" | cut -d '|' -f2)"
+	padding="$((max_len - ${#line}))"
+	[ -n "$diffc" ] && printf "%${padding}s |%s" "" "$diffc"
+	echo
+done
