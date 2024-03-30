@@ -91,6 +91,7 @@ _gitui() {
 }
 
 _go() {
+	have go && return
 	heading go
 	_depends wget
 	mkdir temp && { cd temp || :; }
