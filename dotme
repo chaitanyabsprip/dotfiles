@@ -117,10 +117,7 @@ while getopts ":mlh" opt; do
 		os=linux
 		;;
 	h | :) help && exit 0 ;;
-	\?)
-		echo "Invalid option: -$OPTARG"
-		help
-		;;
+	\?) echo "Invalid option: -$OPTARG" && help && exit 1 ;;
 	esac
 done
 
