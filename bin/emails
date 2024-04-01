@@ -1,0 +1,44 @@
+#!/bin/sh
+
+show_help() {
+	echo "Usage: $0 [-l] [-c]"
+	echo "Options:"
+	echo "  -l: Display the list of emails"
+	echo "  -c: Select an email from the list or enter a custom email"
+}
+
+getemails() {
+	[ -f "$emailfile" ] || return 1
+	while read -r line; do
+		set -- "$@" "$line"
+	done <"$emailfile"
+	echo "$@"
+}
+
+getoptions() {
+	set -- "$@" "Enter Custom Email" "quit"
+	for option in "$@"; do
+		echo "$option"
+	done
+}
+
+emailfile="$HOME/.emails"
+
+[ -f "$emailfile" ] || warning "Warning: Email file '$emailfile' does not exist."
+
+while getopts ":hlc" option; do
+	# shellcheck disable=SC2046
+	case $option in
+	h) show_help && exit ;;
+	l) getemails | sed 's/ /\n/g' ;;
+	c)
+		getoptions $(getemails) | fzf --height=6 --reverse
+		exit
+		;;
+	\?)
+		echo "Invalid option: -$OPTARG"
+		show_help && exit 1
+		;;
+	*) show_help ;;
+	esac
+done
