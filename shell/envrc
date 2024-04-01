@@ -38,7 +38,7 @@ export NOTESPATH="$HOME"/projects/notes
 export DOWNLOADS="$HOME/downloads"
 export SCRIPTS="$HOME/.local/bin"
 _ismac && export ANDROID_SDK_ROOT="$HOME"/Library/Android/Sdk
-_ismac && export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home/"
+_ismac && JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME
 _ismac && export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
 _ismac && export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 
@@ -92,9 +92,11 @@ export FZF_ALT_C_OPTS="--preview='tree -C {} | head -50'"
 
 append_path "$FLUTTER_SDK_ROOT/bin"
 append_path "$FLUTTER_SDK_ROOT/bin/cache/dart-sdk/bin"
+append_path "$ANDROID_SDK_ROOT/platform-tools/"
+append_path "$ANDROID_SDK_ROOT/tools/bin/"
+append_path "$ANDROID_SDK_ROOT/emulator"
 append_path "$HOME/.cargo/bin"
 append_path "$HOME/.pub-cache/bin"
-append_path "$HOME/Library/Android/sdk/platform-tools/"
 append_path "$GOPATH/bin"
 append_path "$HOME/.poetry/bin"
 prepend_path "$SCRIPTS"
