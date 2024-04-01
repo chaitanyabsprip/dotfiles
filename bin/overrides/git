@@ -3,8 +3,10 @@
 gitc=/usr/bin/git
 if [ "$1" = init ]; then
 	$gitc init
+	emails="$(emails -c)"
+	[ -z "$emails" ] && warning "Could not configure git user.email"
+	[ -n "$emails" ] && $gitc config --local user.email "$emails"
 	$gitc commit --allow-empty -m 'initial commit'
-	exit
 else
 	exec $gitc "$@"
 fi
