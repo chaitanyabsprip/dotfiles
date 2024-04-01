@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+temp_file=$(mktemp)
+pbp >"$temp_file"
+chmox "$temp_file"
+"$temp_file"
+rm -f "$temp_file"
