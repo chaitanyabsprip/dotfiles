@@ -17,7 +17,7 @@ _have note && alias did='note -c'
 _have note && alias todo='note -t'
 
 _have /usr/bin/vim && alias vi=/usr/bin/vim
-_have nvim && alias vim=/usr/local/bin/nvim vimdiff='vim -d'
+_have /usr/local/bin/nvim && alias vim=/usr/local/bin/nvim vimdiff='vim -d'
 _have bat && alias cat='bat'
 
 md() { [ -z "$1" ] && exit 1 || mkdir "$1" && cd "$1" || return; }
