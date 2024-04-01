@@ -16,22 +16,9 @@ _have note && alias bm='note -b'
 _have note && alias did='note -c'
 _have note && alias todo='note -t'
 
-_have gitui && alias gitui='gitui -t mocha.ron'
 _have /usr/bin/vim && alias vi=/usr/bin/vim
 _have nvim && alias vim=/usr/local/bin/nvim vimdiff='vim -d'
 _have bat && alias cat='bat'
-_have bard-cli && alias \?='bard-cli -c ~/.config/zsh/.bardcli.yaml'
-_have jira && alias issues="jira issue list \
-  -a\$(jira me) \
-  -q\"statuscategory in (New,'In Progress')\" \
-  --plain | \
-  tail -n +2 | \
-  fzf-tmux \
-  --preview=\"echo {} |\
-      grep -Eo 'YOC-[0-9]+' |\
-      xargs jira issue view |\
-      tail -n +4\" \
-  --preview-window=right,60%"
 
 md() { [ -z "$1" ] && exit 1 || mkdir "$1" && cd "$1" || return; }
 
