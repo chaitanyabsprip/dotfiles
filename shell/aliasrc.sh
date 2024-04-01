@@ -10,7 +10,6 @@ donothing() { echo "$*" >/dev/null 2>&1; }
 # alias exit='donothing'
 
 alias mkdir='mkdir -pv'
-alias chmox='chmod +x'
 alias view='vi -R'
 
 _have note && alias bm='note -b'
