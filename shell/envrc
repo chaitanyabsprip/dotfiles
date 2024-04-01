@@ -22,6 +22,7 @@ _islinux() { [ "$(uname -s | cut -c 1-5)" = "Linux" ]; }
 export NOTESPATH="$HOME"/projects/notes
 export DOWNLOADS="$HOME/downloads"
 export SCRIPTS="$HOME/.local/bin"
+export DOTFILES="$HOME/dotfiles"
 
 export XDG_DATA_HOME="$HOME"/.local/share
 export XDG_STATE_HOME="$HOME"/.local/state
