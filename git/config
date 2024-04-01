@@ -1,6 +1,5 @@
 [user]
 	name = Chaitanya Sharma
-	email = chaitanyasanjeevsharma@gmail.com
 
 [core]
 	editor = nvim
@@ -9,7 +8,6 @@
 	; autocrlf = input
 
 [alias]
-	# Thanks r00k, this creates a pretty graph view of the log
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 	sh = !"git log --oneline | fzf -m -d ' ' --preview \"git show --color=always {1}\" | cut -d ' ' -f 1 | xargs -n 9999"
 	root = rev-parse --show-toplevel
