@@ -39,17 +39,7 @@ zle -N edit-command-line
 
 # initialisations
 have brew && zsh-defer eval "$(brew shellenv | grep -v 'export PATH')"
-{
-	export PYENV_ROOT="$HOME/.pyenv"
-	[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH" &&
-		zsh-defer eval "$(pyenv init -)"
-}
 have rbenv && zsh-defer eval "$(rbenv init - zsh)"
-{
-	NVM_DIR="$HOME"/programs/nvm
-	[ -s $NVM_DIR ] && export NVM_DIR=$NVM_DIR
-	[ -s "$NVM_DIR/nvm.sh" ] && zsh-defer \. "$NVM_DIR/nvm.sh" # This loads nvm
-}
 
 # function cd() {
 # 	builtin cd "$@"
