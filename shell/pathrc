@@ -1,0 +1,41 @@
+#!/bin/sh
+
+prepend_path() {
+	[ ! -d "$1" ] && return 1
+	case ":$PATH:" in
+	*:"$1":*)
+		PATH=$(echo "$PATH" | sed "s,:$1:,:,")
+		PATH="$1:$PATH"
+		;;
+	::) PATH="$1" ;;
+	*) PATH="$1:$PATH" ;;
+	esac
+	export PATH
+}
+
+append_path() {
+	[ ! -d "$1" ] && return 1
+	case ":$PATH:" in
+	*:"$1":*) ;;
+	::) export PATH="$1" ;;
+	*) export PATH="$PATH:$1" ;;
+	esac
+}
+
+_ismac() { [ "$(uname)" = "Darwin" ]; }
+_islinux() { [ "$(uname -s | cut -c 1-5)" = "Linux" ]; }
+
+append_path "$FLUTTER_SDK_ROOT/bin"
+append_path "$FLUTTER_SDK_ROOT/bin/cache/dart-sdk/bin"
+append_path "$ANDROID_SDK_ROOT/platform-tools/"
+append_path "$ANDROID_SDK_ROOT/tools/bin/"
+append_path "$ANDROID_SDK_ROOT/emulator"
+append_path "$HOME/.cargo/bin"
+append_path "$HOME/.pub-cache/bin"
+append_path "$GOPATH/bin"
+append_path "$HOME/.poetry/bin"
+prepend_path "$SCRIPTS"
+prepend_path "$SCRIPTS/overrides"
+append_path "$HOME/.local/share/nvim/mason/bin"
+append_path "/opt/homebrew/bin"
+append_path "/opt/homebrew/sbin"

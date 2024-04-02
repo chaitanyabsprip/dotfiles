@@ -1,22 +1,7 @@
 #!/bin/sh
 
-prepend_path() {
-	case ":$PATH:" in
-	*:"$1":*) ;;
-	::) [ -d "$1" ] && export PATH="$1" ;;
-	*) [ -d "$1" ] && export PATH="$1:$PATH" ;;
-	esac
-}
-
-append_path() {
-	case ":$PATH:" in
-	*:"$1":*) ;;
-	::) [ -d "$1" ] && export PATH="$1" ;;
-	*) [ -d "$1" ] && export PATH="$PATH:$1" ;;
-	esac
-}
-
 _ismac() { [ "$(uname)" = "Darwin" ]; }
+
 _islinux() { [ "$(uname -s | cut -c 1-5)" = "Linux" ]; }
 
 export NOTESPATH="$HOME"/projects/notes
@@ -93,19 +78,4 @@ export FZF_CTRL_T_OPTS="
     --preview 'bat -n --color=always {}'
     --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 export FZF_ALT_C_COMMAND="fd . -t d --hidden"
-export FZF_ALT_C_OPTS="--preview='tree -C {} | head -50'"
-
-append_path "$FLUTTER_SDK_ROOT/bin"
-append_path "$FLUTTER_SDK_ROOT/bin/cache/dart-sdk/bin"
-append_path "$ANDROID_SDK_ROOT/platform-tools/"
-append_path "$ANDROID_SDK_ROOT/tools/bin/"
-append_path "$ANDROID_SDK_ROOT/emulator"
-append_path "$HOME/.cargo/bin"
-append_path "$HOME/.pub-cache/bin"
-append_path "$GOPATH/bin"
-append_path "$HOME/.poetry/bin"
-prepend_path "$SCRIPTS"
-prepend_path "$SCRIPTS/overrides"
-append_path "$HOME/.local/share/nvim/mason/bin"
-append_path "/opt/homebrew/bin"
-append_path "/opt/homebrew/sbin"
+export FZF_ALT_C_OPTS="--preview='eza --tree {} | head -50'"
