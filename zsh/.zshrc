@@ -2,7 +2,7 @@
 
 HISTORY_IGNORE="(la|ls|cd|pwd|exit|history|cd -|cd ..|q|c|vim|nvim)"
 SAVEHIST=200000
-HISTFILE=~/.config/zsh/.zsh-history
+HISTFILE=~/.config/zsh/.zsh_history
 HISTFILESIZE=1000000000
 HISTSIZE=1000000000
 
