@@ -1,1 +1,1 @@
-../../shell/aliasrc.sh
+../../shell/aliasrc
