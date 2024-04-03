@@ -1,6 +1,5 @@
 .PHONY: clean
 
-
 BOLD         := $(shell tput -Txterm bold)
 RED          := $(shell tput -Txterm setaf 1)
 GREEN        := $(shell tput -Txterm setaf 2)
@@ -12,6 +11,8 @@ BASEIMAGE = clinic
 WORKSPACEIMAGE = hospital
 IMAGESUFFIX = ward
 SOURCES := $(filter-out dockerfiles/%, $(wildcard */*))
+SOURCES := $(filter-out $(wildcard $(shell find . -type l -printf '%P\n')), $(SOURCES))
+
 
 help:
 	@echo "$(BOLD)Usage:$(NC)"
@@ -33,18 +34,24 @@ base: dockerfiles/base $(SOURCES) clean
 	@docker build -t "$(BASEIMAGE)" -f dockerfiles/base
 
 workspace: dockerfiles/workspace $(SOURCES) clean
-	@docker build -t "$(WORKSPACEIMAGE)" -f dockerfiles/workspace
+	@docker build -t "$(WORKSPACEIMAGE)" -t "chaitanyabsprip/$(WORKSPACEIMAGE)" -f dockerfiles/workspace
+
+golang-img: clean $(SOURCES)
+	@docker build -t "golang-$(IMAGESUFFIX)" -t "chaitanyabsprip/golang-$(IMAGESUFFIX)" -f dockerfiles/golang .
 
 python-img: clean $(SOURCES)
-	@docker build -t "python-$(IMAGESUFFIX)" -f dockerfiles/python
+	@docker build -t "python-$(IMAGESUFFIX)" -t "chaitanyabsprip/python-$(IMAGESUFFIX)" -f dockerfiles/python .
 
 ts-img: clean $(SOURCES)
-	@docker build -t "ts-$(IMAGESUFFIX)" -f dockerfiles/typescript
+	@docker build -t "ts-$(IMAGESUFFIX)" -t "chaitanyabsprip/ts-$(IMAGESUFFIX)" -f dockerfiles/typescript .
 
 flutter-img: clean $(SOURCES)
-	@docker build -t "flutter-$(IMAGESUFFIX)" -f dockerfiles/flutter
+	@docker build -t "flutter-$(IMAGESUFFIX)" -t "chaitanyabsprip/flutter-$(IMAGESUFFIX)" -f dockerfiles/flutter .
 
 clean:
-	@docker images -a | grep -q "$(BASEIMAGE)" && docker rmi "$(BASEIMAGE)"
-	@docker images -a | grep -q "$(WORKSPACEIMAGE)" && docker rmi "$(WORKSPACEIMAGE)"
-	@docker images -a | grep "-$(IMAGESUFFIX)$" | xargs docker rmi
+	@docker images -a | grep -wq "$(BASEIMAGE)" && \
+		docker rmi "$(BASEIMAGE)" 2>/dev/null || :
+	@docker images -a | grep -wq  "$(WORKSPACEIMAGE)" && \
+		docker rmi "$(WORKSPACEIMAGE)" 2>/dev/null || :
+	@docker images -a | grep -q -- "-$(IMAGESUFFIX)" | \
+		xargs -I {} docker rmi {} 2>/dev/null || :
