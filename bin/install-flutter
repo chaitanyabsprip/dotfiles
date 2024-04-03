@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# arch only
+
+export FVM_CACHE_PATH="$HOME"/programs/flutter
+export PATH="$PATH:$FVM_CACHE_PATH/default/bin"
+sudo pacman -S clang ninja cmake pkg-config gtk3 --noconfirm
+curl -fsSL https://fvm.app/install.sh | bash
+type fvm >/dev/null 2>&1 && fvm install stable && fvm global stable
+flutter precache
+flutter config --android-sdk "$ANDROID_SDK_ROOT"
