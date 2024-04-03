@@ -94,7 +94,7 @@ _go() {
 	have go && return
 	heading go
 	_depends wget
-	mkdir temp && { cd temp || :; }
+	mkdir temp "$HOME"/programs && { cd temp || :; }
 	curl -SsL https://git.io/go-installer.sh | bash
 	cd .. && rm -rd temp
 }
