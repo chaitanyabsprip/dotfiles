@@ -1,5 +1,7 @@
 #!/bin/sh
 
+deansi() { sed 's/\x1B\[[0-9;]*[JKmsu]//g'; }
+
 getmaxlen() {
 	max_length=0
 	while read -r line; do
@@ -12,6 +14,10 @@ getmaxlen() {
 	echo "$max_length"
 }
 
+green() { printf '\033[0;32m%s\033[0m' "$*"; }
+red() { printf '\033[0;33m%s\033[0m' "$*"; }
+yellow() { printf '\033[0;31m%s\033[0m' "$*"; }
+
 diff="$(git diff --color --stat HEAD 2>/dev/null)"
 gstatus="$(git -c color.status=always status -sb)"
 echo "$gstatus" | head -n1
@@ -20,8 +26,20 @@ files="$(echo "$statuses" | awk '{print $2}')"
 unset gstatus
 max_len="$(echo "$files" | getmaxlen)"
 echo "$files" | while read -r line; do
-	printf '%10s ' "$(echo "$statuses" | grep -w "$line" | awk '{print $1}')"
-	printf '%s' "$line"
+	change="$(echo "$statuses" | grep -w "$line" | awk '{print $1}' | deansi)"
+	file="$line"
+	case "$(echo "$change" | deansi)" in
+	\?\?)
+		change="$(green "$change")"
+		file="$(green "$line")"
+		;;
+	M)
+		change="$(yellow "$change")"
+		file="$(yellow "$line")"
+		;;
+	*) ;;
+	esac
+	printf '%13s %s' "$change" "$file"
 	rpath="$(realpath -s --relative-to "$(git root)" "${line##* }")"
 	diffc="$(echo "$diff" | grep -w "$rpath" | cut -d '|' -f2)"
 	padding="$((max_len - ${#line}))"
