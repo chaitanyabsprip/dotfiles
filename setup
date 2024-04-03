@@ -210,7 +210,12 @@ eval "$(setup_env)"
 
 echo "Running setup for $1"
 
-case "$1" in
+subcommand="${1:-all}"
+shift
+
+igo="$(echo "$*" | grep -wq -- '--go' && echo 1)"
+
+case "$subcommand" in
 zsh) _zsh ;;
 tmux) _tmux ;;
 nvim) setup_neovim ;;
@@ -218,12 +223,12 @@ env) setup_env ;;
 fzf) _fzf ;;
 bat) _bat ;;
 go) _go ;;
-all | '')
+all)
+	[ "$igo" = 1 ] && _go
 	_jq
 	setup_zsh_complete
 	setup_tmux_complete
 	setup_neovim
-	_go
 	_fzf
 	;;
 *) echo "specify a target" && exit 1 ;;
