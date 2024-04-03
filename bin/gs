@@ -1,6 +1,5 @@
-#! /bin/sh
+#!/bin/sh
 
-deansi() { sed 's/\x1B\[[0-9;]*[JKmsu]//g'; }
 getmaxlen() {
 	max_length=0
 	while read -r line; do
