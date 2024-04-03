@@ -21,7 +21,7 @@ RUN apt-get clean && \
     cat /dev/null > /var/log/dmesg && \
     apt-get update && \
     apt-get -y --no-install-recommends upgrade
-COPY . /root/dotfiles
+COPY .. /root/dotfiles
 RUN ./dotme serve && setup all
 ENTRYPOINT ["tmux", "new", "-As", "home"]
 
