@@ -3,7 +3,8 @@
 pkg_install() {
 	case "$DISTRO" in
 	Debian | Ubuntu) return 1 ;;
-	Fedora | CentOS | RHEL) return 1 ;;
+	Fedora) return 1 ;;
+	CentOS | RHEL) return 1 ;;
 	openSUSE | SUSE) return 1 ;;
 	Arch\ Linux) sudo pacman -S --nocomfirm go-yq ;;
 	*) return 1 ;;

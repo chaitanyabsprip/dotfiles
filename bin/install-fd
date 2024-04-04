@@ -6,10 +6,11 @@ pkg_install() {
 		sudo apt install fd-find -y &&
 			ln -sf "$(which fdfind)" "$SCRIPTS"/fd
 		;;
-	Fedora | CentOS | RHEL)
+	Fedora)
 		sudo dnf install fd-find -y &&
 			ln -sf "$(which fdfind)" "$SCRIPTS"/fd
 		;;
+	CentOS | RHEL) ;;
 	openSUSE | SUSE) sudo zypper install fd -y ;;
 	Arch\ Linux) sudo pacman -S --noconfirm fd ;;
 	*) return 1 ;;

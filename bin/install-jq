@@ -3,7 +3,8 @@
 pkg_install() {
 	case "$DISTRO" in
 	Debian | Ubuntu) sudo apt install jq -y ;;
-	Fedora | CentOS | RHEL) sudo dnf install jq -y ;;
+	Fedora) sudo dnf install jq -y ;;
+	CentOS | RHEL) ;;
 	openSUSE | SUSE) sudo zypper install jq -y ;;
 	Arch\ Linux) sudo pacman -S --nocomfirm jq ;;
 	*) return 1 ;;
