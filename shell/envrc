@@ -31,9 +31,12 @@ export FVM_CACHE_PATH="$HOME"/programs/flutter
 export PATH="$PATH:$FVM_CACHE_PATH/default/bin"
 _islinux && export ANDROID_SDK_ROOT="$HOME/programs/android"
 _islinux && export ANDROID_HOME="$HOME/programs/android"
-_islinux && export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+case "$DISTRO" in
+Debian | Ubuntu) export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 ;;
+Arch\ Linux) export JAVA_HOME=/usr/lib/jvm/java-17-openjdk ;;
+*) if _ismac; then JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME; else return 1; fi ;;
+esac
 _ismac && export ANDROID_SDK_ROOT="$HOME"/Library/Android/Sdk
-_ismac && JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME
 _ismac && export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
 _ismac && export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 
