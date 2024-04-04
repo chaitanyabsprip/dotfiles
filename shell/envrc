@@ -28,7 +28,6 @@ export GOBIN="$GOPATH"/bin
 
 export FLUTTER_SDK_ROOT="$FVM_CACHE_PATH"/default
 export FVM_CACHE_PATH="$HOME"/programs/flutter
-export PATH="$PATH:$FVM_CACHE_PATH/default/bin"
 _islinux && export ANDROID_SDK_ROOT="$HOME/programs/android"
 _islinux && export ANDROID_HOME="$HOME/programs/android"
 case "$DISTRO" in
