@@ -4,7 +4,14 @@
 
 export FVM_CACHE_PATH="$HOME"/programs/flutter
 export PATH="$PATH:$FVM_CACHE_PATH/default/bin"
-sudo pacman -S clang ninja cmake pkg-config gtk3 --noconfirm
+
+case "$(distro | cut -d ':' -f1)" in
+Debian | Ubuntu) sudo apt install clang ninja-build cmake pkg-config libgtk-3-dev -y ;;
+CentOS | RHEL) yum -y install tmux ;;
+Arch\ Linux) sudo pacman -S clang ninja cmake pkg-config gtk3 --noconfirm ;;
+*) return 1 ;;
+esac
+
 curl -fsSL https://fvm.app/install.sh | bash
 type fvm >/dev/null 2>&1 && fvm install stable && fvm global stable
 flutter precache
