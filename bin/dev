@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# dev <image> <directory>
+
+if [ -z "$2" ] || [ -z "$1" ]; then
+	usage && exit 1
+fi
+
+image="$1"
+shift
+name="$1"
+dir="$name"
+shift
+echo "$name" | grep -q '/' && name="$(basename "$name")"
+
+# shellcheck disable=2086
+exec docker run -it --rm --privileged -h "$name" --name "$name" -v "$dir":"/root/$name" "$image" "$@"
