@@ -1,16 +1,13 @@
-[user]
-	name = Chaitanya Sharma
+[alias]
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+	sh = !"git log --oneline | fzf -m -d ' ' --preview \"git show --color=always {1}\" | cut -d ' ' -f 1 | xargs -n 9999"
+	root = rev-parse --show-toplevel
 
 [core]
 	editor = nvim
 	pager = delta
 	preloadIndex = true
 	; autocrlf = input
-
-[alias]
-	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
-	sh = !"git log --oneline | fzf -m -d ' ' --preview \"git show --color=always {1}\" | cut -d ' ' -f 1 | xargs -n 9999"
-	root = rev-parse --show-toplevel
 
 [delta]
 	line-numbers = true
@@ -20,13 +17,21 @@
 	side-by-side = false
 	file-modified-label = modified:
 
+[diff]
+	colorMoved = default
+
+[init]
+	defaultBranch = main
+
 [interactive]
 	diffFilter = delta --color-only
 
 [merge]
 	conflictstyle = diff3
 
-[diff]
-	colorMoved = default
-[init]
-	defaultBranch = main
+[push]
+	autoSetupRemote = true
+
+[user]
+	name = Chaitanya Sharma
+
