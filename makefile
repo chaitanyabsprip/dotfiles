@@ -31,27 +31,27 @@ all: base workspace
 	@mkdir ~/projects
 
 base: dockerfiles/base $(SOURCES) clean
-	@docker build -t "$(BASEIMAGE)" -f dockerfiles/base
+	@docker build -t $(if $(DEBUG),--progress=plain) "$(BASEIMAGE)" -t "chaitanyabsprip/$(BASEIMAGE)" -f dockerfiles/base .
 
 workspace: dockerfiles/workspace $(SOURCES) clean
-	@docker build -t "$(WORKSPACEIMAGE)" -t "chaitanyabsprip/$(WORKSPACEIMAGE)" -f dockerfiles/workspace
+	@docker build -t $(if $(DEBUG),--progress=plain) "$(WORKSPACEIMAGE)" -t "chaitanyabsprip/$(WORKSPACEIMAGE)" -f dockerfiles/workspac .
 
 golang-img: clean $(SOURCES)
-	@docker build -t "golang-$(IMAGESUFFIX)" -t "chaitanyabsprip/golang-$(IMAGESUFFIX)" -f dockerfiles/golang .
+	@docker build -t $(if $(DEBUG),--progress=plain) "golang-$(IMAGESUFFIX)" -t "chaitanyabsprip/golang-$(IMAGESUFFIX)" -f dockerfiles/golang .
 
 python-img: clean $(SOURCES)
-	@docker build -t "python-$(IMAGESUFFIX)" -t "chaitanyabsprip/python-$(IMAGESUFFIX)" -f dockerfiles/python .
+	@docker build -t $(if $(DEBUG),--progress=plain) "python-$(IMAGESUFFIX)" -t "chaitanyabsprip/python-$(IMAGESUFFIX)" -f dockerfiles/python .
 
 ts-img: clean $(SOURCES)
-	@docker build -t "ts-$(IMAGESUFFIX)" -t "chaitanyabsprip/ts-$(IMAGESUFFIX)" -f dockerfiles/typescript .
+	@docker build -t $(if $(DEBUG),--progress=plain) "ts-$(IMAGESUFFIX)" -t "chaitanyabsprip/ts-$(IMAGESUFFIX)" -f dockerfiles/typescript .
 
 flutter-img: clean $(SOURCES)
-	@docker build -t "flutter-$(IMAGESUFFIX)" -t "chaitanyabsprip/flutter-$(IMAGESUFFIX)" -f dockerfiles/flutter .
+	@docker build $(if $(DEBUG),--progress=plain) -t "flutter-$(IMAGESUFFIX)" -t "chaitanyabsprip/flutter-$(IMAGESUFFIX)" -f dockerfiles/flutter .
 
 clean:
-	@docker images -a | grep -wq "$(BASEIMAGE)" && \
-		docker rmi "$(BASEIMAGE)" 2>/dev/null || :
-	@docker images -a | grep -wq  "$(WORKSPACEIMAGE)" && \
-		docker rmi "$(WORKSPACEIMAGE)" 2>/dev/null || :
-	@docker images -a | grep -q -- "-$(IMAGESUFFIX)" | \
+	@docker images -a --format '{{.Repository}}' | grep -w "$(BASEIMAGE)" | \
+		xargs -I {} docker rmi {} 2>/dev/null || :
+	@docker images -a --format '{{.Repository}}' | grep -w  "$(WORKSPACEIMAGE)" | \
+		xargs -I {} docker rmi {} 2>/dev/null || :
+	@docker images -a --format '{{.Repository}}' | grep -- "-$(IMAGESUFFIX)" | \
 		xargs -I {} docker rmi {} 2>/dev/null || :

@@ -17,6 +17,7 @@ getmaxlen() {
 green() { printf '\033[0;32m%s\033[0m' "$*"; }
 red() { printf '\033[0;33m%s\033[0m' "$*"; }
 yellow() { printf '\033[0;31m%s\033[0m' "$*"; }
+white() { printf '\033[0;37m%s\033[0m' "$*"; }
 
 diff="$(git diff --color --stat HEAD 2>/dev/null)"
 gstatus="$(git -c color.status=always status -sb)"
@@ -36,6 +37,10 @@ echo "$files" | while read -r line; do
 	M)
 		change="$(yellow "$change")"
 		file="$(yellow "$line")"
+		;;
+	m)
+		change="$(white "$change")"
+		file="$(white "$line")"
 		;;
 	*) ;;
 	esac

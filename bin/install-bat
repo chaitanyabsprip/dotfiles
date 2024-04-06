@@ -6,7 +6,8 @@ pkg_install() {
 		sudo apt install bat -y
 		ln -sf "$(which batcat)" "$SCRIPTS"/bat
 		;;
-	Fedora | CentOS | RHEL) dnf install bat -y ;;
+	Fedora) dnf install bat -y ;;
+	CentOS | RHEL) ;;
 	openSUSE | SUSE) zypper install bat -y ;;
 	Arch\ Linux) sudo pacman -S --nocomfirm bat ;;
 	*) return 1 ;;

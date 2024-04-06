@@ -10,7 +10,8 @@ pkg_install() {
 		sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
 		sudo apt install -y eza
 		;;
-	Fedora | CentOS | RHEL) sudo dnf install eza -y ;;
+	Fedora) sudo dnf install eza -y ;;
+	CentOS | RHEL) ;;
 	openSUSE | SUSE)
 		sudo zypper ar https://download.opensuse.org/tumbleweed/repo/oss/ factory-oss
 		sudo zypper in eza -y

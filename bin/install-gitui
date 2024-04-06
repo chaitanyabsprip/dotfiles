@@ -3,7 +3,8 @@
 pkg_install() {
 	case "$DISTRO" in
 	Debian | Ubuntu) return 1 ;;
-	Fedora | CentOS | RHEL) sudo dnf install gitui -y ;;
+	Fedora) sudo dnf install gitui -y ;;
+	CentOS | RHEL) ;;
 	openSUSE | SUSE) sudo zypper install gitui -y ;;
 	Arch\ Linux) sudo pacman -S --noconfirm gitui ;;
 	*) return 1 ;;
