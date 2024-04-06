@@ -33,7 +33,7 @@ _islinux && export ANDROID_HOME="$HOME/programs/android"
 case "$DISTRO" in
 Debian | Ubuntu) export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 ;;
 Arch\ Linux) export JAVA_HOME=/usr/lib/jvm/java-17-openjdk ;;
-*) if _ismac; then JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME; else return 1; fi ;;
+*) if _ismac; then JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME; fi ;;
 esac
 _ismac && export ANDROID_SDK_ROOT="$HOME"/Library/Android/Sdk
 _ismac && export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
