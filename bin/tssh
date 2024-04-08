@@ -1,0 +1,8 @@
+#!/bin/sh
+
+tmux_tmpdir="$(find /tmp -name 'tmux*' -type d 2>/dev/null | head -n1)"
+TMUX="tmux -S "$tmux_tmpdir/ssh" $*"
+exec $TMUX
+$TMUX unbind-key "$OLDBIND"
+$TMUX set -g prefix "$NEWBIND"
+$TMUX bind "$NEWBIND" send-prefix
