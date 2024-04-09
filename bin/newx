@@ -16,4 +16,4 @@ fi
 
 printf "#!/bin/sh" >"${path}"
 chmod +x "${path}"
-exec vim +2 "${path}"
+exec nvim +2 "${path}"
