@@ -15,8 +15,8 @@ getmaxlen() {
 }
 
 green() { printf '\033[0;32m%s\033[0m' "$*"; }
-red() { printf '\033[0;33m%s\033[0m' "$*"; }
-yellow() { printf '\033[0;31m%s\033[0m' "$*"; }
+red() { printf '\033[0;31m%s\033[0m' "$*"; }
+yellow() { printf '\033[0;33m%s\033[0m' "$*"; }
 white() { printf '\033[0;37m%s\033[0m' "$*"; }
 
 diff="$(git diff --color --stat HEAD 2>/dev/null)"
