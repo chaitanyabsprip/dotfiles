@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# diffc - diff commands
+# - allows to call as: diffc 'command one' 'command two'
+#   instead of:        diff  <(command one) <(command two)
+#   (Just to save typing a few characters. Lol I'm a lazy programmer)
+diffc() {
+	if [ "$#" != "2" ]; then
+		echo "diffc requires two arguments"
+		return 1
+	fi
+
+	file1=$(mktemp)
+	file2=$(mktemp)
+	echo "$1" >"$file1"
+	echo "$2" >"$file2"
+	lines1=$(wc -l <"$file1")
+	lines2=$(wc -l <"$file2")
+	if [ "$lines1" -eq 1 ] && [ "$lines2" -eq 1 ]; then
+		word_diff=1
+	else
+		word_diff=0
+	fi
+	if [ "$word_diff" -eq 1 ]; then
+		git diff --word-diff=color --word-diff-regex=. "$file1" "$file2"
+	else
+		git diff "$file1" "$file2"
+	fi
+	rm "$file1" "$file2"
+}
+
+diffc "$@"
