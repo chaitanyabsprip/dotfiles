@@ -29,7 +29,7 @@ max_len="$(echo "$files" | getmaxlen)"
 echo "$files" | while read -r line; do
 	change="$(echo "$statuses" | grep -w "$line" | awk '{print $1}' | deansi)"
 	file="$line"
-	case "$(echo "$change" | deansi)" in
+	case "$change" in
 	\?\?)
 		change="$(green "$change")"
 		file="$(green "$line")"
@@ -37,6 +37,10 @@ echo "$files" | while read -r line; do
 	M)
 		change="$(yellow "$change")"
 		file="$(yellow "$line")"
+		;;
+	D)
+		change="$(red "$change")"
+		file="$(red "$line")"
 		;;
 	m)
 		change="$(white "$change")"
