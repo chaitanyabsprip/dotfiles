@@ -22,6 +22,10 @@ _have bat && alias cat='bat'
 
 md() { [ -z "$1" ] && exit 1 || mkdir -p "$1" && cd "$1" || return; }
 
+_have docker && alias d='docker'
+_have docker && alias dps='docker ps'
+_have docker && alias di='docker images'
+
 _have fd && _have fzf && edit() {
 	fd . -Ht f -d 6 -E .git -E .DS_Store |
 		fzf --height=20% --border --margin=0 --padding=0 \
