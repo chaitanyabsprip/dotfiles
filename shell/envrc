@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. /etc/os-release
+DISTRO=$NAME
 _ismac() { [ "$(uname)" = "Darwin" ]; }
 
 _islinux() { [ "$(uname -s | cut -c 1-5)" = "Linux" ]; }
