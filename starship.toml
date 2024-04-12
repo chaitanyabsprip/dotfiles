@@ -16,7 +16,6 @@ ${golang}\
 ${lua}\
 \
 ${username}\
-${hostname}\
 ${directory}\
 ${git_branch}\
 ${git_state}\
