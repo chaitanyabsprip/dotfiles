@@ -31,3 +31,9 @@ _have fd && _have fzf && edit() {
 		fzf --height=20% --border --margin=0 --padding=0 \
 			--bind='enter:become(nvim {})'
 }
+
+_have fd && _have workdirs && j() {
+	program="${1:-cd}"
+	selected="$(workdirs | fzf --height=20% --border --margin=0 --padding=0)"
+	$program "$selected"
+}
