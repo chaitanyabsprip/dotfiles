@@ -10,15 +10,7 @@ if [ $# -eq 1 ]; then
 	selected=$1
 else
 	selected=$(
-		(
-			fd . -HIatd -d 1 -E .git \
-				~/programs \
-				~/projects
-			fd '(dotfiles|projects|programs)' ~ -atd -d 1
-			echo "$SCRIPTS"
-			echo "$DOWNLOADS"
-			fd . -HIad 1 -E .git ~/.config
-		) | sort -u | fzf-tmux -p --border \
+		workdirs | fzf-tmux -p --border \
 			--border-label=" Sessionizer " \
 			--border-label-pos=6:bottom
 	)
