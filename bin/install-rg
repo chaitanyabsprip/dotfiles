@@ -31,6 +31,7 @@ gh_install() {
 	tar -xf rg*.tar.gz && mv rg*/rg_* "$SCRIPTS"/rg && rm -r rg* install-man-page.sh
 }
 
+SCRIPTS="${SCRIPTS:-$HOME/.config/bin}"
 DISTRO=$(distro | cut -d ':' -f1)
 
 inprogress Installing rg

@@ -3,8 +3,9 @@
 pkg_install() {
 	case "$DISTRO" in
 	Debian | Ubuntu)
-		sudo apt install fd-find -y &&
-			ln -sf "$(which fdfind)" "$SCRIPTS"/fd
+		sudo apt install fd-find -y || return 1
+		ln -sf "$(which fdfind)" "${SCRIPTS:-$HOME/.config/bin}"/fd
+		ls -la "$SCRIPTS"/fd
 		;;
 	Fedora)
 		sudo dnf install fd-find -y &&
@@ -37,6 +38,7 @@ gh_install() {
 
 }
 
+SCRIPTS="${SCRIPTS:-$HOME/.config/bin}"
 DISTRO=$(distro | cut -d ':' -f1)
 
 inprogress "Installing fd"

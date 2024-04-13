@@ -35,6 +35,7 @@ gh_install() {
 	cd .. && rm -d temp
 }
 
+SCRIPTS="${SCRIPTS:-$HOME/.config/bin}"
 DISTRO=$(distro | cut -d ':' -f1)
 
 inprogress Installing gitui

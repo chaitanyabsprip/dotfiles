@@ -29,6 +29,7 @@ gh_install() {
 
 }
 
+SCRIPTS="${SCRIPTS:-$HOME/.config/bin}"
 DISTRO=$(distro | cut -d ':' -f1)
 
 inprogress Installing jq

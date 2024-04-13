@@ -28,7 +28,8 @@ gh_install() {
 	tar -xf yq*.tar.gz && mv yq*/yq_* "$SCRIPTS"/yq && rm -r yq* install-man-page.sh
 }
 
-DISTRO=$(distro | cut -d ':' -f1)
+SCRIPTS="${SCRIPTS:-$HOME/.config/bin}"
+DISTRO="$(distro | cut -d ':' -f1)"
 
 inprogress Installing yq
 
