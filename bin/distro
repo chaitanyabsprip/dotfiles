@@ -1,20 +1,16 @@
-#!/bin/bash
+#!/bin/sh
 
-# Check for the latest standard /etc/os-release file
 if [ -f /etc/os-release ]; then
-	# Use source to avoid subshell for readability
-	source /etc/os-release
+	# shellcheck disable=SC1091
+	. /etc/os-release
 	DISTRO=$NAME
 	VERSION=$VERSION_ID
-# Fallback to LSB standard for older systems
 elif type lsb_release >/dev/null 2>&1; then
 	DISTRO=$(lsb_release -si)
 	VERSION=$(lsb_release -sr)
-# Fallback to uname for generic info (not ideal for distro detection)
 else
 	DISTRO=$(uname -s)
 	VERSION=$(uname -r)
 fi
 
-# Print the detected distro and version (or generic info)
 echo "$DISTRO:$VERSION"
