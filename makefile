@@ -30,28 +30,46 @@ help:
 all: base workspace
 	@mkdir ~/projects
 
-base: dockerfiles/base $(SOURCES) clean
-	@docker build -t $(if $(DEBUG),--progress=plain) "$(BASEIMAGE)" -t "chaitanyabsprip/$(BASEIMAGE)" -f dockerfiles/base .
+base: dockerfiles/base $(SOURCES) clean-base
+	@docker build $(if $(DEBUG),--progress=plain) -t "$(BASEIMAGE)" -t "chaitanyabsprip/$(BASEIMAGE)" -f dockerfiles/base .
 
-workspace: dockerfiles/workspace $(SOURCES) clean
-	@docker build -t $(if $(DEBUG),--progress=plain) "$(WORKSPACEIMAGE)" -t "chaitanyabsprip/$(WORKSPACEIMAGE)" -f dockerfiles/workspac .
-
-golang-img: clean $(SOURCES)
-	@docker build -t $(if $(DEBUG),--progress=plain) "golang-$(IMAGESUFFIX)" -t "chaitanyabsprip/golang-$(IMAGESUFFIX)" -f dockerfiles/golang .
-
-python-img: clean $(SOURCES)
-	@docker build -t $(if $(DEBUG),--progress=plain) "python-$(IMAGESUFFIX)" -t "chaitanyabsprip/python-$(IMAGESUFFIX)" -f dockerfiles/python .
-
-ts-img: clean $(SOURCES)
-	@docker build -t $(if $(DEBUG),--progress=plain) "ts-$(IMAGESUFFIX)" -t "chaitanyabsprip/ts-$(IMAGESUFFIX)" -f dockerfiles/typescript .
-
-flutter-img: clean $(SOURCES)
-	@docker build $(if $(DEBUG),--progress=plain) -t "flutter-$(IMAGESUFFIX)" -t "chaitanyabsprip/flutter-$(IMAGESUFFIX)" -f dockerfiles/flutter .
-
-clean:
+clean-base:
 	@docker images -a --format '{{.Repository}}' | grep -w "$(BASEIMAGE)" | \
 		xargs -I {} docker rmi {} 2>/dev/null || :
+
+workspace: dockerfiles/workspace $(SOURCES) clean-workspace
+	@docker build$(if $(DEBUG),--progress=plain) -t "$(WORKSPACEIMAGE)" -t "chaitanyabsprip/$(WORKSPACEIMAGE)" -f dockerfiles/workspac .
+
+clean-workspace:
 	@docker images -a --format '{{.Repository}}' | grep -w  "$(WORKSPACEIMAGE)" | \
 		xargs -I {} docker rmi {} 2>/dev/null || :
-	@docker images -a --format '{{.Repository}}' | grep -- "-$(IMAGESUFFIX)" | \
+
+golang-img: dockerfiles/golang $(SOURCES) clean-golang
+	@docker build $(if $(DEBUG),--progress=plain) -t "golang-$(IMAGESUFFIX)" -t "chaitanyabsprip/golang-$(IMAGESUFFIX)" -f dockerfiles/golang .
+
+clean-golang:
+	@docker images -a --format '{{.Repository}}' | grep -- "golang-$(IMAGESUFFIX)" | \
 		xargs -I {} docker rmi {} 2>/dev/null || :
+
+python-img: dockerfiles/python $(SOURCES) clean-python
+	@docker build $(if $(DEBUG),--progress=plain) -t "python-$(IMAGESUFFIX)" -t "chaitanyabsprip/python-$(IMAGESUFFIX)" -f dockerfiles/python .
+
+clean-python:
+	@docker images -a --format '{{.Repository}}' | grep -- "python-$(IMAGESUFFIX)" | \
+		xargs -I {} docker rmi {} 2>/dev/null || :
+
+node-img: dockerfiles/node $(SOURCES) clean-node
+	@docker build $(if $(DEBUG),--progress=plain) -t "node-$(IMAGESUFFIX)" -t "chaitanyabsprip/node-$(IMAGESUFFIX)" -f dockerfiles/node .
+
+clean-node:
+	@docker images -a --format '{{.Repository}}' | grep -- "node-$(IMAGESUFFIX)" | \
+		xargs -I {} docker rmi {} 2>/dev/null || :
+
+flutter-img: dockerfiles/flutter $(SOURCES) clean-flutter
+	@docker build $(if $(DEBUG),--progress=plain) -t "flutter-$(IMAGESUFFIX)" -t "chaitanyabsprip/flutter-$(IMAGESUFFIX)" -f dockerfiles/flutter .
+
+clean-flutter:
+	@docker images -a --format '{{.Repository}}' | grep -- "flutter-$(IMAGESUFFIX)" | \
+		xargs -I {} docker rmi {} 2>/dev/null || :
+
+clean: clean-flutter clean-ts clean-python clean-golang clean-base clean-workspace
