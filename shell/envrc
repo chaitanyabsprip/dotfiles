@@ -1,10 +1,27 @@
 #!/bin/sh
 
-. /etc/os-release
-DISTRO=$NAME
+_distro() {
+	if [ -f /etc/os-release ]; then
+		# shellcheck disable=SC1091
+		. /etc/os-release
+		DISTRO=$NAME
+		VERSION=$VERSION_ID
+	elif type lsb_release >/dev/null 2>&1; then
+		DISTRO=$(lsb_release -si)
+		VERSION=$(lsb_release -sr)
+	else
+		DISTRO=$(uname -s)
+		VERSION=$(uname -r)
+	fi
+
+	echo "$DISTRO:$VERSION"
+}
+
 _ismac() { [ "$(uname)" = "Darwin" ]; }
 
 _islinux() { [ "$(uname -s | cut -c 1-5)" = "Linux" ]; }
+
+DISTRO="$(_distro | cut -d : -f1)"
 
 export NOTESPATH="$HOME"/projects/notes
 export DOWNLOADS="$HOME/downloads"
