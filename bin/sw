@@ -1,14 +1,22 @@
 #!/bin/sh
 
 WALLPAPER="$(realpath "$1")"
-SETWALL_EXE=hyprctl
 setwall_hyprpaper() {
 	ln -sf "$WALLPAPER" ~/.wallpaper
-	($SETWALL_EXE hyprpaper unload "$WALLPAPER" && hyprctl hyprpaper preload "$WALLPAPER") 2>&1
+	(hyprctl hyprpaper unload "$WALLPAPER" && hyprctl hyprpaper preload "$WALLPAPER") 2>&1
 	# for now brute-force on all known monitors, because monitor wildcard doesn't work right
-	$SETWALL_EXE monitors -j | jq -r '.[0].name' | while read -r m; do
-		$SETWALL_EXE hyprpaper wallpaper "$m,$WALLPAPER" 2>&1
+	hyprctl monitors -j | jq -r '.[0].name' | while read -r m; do
+		hyprctl hyprpaper wallpaper "$m,$WALLPAPER" 2>&1
 	done
 }
 
-setwall_hyprpaper "$1"
+setwall_swww() {
+	ln -sf "$WALLPAPER" ~/.wallpaper
+	swww img ~/.wallpaper
+}
+
+if pgrep -fa hyprpaper >/dev/null; then
+	setwall_hyprpaper "$1"
+else
+	setwall_swww "$1"
+fi
