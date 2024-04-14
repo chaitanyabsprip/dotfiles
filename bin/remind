@@ -28,14 +28,13 @@ remind() {
 	wait="$2"
 	if echo "$wait" | grep -E "^[0-9]+$" >/dev/null; then
 		sleep "$wait"
-		terminal-notifier -title "Reminder" -message "$message" -sound default ||
-			say "$message"
+		terminal-notifier -title "Reminder" -message "$message" -sound default >/dev/null 2>&1 ||
+			say "$message" >/dev/null 2>&1 ||
+			notify-send -a Remind -u normal -t 5000 "Reminder" "$message" >/dev/null 2>&1
 	else
 		echo "This program accepts only an integer as an argument"
-	fi
+	fi &
 }
-
-# ---
 
 [ "$1" = "--help" ] && show_help && exit 0
 
