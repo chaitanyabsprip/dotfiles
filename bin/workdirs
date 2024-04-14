@@ -4,12 +4,13 @@ depends fd
 set +e
 (
 	fd . -HIatd -d 1 -E .git \
-		~/programs \
-		~/projects
-	fd . -HIad 1 -E .git ~/.config
-	echo "$HOME"/dotfiles
-	echo "$HOME"/projects
-	echo "$HOME"/programs
-	echo "$SCRIPTS"
-	echo "$DOWNLOADS"
+		"$HOME/programs/" \
+		"$HOME/projects/"
+	fd . -HIad 1 -td -tf -E .git "$HOME/.config/"
+	echo "$HOME/dotfiles/"
+	echo "$HOME/projects/"
+	echo "$HOME/programs/"
+	echo "$SCRIPTS/"
+	echo "$DOWNLOADS/"
+	echo "$HOME/pictures/"
 ) | sort -u
