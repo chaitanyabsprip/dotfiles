@@ -8,6 +8,7 @@
 
 [column]
 	ui = always
+	sort = -committerdate
 
 [core]
 	editor = nvim
