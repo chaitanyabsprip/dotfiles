@@ -3,6 +3,12 @@
 	sh = !"git log --oneline | fzf -m -d ' ' --preview \"git show --color=always {1}\" | cut -d ' ' -f 1 | xargs -n 9999"
 	root = rev-parse --show-toplevel
 
+[blame]
+	coloring = highlightRecent
+
+[column]
+	ui = always
+
 [core]
 	editor = nvim
 	pager = delta
@@ -19,6 +25,13 @@
 
 [diff]
 	colorMoved = default
+	colorMovedWs = allow-indentation-change
+
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
+	parallel = 0
 
 [init]
 	defaultBranch = main
@@ -26,12 +39,19 @@
 [interactive]
 	diffFilter = delta --color-only
 
+[log]
+	follow = true
+
 [merge]
 	conflictstyle = diff3
 
 [push]
 	autoSetupRemote = true
 
+[status]
+	showStash = true
+
 [user]
 	name = Chaitanya Sharma
+	useConfigOnly = true
 
