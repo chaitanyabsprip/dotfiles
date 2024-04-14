@@ -22,6 +22,8 @@ getoptions() {
 	done
 }
 
+[ -z "$1" ] && show_help && exit 1
+
 emailfile="$HOME/.emails"
 
 [ -f "$emailfile" ] || warning "Warning: Email file '$emailfile' does not exist."
