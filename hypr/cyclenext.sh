@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if hyprctl activewindow | grep -q grouped | grep -wq 'grouped: 0'; then
+if hyprctl activewindow | grep grouped | grep -wq 'grouped: 0'; then
 	if [ -z "$1" ]; then
 		hyprctl dispatch cyclenext >/dev/null
 	else
