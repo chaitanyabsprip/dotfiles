@@ -10,8 +10,8 @@ if [ $# -eq 1 ]; then
 	selected=$1
 else
 	selected=$(
-		workdirs | fzf-tmux -p --border \
-			--border-label=" Sessionizer " \
+		workdirs | sed "s,$HOME/\.\?,," | fzf-tmux -p --border \
+			--border-label=' Sessionizer ' \
 			--border-label-pos=6:bottom
 	)
 fi
@@ -20,6 +20,7 @@ if [ -z "$selected" ]; then
 	exit 0
 fi
 
+selected="$(workdirs | grep -w "$selected$")"
 selected_name=$(basename "$selected" | tr . _)
 tmux_running=$(pgrep tmux)
 
