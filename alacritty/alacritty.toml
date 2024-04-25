@@ -6,6 +6,11 @@ draw_bold_text_with_bright_colors = true
 
 [cursor.style]
 shape = "Block"
+blinking = "Never"
+
+[cursor.vi_mode_style]
+shape = "Block"
+blinking = "Never"
 
 [env]
 LANG = "en_US.UTF-8"
