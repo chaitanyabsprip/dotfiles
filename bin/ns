@@ -55,9 +55,7 @@ notes() {
 		case $opt in
 		h) show_help && exit 0 ;;
 		e)
-			# Open file with default editor
-			# shellcheck disable=2153
-			/usr/bin/env "$EDITOR" "${filepath:-$defaultfile}"
+			$EDITOR "${filepath:-$defaultfile}"
 			exit 0
 			;;
 		f)
