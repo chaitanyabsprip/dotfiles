@@ -4,8 +4,8 @@ depends fd
 set +e
 (
 	fd . -HIatd -d 1 -E .git \
-		"$HOME/programs/" \
-		"$HOME/projects/"
+		"$HOME/programs/"
+	# "$HOME/projects/" \
 	fd . -HIad 1 -td -E .git \
 		"$HOME/.config/" \
 		"$HOME/dotfiles/"
@@ -14,5 +14,7 @@ set +e
 	echo "$HOME/programs/"
 	echo "$SCRIPTS/"
 	echo "$DOWNLOADS/"
+	echo "$NOTESPATH"
 	echo "$HOME/pictures/"
+	worktrees
 ) | sort -u

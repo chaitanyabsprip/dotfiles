@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+depends fd
+set +e
+(
+	fd '^.git$' -HIatf -d 4 -E node_modules \
+		"$HOME/programs/" \
+		"$HOME/projects/" | xargs -I {} dirname {}
+	fd 'root' -HIatd -d 3 \
+		"$HOME/programs/" \
+		"$HOME/projects/"
+) | sort -u
