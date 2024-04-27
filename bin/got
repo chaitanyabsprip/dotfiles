@@ -7,5 +7,5 @@
 # running real-time evaluations during development)
 
 clear
-got "$@"
-onchange got "$@"
+go test "$@"
+onchange sh -c "clear; go test $*"
