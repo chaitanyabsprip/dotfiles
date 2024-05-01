@@ -36,9 +36,10 @@ unset conf
 # key-bindings
 autoload -Uz edit-command-line
 zle -N edit-command-line
+bindkey '^v' edit-command-line
+bindkey -s ^k '^uwd\n'
 
 # initialisations
-have brew && zsh-defer eval "$(brew shellenv | grep -v 'export PATH')"
 have rbenv && zsh-defer eval "$(rbenv init - zsh)"
 
 # function cd() {
