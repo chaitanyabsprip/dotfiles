@@ -14,7 +14,7 @@ set +e
 	echo "$HOME/programs/"
 	echo "$SCRIPTS/"
 	echo "$DOWNLOADS/"
-	echo "$NOTESPATH"
+	echo "$NOTESPATH/"
 	echo "$HOME/pictures/"
 	worktrees
 ) | sort -u
