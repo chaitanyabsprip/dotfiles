@@ -23,7 +23,7 @@ _islinux() { [ "$(uname -s | cut -c 1-5)" = "Linux" ]; }
 
 DISTRO="$(_distro | cut -d : -f1)"
 
-export NOTESPATH="$HOME"/projects/notes
+export NOTESPATH="$HOME"/projects/library
 export DOWNLOADS="$HOME/downloads"
 export SCRIPTS="$HOME/.local/bin"
 export DOTFILES="$HOME/dotfiles"
