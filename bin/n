@@ -224,7 +224,6 @@ daily() {
 MODE='dump'
 QUIET=false
 EDIT=false
-NOTESPATH="$HOME/projects/notes"
 while getopts 'hqbdtelDc' opt; do
 	case "$opt" in
 	h) show_help ;;

@@ -25,7 +25,7 @@ preview() {
 		echo "$content" | cat
 }
 
-defaultfile=$HOME/projects/notes/notes.dump.md
+defaultfile=$NOTESPATH/notes.dump.md
 
 # if ever you want to match content from one heading to another use
 # (?:^|\n)#{1,2}\s[^\n]*\n(.*?)(?=\n##?\s|$) this regex
