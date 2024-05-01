@@ -9,18 +9,23 @@ _depends fzf-tmux
 if [ $# -eq 1 ]; then
 	selected=$1
 else
-	selected=$(fd .md ~/projects/notes | fzf-tmux -p)
+	selected=$(
+		fd .md "$NOTESPATH" |
+			sed "s,$NOTESPATH/,," |
+			fzf-tmux -p
+	)
 fi
 
 if [ -z "$selected" ]; then
 	exit 0
 fi
 
+selected="$(fd .md "$NOTESPATH" | grep -w "$selected")"
+
 if tmux has-session -t notes 2>/dev/null; then
-	filename=$(basename "$selected")
 	tmux switch-client -t notes
-	tmux new-window -c ~/projects/notes "/bin/dash -c 'nvim $selected'; zsh"
+	tmux new-window -c "$NOTESPATH" "zsh -lc 'nvim $selected'"
 else
-	tmux new-session -d -s notes -c ~/projects/notes "/bin/dash -c 'nvim $selected'; zsh"
+	tmux new-session -d -s notes -c "$NOTESPATH" "zsh -lc 'nvim $selected'; zsh"
 	tmux switch-client -t notes
 fi
