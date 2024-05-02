@@ -39,7 +39,7 @@ sessionizer() {
 			newpath=$1
 		else
 			newpath=$(
-				workdirs | sed "s,$HOME/\.\?,," | fzf-tmux -p --border \
+				workdirs | sed "s,$HOME/\.\?,," | fzf-tmux -p 30% --border \
 					--border-label=' Sessionizer ' \
 					--border-label-pos=6:bottom
 			)
