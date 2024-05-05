@@ -1,5 +1,12 @@
 #!/bin/sh
 
+strip_home() {
+	if [ "$1" = "-s" ]; then
+		sed "s|$HOME/\.||;s|$HOME/||"
+	fi
+
+}
+
 set -e
 depends fd
 set +e
@@ -10,4 +17,4 @@ set +e
 	fd 'root' -HIatd -d 3 \
 		"$HOME/programs/" \
 		"$HOME/projects/"
-) | sort -u
+) | sort -u | sed 's|/$||' | strip_home "$1"

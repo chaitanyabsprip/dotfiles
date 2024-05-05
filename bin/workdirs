@@ -6,8 +6,6 @@ set +e
 strip_home() {
 	if [ "$1" = "-s" ]; then
 		sed "s|$HOME/\.||;s|$HOME/||"
-	else
-		cat
 	fi
 }
 
@@ -26,4 +24,4 @@ strip_home() {
 	echo "$NOTESPATH/"
 	echo "$HOME/pictures/"
 	worktrees
-) | sort -u | strip_home "$1"
+) | sort -u | sed 's|/$||' | strip_home "$1"
