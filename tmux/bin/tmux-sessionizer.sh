@@ -12,7 +12,7 @@ sessionizer() {
 		[ -z "$newpath" ] && exit 0
 		session_name="$(basename "$newpath")"
 
-		if is_tmux_running; then
+		if tmux_inactive; then
 			session_name="$(basename "$newpath")"
 			tmux new-session -s "$session_name" -c "$newpath"
 			exit 0
@@ -46,16 +46,16 @@ EOF
 			)
 		fi
 		[ -z "$newpath" ] && exit 0
-		workdirs | grep -w "$newpath"
+		workdirs | grep -w "$newpath$"
 	}
 
-	is_tmux_running() {
+	tmux_inactive() {
 		tmux_running=$(pgrep tmux)
 		[ -z "$TMUX" ] && [ -z "$tmux_running" ]
 	}
 
 	session_exists() {
-		list_sessions | grep -wq "$1"
+		list_sessions | grep -wq "$1$"
 	}
 
 	list_sessions() {
@@ -67,8 +67,7 @@ EOF
 		p2="$2"
 		name1="$(basename "$p1")"
 		name2="$(basename "$p2")"
-
-		while [ "$name1" = "$name2" ] || [ -z "$name1" ] || [ -z "$name2" ]; do
+		while [ "$name1" = "$name2" ] && [ -n "$name1" ] && [ -n "$name2" ]; do
 			p1=$(dirname "$p1")
 			p2=$(dirname "$p2")
 			name1="$(basename "$p1")/$(basename "$name1")"
