@@ -6,6 +6,8 @@ set +e
 strip_home() {
 	if [ "$1" = "-s" ]; then
 		sed "s|$HOME/\.||;s|$HOME/||"
+	else
+		cat
 	fi
 }
 
