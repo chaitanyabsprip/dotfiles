@@ -2,6 +2,15 @@
 set -e
 depends fd
 set +e
+
+strip_home() {
+	if [ "$1" = "-s" ]; then
+		sed "s|$HOME/\.||;s|$HOME/||"
+	else
+		cat
+	fi
+}
+
 (
 	fd . -HIatd -d 1 -E .git \
 		"$HOME/projects/" \
@@ -17,4 +26,4 @@ set +e
 	echo "$NOTESPATH/"
 	echo "$HOME/pictures/"
 	worktrees
-) | sort -u
+) | sort -u | strip_home "$1"
