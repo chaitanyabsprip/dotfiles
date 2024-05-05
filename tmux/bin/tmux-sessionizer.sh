@@ -23,11 +23,12 @@ sessionizer() {
 			exit 0
 		fi
 
+		oldpath="$(list_sessions | grep -w "$session_name" | cut -d '=' -f 2)"
+		read -r session_name old_session_new_name <<EOF
+$(diffp "$newpath" "$oldpath")
+EOF
 		if session_exists "$session_name"; then
-			oldpath="$(list_sessions | grep -w "$session_name" | cut -d '=' -f 2)"
-			old_session_new_name="$(basename "$(dirname "$oldpath")")/$(basename "$oldpath")"
 			tmux rename-session -t "$session_name" "$old_session_new_name"
-			session_name="$(basename "$(dirname "$newpath")")/$(basename "$newpath")"
 		fi
 
 		tmux new-session -ds "$session_name" -c "$newpath"
@@ -59,6 +60,21 @@ sessionizer() {
 
 	list_sessions() {
 		tmux ls -F '#{session_name}=#{session_path}'
+	}
+
+	diffp() {
+		p1="$1"
+		p2="$2"
+		name1="$(basename "$p1")"
+		name2="$(basename "$p2")"
+
+		while [ "$name1" = "$name2" ] || [ -z "$name1" ] || [ -z "$name2" ]; do
+			p1=$(dirname "$p1")
+			p2=$(dirname "$p2")
+			name1="$(basename "$p1")/$(basename "$name1")"
+			name2="$(basename "$p2")/$(basename "$name2")"
+		done
+		echo "$name1 $name2"
 	}
 
 	main "$@"
