@@ -23,9 +23,9 @@ if [ $# -eq 1 ]; then
 	selected=$1
 else
 	selected=$(
-		tmux ls -F "#{session_name}" | fzf-tmux -p 90%,70% --reverse \
+		tmux ls -F "#{session_name}" | fzf-tmux -p 80%,90% \
 			--preview="$HOME"'/.config/tmux/bin/tmux-fzf-preview.sh -p {}' \
-			--preview-window=right,90%
+			--preview-window=top,85%
 	)
 fi
 
