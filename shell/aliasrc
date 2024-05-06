@@ -35,8 +35,8 @@ _have fd && _have fzf && {
 	_have workdirs && {
 		j() {
 			program="${1:-cd}"
-			selected="$(workdirs | fzf --height=20% --border --margin=0 --padding=0)"
-			$program "$selected"
+			selected="$(workdirs -s | fzf --height=20% --border --margin=0 --padding=0)"
+			$program "$(workdirs | grep -w "$selected$")"
 		}
 		alias wd='j cd'
 	}
