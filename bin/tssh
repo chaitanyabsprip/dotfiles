@@ -1,5 +1,6 @@
 #!/bin/sh
 
+[ -z "$SSH_TTY" ] && warning Not in a ssh environment && exit
 tmux_tmpdir="$(find /tmp -name 'tmux*' -type d 2>/dev/null | head -n1)"
 TMUX="tmux -S $tmux_tmpdir/ssh"
 $TMUX new -sd home
