@@ -59,7 +59,7 @@ EOF
 	}
 
 	list_sessions() {
-		tmux ls -F '#{session_name}=#{session_path}'
+		tmux ls -F '#{session_name}=#{session_path}' | grep -v '^scratch='
 	}
 
 	diffp() {
