@@ -11,23 +11,22 @@ sessionizer() {
 		newpath="$(select_path "$@")"
 		[ -z "$newpath" ] && exit 0
 		session_name="$(basename "$newpath")"
+		session_entry="$session_name=$newpath"
 
 		if tmux_inactive; then
 			session_name="$(basename "$newpath")"
-			tmux new-session -s "$session_name" -c "$newpath"
-			exit 0
+			exec tmux new-session -s "$session_name" -c "$newpath"
 		fi
 
-		if session_exists "$newpath$" && session_exists "^$session_name="; then
-			tmux switch-client -t "$(list_sessions | grep -w "$newpath" | cut -d '=' -f 1)"
-			exit 0
+		if sessions_has_match "^$session_entry$"; then
+			exec tmux switch-client -t "$(list_sessions | grep -w "$newpath" | cut -d '=' -f 1)"
 		fi
 
 		oldpath="$(list_sessions | grep -w "$session_name" | cut -d '=' -f 2)"
 		read -r session_name old_session_new_name <<EOF
 $(diffp "$newpath" "$oldpath")
 EOF
-		if session_exists "$session_name"; then
+		if sessions_has_match "$session_name"; then
 			tmux rename-session -t "$session_name" "$old_session_new_name"
 		fi
 
@@ -54,8 +53,8 @@ EOF
 		[ -z "$TMUX" ] && [ -z "$tmux_running" ]
 	}
 
-	session_exists() {
-		list_sessions | grep -wq "$1$"
+	sessions_has_match() {
+		list_sessions | grep -wq "$1"
 	}
 
 	list_sessions() {
@@ -79,4 +78,6 @@ EOF
 	main "$@"
 }
 
+set -x
 sessionizer "$@"
+set +x
