@@ -18,7 +18,7 @@ sessionizer() {
 			exit 0
 		fi
 
-		if session_exists "$newpath" && session_exists "$session_name"; then
+		if session_exists "$newpath$" && session_exists "^$session_name="; then
 			tmux switch-client -t "$(list_sessions | grep -w "$newpath" | cut -d '=' -f 1)"
 			exit 0
 		fi
