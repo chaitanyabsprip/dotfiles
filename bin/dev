@@ -4,15 +4,15 @@ usage() {
 	echo "Usage: $0 <image> <directory>"
 }
 
-if [ -z "$2" ] || [ -z "$1" ]; then
+if [ -z "$1" ]; then
 	usage && exit 1
 fi
 
 image="$1"
-shift
-name="$1"
+[ -n "$1" ] && shift
+name="${1:-"$(pwd)"}"
 dir="$name"
-shift
+[ -n "$1" ] && shift
 echo "$name" | grep -q '/' && name="$(basename "$name")"
 
 exec docker run -it --rm --privileged -h "$name" --name "$name" -v "$dir":"/root/$name" "$image" "$@"
