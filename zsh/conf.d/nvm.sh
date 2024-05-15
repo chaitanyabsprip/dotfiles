@@ -21,3 +21,8 @@ npm() {
 	lazynvm
 	npm "$@"
 }
+
+nvim() {
+	lazynvm
+	nvim "$@"
+}

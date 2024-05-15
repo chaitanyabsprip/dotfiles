@@ -26,3 +26,8 @@ pip3() {
 	lazypyenv
 	pip3 "$@"
 }
+
+nvim() {
+	lazypyenv
+	nvim "$@"
+}
