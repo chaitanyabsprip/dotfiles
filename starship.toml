@@ -11,15 +11,11 @@
 # ${git_status}\
 format = """
 ${character}\
-${dart}\
 ${golang}\
 ${lua}\
 \
 ${username}\
 ${directory}\
-${git_branch}\
-${git_state}\
-${git_commit}\
 \
 ${fill}\
 ${jobs}\
@@ -38,7 +34,7 @@ ${character} \
 palette = 'rosepine'
 
 [character]
-format="$symbol"
+format = "$symbol"
 success_symbol = "[▍](bold fg:green)"
 error_symbol = "[▍](bold fg:red)"
 
@@ -49,7 +45,7 @@ disabled = false
 [directory]
 format = "[ $path]($style)[$read_only]($read_only_style)[ ]($style)"
 home_symbol = "home"
-truncation_length=1
+truncation_length = 1
 style = "bold fg:cyan bg:hilow"
 
 [fill]
@@ -286,4 +282,3 @@ disabled = true
 disabled = true
 [zig]
 disabled = false
-
