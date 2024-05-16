@@ -18,7 +18,7 @@ sessionizer() {
 		fi
 
 		if sessions_has_match "=$newpath$"; then
-			exec tmux switch-client -t "$(list_sessions | grep -w "=$newpath$" | cut -d '=' -f 1)"
+			exec tmux switch-client -t "$(list_sessions | grep "=$newpath$" | cut -d '=' -f 1)"
 		fi
 
 		oldpath="$(list_sessions | grep -w "$session_name" | cut -d '=' -f 2)"
