@@ -1,7 +1,7 @@
 #!/bin/sh
 
 lazypyenv() {
-	unset -f python pip python3 pip3
+	unset -f python pip python3 pip3 nvim
 	export PYENV_ROOT="$HOME/.pyenv"
 	[ -d "$PYENV_ROOT"/bin ] && export PATH="$PYENV_ROOT/bin:$PATH" &&
 		eval "$(pyenv init -)"

@@ -7,7 +7,6 @@ export PATH="$PATH:$FVM_CACHE_PATH/default/bin"
 
 case "$(distro | cut -d ':' -f1)" in
 Debian | Ubuntu) sudo apt install clang ninja-build cmake pkg-config libgtk-3-dev -y ;;
-CentOS | RHEL) yum -y install tmux ;;
 Arch\ Linux) sudo pacman -S clang ninja cmake pkg-config gtk3 --noconfirm ;;
 *) return 1 ;;
 esac
