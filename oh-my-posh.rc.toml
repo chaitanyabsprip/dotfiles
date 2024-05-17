@@ -40,39 +40,38 @@ template = "▍"
 always_enabled = true
 
 [[blocks.segments]]
+type = "battery"
+style = "plain"
+template = "{{ if lt .Percentage 5 }}█{{end}}"
+foreground = "red"
+background = "p:hilow"
+
+[[blocks.segments]]
 type = "path"
 style = "plain"
 foreground = "cyan"
 background = "p:hilow"
-template = " <b>{{ .Folder }}</b> "
+template = "<b>{{ if eq .PWD \"~\" }}home {{ else }}{{ .Folder }} {{ end }}</b>"
 
 [blocks.segments.properties]
 style = "folder"
 home_icon = "home"
 
-[[blocks.segments]]
-type = "git"
-style = "plain"
-background = "p:hilow"
-foreground = "black"
-template = "<p:himed>on</> {{ if not .Detached }} <b>{{ .HEAD }} {{ .Detached }} </> {{ end }} "
-
-[blocks.segments.properties]
-branch_icon = " "
-tag_icon = "🏷  "
-
-# second line status symbol
 [[blocks]]
-type = "prompt"
-newline = true
-alignment = "left"
+type = "rprompt"
+alignment = "right"
+overflow = "hide"
 
 [[blocks.segments]]
-type = "status"
+type = "shell"
 style = "plain"
-foreground = "green"
-foreground_templates = ["{{ if .Error }}red{{end}}"]
-template = "▍"
+template = " {{ .Name }} {{ .SHLVL }} "
+background = "p:hilow"
+foreground = "p:himed"
 
-[blocks.segments.properties]
-always_enabled = true
+[[blocks.segments]]
+type = "session"
+style = "plain"
+template = "{{ if .SSHSession }} \ueba9 {{ .UserName }}@{{ .HostName }} {{ end }}"
+background = "p:himed"
+foreground = "p:gold"
