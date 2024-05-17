@@ -5,6 +5,7 @@ SAVEHIST=200000
 HISTFILE=~/.config/zsh/.zsh_history
 HISTFILESIZE=1000000000
 HISTSIZE=1000000000
+ZLE_RPROMPT_INDENT=0
 
 have oh-my-posh && eval "$(oh-my-posh init zsh -c ~/dotfiles/oh-my-posh.rc.toml)"
 
@@ -41,6 +42,7 @@ bindkey -s ^k '^uj\n'
 
 # initialisations
 have rbenv && zsh-defer eval "$(rbenv init - zsh)"
+have note && zsh-defer eval "$(note completion zsh)"
 
 # function cd() {
 # 	builtin cd "$@"
