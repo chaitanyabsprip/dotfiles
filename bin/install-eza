@@ -1,51 +1,59 @@
 #!/bin/sh
 
-pkg_install() {
-	case "$DISTRO" in
-	Debian | Ubuntu)
-		depends wget || exit 1
-		have gpg || sudo apt install -y gpg
-		sudo mkdir -p /etc/apt/keyrings
-		wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
-		echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
-		sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
-		sudo apt update
-		sudo apt install -y eza
-		;;
-	Fedora) sudo dnf install eza -y ;;
-	CentOS | RHEL) ;;
-	openSUSE | SUSE)
-		sudo zypper ar https://download.opensuse.org/tumbleweed/repo/oss/ factory-oss
-		sudo zypper in eza -y
-		;;
-	Arch\ Linux) sudo pacman -S --noconfirm eza ;;
-	*) return 1 ;;
-	esac
+main() {
+	ieza() {
+		SCRIPTS="${SCRIPTS:-$HOME/.local/bin}"
+		! [ -d "$SCRIPTS" ] && mkdir -p "$SCRIPTS"
+		DISTRO=$(distro | cut -d ':' -f1)
+
+		inprogress "Installing eza"
+
+		if pkg_install || gh_install; then
+			success "Succesfully installed eza"
+		else
+			warning "Could not install eza"
+		fi
+	}
+
+	pkg_install() {
+		case "$DISTRO" in
+		Debian | Ubuntu)
+			depends wget || exit 1
+			have gpg || sudo apt install -y gpg
+			sudo mkdir -p /etc/apt/keyrings
+			wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+			echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+			sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+			sudo apt update
+			sudo apt install -y eza
+			;;
+		Fedora) sudo dnf install eza -y ;;
+		CentOS | RHEL) ;;
+		openSUSE | SUSE)
+			sudo zypper ar https://download.opensuse.org/tumbleweed/repo/oss/ factory-oss
+			sudo zypper in eza -y
+			;;
+		Arch\ Linux) sudo pacman -S --noconfirm eza ;;
+		*) return 1 ;;
+		esac
+	}
+
+	gh_install() {
+		depends jq || exit 1
+		archi=$(uname -sm)
+		repo='eza-community/eza'
+		tarname=''
+		case "$archi" in
+		Linux\ aarch64*) tarname='eza_aarch64-unknown-linux-gnu.tar.gz' ;;
+		Linux\ *64) tarname='eza_x86_64-unknown-linux-gnu.tar.gz' ;;
+		*) return 1 ;;
+		esac
+		curl -sSLO "https://github.com/$repo/releases/download/latest/$tarname"
+		tar -xf eza* && mv eza "$SCRIPTS" && rm eza*
+
+	}
+
+	ieza
 }
 
-gh_install() {
-	depends jq || exit 1
-	archi=$(uname -sm)
-	repo='eza-community/eza'
-	tarname=''
-	case "$archi" in
-	Linux\ aarch64*) tarname='eza_aarch64-unknown-linux-gnu.tar.gz' ;;
-	Linux\ *64) tarname='eza_x86_64-unknown-linux-gnu.tar.gz' ;;
-	*) return 1 ;;
-	esac
-	curl -sSLO "https://github.com/$repo/releases/download/latest/$tarname"
-	tar -xf eza* && mv eza "$SCRIPTS" && rm eza*
-
-}
-
-SCRIPTS="${SCRIPTS:-$HOME/.local/bin}"
-! [ -d "$SCRIPTS" ] && mkdir -p "$SCRIPTS"
-DISTRO=$(distro | cut -d ':' -f1)
-
-inprogress "Installing eza"
-
-if pkg_install || gh_install; then
-	success "Succesfully installed eza"
-else
-	warning "Could not install eza"
-fi
+main
