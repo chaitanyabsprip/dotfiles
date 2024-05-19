@@ -32,7 +32,8 @@ gh_install() {
 		rm LICENSE README.md gitmux*
 }
 
-SCRIPTS="${SCRIPTS:-$HOME/.config/bin}"
+SCRIPTS="${SCRIPTS:-$HOME/.local/bin}"
+! [ -d "$SCRIPTS" ] && mkdir -p "$SCRIPTS"
 DISTRO=$(distro | cut -d ':' -f1)
 
 inprogress "Installing gitmux"
