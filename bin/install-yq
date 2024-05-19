@@ -1,40 +1,54 @@
 #!/bin/sh
 
-pkg_install() {
-	case "$DISTRO" in
-	Debian | Ubuntu) return 1 ;;
-	Fedora) return 1 ;;
-	CentOS | RHEL) return 1 ;;
-	openSUSE | SUSE) return 1 ;;
-	Arch\ Linux) sudo pacman -S --nocomfirm go-yq ;;
-	*) return 1 ;;
-	esac
+main() {
+
+	iyq() {
+		SCRIPTS="${SCRIPTS:-$HOME/.local/bin}"
+		! [ -d "$SCRIPTS" ] && mkdir -p "$SCRIPTS"
+		DISTRO="$(distro | cut -d ':' -f1)"
+
+		inprogress Installing yq
+
+		if pkg_install || gh_install; then
+			success "Succesfully installed yq"
+		else
+			error "Could not install yq"
+		fi
+	}
+
+	pkg_install() {
+		case "$DISTRO" in
+		Debian | Ubuntu) return 1 ;;
+		Fedora) return 1 ;;
+		CentOS | RHEL) return 1 ;;
+		openSUSE | SUSE) return 1 ;;
+		Arch\ Linux) sudo pacman -S --nocomfirm go-yq ;;
+		*) return 1 ;;
+		esac
+	}
+
+	gh_install() {
+		depends jq || exit 1
+		archi=$(uname -sm)
+		repo='mikefarah/yq'
+		latest="https://api.github.com/repos/$repo/releases/latest"
+		ver=$(curl -sS "$latest" | jq -r .zipball_url) && test -n "$ver"
+		ver=${ver##*/}
+		tarname=''
+		case "$archi" in
+		Darwin\ arm64) tarname='yq_darwin_arm64.tar.gz' ;;
+		Darwin\ x86_64) tarname='yq_darwin_amd64.tar.gz' ;;
+		Linux\ aarch64*) tarname='yq_linux_arm64.tar.gz' ;;
+		Linux\ ppc64le) tarname='yq_linux_ppc64le.tar.gz' ;;
+		Linux\ *64) tarname='yq_linux_amd64.tar.gz' ;;
+		*) return 1 ;;
+		esac
+		curl -sSLO "https://github.com/$repo/releases/download/$ver/$tarname"
+		tar -xf yq*.tar.gz && rm yq*.tar.gz && mv yq_* "$SCRIPTS"/yq && ./install-man-page.sh
+		rm -r yq* install-man-page.sh
+	}
+
+	iyq
 }
 
-gh_install() {
-	depends jq || exit 1
-	archi=$(uname -sm)
-	repo='mikefarah/yq'
-	tarname=''
-	case "$archi" in
-	Darwin\ arm64) tarname='yq_darwin_arm64.tar.gz' ;;
-	Darwin\ x86_64) tarname='yq_darwin_amd64.tar.gz' ;;
-	Linux\ aarch64*) tarname='yq_linux_arm64.tar.gz' ;;
-	Linux\ ppc64le) tarname='yq_linux_ppc64le.tar.gz' ;;
-	Linux\ *64) tarname='yq_linux_amd64.tar.gz' ;;
-	*) return 1 ;;
-	esac
-	curl -sSLO "https://github.com/$repo/releases/download/latest/$tarname"
-	tar -xf yq*.tar.gz && mv yq*/yq_* "$SCRIPTS"/yq && rm -r yq* install-man-page.sh
-}
-
-SCRIPTS="${SCRIPTS:-$HOME/.config/bin}"
-DISTRO="$(distro | cut -d ':' -f1)"
-
-inprogress Installing yq
-
-if pkg_install || gh_install; then
-	success "Succesfully installed yq"
-else
-	error "Could not install yq"
-fi
+main
