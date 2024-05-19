@@ -20,7 +20,7 @@ _essentials() {
 
 _bat() {
 	heading bat
-	have bat && return
+	have bat && echo "Already installed at $(which bat)" && return
 	if [ "$(uname)" = 'Darwin' ]; then
 		_depends brew || return 1
 		brew install bat
@@ -40,7 +40,7 @@ _curl() {
 
 _eza() {
 	heading eza
-	have eza && return
+	have eza && echo "Already installed at $(which eza)" && return
 	if [ "$(uname)" = 'Darwin' ]; then
 		_depends brew
 		brew install eza
@@ -53,7 +53,7 @@ _eza() {
 
 _fd() {
 	heading fd
-	have fd && return
+	have fd && echo "Already installed at $(which fd)" && return
 	if [ "$(uname)" = 'Darwin' ]; then
 		_depends brew
 		brew install fd
@@ -65,7 +65,7 @@ _fd() {
 
 _fzf() {
 	heading fzf
-	have fzf && return
+	have fzf && echo "Already installed at $(which fzf)" && return
 	spinner curl -LsS https://raw.githubusercontent.com/junegunn/fzf/master/install -o install
 	spinner bash ./install --all
 	rm ./install
@@ -91,7 +91,7 @@ _gitui() {
 }
 
 _go() {
-	have go && return
+	have go && echo "Already installed at $(which go)" && return
 	heading go
 	_depends wget
 	mkdir temp "$HOME"/programs && { cd temp || :; }
@@ -111,7 +111,7 @@ _rg() {
 
 _starship() {
 	heading starship
-	have starship && return
+	have starship && echo "Already installed at $(which starship)" && return
 	if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "Linux" ]; then
 		curl -sS https://starship.rs/install.sh -o starship.sh
 		sh starship.sh -y 1>/dev/null 2>&1
@@ -153,7 +153,7 @@ _yq() {
 
 _zap() {
 	heading zap
-	have zap && return
+	have zap && echo "Already installed at $(which zap)" && return
 	if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "Linux" ]; then
 		curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh -o install.zsh
 		zsh install.zsh --branch release-v1 --keep
