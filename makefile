@@ -21,7 +21,9 @@ help:
 	@echo "$(BOLD)Targets:$(NC)"
 	@echo "  $(GREEN)base$(NC)           : Build the base Docker image ($(BASEIMAGE))"
 	@echo "  $(GREEN)workspace$(NC)      : Build the workspace Docker image ($(WORKSPACEIMAGE))"
+	@echo "  $(GREEN)golang-img$(NC)     : Build the Golang Docker image (golang-$(IMAGESUFFIX))"
 	@echo "  $(GREEN)python-img$(NC)     : Build the Python Docker image (python-$(IMAGESUFFIX))"
+	@echo "  $(GREEN)node-img$(NC)       : Build the Node.js Docker image (node-$(IMAGESUFFIX))"
 	@echo "  $(GREEN)ts-img$(NC)         : Build the TypeScript Docker image (ts-$(IMAGESUFFIX))"
 	@echo "  $(GREEN)flutter-img$(NC)    : Build the Flutter Docker image (flutter-$(IMAGESUFFIX))"
 	@echo "  $(GREEN)clean$(NC)          : Remove all built Docker images"
@@ -79,4 +81,6 @@ clean-flutter:
 	@docker images -a --format '{{.Repository}}' | grep -- "flutter-$(IMAGESUFFIX)" | \
 		xargs -I {} docker rmi {} 2>/dev/null || :
 
-clean: clean-flutter clean-ts clean-python clean-golang clean-base clean-workspace
+all: base workspace golang-img python-img node-img ts-img flutter-img
+
+clean: clean-base clean-workspace clean-golang clean-python clean-node clean-ts clean-flutter
