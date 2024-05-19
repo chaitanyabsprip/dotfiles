@@ -1,47 +1,57 @@
 #!/bin/sh
 
-pkg_install() {
-	case "$DISTRO" in
-	Debian | Ubuntu) return 1 ;;
-	Fedora) sudo dnf install gitui -y ;;
-	CentOS | RHEL) ;;
-	openSUSE | SUSE) sudo zypper install gitui -y ;;
-	Arch\ Linux) sudo pacman -S --noconfirm gitui ;;
-	*) return 1 ;;
-	esac
+main() {
+
+	igitui() {
+		SCRIPTS="${SCRIPTS:-$HOME/.local/bin}"
+		! [ -d "$SCRIPTS" ] && mkdir -p "$SCRIPTS"
+		DISTRO=$(distro | cut -d ':' -f1)
+
+		inprogress Installing gitui
+
+		if pkg_install || gh_install; then
+			success "Succesfully installed gitui"
+		else
+			error "Could not install gitui"
+		fi
+	}
+
+	pkg_install() {
+		case "$DISTRO" in
+		Debian | Ubuntu) return 1 ;;
+		Fedora) sudo dnf install gitui -y ;;
+		CentOS | RHEL) ;;
+		openSUSE | SUSE) sudo zypper install gitui -y ;;
+		Arch\ Linux) sudo pacman -S --noconfirm gitui ;;
+		*) return 1 ;;
+		esac
+	}
+
+	gh_install() {
+		depends jq || exit 1
+		archi=$(uname -sm)
+		repo='extrawurst/gitui'
+		latest="https://api.github.com/repos/$repo/releases/latest"
+		ver=$(curl -sS "$latest" | jq -r .zipball_url) && test -n "$ver"
+		ver=${ver##*/}
+		tarname=''
+		case "$archi" in
+		Darwin\ arm64) tarname='gitui-mac.tar.gz' ;;
+		Darwin\ x86_64) tarname='gitui-mac.tar.gz' ;;
+		Linux\ armv7*) tarname='gitui-linux-armv7.tar.gz' ;;
+		Linux\ aarch64*) tarname='gitui-linux-aarch64.tar.gz' ;;
+		Linux\ *64) tarname='gitui-linux-x86_64.tar.gz' ;;
+		*) return 1 ;;
+		esac
+		mkdir temp
+		cd temp || :
+		curl -sSLO "https://github.com/$repo/releases/download/$ver/$tarname"
+		tar -xf gitui*.tar.gz &&
+			mv gitui "${SCRIPTS:-"$HOME/.local/bin"}" && rm gitui*.tar.gz
+		cd .. && rm -d temp
+	}
+
+	igitui
 }
 
-gh_install() {
-	depends jq || exit 1
-	archi=$(uname -sm)
-	repo='extrawurst/gitui'
-	latest="https://api.github.com/repos/$repo/releases/latest"
-	ver=$(curl -sS "$latest" | jq -r .zipball_url) && test -n "$ver"
-	ver=${ver##*/}
-	tarname=''
-	case "$archi" in
-	Darwin\ arm64) tarname='gitui-mac.tar.gz' ;;
-	Darwin\ x86_64) tarname='gitui-mac.tar.gz' ;;
-	Linux\ armv7*) tarname='gitui-linux-armv7.tar.gz' ;;
-	Linux\ aarch64*) tarname='gitui-linux-aarch64.tar.gz' ;;
-	Linux\ *64) tarname='gitui-linux-musl.tar.gz' ;;
-	*) return 1 ;;
-	esac
-	mkdir temp
-	cd temp || :
-	curl -sSLO "https://github.com/$repo/releases/download/$ver/$tarname"
-	tar -xf gitui*.tar.gz &&
-		mv gitui "${SCRIPTS:-"$HOME/.local/bin"}" && rm gitui*.tar.gz
-	cd .. && rm -d temp
-}
-
-SCRIPTS="${SCRIPTS:-$HOME/.config/bin}"
-DISTRO=$(distro | cut -d ':' -f1)
-
-inprogress Installing gitui
-
-if pkg_install || gh_install; then
-	success "Succesfully installed gitui"
-else
-	error "Could not install gitui"
-fi
+main
