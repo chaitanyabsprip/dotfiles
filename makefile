@@ -65,6 +65,13 @@ clean-node:
 	@docker images -a --format '{{.Repository}}' | grep -- "node-$(IMAGESUFFIX)" | \
 		xargs -I {} docker rmi {} 2>/dev/null || :
 
+ts-img: dockerfiles/ts $(SOURCES) clean-ts
+	@docker build $(if $(DEBUG),--progress=plain) -t "ts-$(IMAGESUFFIX)" -t "chaitanyabsprip/ts-$(IMAGESUFFIX)" -f dockerfiles/ts .
+
+clean-ts:
+	@docker images -a --format '{{.Repository}}' | grep -- "ts-$(IMAGESUFFIX)" | \
+		xargs -I {} docker rmi {} 2>/dev/null || :
+
 flutter-img: dockerfiles/flutter $(SOURCES) clean-flutter
 	@docker build $(if $(DEBUG),--progress=plain) -t "flutter-$(IMAGESUFFIX)" -t "chaitanyabsprip/flutter-$(IMAGESUFFIX)" -f dockerfiles/flutter .
 
