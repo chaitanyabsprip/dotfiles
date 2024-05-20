@@ -38,7 +38,7 @@ unset conf
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^v' edit-command-line
-bindkey -s ^k '^uj\n'
+bindkey -s ^o '^uj\n'
 
 # initialisations
 have rbenv && zsh-defer eval "$(rbenv init - zsh)"
