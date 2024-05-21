@@ -42,7 +42,7 @@ always_enabled = true
 [[blocks.segments]]
 type = "battery"
 style = "plain"
-template = "{{ if lt .Percentage 5 }}█{{end}}"
+template = "{{ if and (lt .Percentage 5) (eq .State.String \"Discharging\") }}█ {{end}}"
 foreground = "red"
 background = "p:hilow"
 
