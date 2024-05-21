@@ -1,8 +1,8 @@
 # Dotfiles
 
 A terminal and keyboard centric configurations for different set of utilities
-and tools I use daily. This repository helps me set up my complete workspace on
-a new device.
+and tools I use daily. This repository helps me set up my complete digital
+workspace on a new device. It is also cross-platform for Linux and MacOs.
 
 ## Features
 
@@ -14,5 +14,5 @@ develop in.
 ## Installation
 
 - Make sure you have `git`, `curl`, and `wget` installed.
-- Run `.dotme serve` to symlink all configurations.
+- Run `dotme serve` to symlink all configurations.
 - Run `setup`
