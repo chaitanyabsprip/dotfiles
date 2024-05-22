@@ -2,10 +2,4 @@
 
 [ -z "$SSH_TTY" ] && warning Not in a ssh environment && exit
 tmux_tmpdir="$(dirname "$(tmux display -pF '#{socket_path}')")"
-TMUX="tmux -S $tmux_tmpdir/ssh"
-$TMUX new -sd home
-OLDBIND='c-a'
-NEWBIND='c-s'
-$TMUX unbind-key "$OLDBIND"
-$TMUX set -g prefix "$NEWBIND"
-$TMUX bind "$NEWBIND" send-prefix
+tmux -S "$tmux_tmpdir"/ssh "$@"
