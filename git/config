@@ -18,7 +18,13 @@
 
 [delta]
 	line-numbers = true
-	syntax-theme = Visual Studio Dark+
+	line-numbers-minus-style = red
+	minus-style = red
+	minus-emph-style = syntax red
+	line-numbers-plus-style = green
+	plus-style = green
+	plus-emph-style = syntax green
+	syntax-theme = material-rose-pine
 	navigate = true
 	hyperlinks = true
 	side-by-side = false
