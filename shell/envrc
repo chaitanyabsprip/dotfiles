@@ -58,7 +58,7 @@ _ismac && export ANDROID_SDK_ROOT="$HOME"/Library/Android/Sdk
 _ismac && export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
 _ismac && export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 
-export BAT_THEME="Visual Studio Dark+"
+export BAT_THEME="material-rose-pine"
 export FZF_DEFAULT_COMMAND='fd --type file --hidden --exclude .git'
 
 # Material deep ocean colors
