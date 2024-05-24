@@ -84,7 +84,7 @@ flutter-img: dockerfiles/flutter $(SOURCES) clean-flutter
 clean-flutter:
 	$(call clean_image,flutter-$(IMAGESUFFIX))
 
-all: base workspace golang-img python-img node-img ts-img flutter-img
+all: clean base workspace golang-img python-img node-img ts-img flutter-img
 
 clean: clean-base clean-workspace clean-golang clean-python clean-node clean-ts clean-flutter
 
