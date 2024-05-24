@@ -7,7 +7,11 @@ HISTFILESIZE=1000000000
 HISTSIZE=1000000000
 ZLE_RPROMPT_INDENT=0
 
-have oh-my-posh && eval "$(oh-my-posh init zsh -c ~/dotfiles/oh-my-posh.rc.toml)"
+if have oh-my-posh; then
+	eval "$(oh-my-posh init zsh -c ~/dotfiles/oh-my-posh.rc.toml)"
+elif have starship; then
+	eval "$(starship init zsh)"
+fi
 
 # Cannot use autocd option along with CDPATH
 # setopt autocd                 # Automatically cd into typed directory.
