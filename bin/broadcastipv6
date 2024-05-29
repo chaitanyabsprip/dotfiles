@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if ssh-keyscan -T 3 192.168.1.128 >/dev/null 2>&1; then
+	ipaddr="$(myip | tail -n1 | tr -d '"')"
+	export ipaddr
+	ssh chaitanyasharma@192.168.1.128 "/opt/homebrew/opt/coreutils/libexec/gnubin/echo chaitanya@$ipaddr > /Users/chaitanyasharma/.p6"
+fi
