@@ -209,6 +209,7 @@ setup_env() {
 eval "$(setup_env)"
 
 echo "Running setup for $1"
+! [ -d "$SCRIPTS" ] && mkdir -p "$SCRIPTS"
 
 subcommand="${1:-all}"
 shift
