@@ -10,9 +10,12 @@ fi
 
 image="$1"
 [ -n "$1" ] && shift
-name="${1:-"$(pwd)"}"
+name="$(realpath "${1:-"$(pwd)"}")"
 dir="$name"
 [ -n "$1" ] && shift
 echo "$name" | grep -q '/' && name="$(basename "$name")"
 
-exec docker run -it --rm --privileged -h "$name" --name "$name" -v "$dir":"/root/$name" "$image" "$@"
+exec docker run -it --rm --privileged -h "$name" --name "$name" \
+	-v "$dir":"/root/$name" \
+	-w "/root/$name" \
+	"$image" "$@"
