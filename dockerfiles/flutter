@@ -19,7 +19,7 @@ RUN dpkg-reconfigure -f noninteractive tzdata && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     update-locale LANG=en_US.UTF-8
 COPY .. /root/dotfiles
-RUN ./dotme serve && setup all
+RUN ./dotme serve && ./setup all
 RUN bash ./bin/install-android-sdk && bash ./bin/install-flutter
 RUN apt-get update && \
     apt-get -y --no-install-recommends upgrade && \
