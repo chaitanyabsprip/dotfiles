@@ -14,3 +14,4 @@ hypr: $HOME/.config/hypr: linux
 git: $HOME/.config/git
 waybar: $HOME/.config/waybar: linux
 bat: $HOME/.config/bat
+dirs: $HOME/.config/user-dirs.dirs
