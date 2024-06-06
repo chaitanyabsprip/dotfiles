@@ -1,7 +1,7 @@
 [submodule "fish"]
 	path = fish
-	url = git@github.com:Chaitanyabsprip/fish-config.git
+	url = https://github.com/Chaitanyabsprip/fish-config.git
 [submodule "nvim"]
 	path = nvim
-	url = git@github.com:Chaitanyabsprip/nvim.git 
+	url = https://github.com/Chaitanyabsprip/nvim.git
 	branch = master
