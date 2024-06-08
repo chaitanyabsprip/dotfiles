@@ -10,7 +10,7 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8  
 ENV PATH=.:$PATH:/root/.local/bin
 RUN yes | unminimize && \
-    apt update && \
+    apt update -yqq && \
     ln -fs /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && \
     apt-get install -y --no-install-recommends sudo tzdata locales \
     vim curl wget git make ssh man-db build-essential ca-certificates zsh
@@ -18,8 +18,9 @@ RUN dpkg-reconfigure -f noninteractive tzdata && \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     update-locale LANG=en_US.UTF-8
+ARG SETUP_ARG=all
 COPY .. /root/dotfiles
-RUN ./dotme serve && setup all
+RUN ./dotme serve && setup ${SETUP_ARG}
 RUN apt-get update && \
     apt-get -y --no-install-recommends upgrade && \
     apt-get clean && \
