@@ -30,13 +30,9 @@ _bat() {
     fi
 }
 
-_brew() {
-    echo "TODO: install brew"
-}
+_brew() { echo "TODO: install brew"; }
 
-_curl() {
-    echo "TODO: install curl"
-}
+_curl() { echo "TODO: install curl"; }
 
 _eza() {
     heading eza
@@ -111,8 +107,8 @@ _nvm() {
     chmod +x ./nvmi
     mkdir -p "$HOME"/programs/nvm
     NVM_DIR="$HOME/programs/nvm"
-    PROFILE=/dev/null ./nvmi
     export NVM_DIR
+    PROFILE=/dev/null ./nvmi
     # shellcheck disable=1091
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR"/nvm.sh
     nvm install stable
@@ -203,13 +199,19 @@ setup_zsh_complete() {
     _gitui # --
     _eza
     _rg
-    success "base zsh shell setup complete"
+    success "zsh shell setup complete"
 }
 
-setup_neovim() {
+_neovim() {
     heading Neovim
-    install-neovim.sh
+    install-neovim.sh stable
     success "successfully installed neovim"
+}
+setup_neovim() {
+    heading "Complete Neovim Setup"
+    _neovim
+    nvim --headless "+Lazy! sync" "+sleep 60" +qa
+    success "neovim setup complete"
 }
 
 DISTRO=$(distro | cut -d ':' -f1)
@@ -239,21 +241,13 @@ fzf) _fzf ;;
 bat) _bat ;;
 go) _go ;;
 nvm) _nvm ;;
+extra) _nvm ;;
 all)
     [ "$igo" = 1 ] && _go
     _jq
     setup_zsh_complete
     setup_tmux_complete
     setup_neovim
-    _fzf
-    ;;
-extended)
-    [ "$igo" = 1 ] && _go
-    _jq
-    setup_zsh_complete
-    setup_tmux_complete
-    setup_neovim
-    _nvm
     _fzf
     ;;
 *) echo "specify a target" && exit 1 ;;
