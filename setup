@@ -6,204 +6,213 @@
 # install curl and git on *unix systems
 
 _depends() {
-	have "$1" ||
-		{ warning "utility depends on $1, please install and try again." && exit 1; }
+    have "$1" ||
+        { warning "utility depends on $1, please install and try again." && exit 1; }
 }
 
 _depends curl
 _depends git
 
 _essentials() {
-	_git
-	_curl
+    _git
+    _curl
 }
 
 _bat() {
-	heading bat
-	have bat && echo "Already installed at $(which bat)" && return
-	if [ "$(uname)" = 'Darwin' ]; then
-		_depends brew || return 1
-		brew install bat
-		return
-	elif [ "$(uname)" = 'Linux' ]; then
-		install-bat
-	fi
+    heading bat
+    have bat && echo "Already installed at $(which bat)" && return
+    if [ "$(uname)" = 'Darwin' ]; then
+        _depends brew || return 1
+        brew install bat
+        return
+    elif [ "$(uname)" = 'Linux' ]; then
+        install-bat
+    fi
 }
 
 _brew() {
-	echo "TODO: install brew"
+    echo "TODO: install brew"
 }
 
 _curl() {
-	echo "TODO: install curl"
+    echo "TODO: install curl"
 }
 
 _eza() {
-	heading eza
-	have eza && echo "Already installed at $(which eza)" && return
-	if [ "$(uname)" = 'Darwin' ]; then
-		_depends brew
-		brew install eza
-		return
-	elif [ "$(uname)" = 'Linux' ]; then
-		install-eza
-	fi
-	ln -sf "$(which eza)" ~/.local/bin/exa
+    heading eza
+    have eza && echo "Already installed at $(which eza)" && return
+    if [ "$(uname)" = 'Darwin' ]; then
+        _depends brew
+        brew install eza
+        return
+    elif [ "$(uname)" = 'Linux' ]; then
+        install-eza
+    fi
+    ln -sf "$(which eza)" ~/.local/bin/exa
 }
 
 _fd() {
-	heading fd
-	have fd && echo "Already installed at $(which fd)" && return
-	if [ "$(uname)" = 'Darwin' ]; then
-		_depends brew
-		brew install fd
-		return
-	elif [ "$(uname)" = 'Linux' ]; then
-		install-fd
-	fi
+    heading fd
+    have fd && echo "Already installed at $(which fd)" && return
+    if [ "$(uname)" = 'Darwin' ]; then
+        _depends brew
+        brew install fd
+        return
+    elif [ "$(uname)" = 'Linux' ]; then
+        install-fd
+    fi
 }
 
 _fzf() {
-	heading fzf
-	have fzf && echo "Already installed at $(which fzf)" && return
-	spinner curl -LsS https://raw.githubusercontent.com/junegunn/fzf/master/install -o install
-	spinner bash ./install --all
-	rm ./install
-	have fzf-tmux && return
-	spinner curl -LsS https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux -o "$SCRIPTS"/fzf-tmux
-	chmox "$SCRIPTS"/fzf-tmux
-	success "successfully installed fzf"
+    heading fzf
+    have fzf && echo "Already installed at $(which fzf)" && return
+    spinner curl -LsS https://raw.githubusercontent.com/junegunn/fzf/master/install -o install
+    spinner bash ./install --all
+    rm ./install
+    have fzf-tmux && return
+    spinner curl -LsS https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux -o "$SCRIPTS"/fzf-tmux
+    chmox "$SCRIPTS"/fzf-tmux
+    success "successfully installed fzf"
 }
 
 _git() {
-	echo "TODO: install git"
+    echo "TODO: install git"
 }
 
 _gitmux() {
-	heading gitmux
-	have gitmux || install-gitmux
+    heading gitmux
+    have gitmux || install-gitmux
 }
 
 _gitui() {
-	heading gitui
-	_depends git
-	have gitui || install-gitui
+    heading gitui
+    _depends git
+    have gitui || install-gitui
 }
 
 _go() {
-	have go && echo "Already installed at $(which go)" && return
-	heading go
-	_depends wget
-	mkdir temp "$HOME"/programs && { cd temp || :; }
-	curl -SsL https://git.io/go-installer.sh | bash
-	cd .. && rm -rd temp
+    have go && echo "Already installed at $(which go)" && return
+    heading go
+    _depends wget
+    mkdir temp "$HOME"/programs && { cd temp || :; }
+    curl -SsL https://git.io/go-installer.sh | bash
+    cd .. && rm -rd temp
 }
 
 _jq() {
-	heading jq
-	have jq || install-jq
+    heading jq
+    have jq || install-jq
+}
+
+_nvm() {
+    heading nvm
+    have nvm && echo "Already installed at $(which nvm)" && return
+    curl -o nvmi https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh
+    chmod +x ./nvmi
+    mkdir -p "$HOME"/programs/nvm
+    NVM_DIR="$HOME/programs/nvm" PROFILE=/dev/null ./nvmi
 }
 
 _rg() {
-	heading rg
-	have rg || install-rg
+    heading rg
+    have rg || install-rg
 }
 
 _starship() {
-	heading starship
-	have starship && echo "Already installed at $(which starship)" && return
-	if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "Linux" ]; then
-		curl -sS https://starship.rs/install.sh -o starship.sh
-		sh starship.sh -y 1>/dev/null 2>&1
-		rm starship.sh
-	else
-		error "Couldn't install starship"
-	fi
-	success "starship successfully installed"
+    heading starship
+    have starship && echo "Already installed at $(which starship)" && return
+    if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "Linux" ]; then
+        curl -sS https://starship.rs/install.sh -o starship.sh
+        sh starship.sh -y 1>/dev/null 2>&1
+        rm starship.sh
+    else
+        error "Couldn't install starship"
+    fi
+    success "starship successfully installed"
 }
 
 _tmux() {
-	heading tmux
-	case "$DISTRO" in
-	Debian | Ubuntu) sudo apt install tmux -y ;;
-	Fedora | CentOS | RHEL) dnf install tmux -y ;;
-	openSUSE | SUSE) zypper install tmux -y ;;
-	Arch\ Linux) sudo pacman -S --nocomfirm tmux ;;
-	*) return 1 ;;
-	esac
-	_depends tmux
-	success "tmux successfully installed"
+    heading tmux
+    case "$DISTRO" in
+    Debian | Ubuntu) sudo apt install tmux -y ;;
+    Fedora | CentOS | RHEL) dnf install tmux -y ;;
+    openSUSE | SUSE) zypper install tmux -y ;;
+    Arch\ Linux) sudo pacman -S --nocomfirm tmux ;;
+    *) return 1 ;;
+    esac
+    _depends tmux
+    success "tmux successfully installed"
 }
 
 setup_tmux_complete() {
-	heading Complete TMUX setup
-	_tmux
-	_yq
-	_gitmux
-	_gitui
-	_fd
-	_fzf
-	success "tmux setup completed successfully"
+    heading Complete TMUX setup
+    _tmux
+    _yq
+    _gitmux
+    _gitui
+    _fd
+    _fzf
+    success "tmux setup completed successfully"
 }
 
 _yq() {
-	heading yq
-	have yq || install-yq
+    heading yq
+    have yq || install-yq
 }
 
 _zap() {
-	heading zap
-	have zap && echo "Already installed at $(which zap)" && return
-	if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "Linux" ]; then
-		curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh -o install.zsh
-		zsh install.zsh --branch release-v1 --keep
-		rm install.zsh
-	else
-		error "Couldn't install zap-zsh"
-	fi
-	success "zap-zsh successfully installed"
+    heading zap
+    have zap && echo "Already installed at $(which zap)" && return
+    if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "Linux" ]; then
+        curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh -o install.zsh
+        zsh install.zsh --branch release-v1 --keep
+        rm install.zsh
+    else
+        error "Couldn't install zap-zsh"
+    fi
+    success "zap-zsh successfully installed"
 }
 
 _zsh() {
-	heading zsh
-	case "$DISTRO" in
-	Debian | Ubuntu) sudo apt install zsh -y ;;
-	Fedora | CentOS | RHEL) dnf install zsh -y ;;
-	openSUSE | SUSE) zypper install zsh -y ;;
-	Arch\ Linux) sudo pacman -S --nocomfirm zsh ;;
-	*) return 1 ;;
-	esac
-	_depends zsh
-	echo export ZDOTDIR="$HOME"/.config/zsh >>"$HOME"/.profile
-	success "Successfully installed zsh"
+    heading zsh
+    case "$DISTRO" in
+    Debian | Ubuntu) sudo apt install zsh -y ;;
+    Fedora | CentOS | RHEL) dnf install zsh -y ;;
+    openSUSE | SUSE) zypper install zsh -y ;;
+    Arch\ Linux) sudo pacman -S --nocomfirm zsh ;;
+    *) return 1 ;;
+    esac
+    _depends zsh
+    echo export ZDOTDIR="$HOME"/.config/zsh >>"$HOME"/.profile
+    success "Successfully installed zsh"
 }
 
 setup_zsh_complete() {
-	heading Complete ZSH setup
-	_zsh
-	_starship
-	_zap
-	_bat # --
-	_fd
-	_fzf
-	_gitui # --
-	_eza
-	_rg
-	success "base zsh shell setup complete"
+    heading Complete ZSH setup
+    _zsh
+    _starship
+    _zap
+    _bat # --
+    _fd
+    _fzf
+    _gitui # --
+    _eza
+    _rg
+    success "base zsh shell setup complete"
 }
 
 setup_neovim() {
-	heading Neovim
-	install-neovim.sh
-	success "successfully installed neovim"
+    heading Neovim
+    install-neovim.sh
+    success "successfully installed neovim"
 }
 
 DISTRO=$(distro | cut -d ':' -f1)
 
 # shellcheck disable=2016
 setup_env() {
-	echo 'export PATH=.:"$PATH"'
-	echo 'export PATH="$PATH":~/.local/bin'
+    echo 'export PATH=.:"$PATH"'
+    echo 'export PATH="$PATH":~/.local/bin'
 }
 
 eval "$(setup_env)"
@@ -224,13 +233,23 @@ env) setup_env ;;
 fzf) _fzf ;;
 bat) _bat ;;
 go) _go ;;
+nvm) _nvm ;;
 all)
-	[ "$igo" = 1 ] && _go
-	_jq
-	setup_zsh_complete
-	setup_tmux_complete
-	setup_neovim
-	_fzf
-	;;
+    [ "$igo" = 1 ] && _go
+    _jq
+    setup_zsh_complete
+    setup_tmux_complete
+    setup_neovim
+    _fzf
+    ;;
+extended)
+    [ "$igo" = 1 ] && _go
+    _jq
+    setup_zsh_complete
+    setup_tmux_complete
+    setup_neovim
+    _nvm
+    _fzf
+    ;;
 *) echo "specify a target" && exit 1 ;;
 esac
