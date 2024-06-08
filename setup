@@ -90,9 +90,10 @@ _go() {
     have go && echo "Already installed at $(which go)" && return
     heading go
     _depends wget
-    mkdir temp "$HOME"/programs && { cd temp || :; }
+    mkdir temp "$HOME"/programs
+    cd temp || :
     curl -SsL https://git.io/go-installer.sh | bash
-    cd .. && rm -rd temp
+    cd .. && [ -d temp ] && rm -rd temp
 }
 
 _jq() {
@@ -225,7 +226,7 @@ setup_env() {
 eval "$(setup_env)"
 
 echo "Running setup for $1"
-! [ -d "$SCRIPTS" ] && mkdir -p "$SCRIPTS"
+! [ -d "${SCRIPTS:-$HOME/.local/bin}" ] && mkdir -p "${SCRIPTS:-$HOME/.local/bin}"
 
 subcommand="${1:-all}"
 shift
