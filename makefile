@@ -48,7 +48,7 @@ base: dockerfiles/base $(SOURCES) clean-base
 clean-base:
 	$(call clean_image,$(BASEIMAGE))
 
-workspace: dockerfiles/workspace $(SOURCES) clean-workspace
+workspace: dockerfiles/workspace $(SOURCES) clean-workspace base
 	$(call build_image,$(WORKSPACEIMAGE),dockerfiles/workspace)
 
 clean-workspace:
