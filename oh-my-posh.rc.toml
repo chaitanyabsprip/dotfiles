@@ -75,3 +75,12 @@ style = "plain"
 template = "{{ if .SSHSession }} \ueba9 {{ .UserName }}@{{ .HostName }} {{ end }}"
 background = "p:himed"
 foreground = "p:gold"
+
+[transient_prompt]
+template = "\n<d><{{ if eq .Code 0 }}p:pine{{ else }}p:love{{ end }},p:base>▍</><,p:base>{{ if eq .PWD \"~\" }}home {{ else }}{{ .Folder }} {{ end }}</><#0f111b> </></d>"
+foreground = "#93777b"
+
+[secondary_prompt]
+template = "▍"
+foreground = "p:himed"
+background = "transparent"
