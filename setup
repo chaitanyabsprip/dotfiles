@@ -110,7 +110,12 @@ _nvm() {
     curl -o nvmi https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh
     chmod +x ./nvmi
     mkdir -p "$HOME"/programs/nvm
-    NVM_DIR="$HOME/programs/nvm" PROFILE=/dev/null ./nvmi
+    NVM_DIR="$HOME/programs/nvm"
+    PROFILE=/dev/null ./nvmi
+    export NVM_DIR
+    # shellcheck disable=1091
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR"/nvm.sh
+    nvm install stable
 }
 
 _rg() {
