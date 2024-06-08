@@ -27,18 +27,19 @@ prereqs() {
 }
 
 install_neovim() {
+	tag="$1"
 	have nvim && exit
 	_depends sudo
 	prereqs
 	mkdir ~/programs && {
 		cd ~/programs || { echo "${RED}Failed to install neovim${NC}" && return; }
 	}
-	git clone --depth 1 --branch nightly https://github.com/neovim/neovim
+	git clone --depth 1 --branch "${tag:-nightly}" https://github.com/neovim/neovim neovim
 	cd neovim && make CMAKE_BUILD_TYPE=Release
 	# shellcheck disable=2086
 	sudo make install
-	rm -r ~/programs/neovim || true
+	[ -d ~/programs/neovim ] && rm -r ~/programs/neovim
 	echo "${GREEN}neovim successfully installed${NC}"
 }
 
-install_neovim
+install_neovim "$@"
