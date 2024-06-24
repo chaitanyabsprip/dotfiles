@@ -3,7 +3,6 @@
 # Created by Zap installer
 [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
 plug "romkatv/zsh-defer"
-zsh-defer plug "zap-zsh/fzf"
 zsh-defer plug "zsh-users/zsh-autosuggestions"
 zsh-defer bindkey '^ ' autosuggest-accept
 zsh-defer plug "zdharma-continuum/fast-syntax-highlighting" # Load syntax highlighting; should be last.

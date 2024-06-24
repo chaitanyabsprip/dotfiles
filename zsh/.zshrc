@@ -27,7 +27,7 @@ stty stop undef               # Disable ctrl-s to freeze terminal.
 set -o vi
 bindkey -v
 
-# Load seperated config files
+# Load separated config files
 plugin_file=$HOME/.config/zsh/plugs.zsh
 config_dir=$HOME/.config/zsh/conf.d
 
@@ -46,15 +46,6 @@ bindkey -s ^o '^uj\n'
 
 # initialisations
 have rbenv && zsh-defer eval "$(rbenv init - zsh)"
-have note && zsh-defer eval "$(note completion zsh)"
+# have note && zsh-defer eval "$(note completion zsh)"
 
-# function cd() {
-# 	builtin cd "$@"
-# 	if [ -d '.venv' ] && [ -f '.venv/bin/activate' ]; then
-# 		source .venv/bin/activate
-# 	fi
-# }
-
-# zsh-defer unfunction _have
-
-# [[ $TMUX ]] || tmux new -As home
+: # shell should start with a zero status code
