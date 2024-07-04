@@ -1,0 +1,59 @@
+{
+	"name": "Vimium C",
+	"@time": "12/6/2024, 5:27:56 pm",
+	"time": 1718193476798,
+	"environment": {
+		"extension": "1.99.997",
+		"platform": "mac",
+		"firefox": 126
+	},
+	"exclusionRules": [
+		{
+			"passKeys": "",
+			"pattern": ":https://mail.google.com/"
+		},
+		{
+			"passKeys": "0 1 2 3 4 5 6 7 8 9 ? a d e f h l o p q r t v ",
+			"pattern": ":https://excalidraw.com"
+		}
+	],
+	"keyLayout": 2,
+	"keyMappings": [
+		"#!no-check",
+		"mapKey <c-c> <esc>",
+		"unmap <a-t>",
+		"unmap <a-n>",
+		"unmap <a-s-c>",
+		"unmap <a-c>",
+		"unmap gt",
+		"unmap <a-v>",
+		"unmap gT",
+		"map gh Vomnibar.activateHistory",
+		"map gH Vomnibar.activateHistoryInNewTab",
+		"map wn moveTabToNextWindow",
+		"map W moveTabToNewWindow",
+		"map wi moveTabToIncognito",
+		""
+	],
+	"searchEngines": [
+		"g|google|Google: https://www.google.com/search?q=%s \\",
+		"  www.google.com re=/^(?:\\.[a-z]{2,4})?\\/search\\b.*?[#&?]q=([^#&]*)/i\\",
+		"  blank=https://www.google.com/ Google",
+		"d|duckduckgo: https://duckduckgo.com/?q=%s DuckDuckGo",
+		"y|yt: https://www.youtube.com/results?search_query=%s \\",
+		"  blank=https://www.youtube.com/ YouTube",
+		"w|wiki: https://www.wikipedia.org/w/index.php?search=%s Wikipedia",
+		"a|amazon: https://www.amazon.com/s?k=%s \\",
+		"  blank=https://www.amazon.com/ Amazon",
+		"\\:i: vimium://sed/s/^//,lower\\ $S re= Lower case",
+		"v.m|math: vimium://math\\ $S re= Calculate",
+		"v.p: vimium://parse\\ $S re= Redo Search",
+		"gh|github: https://github.com/search?q=$s \\",
+		"  blank=https://github.com/ GitHub Repo",
+		"ghr: https://github.com/$S \\",
+		"  blank=https://github.com/ GitHub Repo",
+		"js\\:|Js: javascript:\\ $S; JavaScript",
+		""
+	],
+	"vimSync": true
+}
