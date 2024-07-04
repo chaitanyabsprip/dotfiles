@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ls -C -w 50 --color=auto "/home/chaitanya"/projects
