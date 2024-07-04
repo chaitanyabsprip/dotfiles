@@ -1,0 +1,67 @@
+#!/bin/sh
+
+# Directory to store the scripts
+SCRIPTS="${SCRIPTS:-$HOME/.local/bin}"
+
+usage() {
+	echo "Usage: ${0##*/} -f <filename> [command...]"
+	echo "       ${0##*/} --file <filename> [command...]"
+	echo "       echo <command> | ${0##*/} -f <filename>"
+	echo "       echo <command> | ${0##*/} --file <filename>"
+	echo "       ${0##*/} -h"
+	echo "       ${0##*/} --help"
+	echo
+	echo "Options:"
+	echo "  -f, --file <filename>    Specify the filename for the new script."
+	echo "  -h, --help               Display this help message."
+	echo
+	echo "Examples:"
+	echo "  echo \"git config --local user.name 'John Doe'\" | ${0##*/} -f gcl"
+	echo "  ${0##*/} --file gcl git config --local user.name 'John Doe'"
+	echo "  ${0##*/} -f gcl \"git config --local user.name 'John Doe'\""
+	echo "  ${0##*/} -h"
+}
+
+create_script() {
+	local filename="$1"
+	shift
+	local command="$*"
+
+	if [ -z "$command" ]; then
+		echo "No command provided."
+		usage
+		exit 1
+	fi
+
+	[ ! -d "$SCRIPTS" ] && mkdir -p "$SCRIPTS"
+
+	echo "#!/bin/sh" >"$SCRIPTS/$filename"
+	echo >>"$SCRIPTS/$filename"
+	echo "$command" >>"$SCRIPTS/$filename"
+
+	chmod +x "$SCRIPTS/$filename"
+}
+
+while [ "$#" -gt 0 ]; do
+	case "$1" in
+	-f | --file)
+		shift
+		filename="$1"
+		shift
+		command="$*"
+		if [ -z "$command" ]; then
+			command=$(cat)
+		fi
+		create_script "$filename" "$command"
+		exit 0
+		;;
+	-h | --help)
+		usage
+		exit 0
+		;;
+	*)
+		usage
+		exit
+		;;
+	esac
+done
