@@ -10,10 +10,10 @@ sessionizer() {
 	main() {
 		newpath="$(select_path "$@")"
 		[ -z "$newpath" ] && exit 0
-		session_name="$(basename "$newpath")"
+		session_name="$(basename "$newpath" | tr . _)"
 
 		if tmux_inactive; then
-			session_name="$(basename "$newpath")"
+			session_name="$(basename "$newpath" | tr . _)"
 			exec tmux new-session -s "$session_name" -c "$newpath"
 		fi
 
@@ -25,6 +25,7 @@ sessionizer() {
 		read -r session_name old_session_new_name <<EOF
 $(diffp "$newpath" "$oldpath")
 EOF
+		session_name="$(echo "$session_name" | tr . _)"
 		if sessions_has_match "$session_name"; then
 			tmux rename-session -t "$session_name" "$old_session_new_name"
 		fi
