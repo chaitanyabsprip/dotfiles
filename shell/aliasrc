@@ -15,8 +15,9 @@ _have bat && alias cat='bat'
 md() { [ -z "$1" ] && exit 1 || mkdir -p "$1" && cd "$1" || return; }
 
 _have note && {
-	alias bm='note bm'
+	alias bm='note b'
 	alias todo='note todo'
+	alias peek='note peek'
 }
 
 _have docker && {
