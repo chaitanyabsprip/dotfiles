@@ -18,4 +18,4 @@ echo "$name" | grep -q '/' && name="$(basename "$name")"
 exec docker run -it --rm --privileged -h "$name" --name "$name" \
 	-v "$dir":"/root/$name" \
 	-w "/root/$name" \
-	"$image" "$@"
+	"$@" "$image"
