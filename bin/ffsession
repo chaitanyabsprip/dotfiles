@@ -9,6 +9,9 @@ case $(uname) in
 Darwin)
 	ffpath="$HOME/Library/Application Support/Firefox/Profiles"
 	;;
+Linux)
+	ffpath="$HOME/.mozilla/firefox"
+	;;
 esac
 
 export FFRECOVERY
