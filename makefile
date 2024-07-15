@@ -10,8 +10,10 @@ NC           := $(shell tput -Txterm sgr0)
 BASEIMAGE = clinic
 WORKSPACEIMAGE = hospital
 IMAGESUFFIX = ward
-SOURCES := $(filter-out dockerfiles/%, $(wildcard */*))
+SOURCES := $(filter-out dockerfiles/%, $(shell fd -HE .git))
 SOURCES := $(filter-out $(wildcard $(shell find . -type l -printf '%P\n')), $(SOURCES))
+SOURCES := $(filter-out .zsh_history, $(SOURCES))
+# $(info SOURCES: $(SOURCES))
 
 define build_image
 	@echo "$(BLUE)$(BOLD)Building $(1) image$(NC)"
@@ -23,7 +25,7 @@ endef
 define clean_image
 	@$(if $(SKIP),exit;)echo "$(RED)$(BOLD)Deleting $(1) image$(NC)" \
 		&& docker images -a --format '{{.Repository}}' | grep -w "$(1)" \
-		| xargs -I {} docker rmi {} >/dev/null 2&>1 || :;
+		| xargs -I {} docker rmi {} >/dev/null 2>&1 || :;
 endef
 
 help:
@@ -54,7 +56,7 @@ workspace: dockerfiles/workspace $(SOURCES) clean-workspace base
 clean-workspace:
 	$(call clean_image,$(WORKSPACEIMAGE))
 
-golang-img: dockerfiles/golang $(SOURCES) clean-golang
+golang-img: dockerfiles/golang $(SOURCES) clean-golang workspace
 	$(call build_image,golang-$(IMAGESUFFIX),dockerfiles/golang)
 
 clean-golang:
