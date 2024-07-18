@@ -9,7 +9,7 @@ main() {
 		inprogress "Installing bat"
 
 		if pkg_install || gh_install; then
-			success "Succesfully installed bat"
+			success "Successfully installed bat"
 		else
 			warning "Could not install bat"
 		fi
