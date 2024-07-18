@@ -1,13 +1,13 @@
 FROM ubuntu:latest
-LABEL MAINTAINER "Chaitanya Sharma"
-LABEL SOURCE "https://github.com/Chaitanyabsprip/dotfiles"
+LABEL MAINTAINER="Chaitanya Sharma"
+LABEL SOURCE="https://github.com/Chaitanyabsprip/dotfiles"
 ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /root/dotfiles
 ENV TERM=xterm-256color
 ENV TZ=Asia/Kolkata
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8  
+ENV LANG=en_US.UTF-8  
+ENV LANGUAGE=en_US:en  
+ENV LC_ALL=en_US.UTF-8  
 ENV PATH=.:$PATH:/root/.local/bin
 RUN yes | unminimize && \
     apt update -yqq && \

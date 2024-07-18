@@ -1,6 +1,6 @@
 FROM hospital:latest
-LABEL MAINTAINER "Chaitanya Sharma"
-LABEL SOURCE "https://github.com/Chaitanyabsprip/dotfiles"
+LABEL MAINTAINER="Chaitanya Sharma"
+LABEL SOURCE="https://github.com/Chaitanyabsprip/dotfiles"
 WORKDIR /root/projects
 RUN yes | unminimize && apt update 
 ENV GOBIN=/root/programs/go/bin
