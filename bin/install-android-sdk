@@ -26,9 +26,10 @@ install_prerequisites() {
 }
 
 install_java() {
+	echo "Installing Java"
 	have java && return 0
 	case "$DISTRO" in
-	Debian | Ubuntu) sudo apt -y install openjdk-17-jdk openjdk-17-jre-headless ;;
+	Debian | Ubuntu) sudo apt update && sudo apt -y install openjdk-17-jdk openjdk-17-jre-headless ;;
 	Arch\ Linux) sudo pacman -S jdk17-openjdk jre17-openjdk-headless--noconfirm ;;
 	*) return 1 ;;
 	esac
