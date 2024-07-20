@@ -5,15 +5,15 @@
 ## changes and taking action (see onchange).
 
 changed() {
-	local dir="${PWD}"
-	local tmpname="onchange${dir//\//-}"
-	local tmp="/tmp/${tmpname}"
-	if [[ ! -e "${tmp}" ]]; then
-		find "${dir}" -type f -not -path '*testdata*' -not path '*/.git/*'
-	else
-		find "${dir}" -newer "${tmp}" -type f -not -path '*testdata*' -not path '*/.git/*'
-	fi
-	touch "${tmp}"
+    local dir="${PWD}"
+    local tmpname="onchange${dir//\//-}"
+    local tmp="/tmp/${tmpname}"
+    if [[ ! -e "${tmp}" ]]; then
+        find "${dir}" -type f -not -path '*testdata*' -not -path '*/.git/*'
+    else
+        find "${dir}" -newer "${tmp}" -type f -not -path '*testdata*' -not -path '*/.git/*'
+    fi
+    touch "${tmp}"
 }
 
 changed "$@"
