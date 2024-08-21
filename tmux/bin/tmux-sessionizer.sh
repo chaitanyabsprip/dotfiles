@@ -53,9 +53,7 @@ EOF
 		[ -z "$TMUX" ] && [ -z "$tmux_running" ]
 	}
 
-	sessions_has_match() {
-		list_sessions | grep -q "$1"
-	}
+	sessions_has_match() { list_sessions | grep -q "$1"; }
 
 	list_sessions() {
 		tmux ls -F '#{session_name}=#{session_path}' | grep -v '^scratch='
