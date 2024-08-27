@@ -26,6 +26,10 @@ _have docker && {
 	alias di='docker images'
 }
 
+_have gh && {
+	alias ghp='gh pull'
+}
+
 _have fd && _have fzf && {
 	edit() {
 		fd . -Ht f -d 6 -E .git -E .DS_Store |
