@@ -41,6 +41,9 @@
 	all = true
 	parallel = 0
 
+[github]
+	user = Chaitanyabsprip
+
 [init]
 	defaultBranch = main
 
