@@ -11,3 +11,4 @@ bin/gh
 bin/yq
 bin/fzf
 bin/fzf-tmux
+gh/hosts.yml
