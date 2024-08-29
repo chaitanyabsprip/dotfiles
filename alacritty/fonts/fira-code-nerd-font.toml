@@ -1,0 +1,27 @@
+[font]
+builtin_box_drawing = true
+size = 10.2
+
+[font.bold]
+family = "FiraCode Nerd Font Mono"
+style = "Bold"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font Mono"
+style = "ExtraBold Italic"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font Mono"
+style = "Italic"
+
+[font.normal]
+family = "FiraCode Nerd Font Mono"
+style = "Retina"
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font.offset]
+x = 1
+y = 0
