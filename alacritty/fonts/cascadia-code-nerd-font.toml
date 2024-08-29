@@ -1,0 +1,27 @@
+[font]
+builtin_box_drawing = true
+size = 10.2
+
+[font.normal]
+family = "CaskaydiaCove Nerd Font Mono"
+style = "Regular"
+
+[font.bold]
+family = "CaskaydiaCove Nerd Font Mono"
+style = "Bold"
+
+[font.bold_italic]
+family = "CaskaydiaCove Nerd Font Mono"
+style = "Bold Italic"
+
+[font.italic]
+family = "CaskaydiaCove Nerd Font Mono"
+style = "Italic"
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font.offset]
+x = 1
+y = 6
