@@ -71,5 +71,6 @@ end
 
 /opt/homebrew/bin/brew shellenv | source
 # starship init fish | source
+fzf --fish | source
 oh-my-posh init fish --config ~/dotfiles/oh-my-posh.rc.toml | source
 status --is-interactive; and rbenv init - fish | source
