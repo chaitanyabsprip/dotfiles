@@ -1,0 +1,24 @@
+#!/bin/sh
+
+export FZF_DEFAULT_COMMAND='fd --type file --hidden --exclude .git'
+
+export FZF_COMPLETION_TRIGGER='..'
+export FZF_COMPLETION_OPTS="$FZF_DEFAULT_OPTS --height 20% --border \
+    --margin 0 --padding 0"
+
+export FZF_CTRL_R_OPTS="
+    --info=inline --border --reverse \
+    --preview 'echo {}' --preview-window up:3:hidden:wrap \
+    --bind 'ctrl-/:toggle-preview' \
+    --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' \
+    --color header:italic \
+    --header 'Press CTRL-Y to copy command into clipboard'"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS="
+    --info=hidden --border \
+    --preview 'bat -n --color=always {}' \
+    --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+export FZF_ALT_C_COMMAND="fd . -t d --hidden"
+export FZF_ALT_C_OPTS="--preview='eza --tree {} | head -50'"
+
+. "$(dirname "$0")"/fzf-themes/material-rosepine

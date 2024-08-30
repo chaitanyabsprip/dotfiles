@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Material deep ocean colors
+
+export FZF_DEFAULT_OPTS="
+   --cycle --info=hidden \
+   --prompt='▍' --pointer='▍' --tabstop=4 \
+   --color=fg:#a6accd,bg:#0f111a,hl:#464b5d \
+   --color=fg+:#a6accd,bg+:#0f111a,hl+:#89ddff \
+   --color=info:#0f111a,prompt:#c792ea,pointer:#f07178 \
+   --color=marker:#c792ea,spinner:#c792ea,header:#464b5d \
+   --color=preview-bg:#090b10,border:#464b5d"
