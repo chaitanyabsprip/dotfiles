@@ -7,6 +7,8 @@ fzf-history-widget-accept() {
 zle -N fzf-history-widget-accept
 bindkey '^X' fzf-history-widget-accept
 
+source <(fzf --zsh)
+
 # man page search widget for zsh
 # fzf-man-widget() {
 #   batman="man {1} | col -bx | bat --language=man --plain --color always --theme=\"Monokai Extended\""
