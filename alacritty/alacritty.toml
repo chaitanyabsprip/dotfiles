@@ -1,8 +1,6 @@
 import = [
     "~/.config/alacritty/themes/material-rosepine.toml",
-    # "~/.config/alacritty/fonts/jetbrains-mono-nerd-font.toml",
-    # "~/.config/alacritty/fonts/fira-code-nerd-font.toml",
-    "~/.config/alacritty/fonts/cascadia-code-nerd-font.toml",
+    "~/.config/alacritty/fonts/monolisa-nerd-font.toml",
 ]
 live_config_reload = true
 
