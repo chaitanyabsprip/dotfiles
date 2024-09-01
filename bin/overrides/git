@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 gitc=/usr/bin/git
 if [ "$1" = init ]; then
