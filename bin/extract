@@ -1,24 +1,63 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-ex () {
-  file=$1
-  [ -z "$file" ] && echo 'ex <compressed>' && return 1
-  [ ! -f "$file" ] && echo 'Invalid file: `'$file'`' && return 1
-  case $file in
-    *.tar.bz2)   tar xjf $file;;
-    *.tar.gz)    tar xzf $file;;
-    *.bz2)       bunzip2 $file;;
-    *.rar)       unrar x $file;;
-    *.gz)        gunzip $file;;
-    *.tar)       tar xf $file;;
-    *.tbz2)      tar xjf $file;;
-    *.tgz)       tar xzf $file;;
-    *.zip)       unzip $file;;
-    *.Z)         uncompress $file;;
-    *.7z)        7z x $file;;
-    *.xz)        unxz $file;;
-    *)           echo 'Unknown suffix on file: `'$file'`'; return 1 ;;
-  esac
+ex() {
+	if [ $# = 0 ]; then
+		echo "Usage: extract [file ...]"
+	fi
+	while [ $# -gt 0 ]; do
+		if [ ! -f "$1" ]; then
+			echo "extract: '$1' is not a valid file" 1>&2
+			shift
+			continue
+		fi
+
+		file=$1
+		file_name="$(basename "$1")"
+		extract_dir="$(echo "$file_name" | sed "s/\.${1##*.}//g")"
+		case $file in
+		*.tar.gz | *.tgz) tar xvzf "$file" ;;
+		*.tar.bz2 | *.tbz | *.tbz2) tar xvjf "$file" ;;
+		*.tar.xz | *.txz)
+			if tar --xz --help >/dev/null 2>&1; then
+				tar --xz -xvf "$1"
+			else
+				xzcat "$1" | tar xvf -
+			fi
+			;;
+		*.tar.zma | *.tlz)
+			if tar --lzma --help >/dev/null 2>&1; then
+				tar --lzma -xvf "$1"
+			else
+				lzcat "$1" | tar xvf -
+			fi
+			;;
+		*.tar) tar xf "$file" ;;
+		*.gz) gunzip "$file" ;;
+		*.bz2) bunzip2 "$file" ;;
+		*.xz) unxz "$file" ;;
+		*.lzma) unlzma "$1" ;;
+		*.Z) uncompress "$file" ;;
+		*.zip | *.war | *.jar | *.sublime-package) unzip "$1" -d "$extract_dir" ;;
+		*.rar) unrar x "$file" ;;
+		*.7z) 7z x "$file" ;;
+		*.deb)
+			mkdir -p "$extract_dir/control"
+			mkdir -p "$extract_dir/data"
+			cd "$extract_dir" || return 1
+			ar vx "../${1}" >/dev/null
+			cd control || continue
+			tar xzvf ../control.tar.gz
+			cd ../data || continue
+			tar xzvf ../data.tar.gz
+			cd ..
+			rm ./*.tar.gz debian-binary
+			cd ..
+			;;
+		*)
+			echo 'Unknown suffix on file: `'"$file"'`'
+			;;
+		esac
+	done
 }
 
 ex "$@"
