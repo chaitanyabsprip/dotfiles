@@ -1,21 +1,21 @@
 [font]
 builtin_box_drawing = true
-size = 14.9
+size = 10
 
 [font.bold]
-family = "MonoLisa Nerd Font Mono"
+family = "MonoLisa Nerd Font"
 style = "Bold"
 
 [font.bold_italic]
-family = "MonoLisa Nerd Font Mono"
+family = "MonoLisa Nerd Font"
 style = "Bold Italic"
 
 [font.italic]
-family = "MonoLisa Nerd Font Mono"
+family = "MonoLisa Nerd Font"
 style = "Regular Italic"
 
 [font.normal]
-family = "MonoLisa Nerd Font Mono"
+family = "MonoLisa Nerd Font"
 style = "Regular"
 
 [font.glyph_offset]
@@ -24,4 +24,4 @@ y = 0
 
 [font.offset]
 x = 0
-y = 0
+y = -1
