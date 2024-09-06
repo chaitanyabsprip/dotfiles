@@ -1,0 +1,8 @@
+bind C-_ run 'harpoon -a'
+bind . run 'harpoon -A'
+bind M-f run 'harpoon -l'
+bind C-e run 'harpoon -e'
+bind C-h run 'harpoon -s 1'
+bind C-j run 'harpoon -s 2'
+bind C-k run 'harpoon -s 3'
+bind C-l run 'harpoon -s 4'
