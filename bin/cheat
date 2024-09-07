@@ -3,7 +3,6 @@
 _have() { type "$1" >/dev/null 2>&1; }
 _have fzf || { echo "${0##*/} depends on junegunn/fzf" && exit 127; }
 
-langpath=~/.config/tmux/bin/.tmux-cht-languages
 cmdpath=~/.config/tmux/bin/.tmux-cht-command
 langpath=~/.config/tmux/bin/.tmux-cht-languages
 
