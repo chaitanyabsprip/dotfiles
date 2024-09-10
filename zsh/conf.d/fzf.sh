@@ -1,14 +1,14 @@
 #!/bin/zsh
 
-_have() { type "$1" &>/dev/null; }
+_have() { type "$1" >/dev/null 2>&1; }
 
-_have fzf || return 0
+_have fzf && {
+	fzf-history-widget-accept() {
+		fzf-history-widget
+		zle accept-line
+	}
+	zle -N fzf-history-widget-accept
+	bindkey '^X' fzf-history-widget-accept
 
-fzf-history-widget-accept() {
-	fzf-history-widget
-	zle accept-line
+	source <(fzf --zsh)
 }
-zle -N fzf-history-widget-accept
-bindkey '^X' fzf-history-widget-accept
-
-source <(fzf --zsh)

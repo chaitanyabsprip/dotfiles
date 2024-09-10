@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 bindkey -M viins '^b' vi-backward-blank-word
 bindkey -M viins '^f' vi-forward-blank-word

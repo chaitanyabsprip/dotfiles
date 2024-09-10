@@ -1,5 +1,7 @@
-#!/bin/sh
+#!/bin/zsh
 
-have jira || return
+_have() { type "$1" >/dev/null 2>&1; }
 
-eval "$(jira completion zsh)"
+_have jira && {
+	source <(jira completion zsh)
+}

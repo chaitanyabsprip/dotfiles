@@ -1,33 +1,37 @@
-#!/bin/sh
+#!/bin/zsh
 
-lazypyenv() {
-	unset -f python pip python3 pip3 nvim
-	export PYENV_ROOT="$HOME/.pyenv"
-	[ -d "$PYENV_ROOT"/bin ] && export PATH="$PYENV_ROOT/bin:$PATH" &&
-		eval "$(pyenv init -)"
-}
+_have() { type "$1" >/dev/null 2>&1; }
 
-python() {
-	lazypyenv
-	python "$@"
-}
+_have pyenv && {
+	lazypyenv() {
+		unset -f python pip python3 pip3 nvim
+		export PYENV_ROOT="$HOME/.pyenv"
+		[ -d "$PYENV_ROOT"/bin ] && export PATH="$PYENV_ROOT/bin:$PATH" &&
+			eval "$(pyenv init -)"
+	}
 
-pip() {
-	lazypyenv
-	pip "$@"
-}
+	python() {
+		lazypyenv
+		python "$@"
+	}
 
-python3() {
-	lazypyenv
-	python3 "$@"
-}
+	pip() {
+		lazypyenv
+		pip "$@"
+	}
 
-pip3() {
-	lazypyenv
-	pip3 "$@"
-}
+	python3() {
+		lazypyenv
+		python3 "$@"
+	}
 
-nvim() {
-	lazypyenv
-	nvim "$@"
+	pip3() {
+		lazypyenv
+		pip3 "$@"
+	}
+
+	nvim() {
+		lazypyenv
+		nvim "$@"
+	}
 }

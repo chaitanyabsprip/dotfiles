@@ -1,32 +1,30 @@
-#!/bin/sh
+#!/bin/zsh
 
-_have() { type "$1" >/dev/null 2>&1; }
+[ -s "$HOME/programs/nvm/nvm.sh" ] && {
+	lazynvm() {
+		unset -f nvm node npm nvim
+		NVM_DIR="$HOME"/programs/nvm
+		[ -s "$NVM_DIR" ] && export NVM_DIR="$NVM_DIR"
+		[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+	}
 
-_have nvm || return
+	nvm() {
+		lazynvm
+		nvm "$@"
+	}
 
-lazynvm() {
-	unset -f nvm node npm nvim
-	NVM_DIR="$HOME"/programs/nvm
-	[ -s "$NVM_DIR" ] && export NVM_DIR="$NVM_DIR"
-	[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
-}
+	node() {
+		lazynvm
+		node "$@"
+	}
 
-nvm() {
-	lazynvm
-	nvm "$@"
-}
+	npm() {
+		lazynvm
+		npm "$@"
+	}
 
-node() {
-	lazynvm
-	node "$@"
-}
-
-npm() {
-	lazynvm
-	npm "$@"
-}
-
-nvim() {
-	lazynvm
-	nvim "$@"
+	nvim() {
+		lazynvm
+		nvim "$@"
+	}
 }
