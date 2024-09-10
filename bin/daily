@@ -1,0 +1,9 @@
+#!/bin/sh
+
+filename="$NOTESPATH/transient/$(date '+%Y-%m-%d')".md
+[ ! -f "$filename" ] && {
+	echo "# $(date '+%Y-%m-%d')"
+	echo
+	echo
+} >"$filename"
+$EDITOR "$filename"
