@@ -13,3 +13,4 @@ bin/fzf
 bin/fzf-tmux
 gh/hosts.yml
 bin/harpoon
+bin/.pipx
