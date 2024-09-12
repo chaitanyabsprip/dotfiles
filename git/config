@@ -69,7 +69,7 @@
 	prompt = false
 
 [mergetool "nvimdiff4"]
-	cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmdw' -c 'wincmd J'
+	cmd = "nvim -d \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\" -c \"wincmd w\" -c \"wincmd J\""
 
 [pull]
 	rebase = false
