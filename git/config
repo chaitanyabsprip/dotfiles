@@ -34,6 +34,7 @@
 [diff]
 	colorMoved = default
 	colorMovedWs = allow-indentation-change
+	algorithm = histogram
 
 [fetch]
 	prune = true
