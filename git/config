@@ -11,6 +11,9 @@
 	ui = always
 	sort = -committerdate
 
+[commit]
+	verbose = true
+
 [core]
 	editor = nvim
 	pager = delta
@@ -32,9 +35,14 @@
 	file-modified-label = modified:
 
 [diff]
+	algorithm = histogram
 	colorMoved = default
 	colorMovedWs = allow-indentation-change
-	algorithm = histogram
+	compactionHeuristic = true
+	tool = nvimdiff
+
+[difftool "nvimdiff"]
+	cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" -c \"wincmd w\" -c  \"wincmd L\""
 
 [fetch]
 	prune = true
@@ -56,6 +64,14 @@
 
 [merge]
 	conflictstyle = diff3
+	tool = nvimdiff4
+	prompt = false
+
+[mergetool "nvimdiff4"]
+	cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmdw' -c 'wincmd J'
+
+[pull]
+	rebase = false
 
 [push]
 	autoSetupRemote = true
