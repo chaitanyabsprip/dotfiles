@@ -40,9 +40,9 @@
 	colorMoved = default
 	colorMovedWs = allow-indentation-change
 	compactionHeuristic = true
-	tool = nvimdiff
+	tool = nvimdiff4
 
-[difftool "nvimdiff"]
+[difftool "nvimdiff4"]
 	cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" -c \"wincmd w\" -c  \"wincmd L\""
 
 [fetch]
@@ -65,11 +65,10 @@
 
 [merge]
 	conflictstyle = diff3
-	tool = nvimdiff4
-	prompt = false
+	tool = nvimdiff
 
-[mergetool "nvimdiff4"]
-	cmd = "nvim -d \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\" -c \"wincmd w\" -c \"wincmd J\""
+[mergetool "nvimdiff"]
+	layout = "LOCAL,BASE,REMOTE/MERGED+LOCAL,MERGED,REMOTE"
 
 [pull]
 	rebase = false
