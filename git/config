@@ -13,7 +13,6 @@
 
 [commit]
 	verbose = true
-	template = ~/.config/git/commit_template
 
 [core]
 	editor = nvim
