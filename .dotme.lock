@@ -16,3 +16,4 @@ waybar: $HOME/.config/waybar: linux
 bat: $HOME/.config/bat
 dirs: $HOME/.config/user-dirs.dirs
 gh: $HOME/.config/gh
+sqlfluff: $HOME/.config/sqlfluff
