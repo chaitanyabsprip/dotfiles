@@ -16,7 +16,6 @@ set -g status-left '\
 
 set -g status-right-length 100
 set -g status-right '\
-#[fg=white] #{?SSH_TTY,,#(date "+%H:%M")} \
 #[fg=#a3fcfe,bg=#1a1a1a,bold] #S \
 '
 
