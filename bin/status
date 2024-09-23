@@ -1,0 +1,21 @@
+#!/bin/sh
+
+RESET="\e[0m"
+DIRSTYLE="\e[40m"
+
+BASE_DIR="${1:-.}"
+
+case "$BASE_DIR" in */) : ;; *) BASE_DIR="$BASE_DIR/" ;; esac
+
+for dir in "$BASE_DIR"*/; do
+	dir_name="${dir%/}"
+	if [ -d "$dir/.git" ]; then
+		status="$(git -C "$dir" status --porcelain | gitcolor)"
+		if [ -n "$status" ]; then
+			printf "${DIRSTYLE}%s:${RESET}\n" "$dir_name"
+			echo "$status"
+			echo
+			echo
+		fi
+	fi
+done
