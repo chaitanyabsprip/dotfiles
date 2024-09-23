@@ -10,9 +10,9 @@ BEGIN {
     reset="\033[0m"
 }
 
-/^ M/ { printf("%s %s%s\n", yellow, $0, reset) }
-/^A/ { printf("%s %s%s\n", green, $0, reset) }
-/^ D/ { printf("%s %s%s\n", red, $0, reset) }
-/^ R/ { printf("%s %s%s\n", blue, $0, reset) }
-/^\?\?/ { printf("%s %s%s\n", cyan, $0, reset) }
+/^ M/ { print  yellow $0 reset }
+/^A/ { print green $0 reset }
+/^ D/ { print red $0 reset }
+/^ R/ { print blue $0 reset }
+/^\?\?/ { print cyan $0 reset }
 !/(^ M)|(^A)|(^ D)|(^ R)|(^\?\?)/ {  print black $0 reset }
