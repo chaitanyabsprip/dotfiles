@@ -4,6 +4,8 @@ filename="$NOTESPATH/transient/$(date '+%Y-%m-%d')".md
 [ ! -f "$filename" ] && {
 	echo "# $(date '+%Y-%m-%d')"
 	echo
+	echo "## Todo"
 	echo
+	echo "## Notes"
 } >"$filename"
 $EDITOR "$filename"
