@@ -1,0 +1,18 @@
+#!/usr/bin/awk -f
+
+BEGIN {
+    red="\033[31m"
+    green="\033[32m"
+    yellow="\033[33m"
+    magenta="\033[35m"
+    cyan="\033[34m"
+    black="\033[30m"
+    reset="\033[0m"
+}
+
+/^ M/ { printf("%s %s%s\n", yellow, $0, reset) }
+/^A/ { printf("%s %s%s\n", green, $0, reset) }
+/^ D/ { printf("%s %s%s\n", red, $0, reset) }
+/^ R/ { printf("%s %s%s\n", blue, $0, reset) }
+/^\?\?/ { printf("%s %s%s\n", cyan, $0, reset) }
+!/(^ M)|(^A)|(^ D)|(^ R)|(^\?\?)/ {  print black $0 reset }
