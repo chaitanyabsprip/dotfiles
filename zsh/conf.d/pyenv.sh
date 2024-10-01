@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 
 _have() { type "$1" >/dev/null 2>&1; }
 
@@ -6,8 +6,8 @@ _have pyenv && {
 	lazypyenv() {
 		unset -f python pip python3 pip3 nvim
 		export PYENV_ROOT="$HOME/.pyenv"
-		[ -d "$PYENV_ROOT"/bin ] && export PATH="$PYENV_ROOT/bin:$PATH" &&
-			eval "$(pyenv init -)"
+		[ -d "$PYENV_ROOT"/bin ] && export PATH="$PYENV_ROOT/bin:$PATH"
+		eval "$(pyenv init -)"
 	}
 
 	python() {
