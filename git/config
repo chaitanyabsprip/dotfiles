@@ -63,7 +63,7 @@
 	follow = true
 
 [merge]
-	conflictstyle = diff3
+	conflictstyle = zdiff3
 	tool = nvimdiff
 
 [mergetool "nvimdiff"]

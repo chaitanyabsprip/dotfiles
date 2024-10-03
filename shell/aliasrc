@@ -8,6 +8,11 @@ donothing() { echo "$*" >/dev/null 2>&1; }
 alias mkdir='mkdir -pv'
 alias view='vi -R'
 
+_have base64 && {
+	alias encode='base64 -w 0'
+	alias decode='base64 -d'
+}
+
 _have /usr/bin/vim && alias vi=/usr/bin/vim
 _have /usr/local/bin/nvim && alias vim=/usr/local/bin/nvim vimdiff='vim -d'
 _have bat && alias cat='bat'
