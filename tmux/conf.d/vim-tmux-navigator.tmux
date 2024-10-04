@@ -16,4 +16,4 @@ bind-key -T copy-mode-vi -N "Copy mode vi: Jump to pane on left"   C-h select-pa
 bind-key -T copy-mode-vi -N "Copy mode vi: Jump to pane below"     C-j select-pane -D
 bind-key -T copy-mode-vi -N "Copy mode vi: Jump to pane above"     C-k select-pane -U
 bind-key -T copy-mode-vi -N "Copy mode vi: Jump to pane on right"  C-l select-pane -R
-bind-key -T copy-mode-vi -N "Copy mode vi: Jump to last pane"      C-\ select-pane -l
+bind-key -T copy-mode-vi -N "Copy mode vi: Jump to last pane"      C-\\ select-pane -l
