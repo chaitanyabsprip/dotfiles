@@ -13,15 +13,14 @@ set -g status-left-length 100
 set -g status-left '\
 #[bg=#a3fcfe,fg=#1a1a1a,bold] #S \
 #[bg=default]\
-#[fg=#1a1a1a,bg=green,bold] \
-#(pomo) \
-#[fg=white,bg=default,nobold]\
 '
 
 set -g status-right-length 100
 set -g status-right '\
 #(gitmux -cfg $HOME/.config/tmux/gitmux.conf "#{pane_current_path}")\
-#[fg=#a3fcfe] #{?SSH_TTY,,#(date "+%H:%M %a %d/%m")} \
+#[fg=green,bold]\
+#{?#{!=:#(pomo), - }, #(pomo),}\
+#[fg=white,bg=default,nobold]\
 '
 
 set -g window-status-format '#[fg=white]#{?window_index, ,}#{window_name} '
