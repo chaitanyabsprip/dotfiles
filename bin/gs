@@ -2,56 +2,29 @@
 
 deansi() { sed 's/\x1B\[[0-9;]*[JKmsu]//g'; }
 
-getmaxlen() {
-	max_length=0
-	while read -r line; do
-		[ -z "$line" ] && continue
-		length="${#line}"
-		if [ "$length" -gt "$max_length" ]; then
-			max_length="$length"
-		fi
-	done
-	echo "$max_length"
+gitstatus() {
+	pipe1="$(mktemp -u)"
+	pipe2="$(mktemp -u)"
+	mkfifo "$pipe1" "$pipe2"
+	status="$(git -c color.status=always -c status.relativePaths=false status -sb)"
+
+	{
+		echo "$status" |
+			deansi |
+			sed 's/^ \([MTDARC]\)/_\1/' |
+			tail -n +2 >"$pipe1"
+	} &
+	{
+		git diff --color --stat HEAD 2>/dev/null |
+			head -n -1 | sed 's/^ //' >"$pipe2"
+	} &
+
+	{
+		echo "$status" | head -n1
+		echo
+		join -a1 -1 2 "$pipe1" "$pipe2" -o '1.1,1.2,2.2,2.3,2.4' | sed 's/^_/ /'
+	} | gitcolor | align \| | align '+'
+	rm "$pipe1" "$pipe2"
 }
 
-green() { printf '\033[0;32m%s\033[0m' "$*"; }
-red() { printf '\033[0;31m%s\033[0m' "$*"; }
-yellow() { printf '\033[0;33m%s\033[0m' "$*"; }
-white() { printf '\033[0;37m%s\033[0m' "$*"; }
-
-diff="$(git diff --color --stat HEAD 2>/dev/null)"
-gstatus="$(git -c color.status=always status -sb)"
-echo "$gstatus" | head -n1
-statuses="$(echo "$gstatus" | tail -n +2)"
-files="$(echo "$statuses" | awk '{print $2}')"
-unset gstatus
-max_len="$(echo "$files" | getmaxlen)"
-echo "$files" | while read -r line; do
-	change="$(echo "$statuses" | grep -w "$line" | awk '{print $1}' | deansi)"
-	file="$line"
-	case "$change" in
-	\?\?)
-		change="$(green "$change")"
-		file="$(green "$line")"
-		;;
-	M)
-		change="$(yellow "$change")"
-		file="$(yellow "$line")"
-		;;
-	D)
-		change="$(red "$change")"
-		file="$(red "$line")"
-		;;
-	m)
-		change="$(white "$change")"
-		file="$(white "$line")"
-		;;
-	*) ;;
-	esac
-	printf '%13s %s' "$change" "$file"
-	rpath="$(realpath -s --relative-to "$(git root)" "${line##* }")"
-	diffc="$(echo "$diff" | grep -w "$rpath" | cut -d '|' -f2)"
-	padding="$((max_len - ${#line}))"
-	[ -n "$diffc" ] && printf "%${padding}s |%s" "" "$diffc"
-	echo
-done
+gitstatus
