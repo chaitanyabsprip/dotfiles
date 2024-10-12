@@ -11,7 +11,7 @@ gitstatus() {
 	{
 		echo "$status" |
 			deansi |
-			sed 's/^ \([MTDARC]\)/_\1/' |
+			sed 's|^ \([MTDARC]\)|_\1|;s|\(.*/\)\(.*\) -> .*/\(.*\)|\1{\2 => \3}|' |
 			tail -n +2 >"$pipe1"
 	} &
 	{
@@ -22,7 +22,7 @@ gitstatus() {
 	{
 		echo "$status" | head -n1
 		echo
-		join -a1 -1 2 "$pipe1" "$pipe2" -o '1.1,1.2,2.2,2.3,2.4' | sed 's/^_/ /'
+		join -a1 -1 2 "$pipe1" "$pipe2" -o '1.1,1.2,2.2,2.3,2.4,2.5,2.6' | sed 's/^_/ /'
 	} | gitcolor | align \| | align '+'
 	rm "$pipe1" "$pipe2"
 }
