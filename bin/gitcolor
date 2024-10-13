@@ -4,6 +4,7 @@ function sprint() {
     for (i = 1; i <= NF; i++){
         if ($i == "|") printf reset
         printf "%s ",$i
+        if ($i != "|" && i == NF) printf reset
     }
     print ""
 }
