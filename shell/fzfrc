@@ -21,4 +21,4 @@ export FZF_CTRL_T_OPTS="
 export FZF_ALT_C_COMMAND="fd . -t d --hidden"
 export FZF_ALT_C_OPTS="--preview='eza --tree {} | head -50'"
 
-. "$(dirname "$0")"/fzf-themes/material-rosepine
+. "$(dirname "$0")"/fzf-themes/material-rosepine-dark
