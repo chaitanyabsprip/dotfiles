@@ -21,16 +21,16 @@ blink=""
 reset=""
 
 if test -t 1; then
-  black="\e[30m"
-  red="\e[31m"
-  green="\e[32m"
-  yellow="\e[33m"
-  blue="\e[34m"
-  magenta="\e[35m"
-  cyan="\e[36m"
-  white="\e[37m"
-  blink="\e[5m"
-  reset="\e[0m"
+	black="\e[30m"
+	red="\e[31m"
+	green="\e[32m"
+	yellow="\e[33m"
+	blue="\e[34m"
+	magenta="\e[35m"
+	cyan="\e[36m"
+	white="\e[37m"
+	blink="\e[5m"
+	reset="\e[0m"
 fi
 echo POSIX
 printf "${black}black=\"\\\e[30m\"
@@ -43,15 +43,14 @@ ${cyan}cyan=\"\\\e[36m\"
 ${white}white=\"\\\e[37m\"
 reset=\"\\\e[0m\"
 "
+
 echo
-echo BASH:
-printf "${black}black=$'\\\e[30m'
-${red}red=$'\\\e[31m'
-${green}green=$'\\\e[32m'
-${yellow}yellow=$'\\\e[33m'
-${blue}blue=$'\\\e[34m'
-${magenta}magenta=$'\\\e[35m'
-${cyan}cyan=$'\\\e[36m'
-${white}white=$'\\\e[37m'
-reset=$'\\\e[0m'
-"
+printf "\033[0mNC (No color)\n"
+printf "\033[1;37mWHITE\t\033[0;30mBLACK\n"
+printf "\033[0;34mBLUE\t\033[1;34mLIGHT_BLUE\n"
+printf "\033[0;32mGREEN\t\033[1;32mLIGHT_GREEN\n"
+printf "\033[0;36mCYAN\t\033[1;36mLIGHT_CYAN\n"
+printf "\033[0;31mRED\t\033[1;31mLIGHT_RED\n"
+printf "\033[0;35mPURPLE\t\033[1;35mLIGHT_PURPLE\n"
+printf "\033[0;33mYELLOW\t\033[1;33mLIGHT_YELLOW\n"
+printf "\033[1;30mGRAY\t\033[0;37mLIGHT_GRAY\n"
