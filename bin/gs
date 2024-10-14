@@ -2,6 +2,9 @@
 
 deansi() { sed 's/\x1B\[[0-9;]*[JKmsu]//g'; }
 
+smultiply() { printf "$1%.0s" $(seq 1 "$2" 2>/dev/null); }
+divider() { printf "\033[38;5;236m%s\033[0m\n" "$(smultiply 🭶 "$1")"; }
+
 gitstatus() {
 	pipe1="$(mktemp -u)"
 	pipe2="$(mktemp -u)"
@@ -19,11 +22,20 @@ gitstatus() {
 			head -n -1 | sed 's/^ //' >"$pipe2"
 	} &
 
-	{
-		echo "$status" | head -n1
-		printf "\033[38;5;236m🭶🭶🭶🭶🭶🭶🭶🭶🭶🭶🭶🭶🭶🭶🭶🭶🭶🭶🭶🭶🭶\033[0m\n"
-		join -a1 -1 2 "$pipe1" "$pipe2" -o '1.1,1.2,2.2,2.3,2.4,2.5,2.6' | sed 's/^_/ /'
-	} | gitcolor | align \| | align '+'
+	echo " $status" | head -n1
+	printf " %s\n" "$(divider 21)"
+	join -a1 -1 2 "$pipe1" "$pipe2" -o '1.1,1.2,2.2,2.3,2.4,2.5,2.6' |
+		sed 's/^_/ /' |
+		gitcolor |
+		align \| |
+		align '+'
+
+	staged="$(git diff --name-only --cached | sed 's/^/  /;s/.*/\o033[32m\0\o033[0m/')"
+	[ -n "$staged" ] && {
+		printf "\n ## Staged\n"
+		divider 9 | sed 's/^/ /'
+		printf "$staged\n"
+	}
 	rm "$pipe1" "$pipe2"
 }
 

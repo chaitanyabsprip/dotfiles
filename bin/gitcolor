@@ -1,6 +1,7 @@
 #!/usr/bin/awk -f
 
 function sprint() {
+    printf " "
     for (i = 1; i <= NF; i++){
         if ($i == "|") printf reset
         printf "%s ",$i
@@ -24,12 +25,12 @@ BEGIN {
 { printf " " }
 
 /^## / { print $0; next; }
-/^ *M +/ { printf yellow; }
-/^ *A +/ { printf green; }
-/^ *D +/ { printf red; }
-/^ *R +/ { printf magenta; }
+/^ ?M{1,2} +/ { printf yellow; }
+/^ ?A{1,2} +/ { printf green; }
+/^ ?D{1,2} +/ { printf red; }
+/^ ?R{1,2} +/ { printf magenta; }
 /^\?\? / { printf grey; }
-!/(^## )|(^ *M +)|(^ *A +)|(^ *D +)|(^ *R +)|(^\?\? )/ { printf black; }
+!/(^## )|(^ ?M{1,2} +)|(^ ?A{1,2} +)|(^ ?D{1,2} +)|(^ ?R{1,2} +)|(^\?\? )/ { printf black; }
 
 /^ .+/ { $1=" "$1; }
 /^. .*/ { $1=$1" "; }
