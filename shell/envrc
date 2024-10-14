@@ -63,4 +63,4 @@ _ismac && _have jira && JIRA_API_TOKEN="$(cat ~/.secrets/jira-token)" && export 
 
 _have fzf && . "$(dirname "$0")"/fzfrc
 
-_have bat && export BAT_THEME="material-rose-pine"
+_have bat && export BAT_THEME="material-rose-pine-dark"
