@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+input="${1:-/dev/stdin}"
+sed_command='s/\+/ /g; s/%\([0-9A-Fa-f][0-9A-Fa-f]\)/\\x\1/g'
+
+if [ -e "$input" ] && [ -r "$input" ]; then
+	printf "%b\n" "$(sed "$sed_command" "$input")"
+else
+	printf "%b\n" "$(echo "$input" | sed "$sed_command")"
+fi
