@@ -6,6 +6,6 @@ export FZF_DEFAULT_OPTS=" \
     --prompt='▍' --pointer='▍' --tabstop=4 \
     --color=fg:#908caa,bg:#07080d,hl:#ebbcba \
     --color=fg+:#e0def4,bg+:#07080d,hl+:#ebbcba \
-    --color=border:#161721,header:#31748f,gutter:#07080d \
+    --color=border:#21202e,header:#31748f,gutter:#07080d \
     --color=spinner:#f6c177,info:#9ccfd8,separator:#131521 \
     --color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
