@@ -39,7 +39,7 @@ EOF
 			newpath=$1
 		else
 			newpath=$(
-				workdirs -s | fzf-tmux -p 30% --border \
+				workdirs -s | fzf-tmux -p 45% --border \
 					--border-label=' Sessionizer ' \
 					--border-label-pos=6:bottom
 			)
