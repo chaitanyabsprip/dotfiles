@@ -16,7 +16,7 @@ pager:
 aliases:
   co: pr checkout
   igrep: '!gh issue list --label="$1" | grep "$2"'
-  pull: '!case "$1" in */*) [ "$(echo "$1" | cut -d"/" -f1)" = "Chaitanyabsprip" ] && path="${PROJECTS:-$HOME/projects}/$(echo "$1" | cut -d"/" -f2)" ;; *) path="${PROJECTS:-$HOME/projects}/$1" ;; esac; gh repo clone "$1" "${2:-$path}"'
+  pull: '!case "$1" in -h | --help | help) echo "Clones the project into the \$PROJECTS directory if its my repository, else" && echo "it clones it to the directory passed as the second argument. If the second" && echo "argument is not provided, it clones the repository into the current" && echo "directory." && exit ;; */*) [ "$(echo "$1" | cut -d"/" -f1)" = "Chaitanyabsprip" ] && path="${PROJECTS:-$HOME/projects}/$(echo "$1" | cut -d"/" -f2)" ;; *) path="${PROJECTS:-$HOME/projects}/$1" ;; esac; gh repo clone "$1" "${2:-$path}"'
 # The path to a unix socket through which send HTTP connections. If blank, HTTP
 # traffic will be handled by net/http.DefaultTransport.
 http_unix_socket:
