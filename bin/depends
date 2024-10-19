@@ -1,4 +1,48 @@
 #!/bin/sh
 
-have "$1" ||
-	{ echo "utility depends on $1, please install and try again." && exit 1; }
+# This script checks if the specified programs are installed
+#
+# Usage: depends <program1> [program2 ... programN]
+#
+# Arguments:
+#   program1, program2, ... programN   Names of the programs to check for installation.
+#
+# Example:
+#   depends git curl wget
+#   This will check if 'git', 'curl', and 'wget' are installed on the system.
+#
+# If any program is not installed, an error message will be displayed,
+# and the parent process of the script will be interrupted.
+
+main() {
+	[ -z "$1" ] && exit 1
+	for program in "$@"; do
+		_depends "$program"
+	done
+}
+
+_depends() {
+	if ! type "$1" >/dev/null 2>&1; then
+		echo "Program depends on $1, please install and try again."
+		if ! is_interactive_shell "$PPID"; then
+			kill "$PPID" 2>/dev/null
+		fi
+		exit 1
+	fi
+}
+
+is_interactive_shell() {
+	pid="$1"
+
+	cmd=$(ps -o comm= -p "$pid" | tr -d ' ')
+	tty=$(ps -o tty= -p "$pid")
+
+	if [ "${tty}" = '?' ]; then return 1; fi
+
+	case "${cmd}" in
+	bash | sh | -zsh | zsh | dash | fish | tmux | screen) return 0 ;;
+	*) return 1 ;;
+	esac
+}
+
+main "$@"
