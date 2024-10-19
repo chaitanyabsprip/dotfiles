@@ -9,13 +9,13 @@ if [ -z "$1" ]; then
 fi
 
 case "$1" in
--)
+- | t)
 	wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
 	;;
-m)
+m | mute)
 	wpctl set-mute @DEFAULT_AUDIO_SINK@ 1
 	;;
-f)
+f | full)
 	wpctl set-mute @DEFAULT_AUDIO_SINK@ 0
 	wpctl set-volume @DEFAULT_AUDIO_SINK@ 100%
 	;;
