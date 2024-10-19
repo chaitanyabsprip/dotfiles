@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# shellcheck disable=SC1091
+. "$HOME/.config/hypr/scripts/commands"
+
+commands_file="$HOME/.config/hypr/scripts/commands"
+cmd="$(grep "()" "${commands_file}" | rofi -dmenu -config ~/.config/rofi/themes/spotlight.rasi -i)"
+cmd="$(echo "${cmd}" | cut -d'(' -f1)"
+notify-send "${cmd}"
+
+$cmd

@@ -1,0 +1,30 @@
+#!/bin/sh
+
+: "Volume"
+mute() { v -; }
+volume10() { v 1; }
+volume20() { v 2; }
+volume30() { v 3; }
+volume40() { v 4; }
+volume50() { v 5; }
+volume60() { v 6; }
+volume70() { v 7; }
+volume80() { v 8; }
+volume90() { v 9; }
+volume100() { v f; }
+
+: "Brightness"
+brightness10() { b 1; }
+brightness20() { b 2; }
+brightness30() { b 3; }
+brightness40() { b 4; }
+brightness50() { b 5; }
+brightness60() { b 6; }
+brightness70() { b 7; }
+brightness80() { b 8; }
+brightness90() { b 9; }
+brightness100() { b f; }
+
+: "Connectivity"
+wifi() { kitty --class wifi sudo impala; }
+bluetooth() { kitty --class wifi bluetui; }
