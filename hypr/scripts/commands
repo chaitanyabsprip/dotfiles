@@ -26,5 +26,5 @@ brightness90() { b 9; }
 brightness100() { b f; }
 
 : "Connectivity"
-wifi() { kitty --class wifi sudo impala; }
-bluetooth() { kitty --class wifi bluetui; }
+wifi() { kitty --class wifi --name wifi -T wifi sudo impala; }
+bluetooth() { kitty --class bluetooth --name bluetooth -T bluetooth bluetui; }
