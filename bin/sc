@@ -8,10 +8,8 @@ _have glow || { echo "${0##*/} depends on glow, use it for better experience"; }
 
 preview() {
 	content=
-	[ -p /dev/stdin ] && while IFS= read -r line; do content="$content\n$line"; done
-	{ _have glow && echo "$content" | glow; } ||
-		{ _have bat && echo "$content" | bat -p; } ||
-		echo "$content" | cat
+	[ -p /dev/stdin ] || return
+	{ _have glow && cat | glow -p; } || { _have bat && cat | bat -p; } || cat
 }
 
 [ ! -p /dev/stdin ] && [ -z "$1" ] && printf 'shellcheck error: '
