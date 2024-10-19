@@ -1,0 +1,28 @@
+#!/bin/sh
+
+depends brightnessctl
+
+exec >/dev/null 2>&1 # redirect all output to /dev/null
+
+if [ -z "$1" ]; then
+	exit
+fi
+
+case "$1" in
+i | inc)
+	brightnessctl set +5%
+	;;
+d | dec)
+	brightnessctl set 5%-
+	;;
+m | max)
+	brightnessctl set 100%
+	;;
+m | min)
+	brightnessctl set 0%
+	;;
+*)
+	brightness="$(echo "$1 * 10" | bc)"
+	brightnessctl set "${brightness}"%
+	;;
+esac

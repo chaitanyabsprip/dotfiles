@@ -1,0 +1,27 @@
+#!/bin/sh
+
+depends wpctl
+
+exec >/dev/null 2>&1 # redirect all output to /dev/null
+
+if [ -z "$1" ]; then
+	exit
+fi
+
+case "$1" in
+-)
+	wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+	;;
+m)
+	wpctl set-mute @DEFAULT_AUDIO_SINK@ 1
+	;;
+f)
+	wpctl set-mute @DEFAULT_AUDIO_SINK@ 0
+	wpctl set-volume @DEFAULT_AUDIO_SINK@ 100%
+	;;
+*)
+	wpctl set-mute @DEFAULT_AUDIO_SINK@ 0
+	volume=$(echo "$1 * 10" | bc)
+	wpctl set-volume @DEFAULT_AUDIO_SINK@ "${volume}"%
+	;;
+esac
