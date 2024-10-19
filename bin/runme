@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# This utility allows you to run sh codeblocks in markdown and append the output
+# of the codeblock to the end of the codeblock.
+#
+# Simply pipe a codeblock to this utility.
+# It is smart about ignoring the output lines as well.
+
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
 	echo "To be used in documents, for piping a written command"
 	exit 0
