@@ -30,7 +30,7 @@ export DOWNLOADS="$HOME/downloads"
 export SCRIPTS="$HOME/.local/bin"
 export DOTFILES="$HOME/dotfiles"
 export PROJECTS="$HOME/projects"
-export GITUSER="Chaitanyabpsrip"
+export GITUSER="Chaitanyabsprip"
 
 export XDG_DATA_HOME="$HOME"/.local/share
 export XDG_STATE_HOME="$HOME"/.local/state
