@@ -7,9 +7,11 @@ HISTFILESIZE=1000000000
 HISTSIZE=1000000000
 ZLE_RPROMPT_INDENT=0
 
-if have oh-my-posh; then
+_have() { type "$1" >/dev/null 2>&1; }
+
+if _have oh-my-posh; then
 	eval "$(oh-my-posh init zsh -c ~/dotfiles/oh-my-posh.rc.toml)"
-elif have starship; then
+elif _have starship; then
 	eval "$(starship init zsh)"
 fi
 
@@ -45,7 +47,7 @@ bindkey '^v' edit-command-line
 bindkey -s ^o '^ujump\n'
 
 # initialisations
-have rbenv && zsh-defer eval "$(rbenv init - zsh)"
+_have rbenv && zsh-defer eval "$(rbenv init - zsh)"
 # have note && zsh-defer eval "$(note completion zsh)"
 
 : # shell should start with a zero status code
