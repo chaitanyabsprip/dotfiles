@@ -29,11 +29,11 @@ gitstatus() {
 		gitcolor |
 		align \|
 
-	staged="$(git diff --name-only --cached | sed 's/^/  /;s/.*/\o033[32m\0\o033[0m/')"
+	staged="$(git diff --name-only --cached | sed 's/^/  /')"
 	[ -n "$staged" ] && {
 		printf "\n ## Staged\n"
 		divider 9 | sed 's/^/ /'
-		printf "$staged\n"
+		printf "\033[32m%s\033[0m\n" "$staged"
 	}
 	rm "$pipe1" "$pipe2"
 }
