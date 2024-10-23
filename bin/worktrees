@@ -1,5 +1,25 @@
 #!/bin/sh
 
+set -e
+depends fd
+set +e
+
+main() {
+	(
+		fd '^.git$' -Hatf -E node_modules \
+			"$HOME/programs/" \
+			"$HOME/projects/" | xargs dirname | filter
+	) | sort -u | sed 's|/$||' | strip_home "$1"
+}
+
+filter() {
+	while read -r dir; do
+		if is_worktree "$dir" && ! is_submodule "$dir"; then
+			echo "$dir"
+		fi
+	done
+}
+
 strip_home() {
 	if [ "$1" = "-s" ]; then
 		sed "s|$HOME/\.||;s|$HOME/||"
@@ -9,14 +29,13 @@ strip_home() {
 
 }
 
-set -e
-depends fd
-set +e
-(
-	fd '^.git$' -HIatf -d 4 -E node_modules \
-		"$HOME/programs/" \
-		"$HOME/projects/" | xargs -I {} dirname {}
-	fd 'root' -HIatd -d 3 \
-		"$HOME/programs/" \
-		"$HOME/projects/"
-) | sort -u | sed 's|/$||' | strip_home "$1"
+is_worktree() {
+	[ "$(git -C "$1" rev-parse --is-inside-work-tree)" = "true" ]
+}
+
+is_submodule() {
+	[ -n "$(git -C "$1" rev-parse --show-superproject-working-tree)" ]
+
+}
+
+main "$@"

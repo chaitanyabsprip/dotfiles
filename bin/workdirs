@@ -1,7 +1,5 @@
 #!/bin/sh
-set -e
 depends fd
-set +e
 
 strip_home() {
 	if [ "$1" = "-s" ]; then
@@ -12,10 +10,11 @@ strip_home() {
 }
 
 (
-	fd . -HIatd -d 1 -E .git \
+	fd '^.git$' -Hatd \
+		"$PROJECTS" | xargs dirname
+	fd . -Hatd -d 1 \
 		"$HOME/projects/" \
-		"$HOME/programs/"
-	fd . -HIad 1 -td -E .git \
+		"$HOME/programs/" \
 		"$HOME/.config/" \
 		"$HOME/dotfiles/"
 	echo "$HOME/dotfiles/"
@@ -26,4 +25,4 @@ strip_home() {
 	echo "$NOTESPATH/"
 	echo "$HOME/pictures/"
 	worktrees
-) | sort -u | sed 's|/$||' | strip_home "$1"
+) | sed 's|/$||' | strip_home "$1" | sort -u
