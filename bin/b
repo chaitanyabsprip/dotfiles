@@ -21,6 +21,9 @@ m | max)
 m | min)
 	brightnessctl set 0%
 	;;
+f | full)
+	brightnessctl set 100%
+	;;
 *)
 	brightness="$(echo "$1 * 10" | bc)"
 	brightnessctl set "${brightness}"%
