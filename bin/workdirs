@@ -10,19 +10,15 @@ strip_home() {
 }
 
 (
-	fd '^.git$' -Hatd \
-		"$PROJECTS" | xargs dirname
-	fd . -Hatd -d 1 \
-		"$HOME/projects/" \
+	find "$PROJECTS" -type d -name .git -exec dirname {} \;
+	find "$PROJECTS/" \
 		"$HOME/programs/" \
-		"$HOME/.config/" \
-		"$HOME/dotfiles/"
-	echo "$HOME/dotfiles/"
-	echo "$HOME/projects/"
-	echo "$HOME/programs/"
+		"$XDG_CONFIG_HOME/" \
+		"$DOTFILES/" \
+		-maxdepth 1 -type d
 	echo "$SCRIPTS/"
 	echo "$DOWNLOADS/"
 	echo "$NOTESPATH/"
 	echo "$HOME/pictures/"
 	worktrees
-) | sed 's|/$||' | strip_home "$1" | sort -u
+) | strip_home "$1" | sort -u

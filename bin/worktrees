@@ -5,11 +5,15 @@ depends fd
 set +e
 
 main() {
-	(
-		fd '^.git$' -Hatf -E node_modules \
-			"$HOME/programs/" \
-			"$HOME/projects/" | xargs dirname | filter
-	) | sort -u | sed 's|/$||' | strip_home "$1"
+
+	find "$PROJECTS" "$HOME/projects" \
+		-path '*/node_modules/*' \
+		-type f -name '.git' \
+		-exec dirname {} \; |
+		filter |
+		sort -u |
+		sed 's|/$||' |
+		strip_home "$1"
 }
 
 filter() {
