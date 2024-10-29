@@ -28,3 +28,10 @@ brightness100() { b f; }
 : "Connectivity"
 wifi() { kitty --class wifi --name wifi -T wifi sudo impala; }
 bluetooth() { kitty --class bluetooth --name bluetooth -T bluetooth bluetui; }
+
+: "Launcher"
+open_browser() { firefox 2>&1; }
+open_discord() { discord 2>&1; }
+open_kitty() { kitty 2>&1; }
+open_alacritty() { alacritty 2>&1; }
+open_terminal() { open_kitty; }
