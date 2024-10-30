@@ -8,11 +8,11 @@ clone() {
 	*/*) user="$(echo "$repo" | cut -d'/' -f1)" ;;
 	*) user="${GITUSER:-Chaitanyabsprip}" ;;
 	esac
-	if [ "$user" = "${GITUSER:-Chaitanyabsprip}" ]; then
-		user=""
-	fi
 	name=$(echo "$repo" | sed 's|.*/||')
 	userd="${PROJECTS:-$HOME/projects}/$user"
+	if [ "$user" = "${GITUSER:-Chaitanyabsprip}" ]; then
+		userd="${PROJECTS:-$HOME/projects}"
+	fi
 	localPath="$(echo "$userd/$name" | sed 's|/$||')"
 	[ -d "$localPath" ] && cd "$localPath" && return
 	: "$(mkdir -p "$userd")"
