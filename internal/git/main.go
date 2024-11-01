@@ -31,9 +31,9 @@ var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Usage: `setup <opts>`,
 	Opts:  `slim|quik|full`,
-	Short: `Setup github-cli`,
+	Short: `Setup git`,
 	Comp:  comp.Opts,
 	Call: func(x *bonzai.Cmd, args ...string) error {
-		return e.SetupAll(embedFs, "gh", oscfg.ConfigDir())
+		return e.SetupAll(embedFs, "git", oscfg.ConfigDir())
 	},
 }
