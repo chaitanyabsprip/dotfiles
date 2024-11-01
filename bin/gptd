@@ -4,5 +4,5 @@ _have() { type "$1" >/dev/null 2>&1; }
 
 ! _have mods && echo "requires github.com/charmbracelet/mods" && exit 1
 
-aicommand="mods -q --no-cache --role commit-message --status-text Ummm $*"
+aicommand="mods -q -c dev -t dev --role dev --status-text Ummm $*"
 if [ -p /dev/stdin ]; then $aicommand </dev/stdin; else $aicommand; fi
