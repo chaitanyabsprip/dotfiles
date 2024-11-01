@@ -14,5 +14,5 @@ var Cmd = &bonzai.Cmd{
 	Usage: `dotfiles`,
 	Short: `Manage dotfiles`,
 	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{tmux.Cmd, gh.Cmd},
+	Cmds:  []*bonzai.Cmd{tmux.Cmd, gh.Cmd, git.Cmd},
 }
