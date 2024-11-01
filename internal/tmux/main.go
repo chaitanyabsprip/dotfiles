@@ -14,11 +14,10 @@ import (
 //go:embed all:tmux
 var embedFs embed.FS
 
-var TmxCmd = &bonzai.Cmd{
+var Cmd = &bonzai.Cmd{
 	Name:  `tmx`,
 	Usage: `tmx <command>`,
 	Short: `tmx is a utility to manage tmux configuration and related scripts`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd, runCmd},
 }
-
