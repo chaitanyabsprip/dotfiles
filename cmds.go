@@ -5,6 +5,7 @@ import (
 	"github.com/rwxrob/bonzai/pkg/core/comp"
 
 	"github.com/Chaitanyabsprip/dot/internal/alacritty"
+	"github.com/Chaitanyabsprip/dot/internal/bat"
 	"github.com/Chaitanyabsprip/dot/internal/gh"
 	"github.com/Chaitanyabsprip/dot/internal/git"
 	"github.com/Chaitanyabsprip/dot/internal/gitui"
@@ -20,6 +21,7 @@ var Cmd = &bonzai.Cmd{
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{
 		alacritty.Cmd,
+		bat.Cmd,
 		gh.Cmd,
 		git.Cmd,
 		gitui.Cmd,
