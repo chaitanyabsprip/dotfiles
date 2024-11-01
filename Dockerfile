@@ -7,6 +7,11 @@ COPY . /root/dot/
 
 RUN go mod tidy
 
-RUN go install ./cmd/dot && bash -c 'complete -C dot dot'
+RUN go install ./cmd/dot
 
-RUN dot tmx setup; dot gh setup; dot git setup; dot alacritty setup
+RUN dot alacritty setup; \
+    dot bat setup; \
+    dot gh setup; \
+    dot git setup; \
+    dot kitty setup; \
+    dot tmx setup;
