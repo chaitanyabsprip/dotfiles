@@ -41,13 +41,18 @@ _have fd && _have fzf && {
 			fzf --height=20% --border --margin=0 --padding=0 \
 				--bind='enter:become(nvim {})'
 	}
-	_have workdirs && {
+	_have work && {
 		jump() {
 			program="${1:-cd}"
-			selected="$(workdirs -s | fzf --height=20% --border --margin=0 --padding=0)"
-			$program "$(workdirs | grep -w "$selected$")"
+			selected="$(SHORT=1 work dirs | fzf --height=20% --border --margin=0 --padding=0)"
+			$program "$(work dirs | grep -w "$selected$")"
 		}
 	}
+}
+
+_have mods && {
+	_have gpt && alias '?'='gpt'
+	_have gpts && alias '??'='gpts'
 }
 
 if [ "$(uname)" = "Darwin" ]; then
