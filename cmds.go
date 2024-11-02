@@ -6,6 +6,7 @@ import (
 
 	"github.com/Chaitanyabsprip/dot/internal/alacritty"
 	"github.com/Chaitanyabsprip/dot/internal/bat"
+	"github.com/Chaitanyabsprip/dot/internal/bin"
 	"github.com/Chaitanyabsprip/dot/internal/gh"
 	"github.com/Chaitanyabsprip/dot/internal/git"
 	"github.com/Chaitanyabsprip/dot/internal/gitui"
@@ -22,6 +23,7 @@ var Cmd = &bonzai.Cmd{
 	Cmds: []*bonzai.Cmd{
 		alacritty.Cmd,
 		bat.Cmd,
+		bin.Cmd,
 		gh.Cmd,
 		git.Cmd,
 		gitui.Cmd,

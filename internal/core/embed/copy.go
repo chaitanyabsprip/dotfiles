@@ -75,7 +75,8 @@ func CopyFiles(embedFs embed.FS, name, configDir string) error {
 
 func getFileMode(path string) fs.FileMode {
 	var mode fs.FileMode
-	if strings.Contains(path, "/bin/") {
+	if strings.Contains(path, "/bin/") ||
+		strings.HasPrefix(path, "bin/") {
 		mode = 0o755
 	} else {
 		mode = 0o644
