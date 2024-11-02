@@ -2,7 +2,7 @@ package dot
 
 import (
 	bonzai "github.com/rwxrob/bonzai/pkg"
-	"github.com/rwxrob/bonzai/pkg/core/comp"
+	"github.com/rwxrob/bonzai/comp"
 
 	"github.com/Chaitanyabsprip/dot/internal/alacritty"
 	"github.com/Chaitanyabsprip/dot/internal/bat"
@@ -12,6 +12,7 @@ import (
 	"github.com/Chaitanyabsprip/dot/internal/gitui"
 	"github.com/Chaitanyabsprip/dot/internal/kitty"
 	"github.com/Chaitanyabsprip/dot/internal/tmux"
+	"github.com/Chaitanyabsprip/dot/x"
 )
 
 var Cmd = &bonzai.Cmd{
@@ -29,5 +30,6 @@ var Cmd = &bonzai.Cmd{
 		gitui.Cmd,
 		kitty.Cmd,
 		tmux.Cmd,
+		x.Cmd,
 	},
 }

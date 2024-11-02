@@ -6,7 +6,7 @@ import (
 	e "github.com/Chaitanyabsprip/dot/internal/core/embed"
 	"github.com/Chaitanyabsprip/dot/internal/core/oscfg"
 	bonzai "github.com/rwxrob/bonzai/pkg"
-	"github.com/rwxrob/bonzai/pkg/core/comp"
+	"github.com/rwxrob/bonzai/comp"
 )
 
 //go:embed gh
