@@ -17,30 +17,30 @@ var Cmd = &bonzai.Cmd{
 	Cmds:  []*bonzai.Cmd{},
 	Call: func(x *bonzai.Cmd, args ...string) error {
 		verbose := os.Getenv("VERBOSE") != ""
-		executables := os.Args[1:]
-		for _, executable := range executables {
-			ok, path := Have(executable)
+		names := os.Args[1:]
+		for _, name := range names {
+			ok, path := Executable(name)
 			if !ok {
 				if verbose {
 					fmt.Fprintf(
 						os.Stderr,
 						"Executable not found: %s\n",
-						executable,
+						name,
 					)
 				}
 				return fmt.Errorf(
 					"executable not found: %s",
-					executable,
+					name,
 				)
 			} else if verbose {
-				fmt.Printf("Found %s at %s\n", executable, path)
+				fmt.Printf("Found %s at %s\n", name, path)
 			}
 		}
 		return nil
 	},
 }
 
-func Have(executable string) (bool, string) {
-	out, err := exec.LookPath(executable)
+func Executable(name string) (bool, string) {
+	out, err := exec.LookPath(name)
 	return err == nil, out
 }
