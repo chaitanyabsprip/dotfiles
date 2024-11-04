@@ -2,7 +2,9 @@ package tmux
 
 import (
 	"embed"
+
 	e "github.com/Chaitanyabsprip/dot/internal/core/embed"
+	"github.com/Chaitanyabsprip/dot/x/install"
 
 	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai"
@@ -30,7 +32,17 @@ var Cmd = &bonzai.Cmd{
 	Usage: `tmx <command>`,
 	Short: `tmx is a utility to manage tmux configuration and related scripts`,
 	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{setupCmd, runCmd},
+	Cmds: []*bonzai.Cmd{
+		setupCmd,
+		runCmd,
+		{
+			Name: `install`,
+			Call: func(x *bonzai.Cmd, args ...string) error {
+				install.Tmux()
+				return nil
+			},
+		},
+	},
 }
 
 var setupCmd = &bonzai.Cmd{
