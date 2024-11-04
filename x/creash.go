@@ -7,7 +7,7 @@ import (
 
 	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai/futil"
-	bonzai "github.com/rwxrob/bonzai/pkg"
+	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/run"
 )
 

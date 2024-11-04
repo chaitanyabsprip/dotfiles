@@ -1,8 +1,8 @@
 package tmux
 
 import (
-	bonzai "github.com/rwxrob/bonzai/pkg"
 	"github.com/rwxrob/bonzai/comp"
+	"github.com/rwxrob/bonzai"
 )
 
 var runCmd = &bonzai.Cmd{
@@ -13,4 +13,3 @@ var runCmd = &bonzai.Cmd{
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
 }
-

@@ -4,8 +4,8 @@ import (
 	"embed"
 
 	e "github.com/Chaitanyabsprip/dot/internal/core/embed"
-	bonzai "github.com/rwxrob/bonzai/pkg"
 	"github.com/rwxrob/bonzai/comp"
+	"github.com/rwxrob/bonzai"
 
 	"github.com/Chaitanyabsprip/dot/internal/core/oscfg"
 )

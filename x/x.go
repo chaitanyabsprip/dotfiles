@@ -1,8 +1,8 @@
 package x
 
 import (
+	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
-	bonzai "github.com/rwxrob/bonzai/pkg"
 
 	"github.com/Chaitanyabsprip/dot/x/colors"
 	"github.com/Chaitanyabsprip/dot/x/have"

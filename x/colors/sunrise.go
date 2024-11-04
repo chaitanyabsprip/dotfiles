@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/rwxrob/bonzai/comp"
-	bonzai "github.com/rwxrob/bonzai/pkg"
+	"github.com/rwxrob/bonzai"
 )
 
 var (

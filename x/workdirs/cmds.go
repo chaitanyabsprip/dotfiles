@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/rwxrob/bonzai/comp"
-	bonzai "github.com/rwxrob/bonzai/pkg"
+	"github.com/rwxrob/bonzai"
 )
 
 // Cmd provides access to the `work` command suite, which lists work

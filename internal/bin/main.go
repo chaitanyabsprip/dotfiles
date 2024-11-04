@@ -7,7 +7,7 @@ import (
 
 	e "github.com/Chaitanyabsprip/dot/internal/core/embed"
 	"github.com/rwxrob/bonzai/comp"
-	bonzai "github.com/rwxrob/bonzai/pkg"
+	"github.com/rwxrob/bonzai"
 )
 
 //go:embed bin
