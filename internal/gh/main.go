@@ -33,6 +33,6 @@ var setupCmd = &bonzai.Cmd{
 	Short: `Setup github-cli`,
 	Comp:  comp.Opts,
 	Call: func(x *bonzai.Cmd, args ...string) error {
-		return e.SetupAll(embedFs, "gh", oscfg.ConfigDir())
+		return e.SetupAll(embedFs, "gh", oscfg.ConfigDir(), nil)
 	},
 }

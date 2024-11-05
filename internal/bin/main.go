@@ -35,6 +35,6 @@ var setupCmd = &bonzai.Cmd{
 	Comp:  comp.Opts,
 	Call: func(x *bonzai.Cmd, args ...string) error {
 		binDir := filepath.Join(os.Getenv("HOME"), ".local")
-		return e.SetupAll(embedFs, "bin", binDir)
+		return e.SetupAll(embedFs, "bin", binDir, nil)
 	},
 }

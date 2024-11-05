@@ -6,8 +6,8 @@ import (
 	e "github.com/Chaitanyabsprip/dot/internal/core/embed"
 	"github.com/Chaitanyabsprip/dot/x/install"
 
-	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/comp"
 
 	"github.com/Chaitanyabsprip/dot/internal/core/oscfg"
 )
@@ -52,6 +52,6 @@ var setupCmd = &bonzai.Cmd{
 	Short: `Setup tmux copies configuration files to config directory`,
 	Long:  ``,
 	Call: func(x *bonzai.Cmd, _ ...string) error {
-		return e.SetupAll(embedFs, "tmux", oscfg.ConfigDir())
+		return e.SetupAll(embedFs, "tmux", oscfg.ConfigDir(), nil)
 	},
 }

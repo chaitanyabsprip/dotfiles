@@ -34,6 +34,6 @@ var setupCmd = &bonzai.Cmd{
 	Short: `Setup gitui`,
 	Comp:  comp.Opts,
 	Call: func(x *bonzai.Cmd, args ...string) error {
-		return e.SetupAll(embedFs, "gitui", oscfg.ConfigDir())
+		return e.SetupAll(embedFs, "gitui", oscfg.ConfigDir(), nil)
 	},
 }

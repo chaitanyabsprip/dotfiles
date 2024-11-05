@@ -34,6 +34,6 @@ var setupCmd = &bonzai.Cmd{
 	Short: `Setup bat`,
 	Comp:  comp.Opts,
 	Call: func(x *bonzai.Cmd, args ...string) error {
-		return e.SetupAll(embedFs, "bat", oscfg.ConfigDir())
+		return e.SetupAll(embedFs, "bat", oscfg.ConfigDir(), nil)
 	},
 }

@@ -1,22 +1,23 @@
-package git
+package ohmyposh
 
 import (
 	"embed"
 
-	e "github.com/Chaitanyabsprip/dot/internal/core/embed"
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
+
+	e "github.com/Chaitanyabsprip/dot/internal/core/embed"
 
 	"github.com/Chaitanyabsprip/dot/internal/core/oscfg"
 )
 
-//go:embed git
+//go:embed oh-my-posh.rc.toml
 var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
-	Name:  `git`,
-	Usage: `git <command>`,
-	Short: `git is a utility to manage git configuration`,
+	Name:  `ohmyposh`,
+	Usage: `ohmyposh <command>`,
+	Short: `ohmyposh is a utility to manage ohmyposh configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
 	Init: func(x *bonzai.Cmd, args ...string) error {
@@ -31,9 +32,10 @@ var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Usage: `setup <opts>`,
 	Opts:  `slim|quik|full`,
-	Short: `Setup git`,
+	Short: `Setup ohmyposh`,
 	Comp:  comp.Opts,
 	Call: func(x *bonzai.Cmd, args ...string) error {
-		return e.SetupAll(embedFs, "git", oscfg.ConfigDir(), nil)
+		return e.SetupAll(embedFs, "ohmyposh", oscfg.ConfigDir(), nil)
 	},
 }
+

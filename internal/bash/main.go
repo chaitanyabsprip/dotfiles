@@ -1,22 +1,22 @@
-package git
+package bash
 
 import (
 	"embed"
+	"os"
 
-	e "github.com/Chaitanyabsprip/dot/internal/core/embed"
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
 
-	"github.com/Chaitanyabsprip/dot/internal/core/oscfg"
+	e "github.com/Chaitanyabsprip/dot/internal/core/embed"
 )
 
-//go:embed git
+//go:embed bashrc
 var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
-	Name:  `git`,
-	Usage: `git <command>`,
-	Short: `git is a utility to manage git configuration`,
+	Name:  `bash`,
+	Usage: `bash <command>`,
+	Short: `bash is a utility to manage bash configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
 	Init: func(x *bonzai.Cmd, args ...string) error {
@@ -31,9 +31,14 @@ var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Usage: `setup <opts>`,
 	Opts:  `slim|quik|full`,
-	Short: `Setup git`,
+	Short: `Setup bash`,
 	Comp:  comp.Opts,
 	Call: func(x *bonzai.Cmd, args ...string) error {
-		return e.SetupAll(embedFs, "git", oscfg.ConfigDir(), nil)
+		return e.SetupAll(
+			embedFs,
+			"bash",
+			os.Getenv("HOME"),
+			nil,
+		)
 	},
 }

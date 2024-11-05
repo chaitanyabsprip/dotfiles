@@ -34,6 +34,6 @@ var setupCmd = &bonzai.Cmd{
 	Short: `Setup alacritty`,
 	Comp:  comp.Opts,
 	Call: func(x *bonzai.Cmd, args ...string) error {
-		return e.SetupAll(embedFs, "alacritty", oscfg.ConfigDir())
+		return e.SetupAll(embedFs, "alacritty", oscfg.ConfigDir(), nil)
 	},
 }
