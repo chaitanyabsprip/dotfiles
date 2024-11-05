@@ -5,7 +5,9 @@ import (
 	"github.com/rwxrob/bonzai/comp"
 
 	"github.com/Chaitanyabsprip/dot/x/colors"
+	"github.com/Chaitanyabsprip/dot/x/depends"
 	"github.com/Chaitanyabsprip/dot/x/distro"
+	"github.com/Chaitanyabsprip/dot/x/gpt"
 	"github.com/Chaitanyabsprip/dot/x/have"
 	"github.com/Chaitanyabsprip/dot/x/install"
 	"github.com/Chaitanyabsprip/dot/x/workdirs"
@@ -19,7 +21,12 @@ var Cmd = &bonzai.Cmd{
 	Cmds: []*bonzai.Cmd{
 		colors.Cmd,
 		creashCmd,
+		depends.Cmd,
 		distro.Cmd,
+		gpt.Cmd,
+		gpt.CommitCmd,
+		gpt.DevCmd,
+		gpt.ShellCmd,
 		have.Cmd,
 		install.Cmd,
 		workdirs.Cmd,
