@@ -3,6 +3,7 @@ package zsh
 import (
 	"embed"
 	"os"
+	"path/filepath"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
@@ -41,7 +42,10 @@ var setupCmd = &bonzai.Cmd{
 			`zsh`,
 			oscfg.ConfigDir(),
 			map[string]string{
-				`zsh/.zshenv`: os.Getenv("HOME"),
+				`zsh/.zshenv`: filepath.Join(
+					os.Getenv(`HOME`),
+					`.zshenv`,
+				),
 			},
 		)
 	},

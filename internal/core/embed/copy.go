@@ -14,7 +14,7 @@ import (
 func SetupAll(
 	embedFs embed.FS,
 	name, configDir string,
-	altPaths map[string]string,
+	overrides map[string]string,
 ) error {
 	toolDir := filepath.Join(configDir, name)
 	if _, err := os.Stat(toolDir); err == nil {
@@ -22,7 +22,7 @@ func SetupAll(
 		if err != nil {
 			return err
 		}
-		return CopyFiles(embedFs, name, configDir, altPaths)
+		return CopyFiles(embedFs, name, configDir, overrides)
 	}
 	if f, err := os.Stat(toolDir); err == nil {
 		if !f.IsDir() {
@@ -36,13 +36,13 @@ func SetupAll(
 			return err
 		}
 	}
-	return CopyFiles(embedFs, name, configDir, altPaths)
+	return CopyFiles(embedFs, name, configDir, overrides)
 }
 
 func CopyFiles(
 	embedFs embed.FS,
 	name, configDir string,
-	altPaths map[string]string,
+	overrides map[string]string,
 ) error {
 	if len(configDir) == 0 {
 		configDir = filepath.Join(os.Getenv("HOME"), ".config")
@@ -55,11 +55,8 @@ func CopyFiles(
 				return err
 			}
 			targetPath := filepath.Join(configDir, path)
-			if altPath, ok := altPaths[path]; ok {
-				targetPath = filepath.Join(
-					altPath,
-					filepath.Base(path),
-				)
+			if altPath, ok := overrides[path]; ok {
+				targetPath = altPath
 			}
 			fmt.Printf(
 				"path: %s, targetPath: %s\n",
