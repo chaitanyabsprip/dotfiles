@@ -2,6 +2,7 @@ package embed
 
 import (
 	"embed"
+	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -10,15 +11,18 @@ import (
 	"github.com/Chaitanyabsprip/dot/internal/core/oscfg"
 )
 
-func SetupAll(embedFs embed.FS, name, configDir string) error {
+func SetupAll(
+	embedFs embed.FS,
+	name, configDir string,
+	altPaths map[string]string,
+) error {
 	toolDir := filepath.Join(configDir, name)
-	setFilepath := filepath.Join(toolDir, ".set")
-	if _, err := os.Stat(setFilepath); err == nil {
+	if _, err := os.Stat(toolDir); err == nil {
 		err := os.RemoveAll(toolDir)
 		if err != nil {
 			return err
 		}
-		return CopyFiles(embedFs, name, configDir)
+		return CopyFiles(embedFs, name, configDir, altPaths)
 	}
 	if f, err := os.Stat(toolDir); err == nil {
 		if !f.IsDir() {
@@ -32,45 +36,51 @@ func SetupAll(embedFs embed.FS, name, configDir string) error {
 			return err
 		}
 	}
-	return CopyFiles(embedFs, name, configDir)
+	return CopyFiles(embedFs, name, configDir, altPaths)
 }
 
-func CopyFiles(embedFs embed.FS, name, configDir string) error {
-	tmuxDir := filepath.Join(configDir, name)
-	setFilepath := filepath.Join(tmuxDir, ".set")
+func CopyFiles(
+	embedFs embed.FS,
+	name, configDir string,
+	altPaths map[string]string,
+) error {
 	if len(configDir) == 0 {
-		configDir = filepath.Join(
-			os.Getenv("HOME"),
-			".config",
-		)
+		configDir = filepath.Join(os.Getenv("HOME"), ".config")
 	}
-	err := fs.WalkDir(
+	return fs.WalkDir(
 		embedFs,
 		".",
 		func(path string, d fs.DirEntry, err error) error {
 			if err != nil {
 				return err
 			}
-			confPath := filepath.Join(configDir, path)
+			targetPath := filepath.Join(configDir, path)
+			if altPath, ok := altPaths[path]; ok {
+				targetPath = filepath.Join(
+					altPath,
+					filepath.Base(path),
+				)
+			}
+			fmt.Printf(
+				"path: %s, targetPath: %s\n",
+				path,
+				targetPath,
+			)
 			if d.IsDir() {
-				return os.MkdirAll(confPath, 0o755)
+				return os.MkdirAll(targetPath, 0o755)
 			}
 			content, err := fs.ReadFile(embedFs, path)
 			if err != nil {
 				return err
 			}
 			os.WriteFile(
-				confPath,
+				targetPath,
 				content,
 				getFileMode(path),
 			)
 			return nil
 		},
 	)
-	if err != nil {
-		return err
-	}
-	return os.WriteFile(setFilepath, []byte{}, 0o644)
 }
 
 func getFileMode(path string) fs.FileMode {
