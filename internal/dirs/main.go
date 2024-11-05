@@ -2,6 +2,7 @@ package dirs
 
 import (
 	"embed"
+	"path/filepath"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
@@ -35,6 +36,13 @@ var setupCmd = &bonzai.Cmd{
 	Short: `Setup dirs`,
 	Comp:  comp.Opts,
 	Call: func(x *bonzai.Cmd, args ...string) error {
-		return e.SetupAll(embedFs, "dirs", oscfg.ConfigDir(), nil)
+		return e.SetupAll(embedFs, "dirs", oscfg.ConfigDir(),
+			map[string]string{
+				`dirs`: filepath.Join(
+					oscfg.ConfigDir(),
+					`user-dirs.dirs`,
+				),
+			},
+		)
 	},
 }

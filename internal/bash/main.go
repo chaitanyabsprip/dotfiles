@@ -3,6 +3,7 @@ package bash
 import (
 	"embed"
 	"os"
+	"path/filepath"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
@@ -37,7 +38,7 @@ var setupCmd = &bonzai.Cmd{
 		return e.SetupAll(
 			embedFs,
 			"bash",
-			os.Getenv("HOME"),
+			filepath.Join(os.Getenv("HOME"), `.bashrc`),
 			nil,
 		)
 	},
