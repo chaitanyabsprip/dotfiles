@@ -1,6 +1,0 @@
-#!/bin/sh
-
-_have() { type "$1" >/dev/null 2>&1; }
-
-! _have mods && echo "requires github.com/charmbracelet/mods" && exit 1
-mods --continue-last --status-text "Ummm" "$*"
