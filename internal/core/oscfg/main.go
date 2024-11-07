@@ -16,6 +16,6 @@ func ConfigDir() string {
 }
 
 func BackupDir(dir string) string {
-	newName := fmt.Sprintf("tmux.%d.old", time.Now().UnixMilli())
+	newName := fmt.Sprintf("%s.%d.old", dir, time.Now().UnixMilli())
 	return filepath.Join(dir, newName)
 }
