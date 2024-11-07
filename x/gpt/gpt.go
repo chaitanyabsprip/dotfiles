@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/rwxrob/bonzai/run"
 )
@@ -24,20 +25,17 @@ type GptOpts struct {
 func BuildCmdStr(opts GptOpts) []string {
 	if len(opts.Title) == 0 {
 		opts.Title = fmt.Sprintf(
-			`%s:%s`,
+			`%s-%s`,
 			or(opts.Role, "default"),
-			or(opts.Model, "liquid/lfm-40b"),
+			or(opts.Model, ``),
 		)
 	}
 	argList := []string{`mods`}
 	if len(opts.Model) > 0 {
-		argList = append(argList, `-m`, opts.Model)
-	}
-	if len(opts.Role) > 0 {
-		argList = append(argList, `--role`, opts.Role)
+		argList = append(argList, fmt.Sprintf(`-m=%s`, opts.Model))
 	}
 	if len(opts.Format) > 0 {
-		argList = append(argList, `-f`, opts.Format)
+		argList = append(argList, fmt.Sprintf(`-f=%s`, opts.Format))
 	}
 	if opts.Quiet {
 		argList = append(argList, `-q`)
@@ -45,16 +43,22 @@ func BuildCmdStr(opts GptOpts) []string {
 	if opts.NoCache {
 		argList = append(argList, `--no-cache`)
 	} else {
-		argList = append(argList, `-t`, opts.Title, `-c`, opts.Title)
+		if _, err := FindConversation(opts.Title); err != nil {
+			argList = append(argList, fmt.Sprintf(`-t=%s`, opts.Title))
+		} else {
+			argList = append(argList, fmt.Sprintf(`-c=%s`, opts.Title))
+		}
+	}
+	if len(opts.Role) > 0 {
+		argList = append(argList, fmt.Sprintf(`--role=%s`, opts.Role))
 	}
 	if len(opts.StatusText) > 0 {
 		argList = append(
 			argList,
-			`--status-text`,
-			opts.StatusText,
+			fmt.Sprintf(`--status-text=%s`, opts.StatusText),
 		)
 	}
-	return append(argList, opts.Query)
+	return append(argList, fmt.Sprintf(`"%s"`, opts.Query))
 }
 
 func Exec(opts GptOpts) error {
@@ -83,6 +87,40 @@ func Run(opts GptOpts) (string, error) {
 		return string(out), nil
 	}
 	return "", nil
+}
+
+func FindConversation(query string) (string, error) {
+	conversations, err := ListConversations()
+	if err != nil {
+		return "", err
+	}
+	for _, conversation := range conversations {
+		if strings.Contains(conversation, query) {
+			return conversation, nil
+		}
+	}
+	return "", fmt.Errorf("conversation not found: %s", query)
+}
+
+func ListConversations() ([]string, error) {
+	out := run.Out(`mods`, `-l`)
+	if len(out) == 0 {
+		return nil, nil
+	}
+
+	lines := strings.Split(string(out), "\n")
+	conversations := make([]string, 0, len(lines))
+	for _, line := range lines {
+		if len(line) == 0 {
+			continue
+		}
+		fields := strings.Fields(line)
+		if len(fields) < 2 {
+			continue
+		}
+		conversations = append(conversations, fields[1])
+	}
+	return conversations, nil
 }
 
 func or(a, b string) string {

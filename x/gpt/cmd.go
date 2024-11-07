@@ -1,120 +1,256 @@
 package gpt
 
 import (
+	"fmt"
 	"os"
+	"path/filepath"
+	"slices"
+	"strconv"
 	"strings"
 
-	"github.com/Chaitanyabsprip/dot/x/depends"
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/comp"
+	"github.com/rwxrob/bonzai/fn/each"
+	"github.com/rwxrob/bonzai/vars"
+	"github.com/rwxrob/bonzai/yq"
+
+	"github.com/Chaitanyabsprip/dot/internal/core/oscfg"
+	"github.com/Chaitanyabsprip/dot/x/depends"
 )
+
+const (
+	ModelEnv       = `GPT_MODEL`
+	RoleEnv        = `GPT_ROLE`
+	TitleEnv       = `GPT_CHAT_TITLE`
+	GlobalQuietEnv = `QUIET`
+	QuietEnv       = `GPT_QUIET`
+	StatusTextEnv  = `GPT_STATUS_TEXT`
+	NoCacheEnv     = `GPT_NOCACHE`
+)
+
+var (
+	modsConfPath = filepath.Join(oscfg.ConfigDir(), "mods")
+	defaultModel string
+)
+
+func init() {
+	var err error
+	defaultModel, err = yq.EvaluateToString(
+		`.default-model`,
+		modsConfPath,
+	)
+	if err != nil {
+		defaultModel = `gemini-free`
+	}
+}
 
 var Cmd = &bonzai.Cmd{
 	Name: `gpt`,
+	Comp: comp.Combine{comp.Cmds, vars.Comp},
 	Init: func(x *bonzai.Cmd, args ...string) error {
 		depends.On(nil, "mods")
 		return nil
 	},
-	// Cmds: []*bonzai.Cmd{vars.Cmd},
+	Cmds: []*bonzai.Cmd{
+		vars.Cmd,
+		commitCmd,
+		devCmd,
+		shellCmd,
+		commentCmd,
+		listCmd,
+	},
 	Call: func(x *bonzai.Cmd, args ...string) error {
 		opts := GptOpts{
-			Model:      os.Getenv(`GPT_MODEL`),
-			NoCache:    false,
-			Query:      strings.Join(args, ` `),
-			Quiet:      false,
-			Role:       os.Getenv(`GPT_ROLE`),
-			StatusText: `Ummm`,
-			Stdin:      os.Stdin,
-			Title:      ``,
+			Model: stateVar(
+				`model`,
+				ModelEnv,
+				defaultModel,
+			),
+			NoCache: stateVar(
+				`no-cache`,
+				NoCacheEnv,
+				false,
+			),
+			Query: strings.Join(args, ` `),
+			Quiet: stateVar(`quiet`, QuietEnv, false),
+			Role:  stateVar(`role`, RoleEnv, `default`),
+			StatusText: stateVar(
+				`status-text`,
+				StatusTextEnv,
+				``,
+			),
+			Stdin: os.Stdin,
+			Title: os.Getenv(TitleEnv),
+		}
+		fmt.Println(BuildCmdStr(opts))
+		return Exec(opts)
+	},
+}
+
+var commitCmd = &bonzai.Cmd{
+	Name:  `commit`,
+	Alias: `gc|gptc`,
+	Call: func(x *bonzai.Cmd, args ...string) error {
+		opts := GptOpts{
+			Model: stateVar(
+				`model`,
+				ModelEnv,
+				defaultModel,
+			),
+			NoCache: true,
+			Query:   strings.Join(args, ` `),
+			Quiet:   true,
+			Role:    `commit-message`,
+			StatusText: stateVar(
+				`status-text`,
+				StatusTextEnv,
+				``,
+			),
+			Stdin: os.Stdin,
+			Title: os.Getenv(TitleEnv),
 		}
 		return Exec(opts)
 	},
 }
 
-var CommitCmd = &bonzai.Cmd{
-	Name: `gptc`,
-	Init: func(x *bonzai.Cmd, args ...string) error {
-		depends.On(nil, "mods")
-		return nil
-	},
-	// Cmds: []*bonzai.Cmd{vars.Cmd},
+var devCmd = &bonzai.Cmd{
+	Name:  `dev`,
+	Alias: `code|d`,
+	Cmds:  []*bonzai.Cmd{vars.Cmd},
 	Call: func(x *bonzai.Cmd, args ...string) error {
 		opts := GptOpts{
-			Model:      os.Getenv(`GPT_MODEL`),
-			NoCache:    true,
-			Query:      strings.Join(args, ` `),
-			Quiet:      true,
-			Role:       `commit-message`,
-			StatusText: `Ummm`,
-			Stdin:      os.Stdin,
-			Title:      ``,
+			Model: stateVar(
+				`model`,
+				ModelEnv,
+				defaultModel,
+			),
+			NoCache: false,
+			Query:   strings.Join(args, ` `),
+			Quiet:   false,
+			Role:    `dev`,
+			StatusText: stateVar(
+				`status-text`,
+				StatusTextEnv,
+				``,
+			),
+			Stdin: os.Stdin,
+			Title: os.Getenv(TitleEnv),
 		}
 		return Exec(opts)
 	},
 }
 
-var DevCmd = &bonzai.Cmd{
-	Name: `gptd`,
-	Init: func(x *bonzai.Cmd, args ...string) error {
-		depends.On(nil, "mods")
-		return nil
-	},
-	// Cmds: []*bonzai.Cmd{vars.Cmd},
+var shellCmd = &bonzai.Cmd{
+	Name:  `shell`,
+	Alias: `s`,
+	Cmds:  []*bonzai.Cmd{vars.Cmd},
 	Call: func(x *bonzai.Cmd, args ...string) error {
 		opts := GptOpts{
-			Model:      os.Getenv(`GPT_MODEL`),
-			NoCache:    false,
-			Query:      strings.Join(args, ` `),
-			Quiet:      false,
-			Role:       `dev`,
-			StatusText: `Ummm`,
-			Stdin:      os.Stdin,
-			Title:      ``,
+			Model: stateVar(
+				`model`,
+				ModelEnv,
+				defaultModel,
+			),
+			NoCache: false,
+			Query:   strings.Join(args, ` `),
+			Quiet:   false,
+			Role:    `shell`,
+			StatusText: stateVar(
+				`status-text`,
+				StatusTextEnv,
+				``,
+			),
+			Stdin: os.Stdin,
+			Title: os.Getenv(TitleEnv),
 		}
 		return Exec(opts)
 	},
 }
 
-var ShellCmd = &bonzai.Cmd{
-	Name: `gpts`,
-	Init: func(x *bonzai.Cmd, args ...string) error {
-		depends.On(nil, "mods")
-		return nil
-	},
-	// Cmds: []*bonzai.Cmd{vars.Cmd},
+var commentCmd = &bonzai.Cmd{
+	Name:  `comment`,
+	Alias: `c|doc|document`,
+	Cmds:  []*bonzai.Cmd{vars.Cmd},
 	Call: func(x *bonzai.Cmd, args ...string) error {
 		opts := GptOpts{
-			Model:      os.Getenv(`GPT_MODEL`),
-			Query:      strings.Join(args, ` `),
-			Role:       `shell`,
-			StatusText: `Ummm`,
-			Title:      ``,
-			NoCache:    false,
-			Quiet:      false,
-			Stdin:      os.Stdin,
+			Model: stateVar(
+				`model`,
+				ModelEnv,
+				defaultModel,
+			),
+			NoCache: false,
+			Format:  `comment`,
+			Query:   strings.Join(args, ` `),
+			Quiet:   false,
+			Role:    `dev`,
+			StatusText: stateVar(
+				`status-text`,
+				StatusTextEnv,
+				``,
+			),
+			Stdin: os.Stdin,
+			Title: os.Getenv(TitleEnv),
 		}
 		return Exec(opts)
 	},
 }
 
-var CommentCmd = &bonzai.Cmd{
-	Name: `gpte`,
-	Init: func(x *bonzai.Cmd, args ...string) error {
-		depends.On(nil, "mods")
+var listCmd = &bonzai.Cmd{
+	Name:  `list`,
+	Alias: `ls`,
+	Call: func(x *bonzai.Cmd, args ...string) error {
+		convs, err := ListConversations()
+		if err != nil {
+			return err
+		}
+		each.Println(convs)
 		return nil
 	},
-	// Cmds: []*bonzai.Cmd{vars.Cmd},
-	Call: func(x *bonzai.Cmd, args ...string) error {
-		opts := GptOpts{
-			Model:      os.Getenv(`GPT_MODEL`),
-			NoCache:    false,
-			Format:     `comment`,
-			Query:      strings.Join(args, ` `),
-			Quiet:      false,
-			Role:       os.Getenv(`GPT_ROLE`),
-			StatusText: `Ummm`,
-			Stdin:      os.Stdin,
-			Title:      ``,
-		}
-		return Exec(opts)
-	},
+}
+
+// stateVar retrieves a value by first checking an environment variable.
+// If the environment variable does not exist, it checks bonzai.Vars. If
+// neither contain a value, it returns the provided fallback.
+func stateVar[T any](key, envVar string, fallback T) T {
+	if val, exists := os.LookupEnv(envVar); exists {
+		return convertValue(val, fallback)
+	}
+	if val, err := vars.Data.Get(key); err == nil {
+		return convertValue(val, fallback)
+	}
+	return fallback
+}
+
+// convertValue attempts to convert a string to the same type as
+// fallback.
+func convertValue[T any](val string, fallback T) T {
+	var result any = fallback
+
+	switch any(fallback).(type) {
+	case string:
+		result = val
+	case bool:
+		result = isTruthy(val)
+	case int:
+		result, _ = strconv.Atoi(val)
+	}
+
+	return result.(T)
+}
+
+// isTruthy determines if a string represents a "truthy" value,
+// interpreting "t", "true", and positive numbers as true; "f", "false",
+// and zero or negative numbers as false.
+func isTruthy(val string) bool {
+	val = strings.ToLower(strings.TrimSpace(val))
+	if slices.Contains([]string{"t", "true"}, val) {
+		return true
+	}
+	if slices.Contains([]string{"f", "false"}, val) {
+		return false
+	}
+	if num, err := strconv.Atoi(val); err == nil {
+		return num > 0
+	}
+	return false
 }
