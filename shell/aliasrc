@@ -51,9 +51,9 @@ _have fd && _have fzf && {
 }
 
 _have mods && {
-	_have gpt && alias '?'='gpt'
-	_have gpts && alias '??'='gptd'
-	_have gpts && alias '???'='gpts'
+	_have x && alias '?'='x gpt'
+	_have x && alias '??'='x gptd'
+	_have x && alias '???'='x gpts'
 }
 
 if [ "$(uname)" = "Darwin" ]; then
