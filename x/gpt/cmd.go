@@ -1,3 +1,6 @@
+// gpt provides a user-friendly CLI for interacting with
+// charmbracelet/mods CLI. It is a stateful program such that the users
+// will be talking in the same conversation with consecutive calls.
 package gpt
 
 import (
@@ -45,8 +48,10 @@ func init() {
 }
 
 var Cmd = &bonzai.Cmd{
-	Name: `gpt`,
-	Comp: comp.Combine{comp.Cmds, vars.Comp},
+	Name:  `gpt`,
+	Vers:  `v0.1.0`,
+	Short: `Persistent conversations with LLM models using mods`,
+	Comp:  comp.Combine{comp.Cmds, vars.Comp},
 	Init: func(x *bonzai.Cmd, args ...string) error {
 		depends.On(nil, "mods")
 		return nil
@@ -82,7 +87,6 @@ var Cmd = &bonzai.Cmd{
 			Stdin: os.Stdin,
 			Title: os.Getenv(TitleEnv),
 		}
-		fmt.Println(BuildCmdStr(opts))
 		return Exec(opts)
 	},
 }
@@ -178,11 +182,11 @@ var commentCmd = &bonzai.Cmd{
 				ModelEnv,
 				defaultModel,
 			),
-			NoCache: false,
-			Format:  `comment`,
-			Query:   strings.Join(args, ` `),
+			NoCache: true,
+			Format:  `plain-text`,
+			Query:   `create a comment for this function wrapped at 72 and include the function immediately after with no blank line with no markdown or commentary and add square brackets around any symbol reference that could also have a comment except the function name itself and keep it brief`,
 			Quiet:   false,
-			Role:    `dev`,
+			Role:    ``,
 			StatusText: stateVar(
 				`status-text`,
 				StatusTextEnv,

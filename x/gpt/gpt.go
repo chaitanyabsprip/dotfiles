@@ -25,29 +25,20 @@ type GptOpts struct {
 func BuildCmdStr(opts GptOpts) []string {
 	if len(opts.Title) == 0 {
 		opts.Title = fmt.Sprintf(
-			`%s-%s`,
+			`%s:%s`,
 			or(opts.Role, "default"),
 			or(opts.Model, ``),
 		)
 	}
 	argList := []string{`mods`}
+	if len(opts.Format) > 0 {
+		argList = append(argList, fmt.Sprintf(`-f %s`, opts.Format))
+	}
 	if len(opts.Model) > 0 {
 		argList = append(argList, fmt.Sprintf(`-m=%s`, opts.Model))
 	}
-	if len(opts.Format) > 0 {
-		argList = append(argList, fmt.Sprintf(`-f=%s`, opts.Format))
-	}
 	if opts.Quiet {
 		argList = append(argList, `-q`)
-	}
-	if opts.NoCache {
-		argList = append(argList, `--no-cache`)
-	} else {
-		if _, err := FindConversation(opts.Title); err != nil {
-			argList = append(argList, fmt.Sprintf(`-t=%s`, opts.Title))
-		} else {
-			argList = append(argList, fmt.Sprintf(`-c=%s`, opts.Title))
-		}
 	}
 	if len(opts.Role) > 0 {
 		argList = append(argList, fmt.Sprintf(`--role=%s`, opts.Role))
@@ -57,6 +48,15 @@ func BuildCmdStr(opts GptOpts) []string {
 			argList,
 			fmt.Sprintf(`--status-text=%s`, opts.StatusText),
 		)
+	}
+	if opts.NoCache {
+		argList = append(argList, `--no-cache`)
+	} else {
+		if _, err := FindConversation(opts.Title); err != nil {
+			argList = append(argList, fmt.Sprintf(`-t=%s`, opts.Title))
+		} else {
+			argList = append(argList, fmt.Sprintf(`-c=%s`, opts.Title))
+		}
 	}
 	return append(argList, fmt.Sprintf(`"%s"`, opts.Query))
 }
@@ -69,6 +69,7 @@ func Exec(opts GptOpts) error {
 	return run.SysExec(argList...)
 }
 
+// Run executes the gpt command and returns the output as a string.
 func Run(opts GptOpts) (string, error) {
 	argList := BuildCmdStr(opts)
 	os.Setenv(`CLICOLOR_FORCE`, `1`)
