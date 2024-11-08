@@ -4,7 +4,6 @@
 package gpt
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"slices"
@@ -52,10 +51,6 @@ var Cmd = &bonzai.Cmd{
 	Vers:  `v0.1.0`,
 	Short: `Persistent conversations with LLM models using mods`,
 	Comp:  comp.Combine{comp.Cmds, vars.Comp},
-	Init: func(x *bonzai.Cmd, args ...string) error {
-		depends.On(nil, "mods")
-		return nil
-	},
 	Cmds: []*bonzai.Cmd{
 		vars.Cmd,
 		commitCmd,
@@ -65,6 +60,7 @@ var Cmd = &bonzai.Cmd{
 		listCmd,
 	},
 	Call: func(x *bonzai.Cmd, args ...string) error {
+		depends.On(nil, "mods")
 		opts := GptOpts{
 			Model: stateVar(
 				`model`,
