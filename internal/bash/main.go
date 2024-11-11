@@ -29,11 +29,14 @@ var setupCmd = &bonzai.Cmd{
 	Short: `Setup bash`,
 	Comp:  comp.Opts,
 	Call: func(x *bonzai.Cmd, args ...string) error {
+		home := os.Getenv("HOME")
 		return e.SetupAll(
 			embedFs,
 			"bash",
-			filepath.Join(os.Getenv("HOME"), `.bashrc`),
-			nil,
+			home,
+			map[string]string{
+				"bashrc": filepath.Join(home, ".bashrc"),
+			},
 		)
 	},
 }
