@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source "$HOME/dotfiles/shell/envrc"
-source "$HOME/dotfiles/shell/pathrc"
-eval "$(starship init bash)"
-eval "$(fzf --bash)"
+_have() { type "$1" &>/dev/null; }
+
+source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/envrc"
+source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/pathrc"
+_have starship && eval "$(starship init bash)"
+_have fzf && eval "$(fzf --bash)"
