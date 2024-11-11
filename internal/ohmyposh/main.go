@@ -20,12 +20,6 @@ var Cmd = &bonzai.Cmd{
 	Short: `ohmyposh is a utility to manage ohmyposh configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
-	Init: func(x *bonzai.Cmd, args ...string) error {
-		for _, cmd := range x.Cmds {
-			cmd.Caller = x
-		}
-		return nil
-	},
 }
 
 var setupCmd = &bonzai.Cmd{
@@ -38,4 +32,3 @@ var setupCmd = &bonzai.Cmd{
 		return e.SetupAll(embedFs, "ohmyposh", oscfg.ConfigDir(), nil)
 	},
 }
-

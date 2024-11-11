@@ -2,6 +2,7 @@ package brew
 
 import (
 	"embed"
+	"runtime"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
@@ -20,12 +21,6 @@ var Cmd = &bonzai.Cmd{
 	Short: `brew is a utility to manage brew configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
-	Init: func(x *bonzai.Cmd, args ...string) error {
-		for _, cmd := range x.Cmds {
-			cmd.Caller = x
-		}
-		return nil
-	},
 }
 
 var setupCmd = &bonzai.Cmd{
@@ -35,6 +30,9 @@ var setupCmd = &bonzai.Cmd{
 	Short: `Setup brew`,
 	Comp:  comp.Opts,
 	Call: func(x *bonzai.Cmd, args ...string) error {
+		if runtime.GOOS == "darwin" {
+			return nil
+		}
 		return e.SetupAll(embedFs, "brew", oscfg.ConfigDir(), nil)
 	},
 }

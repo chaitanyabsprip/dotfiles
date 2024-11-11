@@ -20,12 +20,6 @@ var Cmd = &bonzai.Cmd{
 	Short: `bash is a utility to manage bash configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
-	Init: func(x *bonzai.Cmd, args ...string) error {
-		for _, cmd := range x.Cmds {
-			cmd.Caller = x
-		}
-		return nil
-	},
 }
 
 var setupCmd = &bonzai.Cmd{

@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/comp"
 )
 
 // Cmd provides access to the `work` command suite, which lists work
@@ -46,12 +46,10 @@ EXAMPLES
 	Call: func(x *bonzai.Cmd, args ...string) error {
 		cmds := []*bonzai.Cmd{dirsCmd, treeCmd}
 		if len(args) == 0 {
-			x.Println("{{.Name}} - {{.Short}}")
-			x.Println("")
-			x.Println("USAGE:")
-			x.Println("  {{.Usage}}")
-			x.Println("")
-			x.Println("COMMANDS:")
+			fmt.Printf("%s - %s\n\n", x.Name, x.Short)
+			fmt.Println("USAGE:")
+			fmt.Printf("  %s\n\n", x.Usage)
+			fmt.Println("COMMANDS:")
 			for _, cmd := range cmds {
 				fmt.Printf("  %-10s - %s\n", cmd.Name, cmd.Short)
 			}
@@ -63,13 +61,11 @@ EXAMPLES
 			for _, cmd := range cmds {
 				if cmd.Name == args[0] {
 					matched = true
-					cmd.Println("{{.Name}} - {{.Short}}")
-					cmd.Println("")
-					cmd.Println("USAGE:")
-					cmd.Println("  {{.Usage}}")
-					cmd.Println("")
-					cmd.Println("DESCRIPTION:")
-					cmd.Println("  {{.Long}}")
+					fmt.Printf("%s - %s\n\n", cmd.Name, cmd.Short)
+					fmt.Println("USAGE:")
+					fmt.Printf("  %s\n\n", cmd.Usage)
+					fmt.Println("DESCRIPTION:")
+					fmt.Printf("  %s\n\n", cmd.Long)
 				}
 			}
 			if !matched {

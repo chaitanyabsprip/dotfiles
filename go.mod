@@ -4,7 +4,7 @@ go 1.23.2
 
 require (
 	github.com/charlievieth/fastwalk v1.0.9
-	github.com/rwxrob/bonzai v0.30.6
+	github.com/rwxrob/bonzai v0.30.7
 	github.com/rwxrob/bonzai/comp v0.5.0
 	github.com/rwxrob/bonzai/fn v0.4.0
 	github.com/rwxrob/bonzai/futil v0.1.0
@@ -41,7 +41,7 @@ require (
 	github.com/rwxrob/bonzai/uniq v0.1.0 // indirect
 	github.com/yuin/gopher-lua v1.1.1 // indirect
 	golang.org/x/crypto v0.29.0 // indirect
-	golang.org/x/net v0.30.0 // indirect
+	golang.org/x/net v0.31.0 // indirect
 	golang.org/x/sys v0.27.0 // indirect
 	golang.org/x/term v0.26.0 // indirect
 	golang.org/x/text v0.20.0 // indirect

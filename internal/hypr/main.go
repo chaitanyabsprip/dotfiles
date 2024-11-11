@@ -2,6 +2,7 @@ package hypr
 
 import (
 	"embed"
+	"runtime"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
@@ -20,12 +21,6 @@ var Cmd = &bonzai.Cmd{
 	Short: `hypr is a utility to manage hypr configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
-	Init: func(x *bonzai.Cmd, args ...string) error {
-		for _, cmd := range x.Cmds {
-			cmd.Caller = x
-		}
-		return nil
-	},
 }
 
 var setupCmd = &bonzai.Cmd{
@@ -35,6 +30,9 @@ var setupCmd = &bonzai.Cmd{
 	Short: `Setup hypr`,
 	Comp:  comp.Opts,
 	Call: func(x *bonzai.Cmd, args ...string) error {
+		if runtime.GOOS == "linux" {
+			return nil
+		}
 		return e.SetupAll(embedFs, `hypr`, oscfg.ConfigDir(), nil)
 	},
 }

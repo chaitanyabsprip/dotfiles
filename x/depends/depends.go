@@ -21,7 +21,7 @@ func On(onError func(error), dependencies ...string) {
 }
 
 func DefaultOnError(err error) {
-	fmt.Printf("%w, please install and try again.\n", err)
+	fmt.Printf("%s, please install and try again.\n", err)
 	if !term.IsInteractive() {
 		syscall.Kill(os.Getppid(), syscall.SIGTERM)
 	}
