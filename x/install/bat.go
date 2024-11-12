@@ -14,7 +14,7 @@ import (
 	"github.com/Chaitanyabsprip/dot/x/have"
 )
 
-var batCmd = &bonzai.Cmd{
+var BatCmd = &bonzai.Cmd{
 	Name: `bat`,
 	Call: func(x *bonzai.Cmd, args ...string) error { return Bat() },
 }

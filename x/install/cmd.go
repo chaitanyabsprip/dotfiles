@@ -9,5 +9,5 @@ import (
 var Cmd = &bonzai.Cmd{
 	Name: `install`,
 	Comp: comp.Cmds,
-	Cmds: []*bonzai.Cmd{tmuxCmd, batCmd},
+	Cmds: []*bonzai.Cmd{TmuxCmd, BatCmd},
 }

@@ -4,15 +4,17 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Chaitanyabsprip/dot/x/distro"
-	"github.com/Chaitanyabsprip/dot/x/have"
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/run"
+
+	"github.com/Chaitanyabsprip/dot/x/distro"
+	"github.com/Chaitanyabsprip/dot/x/have"
 )
 
-var tmuxCmd = &bonzai.Cmd{
-	Name: `tmux`,
-	Call: func(x *bonzai.Cmd, args ...string) error { return Tmux() },
+var TmuxCmd = &bonzai.Cmd{
+	Name:  `tmux`,
+	Alias: `i`,
+	Call:  func(_ *bonzai.Cmd, _ ...string) error { return Tmux() },
 }
 
 func Tmux() error {
@@ -23,9 +25,9 @@ func Tmux() error {
 	switch distro.Name() {
 	case "Arch Linux":
 		return WithRoot("pacman", "-S", "tmux")
-	case "Ubuntu", "Debian":
+	case "Ubuntu", "Debian GNU/Linux":
 		return WithRoot("apt-get", "install", "tmux")
-	case "Fedora":
+	case "Fedora Linux":
 		return run.SysExec("dnf", "install", "tmux", "-y")
 	case "Darwin":
 		return run.SysExec("brew", "install", "tmux")
