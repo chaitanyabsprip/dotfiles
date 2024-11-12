@@ -31,7 +31,6 @@ import (
 var Cmd = &bonzai.Cmd{
 	Name:  `dot`,
 	Alias: `d`,
-	Usage: `dotfiles`,
 	Short: `Manage dotfiles`,
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{

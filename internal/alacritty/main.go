@@ -15,7 +15,6 @@ var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
 	Name:  `alacritty`,
-	Usage: `alacritty <command>`,
 	Short: `alacritty is a utility to manage alacritty configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
@@ -23,7 +22,6 @@ var Cmd = &bonzai.Cmd{
 
 var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
-	Usage: `setup <opts>`,
 	Opts:  `slim|quik|full`,
 	Short: `Setup alacritty`,
 	Comp:  comp.Opts,

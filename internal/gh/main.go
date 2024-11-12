@@ -14,7 +14,6 @@ var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
 	Name:  `gh`,
-	Usage: `gh <command>`,
 	Short: `gh is a utility to manage github-cli configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
@@ -22,7 +21,6 @@ var Cmd = &bonzai.Cmd{
 
 var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
-	Usage: `setup <opts>`,
 	Opts:  `slim|quik|full`,
 	Short: `Setup github-cli`,
 	Comp:  comp.Opts,

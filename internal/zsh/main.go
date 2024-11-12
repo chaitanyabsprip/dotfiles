@@ -18,7 +18,6 @@ var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
 	Name:  `zsh`,
-	Usage: `zsh <command>`,
 	Short: `zsh is a utility to manage zsh configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
@@ -26,7 +25,6 @@ var Cmd = &bonzai.Cmd{
 
 var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
-	Usage: `setup <opts>`,
 	Opts:  `slim|quik|full`,
 	Short: `Setup zsh`,
 	Comp:  comp.Opts,

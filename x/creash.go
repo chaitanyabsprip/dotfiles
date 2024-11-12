@@ -14,7 +14,6 @@ import (
 var creashCmd = &bonzai.Cmd{
 	Name:    `creash`,
 	Alias:   "csh",
-	Usage:   `creash`,
 	Vers:    "v1.0.0",
 	Short:   `Create a new shell script in pwd`,
 	Long:    `Create a new shell script in pwd`,

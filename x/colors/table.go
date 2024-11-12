@@ -9,7 +9,6 @@ import (
 
 var TableCmd = &bonzai.Cmd{
 	Name:  `table`,
-	Usage: `table`,
 	Short: `Print color table`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},

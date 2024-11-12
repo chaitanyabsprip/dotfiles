@@ -8,7 +8,6 @@ import (
 var runCmd = &bonzai.Cmd{
 	Name:  `run`,
 	Alias: `x`,
-	Usage: `tmux x`,
 	Short: `tmux x`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},

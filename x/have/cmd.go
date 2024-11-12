@@ -11,7 +11,6 @@ import (
 
 var Cmd = &bonzai.Cmd{
 	Name:  `have`,
-	Usage: `have <command>`,
 	Short: `have <command>`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},

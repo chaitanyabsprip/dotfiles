@@ -17,7 +17,6 @@ var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
 	Name:  `dirs`,
-	Usage: `dirs <command>`,
 	Short: `dirs is a utility to manage dirs configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
@@ -25,11 +24,11 @@ var Cmd = &bonzai.Cmd{
 
 var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
-	Usage: `setup <opts>`,
 	Opts:  `slim|quik|full`,
 	Short: `Setup dirs`,
 	Comp:  comp.Opts,
 	Call: func(x *bonzai.Cmd, args ...string) error {
+		// TODO(chaitanya): install xdg-user-dirs
 		return e.SetupAll(embedFs, "dirs", oscfg.ConfigDir(),
 			map[string]string{
 				`dirs`: filepath.Join(

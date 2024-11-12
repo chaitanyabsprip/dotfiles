@@ -19,7 +19,6 @@ var (
 	i          float64 = 0
 	SunriseCmd         = &bonzai.Cmd{
 		Name:    `sunrise`,
-		Usage:   `sunrise`,
 		Short:   `Showcase all colors of terminal`,
 		Comp:    comp.Cmds,
 		Cmds:    []*bonzai.Cmd{},

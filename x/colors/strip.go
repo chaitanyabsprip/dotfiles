@@ -9,7 +9,6 @@ import (
 
 var StripCmd = &bonzai.Cmd{
 	Name:  `strip`,
-	Usage: `strip`,
 	Short: `Print 24 bit colors in strips`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},

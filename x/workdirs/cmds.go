@@ -14,7 +14,6 @@ import (
 // output.
 var Cmd = &bonzai.Cmd{
 	Name:  `work`,
-	Usage: `work <command>`,
 	Short: `List work directories and Git worktrees`,
 	Long: `The 'work' command lists local work directories and
 Git worktree repositories. It supports compact output when SHORT=1 is
@@ -28,7 +27,6 @@ set.`,
 // commands.
 var helpCmd = &bonzai.Cmd{
 	Name:  `help`,
-	Usage: `work help [command]`,
 	Short: `show help for a command`,
 	Opts:  `dirs|trees`,
 	Comp:  comp.Opts,
@@ -47,8 +45,6 @@ EXAMPLES
 		cmds := []*bonzai.Cmd{dirsCmd, treeCmd}
 		if len(args) == 0 {
 			fmt.Printf("%s - %s\n\n", x.Name, x.Short)
-			fmt.Println("USAGE:")
-			fmt.Printf("  %s\n\n", x.Usage)
 			fmt.Println("COMMANDS:")
 			for _, cmd := range cmds {
 				fmt.Printf("  %-10s - %s\n", cmd.Name, cmd.Short)
@@ -62,8 +58,6 @@ EXAMPLES
 				if cmd.Name == args[0] {
 					matched = true
 					fmt.Printf("%s - %s\n\n", cmd.Name, cmd.Short)
-					fmt.Println("USAGE:")
-					fmt.Printf("  %s\n\n", cmd.Usage)
 					fmt.Println("DESCRIPTION:")
 					fmt.Printf("  %s\n\n", cmd.Long)
 				}
@@ -82,7 +76,6 @@ EXAMPLES
 var dirsCmd = &bonzai.Cmd{
 	Name:  `dirs`,
 	Alias: `d`,
-	Usage: `dirs`,
 	Short: `list work directories`,
 	Long: `
 Lists local work directories, including Git worktree repositories.
@@ -112,7 +105,6 @@ ENVIRONMENT VARIABLES
 var treeCmd = &bonzai.Cmd{
 	Name:  `trees`,
 	Alias: `t`,
-	Usage: `work trees`,
 	Short: `list Git worktrees`,
 	Long: `
 Lists Git worktrees within the specified directories.

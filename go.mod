@@ -4,14 +4,14 @@ go 1.23.2
 
 require (
 	github.com/charlievieth/fastwalk v1.0.9
-	github.com/rwxrob/bonzai v0.30.7
-	github.com/rwxrob/bonzai/comp v0.5.0
-	github.com/rwxrob/bonzai/fn v0.4.0
+	github.com/rwxrob/bonzai v0.37.0
+	github.com/rwxrob/bonzai/comp v0.6.0
+	github.com/rwxrob/bonzai/fn v0.6.0
 	github.com/rwxrob/bonzai/futil v0.1.0
 	github.com/rwxrob/bonzai/github v0.1.0
 	github.com/rwxrob/bonzai/run v0.6.1
 	github.com/rwxrob/bonzai/term v0.2.1
-	github.com/rwxrob/bonzai/vars v0.7.0
+	github.com/rwxrob/bonzai/vars v0.9.0
 	github.com/rwxrob/bonzai/web v0.1.1
 	github.com/rwxrob/bonzai/yq v0.1.0
 )
@@ -23,7 +23,7 @@ require (
 	github.com/elliotchance/orderedmap v1.6.0 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/goccy/go-json v0.10.3 // indirect
-	github.com/goccy/go-yaml v1.13.6 // indirect
+	github.com/goccy/go-yaml v1.13.8 // indirect
 	github.com/jinzhu/copier v0.4.0 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
@@ -32,10 +32,12 @@ require (
 	github.com/mikefarah/yq/v4 v4.44.3 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
+	github.com/rwxrob/bonzai/cmds/help v0.3.0 // indirect
 	github.com/rwxrob/bonzai/ds v0.1.1 // indirect
 	github.com/rwxrob/bonzai/edit v0.1.1 // indirect
 	github.com/rwxrob/bonzai/is v0.3.0 // indirect
 	github.com/rwxrob/bonzai/json v0.1.0 // indirect
+	github.com/rwxrob/bonzai/mark v0.6.0 // indirect
 	github.com/rwxrob/bonzai/scanner v0.1.0 // indirect
 	github.com/rwxrob/bonzai/to v0.2.0 // indirect
 	github.com/rwxrob/bonzai/uniq v0.1.0 // indirect

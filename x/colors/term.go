@@ -9,7 +9,6 @@ import (
 
 var TermCmd = &bonzai.Cmd{
 	Name:  `term`,
-	Usage: `term`,
 	Short: `Print terminal colors`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},

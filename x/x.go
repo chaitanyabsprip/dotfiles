@@ -15,7 +15,6 @@ import (
 
 var Cmd = &bonzai.Cmd{
 	Name:  `x`,
-	Usage: `x <command>`,
 	Short: `x is a utility to manage scripts`,
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{

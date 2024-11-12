@@ -29,25 +29,17 @@ var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
 	Name:  `tmx`,
-	Usage: `tmx <command>`,
 	Short: `tmx is a utility to manage tmux configuration and related scripts`,
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{
 		setupCmd,
 		runCmd,
-		{
-			Name: `install`,
-			Call: func(x *bonzai.Cmd, args ...string) error {
-				install.Tmux()
-				return nil
-			},
-		},
+		install.TmuxCmd.WithName(`install`),
 	},
 }
 
 var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
-	Usage: `tmux setup`,
 	Opts:  `slim|full`,
 	Short: `Setup tmux copies configuration files to config directory`,
 	Long:  ``,

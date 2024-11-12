@@ -9,7 +9,6 @@ import (
 
 var Cmd = &bonzai.Cmd{
 	Name:  `distro`,
-	Usage: `distro <command>`,
 	Short: `distro <command>`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
