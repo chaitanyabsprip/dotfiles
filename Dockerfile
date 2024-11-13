@@ -5,7 +5,7 @@ COPY go.mod go.sum /root/dot/
 RUN go mod download
 RUN apt update -y && apt install zsh -y
 COPY . /root/dot/
-RUN go install ./cmd/dot
+RUN go install -v ./cmd/dot
 RUN dot alacritty setup; \
         dot bash setup; \
         dot bat setup; \
