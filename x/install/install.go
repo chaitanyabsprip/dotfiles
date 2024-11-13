@@ -41,17 +41,19 @@ func GhDownload(
 		version,
 		assetName,
 	)
-	file, err := os.Create(downloadPath)
-	if err != nil {
-		return ``, err
-	}
-	defer func() { err = file.Close() }()
-	req := web.Req{U: downloadUrl, D: file}
-	err = req.Submit()
-	if err != nil {
-		return ``, err
-	}
+	err = DownloadFile(downloadUrl, downloadPath)
 	return downloadPath, err
+}
+
+func DownloadFile(url, dest string) (err error) {
+	file, err := os.Create(dest)
+	if err != nil {
+		return
+	}
+	defer func() { err = errors.Join(err, file.Close()) }()
+	req := web.Req{U: url, D: file}
+	err = req.Submit()
+	return
 }
 
 func ExtractTarGz(tarPath, dest string) (err error) {
