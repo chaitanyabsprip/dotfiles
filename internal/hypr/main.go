@@ -27,7 +27,7 @@ var setupCmd = &bonzai.Cmd{
 	Opts:  `slim|quik|full`,
 	Short: `Setup hypr`,
 	Comp:  comp.Opts,
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		if runtime.GOOS == "linux" {
 			return nil
 		}

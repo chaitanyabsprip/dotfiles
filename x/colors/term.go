@@ -12,7 +12,7 @@ var TermCmd = &bonzai.Cmd{
 	Short: `Print terminal colors`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		Term()
 		return nil
 	},

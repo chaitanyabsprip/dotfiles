@@ -7,7 +7,6 @@ import (
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
-	"github.com/rwxrob/bonzai/run"
 
 	e "github.com/Chaitanyabsprip/dot/internal/core/embed"
 	"github.com/Chaitanyabsprip/dot/internal/shell"
@@ -28,10 +27,8 @@ var setupCmd = &bonzai.Cmd{
 	Opts:  `slim|quik|full`,
 	Short: `Setup bash`,
 	Comp:  comp.Opts,
-	Call: func(x *bonzai.Cmd, args ...string) error {
-		run.DoNotExit = true
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		shell.Cmd.Run("setup")
-		run.DoNotExit = false
 		home := os.Getenv("HOME")
 		return e.SetupAll(
 			embedFs,

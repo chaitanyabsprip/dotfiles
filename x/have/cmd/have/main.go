@@ -3,6 +3,5 @@ package main
 import "github.com/Chaitanyabsprip/dot/x/have"
 
 func main() {
-	have.Cmd.Run()
+	have.Cmd.Exec()
 }
-

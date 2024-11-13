@@ -16,7 +16,7 @@ import (
 
 var BatCmd = &bonzai.Cmd{
 	Name: `bat`,
-	Call: func(x *bonzai.Cmd, args ...string) error { return Bat() },
+	Do: func(x *bonzai.Cmd, args ...string) error { return Bat() },
 }
 
 func Bat() error {

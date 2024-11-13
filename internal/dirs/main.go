@@ -27,7 +27,7 @@ var setupCmd = &bonzai.Cmd{
 	Opts:  `slim|quik|full`,
 	Short: `Setup dirs`,
 	Comp:  comp.Opts,
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		// TODO(chaitanya): install xdg-user-dirs
 		return e.SetupAll(embedFs, "dirs", oscfg.ConfigDir(),
 			map[string]string{

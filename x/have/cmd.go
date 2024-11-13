@@ -14,7 +14,7 @@ var Cmd = &bonzai.Cmd{
 	Short: `have <command>`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		verbose := os.Getenv("VERBOSE") != ""
 		names := os.Args[1:]
 		for _, name := range names {

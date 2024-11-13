@@ -25,7 +25,7 @@ var setupCmd = &bonzai.Cmd{
 	Opts:  `slim|quik|full`,
 	Short: `Setup bin directory`,
 	Comp:  comp.Opts,
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		binDir := filepath.Join(os.Getenv("HOME"), ".local")
 		return e.SetupAll(embedFs, "bin", binDir, nil)
 	},

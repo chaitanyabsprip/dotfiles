@@ -19,7 +19,7 @@ var creashCmd = &bonzai.Cmd{
 	Long:    `Create a new shell script in pwd`,
 	MinArgs: 1,
 	Comp:    comp.Opts,
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		edit := len(os.Getenv("EDIT")) > 0
 		creash(edit, args...)
 		return nil

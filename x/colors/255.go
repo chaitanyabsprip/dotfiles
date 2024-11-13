@@ -12,7 +12,7 @@ var Color255Cmd = &bonzai.Cmd{
 	Short: `Print 256 colors in terminal`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		Color255()
 		return nil
 	},

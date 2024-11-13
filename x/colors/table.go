@@ -12,7 +12,7 @@ var TableCmd = &bonzai.Cmd{
 	Short: `Print color table`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		Table()
 		return nil
 	},

@@ -12,7 +12,7 @@ var Cmd = &bonzai.Cmd{
 	Short: `distro <command>`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		fmt.Println(Name())
 		return nil
 	},

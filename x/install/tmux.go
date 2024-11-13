@@ -14,7 +14,7 @@ import (
 var TmuxCmd = &bonzai.Cmd{
 	Name:  `tmux`,
 	Alias: `i`,
-	Call:  func(_ *bonzai.Cmd, _ ...string) error { return Tmux() },
+	Do:  func(_ *bonzai.Cmd, _ ...string) error { return Tmux() },
 }
 
 func Tmux() error {

@@ -10,8 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/comp"
 )
 
 var (
@@ -23,7 +23,8 @@ var (
 		Comp:    comp.Cmds,
 		Cmds:    []*bonzai.Cmd{},
 		MaxArgs: 1,
-		Call: func(x *bonzai.Cmd, args ...string) error {
+		Do: func(x *bonzai.Cmd, args ...string) error {
+			fmt.Println("hello")
 			var ms int64 = 10
 			if len(args) > 0 {
 				ms, _ = strconv.ParseInt(args[0], 10, 64)

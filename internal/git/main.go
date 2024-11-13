@@ -25,7 +25,7 @@ var setupCmd = &bonzai.Cmd{
 	Opts:  `slim|quik|full`,
 	Short: `Setup git`,
 	Comp:  comp.Opts,
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		return e.SetupAll(embedFs, "git", oscfg.ConfigDir(), nil)
 	},
 }

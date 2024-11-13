@@ -41,7 +41,7 @@ EXAMPLES
   work help       # shows usage for all commands
   work help dirs  # shows help for 'dirs' command
   work help trees # shows help for 'trees' command`,
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		cmds := []*bonzai.Cmd{dirsCmd, treeCmd}
 		if len(args) == 0 {
 			fmt.Printf("%s - %s\n\n", x.Name, x.Short)
@@ -84,7 +84,7 @@ Set SHORT=1 for a compact output format.
 ENVIRONMENT VARIABLES
   SHORT|W_SHORT     Set SHORT=1 to display compact output
 `,
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		short := len(os.Getenv(`SHORT`)) > 0 ||
 			len(os.Getenv(`W_SHORT`)) > 0
 		var out string
@@ -114,7 +114,7 @@ ENVIRONMENT VARIABLES
   SHORT     Set SHORT=1 to display compact output
   W_SHORT   Alternate way to set SHORT=1 for compact output
 `,
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		short := len(os.Getenv(`SHORT`)) > 0 ||
 			len(os.Getenv(`W_SHORT`)) > 0
 		var out string

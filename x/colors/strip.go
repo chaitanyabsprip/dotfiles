@@ -12,7 +12,7 @@ var StripCmd = &bonzai.Cmd{
 	Short: `Print 24 bit colors in strips`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		Strip()
 		return nil
 	},

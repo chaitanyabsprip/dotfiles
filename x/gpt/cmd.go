@@ -50,7 +50,7 @@ var Cmd = &bonzai.Cmd{
 	Name:  `gpt`,
 	Vers:  `v0.1.0`,
 	Short: `Persistent conversations with LLM models using mods`,
-	Comp:  comp.Combine{comp.Cmds, vars.Comp},
+	Comp:  comp.Combine{comp.Cmds},
 	Cmds: []*bonzai.Cmd{
 		vars.Cmd,
 		commitCmd,
@@ -59,7 +59,7 @@ var Cmd = &bonzai.Cmd{
 		commentCmd,
 		listCmd,
 	},
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		depends.On(nil, "mods")
 		opts := GptOpts{
 			Model: stateVar(
@@ -90,7 +90,7 @@ var Cmd = &bonzai.Cmd{
 var commitCmd = &bonzai.Cmd{
 	Name:  `commit`,
 	Alias: `gc|gptc`,
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		opts := GptOpts{
 			Model: stateVar(
 				`model`,
@@ -117,7 +117,7 @@ var devCmd = &bonzai.Cmd{
 	Name:  `dev`,
 	Alias: `code|d`,
 	Cmds:  []*bonzai.Cmd{vars.Cmd},
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		opts := GptOpts{
 			Model: stateVar(
 				`model`,
@@ -144,7 +144,7 @@ var shellCmd = &bonzai.Cmd{
 	Name:  `shell`,
 	Alias: `s`,
 	Cmds:  []*bonzai.Cmd{vars.Cmd},
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		opts := GptOpts{
 			Model: stateVar(
 				`model`,
@@ -171,7 +171,7 @@ var commentCmd = &bonzai.Cmd{
 	Name:  `comment`,
 	Alias: `c|doc|document`,
 	Cmds:  []*bonzai.Cmd{vars.Cmd},
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		opts := GptOpts{
 			Model: stateVar(
 				`model`,
@@ -198,7 +198,7 @@ var commentCmd = &bonzai.Cmd{
 var listCmd = &bonzai.Cmd{
 	Name:  `list`,
 	Alias: `ls`,
-	Call: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) error {
 		convs, err := ListConversations()
 		if err != nil {
 			return err
