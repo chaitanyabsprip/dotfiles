@@ -1,86 +1,99 @@
-"$schema" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json"
+version = 3
 final_space = true
-version = 2
+
 [palette]
-base = "#191724"
-surface = "#1f1d2e"
-overlay = "#26233a"
-muted = "#6e6a86"
-subtle = "#908caa"
-text = "#e0def4"
-love = "#eb6f92"
-gold = "#f6c177"
-rose = "#ebbcba"
-pine = "#31748f"
-foam = "#9ccfd8"
-iris = "#c4a7e7"
-hilow = "#21202e"
-himed = "#403d52"
-hihigh = "#524f67"
-
-[[blocks]]
-type = "prompt"
-alignment = "left"
-
-# starting new line before the prompt. Used to disjoint two consecutive prompts
-[[blocks.segments]]
-type = "text"
-style = "plain"
-template = "\n"
-
-[[blocks.segments]]
-type = "status"
-style = "plain"
-foreground = "green"
-background = "p:hilow"
-foreground_templates = ["{{ if .Error }}red{{end}}"]
-template = "▍"
-
-[blocks.segments.properties]
-always_enabled = true
-
-[[blocks.segments]]
-type = "battery"
-style = "plain"
-template = "{{ if and (lt .Percentage 5) (eq .State.String \"Discharging\") }}█ {{end}}"
-foreground = "red"
-background = "p:hilow"
-
-[[blocks.segments]]
-type = "path"
-style = "plain"
-foreground = "cyan"
-background = "p:hilow"
-template = "<b>{{ if eq .PWD \"~\" }}home {{ else }}{{ .Folder }} {{ end }}</b>"
-
-[blocks.segments.properties]
-style = "folder"
-home_icon = "home"
-
-[[blocks]]
-type = "rprompt"
-alignment = "right"
-overflow = "hide"
-
-[[blocks.segments]]
-type = "shell"
-style = "plain"
-template = " {{ .Name }} {{ .SHLVL }} "
-background = "p:hilow"
-foreground = "p:himed"
-
-[[blocks.segments]]
-type = "session"
-style = "plain"
-template = "{{ if .SSHSession }} \ueba9 {{ .UserName }}@{{ .HostName }} {{ end }}"
-background = "p:himed"
-foreground = "p:gold"
-
-[transient_prompt]
-template = "\n<d><{{ if eq .Code 0 }}p:pine{{ else }}p:love{{ end }},p:base>▍</><,p:base>{{ if eq .PWD \"~\" }}home {{ else }}{{ .Folder }} {{ end }}</><#0f111b> </></d>"
-foreground = "#93777b"
+  base = '#191724'
+  foam = '#9ccfd8'
+  gold = '#f6c177'
+  hihigh = '#524f67'
+  hilow = '#21202e'
+  himed = '#403d52'
+  iris = '#c4a7e7'
+  love = '#eb6f92'
+  muted = '#6e6a86'
+  overlay = '#26233a'
+  pine = '#31748f'
+  rose = '#ebbcba'
+  subtle = '#908caa'
+  surface = '#1f1d2e'
+  text = '#e0def4'
 
 [secondary_prompt]
-template = "▍"
-foreground = "p:himed"
-background = "transparent"
+  template = '▍'
+  foreground = 'p:himed'
+  background = 'transparent'
+
+[transient_prompt]
+  template = "\n<d><{{ if eq .Code 0 }}p:pine{{ else }}p:love{{ end }},p:base>▍</><,p:base>{{ if eq .PWD \"~\" }}home {{ else }}{{ .Folder }} {{ end }}</><#0f111b> </></d>"
+  foreground = '#93777b'
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+
+  [[blocks.segments]]
+    template = "\n"
+    type = 'text'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+
+  [[blocks.segments]]
+    template = '▍'
+    foreground = 'green'
+    background = 'p:hilow'
+    type = 'status'
+    style = 'plain'
+    foreground_templates = ['{{ if .Error }}red{{end}}']
+
+    [blocks.segments.properties]
+      always_enabled = true
+      cache_duration = 'none'
+
+  [[blocks.segments]]
+    template = '{{ if and (lt .Percentage 5) (eq .State.String "Discharging") }}█ {{end}}'
+    foreground = 'red'
+    background = 'p:hilow'
+    type = 'battery'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+
+  [[blocks.segments]]
+    template = '<b>{{ if eq .PWD "~" }}home {{ else }}{{ .Folder }} {{ end }}</b>'
+    foreground = 'cyan'
+    background = 'p:hilow'
+    type = 'path'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+      home_icon = 'home'
+      style = 'folder'
+
+[[blocks]]
+  type = 'rprompt'
+  alignment = 'right'
+  overflow = 'hide'
+
+  [[blocks.segments]]
+    template = ' {{ .Name }} {{ .SHLVL }} '
+    foreground = 'p:himed'
+    background = 'p:hilow'
+    type = 'shell'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+
+  [[blocks.segments]]
+    template = '{{ if .SSHSession }}  {{ .UserName }}@{{ .HostName }} {{ end }}'
+    foreground = 'p:gold'
+    background = 'p:himed'
+    type = 'session'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
