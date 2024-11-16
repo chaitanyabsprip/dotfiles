@@ -1,8 +1,9 @@
-import = [
-    "~/.config/alacritty/themes/material-rosepine.toml",
-    "~/.config/alacritty/fonts/monolisa-nerd-font.toml",
-]
+[general]
 live_config_reload = true
+import = [
+        "~/.config/alacritty/themes/material-rosepine.toml",
+        "~/.config/alacritty/fonts/monolisa-nerd-font.toml",
+]
 
 [colors]
 draw_bold_text_with_bright_colors = true
@@ -30,7 +31,7 @@ multiplier = 3
 [selection]
 save_to_clipboard = true
 
-[shell]
+[terminal.shell]
 args = ["-l", "-c", "tmux new -As home; /bin/zsh -l"]
 program = "/bin/zsh"
 
