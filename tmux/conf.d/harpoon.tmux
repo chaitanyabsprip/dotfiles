@@ -1,4 +1,4 @@
-bind -N "Harpoon: Start tracking current window" a    run 'harpoon -a'
+bind -N "Harpoon: Start tracking current window" C-_    run 'harpoon -a'
 bind -N "Harpoon: Start tracking current pane"   .    run 'harpoon -A'
 bind -N "Harpoon: List tracked windows in fzf"   f    run 'harpoon -l'
 bind -N "Harpoon: Edit tracked windows"          C-e  run 'harpoon -e'
