@@ -36,7 +36,7 @@ config_dir=$HOME/.config/zsh/conf.d
 [ -r $plugin_file ] && source $plugin_file
 
 for conf in "$config_dir/"*.sh; do
-	[ -r "$conf" ] && zsh-defer source "$conf"
+	[ -r "$conf" ] && source "$conf"
 done
 unset conf
 
@@ -47,7 +47,7 @@ bindkey '^v' edit-command-line
 bindkey -s ^o '^ujump\n'
 
 # initialisations
-_have rbenv && zsh-defer eval "$(rbenv init - zsh)"
+_have rbenv && eval "$(rbenv init - zsh)"
 # have note && zsh-defer eval "$(note completion zsh)"
 
 : # shell should start with a zero status code
