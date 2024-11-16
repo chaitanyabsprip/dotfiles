@@ -1,0 +1,9 @@
+#!/bin/sh
+
+NUMBER='{{autocolor "green" (printf "#%v" .number)}}'
+SEP='{{"\t"}}'
+TITLE='{{printf "%-50.50s" (truncate 50 .title)}}'
+LABEL='{{if $index}}, {{end}}{{$label.name}}'
+LABELS='{{if .labels}}{{range $index, $label := .labels}}'"$LABEL"'{{else}}No labels{{end}}{{end}}'
+gh issue list --json number,url,title,assignees,labels \
+	--template "{{range .}}$NUMBER$SEP$TITLE$SEP$LABELS"'{{"\n"}}'"{{end}}"
