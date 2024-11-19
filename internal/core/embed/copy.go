@@ -6,10 +6,13 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/Chaitanyabsprip/dot/internal/core/oscfg"
 )
+
+const Skip = ""
 
 func SetupAll(
 	embedFs embed.FS,
@@ -22,7 +25,7 @@ func SetupAll(
 		if err != nil {
 			return err
 		}
-		return CopyFiles(embedFs, name, configDir, overrides)
+		return CopyAllFiles(embedFs, name, configDir, overrides)
 	}
 	if f, err := os.Stat(toolDir); err == nil {
 		if !f.IsDir() {
@@ -36,10 +39,47 @@ func SetupAll(
 			return err
 		}
 	}
-	return CopyFiles(embedFs, name, configDir, overrides)
+	return CopyAllFiles(embedFs, name, configDir, overrides)
 }
 
-func CopyFiles(
+func CopyFilesRegx(
+	embedFs embed.FS,
+	name, configDir, pattern string,
+	overrides map[string]string,
+) error {
+	if len(configDir) == 0 {
+		configDir = filepath.Join(os.Getenv("HOME"), ".config")
+	}
+	regx, err := regexp.Compile(pattern)
+	if err != nil {
+		return err
+	}
+	return fs.WalkDir(
+		embedFs,
+		".",
+		func(path string, d fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			if regx.Match([]byte(path)) {
+				targetPath := filepath.Join(
+					configDir,
+					path,
+				)
+				if altPath, ok := overrides[path]; ok {
+					if altPath == Skip {
+						return nil
+					}
+					targetPath = altPath
+				}
+				copy(embedFs, d, path, targetPath)
+			}
+			return nil
+		},
+	)
+}
+
+func CopyAllFiles(
 	embedFs embed.FS,
 	name, configDir string,
 	overrides map[string]string,
@@ -56,6 +96,9 @@ func CopyFiles(
 			}
 			targetPath := filepath.Join(configDir, path)
 			if altPath, ok := overrides[path]; ok {
+				if altPath == Skip {
+					return nil
+				}
 				targetPath = altPath
 			}
 			fmt.Printf(
@@ -63,21 +106,25 @@ func CopyFiles(
 				path,
 				targetPath,
 			)
-			if d.IsDir() {
-				return os.MkdirAll(targetPath, 0o755)
-			}
-			content, err := fs.ReadFile(embedFs, path)
+			err = copy(embedFs, d, path, targetPath)
 			if err != nil {
 				return err
 			}
-			os.WriteFile(
-				targetPath,
-				content,
-				getFileMode(path),
-			)
 			return nil
 		},
 	)
+}
+
+func copy(embedFs embed.FS, d fs.DirEntry, path, dest string) error {
+	if d.IsDir() {
+		return os.MkdirAll(dest, 0o755)
+	}
+	content, err := fs.ReadFile(embedFs, path)
+	if err != nil {
+		return err
+	}
+	os.WriteFile(dest, content, getFileMode(path))
+	return nil
 }
 
 func getFileMode(path string) fs.FileMode {

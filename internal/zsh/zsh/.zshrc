@@ -9,26 +9,6 @@ ZLE_RPROMPT_INDENT=0
 
 _have() { type "$1" >/dev/null 2>&1; }
 
-if _have oh-my-posh; then
-	eval "$(oh-my-posh init zsh -c ~/dotfiles/oh-my-posh.rc.toml)"
-elif _have starship; then
-	eval "$(starship init zsh)"
-fi
-
-# Cannot use autocd option along with CDPATH
-# setopt autocd                 # Automatically cd into typed directory.
-setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
-setopt hist_find_no_dups      # ignore dups when going through history
-setopt hist_ignore_dups       # ignore duplicated commands history list
-setopt hist_ignore_all_dups   # Delete old recorded entry if new entry is a duplicate
-setopt hist_ignore_space      # ignore commands that start with space
-setopt hist_verify            # show command with history expansion to user before running it
-setopt inc_append_history     # add commands to HISTFILE in order of execution
-stty stop undef               # Disable ctrl-s to freeze terminal.
-
-set -o vi
-bindkey -v
-
 # Load separated config files
 plugin_file=$HOME/.config/zsh/plugs.zsh
 config_dir=$HOME/.config/zsh/conf.d
@@ -36,7 +16,7 @@ config_dir=$HOME/.config/zsh/conf.d
 [ -r $plugin_file ] && source $plugin_file
 
 for conf in "$config_dir/"*.sh; do
-	[ -r "$conf" ] && zsh-defer source "$conf"
+	[ -r "$conf" ] && source "$conf"
 done
 unset conf
 
@@ -44,10 +24,10 @@ unset conf
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^v' edit-command-line
-bindkey -s ^o '^ujump\n'
+_have jump && bindkey -s ^o '^ujump\n'
 
 # initialisations
-_have rbenv && zsh-defer eval "$(rbenv init - zsh)"
+_have rbenv && eval "$(rbenv init - zsh)"
 # have note && zsh-defer eval "$(note completion zsh)"
 
 : # shell should start with a zero status code
