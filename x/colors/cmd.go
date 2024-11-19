@@ -1,8 +1,9 @@
 package colors
 
 import (
-	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/cmds/sunrise"
+	"github.com/rwxrob/bonzai/comp"
 )
 
 var Cmd = &bonzai.Cmd{
@@ -13,7 +14,7 @@ var Cmd = &bonzai.Cmd{
 		Color255Cmd,
 		TableCmd,
 		StripCmd,
-		SunriseCmd,
+		sunrise.Cmd,
 		TermCmd,
 	},
 }
