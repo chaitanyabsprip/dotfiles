@@ -3,7 +3,7 @@ FROM golang:latest
 WORKDIR /root/dot
 COPY go.mod go.sum /root/dot/
 RUN go mod download
-RUN apt update -y && apt install zsh -y
+RUN apt update -y
 COPY . /root/dot/
 RUN go install -v ./cmd/dot
 RUN dot alacritty setup; \
