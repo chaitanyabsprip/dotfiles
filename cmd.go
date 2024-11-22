@@ -2,6 +2,7 @@ package dot
 
 import (
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/cmds/help"
 	"github.com/rwxrob/bonzai/comp"
 
 	"github.com/Chaitanyabsprip/dot/internal/alacritty"
@@ -56,5 +57,6 @@ var Cmd = &bonzai.Cmd{
 		waybar.Cmd,
 		x.Cmd,
 		zsh.Cmd,
+		help.Cmd,
 	},
 }
