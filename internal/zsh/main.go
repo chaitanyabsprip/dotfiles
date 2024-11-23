@@ -2,7 +2,6 @@ package zsh
 
 import (
 	"embed"
-	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -81,20 +80,17 @@ When no option is specified, the "setup" command defaults to "slim" mode.
 		}
 		mode := args[0]
 		if mode == `slim` || mode == `quik` || mode == `full` {
-			fmt.Println(`Install zsh`)
+			delete(overrides, `zsh/conf.d/vim.sh`)
 			err := install.ZshCmd.Run()
 			if err != nil {
 				return err
 			}
 		}
 		if mode == `quik` || mode == `full` {
-			fmt.Println(`Install zshenv`)
-			delete(overrides, `zsh/conf.d/vim.sh`)
 			delete(overrides, `zsh/conf.d/clone.sh`)
 			delete(overrides, `zsh/conf.d/prompt.sh`)
 		}
 		if mode == `full` {
-			fmt.Println(`Install zap`)
 			err := install.Zap()
 			if err != nil {
 				return err
