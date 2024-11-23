@@ -65,19 +65,19 @@ When no option is specified, the "setup" command defaults to "slim" mode.
 			args = append(args, `slim`)
 		}
 		overrides := map[string]string{
-			`zsh/.zshenv`:               zshenvPath,
-			`zsh/conf.d/brew.sh`:        ``,
-			`zsh/conf.d/cdpath.disable`: ``,
-			`zsh/conf.d/clone.sh`:       ``,
-			`zsh/conf.d/completions.sh`: ``,
-			`zsh/conf.d/eza.sh`:         ``,
-			`zsh/conf.d/fzf.sh`:         ``,
-			`zsh/conf.d/jira.sh`:        ``,
-			`zsh/conf.d/nvm.sh`:         ``,
-			`zsh/conf.d/pipx.sh`:        ``,
-			`zsh/conf.d/prompt.sh`:      ``,
-			`zsh/conf.d/pyenv.sh`:       ``,
-			`zsh/conf.d/vim.sh`:         ``,
+			`zsh/.zshenv`:           zshenvPath,
+			`zsh/conf.d/brew.sh`:    ``,
+			`zsh/conf.d/cdpath.off`: ``,
+			`zsh/conf.d/clone.sh`:   ``,
+			`zsh/conf.d/eza.sh`:     ``,
+			`zsh/conf.d/fzf.sh`:     ``,
+			`zsh/conf.d/jira.sh`:    ``,
+			`zsh/conf.d/nvm.sh`:     ``,
+			`zsh/conf.d/opts.sh`:    ``,
+			`zsh/conf.d/pipx.sh`:    ``,
+			`zsh/conf.d/prompt.sh`:  ``,
+			`zsh/conf.d/pyenv.sh`:   ``,
+			`zsh/conf.d/vim.sh`:     ``,
 		}
 		mode := args[0]
 		if mode == `slim` || mode == `quik` || mode == `full` {
