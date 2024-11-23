@@ -42,16 +42,17 @@ The primary setup modes are:
 
 - slim: Bare minimum level of personal configuration. Enough to get
   setup instantly without any extra installs. Installs only static
-  configuration files.
+  configuration files that are required.
 - quik: Enough configuration to get a familiar environment while doing 
-  minimum number of third part installs. Install plugins and drops into
+  minimum number of third party installs. Install plugins and drops into
   zsh shell.
 - full: Provides a complete Zsh setup, installing the "zap" plugin 
   manager in addition to the "zshenv" configuration file and the Zsh 
   shell. This is suitable for users who want a fully featured Zsh 
   environment with plugin management capabilities.
 
-When no option is specified, the "setup" command defaults to "slim" mode.
+When no option is specified, the "setup" command defaults to "slim"
+mode.
 
 # ENVIRONMENT:
   - LAUNCH: Set to a truthy value to launch Zsh after setup.
@@ -76,11 +77,9 @@ When no option is specified, the "setup" command defaults to "slim" mode.
 			`zsh/conf.d/pipx.sh`:    ``,
 			`zsh/conf.d/prompt.sh`:  ``,
 			`zsh/conf.d/pyenv.sh`:   ``,
-			`zsh/conf.d/vim.sh`:     ``,
 		}
 		mode := args[0]
 		if mode == `slim` || mode == `quik` || mode == `full` {
-			delete(overrides, `zsh/conf.d/vim.sh`)
 			err := install.ZshCmd.Run()
 			if err != nil {
 				return err
