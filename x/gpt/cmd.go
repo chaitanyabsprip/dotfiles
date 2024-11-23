@@ -16,8 +16,8 @@ import (
 	"github.com/rwxrob/bonzai/vars"
 	"github.com/rwxrob/bonzai/yq"
 
-	"github.com/Chaitanyabsprip/dot/internal/core/oscfg"
-	"github.com/Chaitanyabsprip/dot/x/depends"
+	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
+	"github.com/Chaitanyabsprip/dotfiles/x/depends"
 )
 
 const (

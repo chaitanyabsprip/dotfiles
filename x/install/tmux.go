@@ -7,8 +7,8 @@ import (
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/run"
 
-	"github.com/Chaitanyabsprip/dot/x/distro"
-	"github.com/Chaitanyabsprip/dot/x/have"
+	"github.com/Chaitanyabsprip/dotfiles/x/distro"
+	"github.com/Chaitanyabsprip/dotfiles/x/have"
 )
 
 var TmuxCmd = &bonzai.Cmd{

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Chaitanyabsprip/dot/x/workdirs"
+	"github.com/Chaitanyabsprip/dotfiles/x/workdirs"
 )
 
 func main() {

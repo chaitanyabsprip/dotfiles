@@ -4,13 +4,13 @@ import (
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
 
-	"github.com/Chaitanyabsprip/dot/x/colors"
-	"github.com/Chaitanyabsprip/dot/x/depends"
-	"github.com/Chaitanyabsprip/dot/x/distro"
-	"github.com/Chaitanyabsprip/dot/x/gpt"
-	"github.com/Chaitanyabsprip/dot/x/have"
-	"github.com/Chaitanyabsprip/dot/x/install"
-	"github.com/Chaitanyabsprip/dot/x/workdirs"
+	"github.com/Chaitanyabsprip/dotfiles/x/colors"
+	"github.com/Chaitanyabsprip/dotfiles/x/depends"
+	"github.com/Chaitanyabsprip/dotfiles/x/distro"
+	"github.com/Chaitanyabsprip/dotfiles/x/gpt"
+	"github.com/Chaitanyabsprip/dotfiles/x/have"
+	"github.com/Chaitanyabsprip/dotfiles/x/install"
+	"github.com/Chaitanyabsprip/dotfiles/x/workdirs"
 )
 
 var Cmd = &bonzai.Cmd{

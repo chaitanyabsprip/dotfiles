@@ -1,6 +1,6 @@
 package main
 
-import "github.com/Chaitanyabsprip/dot"
+import dot "github.com/Chaitanyabsprip/dotfiles"
 
 func main() {
 	dot.Cmd.Exec()

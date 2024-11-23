@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Chaitanyabsprip/dot/x/workdirs"
+	"github.com/Chaitanyabsprip/dotfiles/x/workdirs"
 )
 
 func main() {

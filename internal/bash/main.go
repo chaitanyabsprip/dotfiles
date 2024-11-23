@@ -8,8 +8,8 @@ import (
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
 
-	e "github.com/Chaitanyabsprip/dot/internal/core/embed"
-	"github.com/Chaitanyabsprip/dot/internal/shell"
+	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
+	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
 )
 
 //go:embed bashrc

@@ -6,7 +6,7 @@ import (
 	"github.com/rwxrob/bonzai/futil"
 	"github.com/rwxrob/bonzai/run"
 
-	"github.com/Chaitanyabsprip/dot/x/have"
+	"github.com/Chaitanyabsprip/dotfiles/x/have"
 )
 
 // Name returns the name of the distro for UNIX-like systems.

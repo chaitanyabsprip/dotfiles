@@ -6,9 +6,9 @@ import (
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
 
-	e "github.com/Chaitanyabsprip/dot/internal/core/embed"
+	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
 
-	"github.com/Chaitanyabsprip/dot/internal/core/oscfg"
+	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
 )
 
 //go:embed lsd

@@ -9,7 +9,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Chaitanyabsprip/dot/internal/core/oscfg"
+	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
 )
 
 const Skip = ""

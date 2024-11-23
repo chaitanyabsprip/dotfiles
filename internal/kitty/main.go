@@ -3,11 +3,11 @@ package kitty
 import (
 	"embed"
 
-	e "github.com/Chaitanyabsprip/dot/internal/core/embed"
+	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
 
-	"github.com/Chaitanyabsprip/dot/internal/core/oscfg"
+	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
 )
 
 //go:embed kitty
