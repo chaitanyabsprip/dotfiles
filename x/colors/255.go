@@ -9,7 +9,7 @@ import (
 
 var Color255Cmd = &bonzai.Cmd{
 	Name:  `255`,
-	Short: `Print 256 colors in terminal`,
+	Short: `print 256 colors in terminal`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
 	Do: func(x *bonzai.Cmd, args ...string) error {

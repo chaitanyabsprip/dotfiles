@@ -9,7 +9,7 @@ import (
 
 var StripCmd = &bonzai.Cmd{
 	Name:  `strip`,
-	Short: `Print 24 bit colors in strips`,
+	Short: `print 24 bit colors in strips`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
 	Do: func(x *bonzai.Cmd, args ...string) error {

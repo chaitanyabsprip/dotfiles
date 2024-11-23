@@ -9,7 +9,7 @@ import (
 
 var TermCmd = &bonzai.Cmd{
 	Name:  `term`,
-	Short: `Print terminal colors`,
+	Short: `print terminal colors`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
 	Do: func(x *bonzai.Cmd, args ...string) error {

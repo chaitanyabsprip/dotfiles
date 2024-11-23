@@ -49,7 +49,7 @@ func init() {
 var Cmd = &bonzai.Cmd{
 	Name:  `gpt`,
 	Vers:  `v0.1.0`,
-	Short: `Persistent conversations with LLM models using mods`,
+	Short: `persistent conversation with LLM model using mods`,
 	Comp:  comp.Combine{comp.Cmds},
 	Cmds: []*bonzai.Cmd{
 		vars.Cmd,

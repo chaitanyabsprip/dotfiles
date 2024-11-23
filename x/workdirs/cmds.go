@@ -14,7 +14,7 @@ import (
 // output.
 var Cmd = &bonzai.Cmd{
 	Name:  `work`,
-	Short: `List work directories and Git worktrees`,
+	Short: `list work directories and Git worktrees`,
 	Long: `The 'work' command lists local work directories and
 Git worktree repositories. It supports compact output when SHORT=1 is
 set.`,

@@ -8,7 +8,7 @@ import (
 
 var Cmd = &bonzai.Cmd{
 	Name:  `color`,
-	Short: `Print colors in terminal in different formats`,
+	Short: `print colors in terminal in different formats`,
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{
 		Color255Cmd,

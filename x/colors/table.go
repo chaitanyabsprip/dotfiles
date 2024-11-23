@@ -9,7 +9,7 @@ import (
 
 var TableCmd = &bonzai.Cmd{
 	Name:  `table`,
-	Short: `Print color table`,
+	Short: `print color table`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
 	Do: func(x *bonzai.Cmd, args ...string) error {

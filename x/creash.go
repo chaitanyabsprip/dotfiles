@@ -15,8 +15,7 @@ var creashCmd = &bonzai.Cmd{
 	Name:    `creash`,
 	Alias:   "csh",
 	Vers:    "v1.0.0",
-	Short:   `Create a new shell script in pwd`,
-	Long:    `Create a new shell script in pwd`,
+	Short:   `create a new shell script in pwd`,
 	MinArgs: 1,
 	Comp:    comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
