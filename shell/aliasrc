@@ -41,11 +41,11 @@ _have fd && _have fzf && {
 			fzf --height=20% --border --margin=0 --padding=0 \
 				--bind='enter:become(nvim {})'
 	}
-	_have work && {
+	_have x && {
 		jump() {
 			program="${1:-cd}"
-			selected="$(SHORT=1 work dirs | fzf --height=20% --border --margin=0 --padding=0)"
-			$program "$(work dirs | grep -w "$selected$")"
+			selected="$(SHORT=1 x work dirs | fzf --height=20% --border --margin=0 --padding=0)"
+			$program "$(x work dirs | grep -w "$selected$")"
 		}
 	}
 }
