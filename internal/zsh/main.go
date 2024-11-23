@@ -33,7 +33,7 @@ var Cmd = &bonzai.Cmd{
 var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Opts:  `slim|quik|full`,
-	Short: `Setup zsh to a specific level of configuration`,
+	Short: `setup zsh to a specific level of configuration`,
 	Long: `
 The "setup" command installs and configures Zsh with various options 
 that determine the extent of the setup. Zsh is installed for all forms
