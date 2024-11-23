@@ -24,7 +24,7 @@ var Cmd = &bonzai.Cmd{
 var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Opts:  `slim|quik|full`,
-	Short: `Setup sqlfluff`,
+	Short: `setup sqlfluff`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		return e.SetupAll(embedFs, "sqlfluff", oscfg.ConfigDir(), nil)

@@ -24,7 +24,7 @@ var Cmd = &bonzai.Cmd{
 var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Opts:  `slim|quik|full`,
-	Short: `Setup waybar`,
+	Short: `setup waybar`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		return e.SetupAll(embedFs, "waybar", oscfg.ConfigDir(), nil)

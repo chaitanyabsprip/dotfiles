@@ -32,7 +32,7 @@ import (
 var Cmd = &bonzai.Cmd{
 	Name:  `dot`,
 	Alias: `d`,
-	Short: `Manage dotfiles`,
+	Short: `manage dotfiles`,
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{
 		alacritty.Cmd,

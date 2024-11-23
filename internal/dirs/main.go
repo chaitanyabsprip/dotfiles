@@ -25,7 +25,7 @@ var Cmd = &bonzai.Cmd{
 var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Opts:  `slim|quik|full`,
-	Short: `Setup dirs`,
+	Short: `setup dirs`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		// TODO(chaitanya): install xdg-user-dirs

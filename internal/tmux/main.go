@@ -41,7 +41,7 @@ var Cmd = &bonzai.Cmd{
 var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Opts:  `slim|full`,
-	Short: `Setup tmux copies configuration files to config directory`,
+	Short: `setup tmux copies configuration files to config directory`,
 	Long:  ``,
 	Do: func(x *bonzai.Cmd, _ ...string) error {
 		return e.SetupAll(embedFs, "tmux", oscfg.ConfigDir(), nil)

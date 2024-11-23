@@ -24,7 +24,7 @@ var Cmd = &bonzai.Cmd{
 var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Opts:  `slim|quik|full`,
-	Short: `Setup shell`,
+	Short: `setup shell`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		return e.SetupAll(embedFs, "shell", oscfg.ConfigDir(), nil)
