@@ -16,14 +16,6 @@ import (
 // - dependencies
 // - live reload
 
-// TODO(me):
-// - Create options to control what level of setup is done
-// - The options will be one of slim/quik/full
-// - Slim: install only the files that are needed and skip the rest
-// - Quik: install only the configuration files and skip the
-//   optional dependencies
-// - Full: install everything, all config files and all dependencies
-
 //go:embed all:tmux
 var embedFs embed.FS
 
