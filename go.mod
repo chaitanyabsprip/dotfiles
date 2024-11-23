@@ -52,3 +52,5 @@ require (
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/Chaitanyabsprip/dot => github.com/Chaitanyabsprip/dotfiles latest
