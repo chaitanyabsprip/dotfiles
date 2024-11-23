@@ -53,4 +53,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/Chaitanyabsprip/dotfiles => ./
+replace github.com/Chaitanyabsprip/dotfiles => github.com/Chaitanyabsprip/dot monolith
