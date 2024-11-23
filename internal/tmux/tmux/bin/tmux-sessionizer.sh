@@ -1,7 +1,5 @@
 #!/bin/sh
 
-depends fzf
-
 sessionizer() {
 	_depends() { type "$1" >/dev/null 2>&1 ||
 		{ echo "${0##*/} depends on $1, please install and try again." &&

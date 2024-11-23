@@ -28,8 +28,8 @@ import (
 var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
-	Name:  `tmx`,
-	Short: `tmx is a utility to manage tmux configuration and related scripts`,
+	Name:  `tmux`,
+	Short: `manage tmux configuration and related scripts`,
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{
 		setupCmd,
@@ -41,9 +41,24 @@ var Cmd = &bonzai.Cmd{
 var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Opts:  `slim|full`,
-	Short: `setup tmux copies configuration files to config directory`,
-	Long:  ``,
-	Do: func(x *bonzai.Cmd, _ ...string) error {
+	Short: `setup tmux to a specific level of configuration`,
+	Do: func(x *bonzai.Cmd, args ...string) error {
+		if len(args) == 0 {
+			args = append(args, `slim`)
+		}
+		mode := args[0]
+		if mode == `slim` || mode == `quik` || mode == `full` {
+			err := e.SetupAll(embedFs, "tmux", oscfg.ConfigDir(), nil)
+			if err != nil {
+				return err
+			}
+		}
+		if mode == `quik` || mode == `full` {
+			// install harpoon, pbc
+		}
+		if mode == `full` {
+			// install gitmux
+		}
 		return e.SetupAll(embedFs, "tmux", oscfg.ConfigDir(), nil)
 	},
 }
