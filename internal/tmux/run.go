@@ -1,8 +1,8 @@
 package tmux
 
 import (
-	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/comp"
 )
 
 var runCmd = &bonzai.Cmd{
@@ -10,5 +10,5 @@ var runCmd = &bonzai.Cmd{
 	Alias: `x`,
 	Short: `tmux x`,
 	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{KillCmd},
+	Cmds:  []*bonzai.Cmd{KillCmd, SessionizerCmd},
 }
