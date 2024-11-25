@@ -10,5 +10,11 @@ var runCmd = &bonzai.Cmd{
 	Alias: `x`,
 	Short: `tmux x`,
 	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{KillCmd, SessionizerCmd},
+	Cmds: []*bonzai.Cmd{
+		KillCmd,
+		SessionizerCmd,
+		PreviewCmd,
+		SessionManagerCmd,
+		NotesCmd,
+	},
 }

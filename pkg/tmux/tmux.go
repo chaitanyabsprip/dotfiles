@@ -6,13 +6,20 @@ import (
 	"strings"
 
 	"github.com/rwxrob/bonzai/fn/filt"
+	"github.com/rwxrob/bonzai/fn/maps"
 	"github.com/rwxrob/bonzai/run"
 	"github.com/rwxrob/bonzai/to"
 )
 
 func IsActive() bool {
-	return len(os.Getenv("TMUX")) > 0 ||
+	return len(os.Getenv(`TMUX`)) > 0 ||
 		len(run.Out(`pgrep`, `tmux`)) > 0
+}
+
+func ListSessionsF(format string) []string {
+	return maps.TrimSpace(
+		to.Lines(run.Out(`tmux`, `ls`, `-F`, format)),
+	)
 }
 
 func ListSessions() []string {
@@ -31,8 +38,21 @@ type Session struct {
 	Path string
 }
 
+func CurrentSession() (Session, error) {
+	out := run.Out(
+		`tmux`,
+		`display-message`,
+		`-p`,
+		`#{session_name}=#{session_path}`,
+	)
+	parts := strings.Split(out, `=`)
+	if len(parts) < 2 {
+		return Session{}, fmt.Errorf(`no session found`)
+	}
+	return Session{Name: parts[0], Path: parts[1]}, nil
+}
+
 func NewSession(opts Session) error {
-	fmt.Println("name:", opts.Name, "path:", opts.Path)
 	return run.Exec(
 		`tmux`,
 		`new-session`,
@@ -45,7 +65,9 @@ func NewSession(opts Session) error {
 
 func SessionExists(opts Session) bool {
 	if len(opts.Name) > 0 {
-		return len(filt.HasPrefix(ListSessions(), opts.Name)) > 0
+		return len(
+			filt.HasPrefix(ListSessions(), opts.Name),
+		) > 0
 	} else if len(opts.Path) > 0 {
 		return len(filt.HasSuffix(ListSessions(), opts.Path)) > 0
 	}
@@ -60,11 +82,11 @@ func FindSession(opts Session) (string, string) {
 		results = filt.HasPrefix(ListSessions(), opts.Path)
 	}
 	if len(results) == 0 {
-		return "", ""
+		return ``, ``
 	}
-	parts := strings.Split(results[0], "=")
+	parts := strings.Split(results[0], `=`)
 	if len(parts) < 2 {
-		return "", ""
+		return ``, ``
 	}
 	return parts[0], parts[1]
 }
@@ -75,4 +97,19 @@ func SwitchClient(name string) error {
 
 func RenameSession(old, new string) error {
 	return run.Exec(`tmux`, `rename-session`, `-t`, old, new)
+}
+
+func SessionID(name string) (string, error) {
+	out := strings.TrimSpace(run.Out(
+		`tmux`,
+		`ls`,
+		`-F`,
+		`#{session_id}`,
+		`-f`,
+		fmt.Sprintf(`#{==:#{session_name},%s}`, name),
+	))
+	if len(out) == 0 {
+		return ``, fmt.Errorf(`unknown session: %s`, name)
+	}
+	return out, nil
 }

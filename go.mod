@@ -13,6 +13,7 @@ require (
 	github.com/rwxrob/bonzai/github v0.1.0
 	github.com/rwxrob/bonzai/run v0.7.0
 	github.com/rwxrob/bonzai/term v0.2.1
+	github.com/rwxrob/bonzai/to v0.3.0
 	github.com/rwxrob/bonzai/vars v0.12.0
 	github.com/rwxrob/bonzai/web v0.1.1
 	github.com/rwxrob/bonzai/yq v0.1.0
@@ -41,7 +42,6 @@ require (
 	github.com/rwxrob/bonzai/mark v0.10.8 // indirect
 	github.com/rwxrob/bonzai/mark/funcs v0.4.6 // indirect
 	github.com/rwxrob/bonzai/scanner v0.1.0 // indirect
-	github.com/rwxrob/bonzai/to v0.3.0 // indirect
 	github.com/rwxrob/bonzai/uniq v0.1.0 // indirect
 	github.com/yuin/gopher-lua v1.1.1 // indirect
 	golang.org/x/crypto v0.29.0 // indirect
