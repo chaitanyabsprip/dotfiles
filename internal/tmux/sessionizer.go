@@ -23,7 +23,7 @@ var SessionizerCmd = &bonzai.Cmd{
 		return nil
 	},
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		if len(args) > 1 {
+		if len(args) > 0 {
 			return Sessionizer(args[0])
 		}
 		return Sessionizer(``)
@@ -32,10 +32,10 @@ var SessionizerCmd = &bonzai.Cmd{
 
 func Sessionizer(path string) error {
 	newPath := path
-	if newPath == `` {
+	if len(newPath) == 0 {
 		newPath = selectPath()
 	}
-	if newPath == `` {
+	if len(newPath) == 0 {
 		return fmt.Errorf(`no path selected`)
 	}
 	sessionName := strings.ReplaceAll(
