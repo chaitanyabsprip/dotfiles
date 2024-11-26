@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/charlievieth/fastwalk"
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/fn/filt"
 	"github.com/rwxrob/bonzai/fn/maps"
@@ -46,7 +47,7 @@ func Notes(name, root string) error {
 	err = run.Exec(
 		`tmux`, `send-keys`,
 		`-t`, `notes`,
-		`cd`, root, `Enter`,
+		`cd `, root, `Enter`,
 	)
 	if err != nil {
 		return err
@@ -54,7 +55,7 @@ func Notes(name, root string) error {
 	return run.Exec(
 		`tmux`, `send-keys`,
 		`-t`, `notes`,
-		`nvim `, name, `Enter`,
+		`nvim `, name, `; clear`, `Enter`,
 	)
 }
 
@@ -68,7 +69,8 @@ func selectNote(files []string) string {
 
 func getFiles(root string) []string {
 	result := make([]string, 0)
-	err := filepath.WalkDir(
+	err := fastwalk.Walk(
+		&fastwalk.DefaultConfig,
 		root,
 		func(path string, d fs.DirEntry, err error) error {
 			if err != nil {
