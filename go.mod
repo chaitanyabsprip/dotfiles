@@ -11,6 +11,7 @@ require (
 	github.com/rwxrob/bonzai/fn v0.8.2
 	github.com/rwxrob/bonzai/futil v0.1.0
 	github.com/rwxrob/bonzai/github v0.1.0
+	github.com/rwxrob/bonzai/is v0.3.0
 	github.com/rwxrob/bonzai/run v0.7.0
 	github.com/rwxrob/bonzai/term v0.2.1
 	github.com/rwxrob/bonzai/to v0.3.0
@@ -37,7 +38,6 @@ require (
 	github.com/rwxrob/bonzai/anim v0.1.0 // indirect
 	github.com/rwxrob/bonzai/ds v0.1.1 // indirect
 	github.com/rwxrob/bonzai/edit v0.1.1 // indirect
-	github.com/rwxrob/bonzai/is v0.3.0 // indirect
 	github.com/rwxrob/bonzai/json v0.1.0 // indirect
 	github.com/rwxrob/bonzai/mark v0.10.8 // indirect
 	github.com/rwxrob/bonzai/mark/funcs v0.4.6 // indirect

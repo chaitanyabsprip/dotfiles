@@ -16,5 +16,6 @@ var runCmd = &bonzai.Cmd{
 		PreviewCmd,
 		SessionManagerCmd,
 		NotesCmd,
+		IconNameCmd,
 	},
 }
