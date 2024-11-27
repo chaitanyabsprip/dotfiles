@@ -17,5 +17,6 @@ var runCmd = &bonzai.Cmd{
 		SessionManagerCmd,
 		NotesCmd,
 		IconNameCmd,
+		SuspendCmd,
 	},
 }

@@ -113,3 +113,13 @@ func SessionID(name string) (string, error) {
 	}
 	return out, nil
 }
+
+func GetOption(name, fallback string) string {
+	out := strings.TrimSpace(
+		run.Out(`tmux`, `show-option`, `-gqv`, name),
+	)
+	if len(out) == 0 {
+		return fallback
+	}
+	return out
+}

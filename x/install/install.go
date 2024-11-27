@@ -26,7 +26,7 @@ func WithRoot(args ...string) error {
 		}
 		args = append([]string{`sudo`}, args...)
 	}
-	return run.SysExec(args...)
+	return run.Exec(args...)
 }
 
 func GhDownload(

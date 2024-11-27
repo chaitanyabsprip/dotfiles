@@ -28,9 +28,9 @@ func Tmux() error {
 	case `Ubuntu`, `Debian GNU/Linux`:
 		return WithRoot(`apt-get`, `install`, `-y`, `tmux`)
 	case `Fedora Linux`:
-		return run.SysExec(`dnf`, `install`, `tmux`, `-y`)
+		return run.Exec(`dnf`, `install`, `tmux`, `-y`)
 	case `Darwin`:
-		return run.SysExec(`brew`, `install`, `tmux`)
+		return run.Exec(`brew`, `install`, `tmux`)
 	default:
 		fmt.Fprintln(
 			os.Stderr,
