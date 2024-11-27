@@ -1,11 +1,11 @@
 {
 	"name": "Vimium C",
-	"@time": "12/6/2024, 5:27:56 pm",
-	"time": 1718193476798,
+	"@time": "11/27/2024, 7:26:45 PM",
+	"time": 1732715805232,
 	"environment": {
 		"extension": "1.99.997",
-		"platform": "mac",
-		"firefox": 126
+		"platform": "linux",
+		"firefox": 132
 	},
 	"exclusionRules": [
 		{
@@ -20,11 +20,10 @@
 	"keyLayout": 2,
 	"keyMappings": [
 		"#!no-check",
-		"mapKey <c-c> <esc>",
+		"mapKey <a-c> <esc>",
 		"unmap <a-t>",
 		"unmap <a-n>",
 		"unmap <a-s-c>",
-		"unmap <a-c>",
 		"unmap gt",
 		"unmap <a-v>",
 		"unmap gT",
@@ -32,6 +31,9 @@
 		"map gH Vomnibar.activateHistoryInNewTab",
 		"map wn moveTabToNextWindow",
 		"map W moveTabToNewWindow",
+		"map s visitPreviousTab",
+		"map S visitPreviousTab acrossWindows",
+		"map <c-o> passNextKey",
 		"map wi moveTabToIncognito",
 		""
 	],
@@ -52,7 +54,14 @@
 		"  blank=https://github.com/ GitHub Repo",
 		"ghr: https://github.com/$S \\",
 		"  blank=https://github.com/ GitHub Repo",
+		"ghc: https://github.com/Chaitanyabsprip/$s \\",
+		"  blank=https://github.com/Chaitanyabsprip GitHub Profile",
 		"js\\:|Js: javascript:\\ $S; JavaScript",
+		"sc: https://www.shellcheck.net/wiki/SC$s",
+		"p|pub: https://pub.dev/packages?q=$s \\",
+		"  blank=https://pub.dev",
+		"pp|pbp|pubp: https://pub.dev/packages/$S",
+		"  blank=https://pub.dev",
 		""
 	],
 	"vimSync": true
