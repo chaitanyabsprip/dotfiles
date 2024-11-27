@@ -16,7 +16,7 @@ import (
 
 var BatCmd = &bonzai.Cmd{
 	Name: `bat`,
-	Do: func(x *bonzai.Cmd, args ...string) error { return Bat() },
+	Do:   func(x *bonzai.Cmd, args ...string) error { return Bat() },
 }
 
 func Bat() error {
@@ -40,9 +40,9 @@ func batPkgInstall() error {
 	case `Ubuntu`, `Debian`:
 		return WithRoot(`apt-get`, `install`, `bat`)
 	case `Fedora`:
-		return run.SysExec(`dnf`, `install`, `bat`, `-y`)
+		return run.Exec(`dnf`, `install`, `bat`, `-y`)
 	case `Darwin`:
-		return run.SysExec(`brew`, `install`, `tmux`)
+		return run.Exec(`brew`, `install`, `tmux`)
 	default:
 		return fmt.Errorf(
 			`unsupported or unconfigured operating system`,

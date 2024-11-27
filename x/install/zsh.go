@@ -29,9 +29,9 @@ func Zsh() error {
 	case `Ubuntu`, `Debian GNU/Linux`:
 		return WithRoot(`apt-get`, `install`, `-y`, `zsh`)
 	case `Fedora Linux`:
-		return run.SysExec(`dnf`, `install`, `zsh`, `-y`)
+		return run.Exec(`dnf`, `install`, `zsh`, `-y`)
 	case `Darwin`:
-		return run.SysExec(`brew`, `install`, `zsh`)
+		return run.Exec(`brew`, `install`, `zsh`)
 	default:
 		fmt.Fprintln(
 			os.Stderr,
