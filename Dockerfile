@@ -32,7 +32,7 @@ RUN dot alacritty setup; \
         dot shell setup; \
         dot sqlfluff setup; \
         dot starship setup; \
-        dot tmx setup; \
+        dot tmux setup; \
         dot vimium setup; \
         dot waybar setup; \
         dot zsh setup;
