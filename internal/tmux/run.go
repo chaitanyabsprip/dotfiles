@@ -18,5 +18,6 @@ var runCmd = &bonzai.Cmd{
 		NotesCmd,
 		IconNameCmd,
 		SuspendCmd,
+		GitmuxCmd,
 	},
 }

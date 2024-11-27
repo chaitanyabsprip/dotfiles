@@ -3,6 +3,8 @@ module github.com/Chaitanyabsprip/dotfiles
 go 1.23.2
 
 require (
+	github.com/arl/gitmux v0.11.2
+	github.com/arl/gitstatus v0.6.1
 	github.com/charlievieth/fastwalk v1.0.9
 	github.com/rwxrob/bonzai v0.53.0
 	github.com/rwxrob/bonzai/cmds/help v0.7.6
@@ -18,6 +20,7 @@ require (
 	github.com/rwxrob/bonzai/vars v0.12.0
 	github.com/rwxrob/bonzai/web v0.1.1
 	github.com/rwxrob/bonzai/yq v0.1.0
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -29,6 +32,7 @@ require (
 	github.com/goccy/go-json v0.10.3 // indirect
 	github.com/goccy/go-yaml v1.14.3 // indirect
 	github.com/jinzhu/copier v0.4.0 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
@@ -50,5 +54,6 @@ require (
 	golang.org/x/term v0.26.0 // indirect
 	golang.org/x/text v0.20.0 // indirect
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/arl/gitmux => github.com/Chaitanyabsprip/gitmux v0.12.0

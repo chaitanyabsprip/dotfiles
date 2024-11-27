@@ -18,7 +18,7 @@ set -g status-left '\
 
 set -g status-right-length 100
 set -g status-right '\
-#(gitmux -cfg $HOME/.config/tmux/gitmux.conf "#{pane_current_path}")\
+#(dot tmux x gitmux "#{pane_current_path}")\
 #[fg=#{@c_green},bold]\
 #{?#{!=:#(pomo), - }, #(pomo),}\
 #[fg=#{@c_status_fg},bg=#{@c_status_bg},nobold]\
