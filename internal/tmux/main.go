@@ -32,7 +32,7 @@ var Cmd = &bonzai.Cmd{
 
 var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
-	Opts:  `slim|full`,
+	Opts:  `slim|quik|full`,
 	Short: `setup tmux to a specific level of configuration`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		if len(args) == 0 {
@@ -40,7 +40,11 @@ var setupCmd = &bonzai.Cmd{
 		}
 		mode := args[0]
 		if mode == `slim` || mode == `quik` || mode == `full` {
-			err := e.SetupAll(embedFs, "tmux", oscfg.ConfigDir(), nil)
+			err := install.Tmux()
+			if err != nil {
+				return err
+			}
+			err = e.SetupAll(embedFs, "tmux", oscfg.ConfigDir(), nil)
 			if err != nil {
 				return err
 			}
@@ -51,6 +55,6 @@ var setupCmd = &bonzai.Cmd{
 		if mode == `full` {
 			// install gitmux
 		}
-		return e.SetupAll(embedFs, "tmux", oscfg.ConfigDir(), nil)
+		return nil
 	},
 }
