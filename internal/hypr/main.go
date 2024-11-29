@@ -16,8 +16,8 @@ import (
 var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
-	Name:  `gitui`,
-	Short: `hypr is a utility to manage hypr configuration`,
+	Name:  `hypr`,
+	Short: `manage hypr configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
 }
