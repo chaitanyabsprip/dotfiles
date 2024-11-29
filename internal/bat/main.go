@@ -17,7 +17,7 @@ var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
 	Name:  `bat`,
-	Short: `bat is a utility to manage bat configuration`,
+	Short: `manage bat configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd, install.BatCmd.WithName(`install`)},
 }

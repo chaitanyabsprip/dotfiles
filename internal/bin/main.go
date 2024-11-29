@@ -16,7 +16,7 @@ var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
 	Name:  `bin`,
-	Short: `bin is a utility to manage github-cli configuration`,
+	Short: `manage scripts`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
 }

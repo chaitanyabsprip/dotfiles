@@ -17,7 +17,7 @@ var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
 	Name:  `dirs`,
-	Short: `dirs is a utility to manage dirs configuration`,
+	Short: `manage dirs configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
 }

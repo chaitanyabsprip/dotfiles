@@ -16,7 +16,7 @@ var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
 	Name:  `alacritty`,
-	Short: `alacritty is a utility to manage alacritty configuration`,
+	Short: `manage alacritty configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
 }
