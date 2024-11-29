@@ -16,7 +16,7 @@ var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
 	Name:  `ohmyposh`,
-	Short: `ohmyposh is a utility to manage ohmyposh configuration`,
+	Short: `manage ohmyposh configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
 }
