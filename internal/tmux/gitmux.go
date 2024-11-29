@@ -5,9 +5,9 @@ import (
 	_ "embed"
 	"os"
 
-	"github.com/arl/gitmux"
-	gtmux "github.com/arl/gitmux/tmux"
 	"github.com/arl/gitstatus"
+	"github.com/Chaitanyabsprip/gitmux"
+	gtmux "github.com/Chaitanyabsprip/gitmux/tmux"
 	"github.com/rwxrob/bonzai"
 	"gopkg.in/yaml.v3"
 )
