@@ -3,7 +3,7 @@ module github.com/Chaitanyabsprip/dotfiles
 go 1.23.2
 
 require (
-	github.com/arl/gitmux v0.11.2
+	github.com/Chaitanyabsprip/gitmux v0.13.0
 	github.com/arl/gitstatus v0.6.1
 	github.com/charlievieth/fastwalk v1.0.9
 	github.com/rwxrob/bonzai v0.53.0
@@ -55,5 +55,3 @@ require (
 	golang.org/x/text v0.20.0 // indirect
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473 // indirect
 )
-
-replace github.com/arl/gitmux => github.com/Chaitanyabsprip/gitmux v0.12.0
