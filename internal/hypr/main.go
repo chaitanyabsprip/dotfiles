@@ -2,6 +2,7 @@ package hypr
 
 import (
 	"embed"
+	"fmt"
 	"runtime"
 
 	"github.com/rwxrob/bonzai"
@@ -28,9 +29,11 @@ var setupCmd = &bonzai.Cmd{
 	Short: `setup hypr`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
+		fmt.Println(runtime.GOOS)
 		if runtime.GOOS != "linux" {
 			return nil
 		}
+		fmt.Println("hello hypr")
 		return e.SetupAll(embedFs, `hypr`, oscfg.ConfigDir(), nil)
 	},
 }
