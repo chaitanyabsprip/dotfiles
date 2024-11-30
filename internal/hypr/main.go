@@ -28,7 +28,7 @@ var setupCmd = &bonzai.Cmd{
 	Short: `setup hypr`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		if runtime.GOOS == "linux" {
+		if runtime.GOOS != "linux" {
 			return nil
 		}
 		return e.SetupAll(embedFs, `hypr`, oscfg.ConfigDir(), nil)
