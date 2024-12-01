@@ -29,34 +29,50 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/x"
 )
 
+var cmds = []*bonzai.Cmd{
+	alacritty.Cmd,
+	bash.Cmd,
+	bat.Cmd,
+	bin.Cmd,
+	brew.Cmd,
+	dirs.Cmd,
+	fish.Cmd,
+	gh.Cmd,
+	git.Cmd,
+	gitui.Cmd,
+	hypr.Cmd,
+	kitty.Cmd,
+	lsd.Cmd,
+	ohmyposh.Cmd,
+	shell.Cmd,
+	sqlfluff.Cmd,
+	starship.Cmd,
+	tmux.Cmd,
+	vimium.Cmd,
+	waybar.Cmd,
+	x.Cmd,
+	zsh.Cmd,
+}
+
 var Cmd = &bonzai.Cmd{
 	Name:  `dot`,
 	Alias: `d`,
 	Short: `manage dotfiles`,
 	Comp:  comp.Cmds,
-	Cmds: []*bonzai.Cmd{
-		alacritty.Cmd,
-		bash.Cmd,
-		bat.Cmd,
-		bin.Cmd,
-		brew.Cmd,
-		dirs.Cmd,
-		fish.Cmd,
-		gh.Cmd,
-		git.Cmd,
-		gitui.Cmd,
-		hypr.Cmd,
-		kitty.Cmd,
-		lsd.Cmd,
-		ohmyposh.Cmd,
-		shell.Cmd,
-		sqlfluff.Cmd,
-		starship.Cmd,
-		tmux.Cmd,
-		vimium.Cmd,
-		waybar.Cmd,
-		x.Cmd,
-		zsh.Cmd,
-		help.Cmd,
+	Cmds:  append(cmds, initCmd, help.Cmd),
+}
+
+var initCmd = &bonzai.Cmd{
+	Name:  `init`,
+	Alias: `setup`,
+	Short: `setup dotfiles`,
+	Do: func(_ *bonzai.Cmd, args ...string) error {
+		for _, cmd := range cmds {
+			setupArgs := append([]string{`setup`}, args...)
+			if err := cmd.Run(setupArgs...); err != nil {
+				return err
+			}
+		}
+		return nil
 	},
 }
