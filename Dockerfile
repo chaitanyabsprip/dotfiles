@@ -15,24 +15,3 @@ RUN dpkg-reconfigure -f noninteractive tzdata && \
         update-locale LANG=en_US.UTF-8
 COPY . /root/dot/
 RUN go install -v ./cmd/dot
-RUN dot alacritty setup; \
-        dot bash setup; \
-        dot bat setup; \
-        dot bin setup; \
-        dot brew setup; \
-        dot dirs setup; \
-        dot fish setup; \
-        dot gh setup; \
-        dot git setup; \
-        dot gitui setup; \
-        dot hypr setup; \
-        dot kitty setup; \
-        dot lsd setup; \
-        dot ohmyposh setup; \
-        dot shell setup; \
-        dot sqlfluff setup; \
-        dot starship setup; \
-        dot tmux setup; \
-        dot vimium setup; \
-        dot waybar setup; \
-        dot zsh setup;
