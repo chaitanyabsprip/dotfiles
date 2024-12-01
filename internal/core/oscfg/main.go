@@ -19,3 +19,7 @@ func BackupDir(dir string) string {
 	newName := fmt.Sprintf("%s.%d.old", dir, time.Now().UnixMilli())
 	return filepath.Join(dir, newName)
 }
+
+func BinDir() string {
+	return filepath.Join(os.Getenv("HOME"), ".local", "bin")
+}

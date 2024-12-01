@@ -3,20 +3,34 @@ package install
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/futil"
 	"github.com/rwxrob/bonzai/github"
 	"github.com/rwxrob/bonzai/run"
 
+	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
 	"github.com/Chaitanyabsprip/dotfiles/x/distro"
 	"github.com/Chaitanyabsprip/dotfiles/x/have"
 )
 
 var BatCmd = &bonzai.Cmd{
 	Name: `bat`,
+	Cmds: []*bonzai.Cmd{batGhCmd, batPkgCmd},
 	Do:   func(x *bonzai.Cmd, args ...string) error { return Bat() },
+}
+
+var batPkgCmd = &bonzai.Cmd{
+	Name: `pkg`,
+	Do:   func(x *bonzai.Cmd, args ...string) error { return batPkgInstall() },
+}
+
+var batGhCmd = &bonzai.Cmd{
+	Name: `gh`,
+	Do:   func(x *bonzai.Cmd, args ...string) error { return batGhInstall() },
 }
 
 func Bat() error {
@@ -38,7 +52,25 @@ func batPkgInstall() error {
 	case `Arch Linux`:
 		WithRoot(`pacman`, `-S`, `bat`)
 	case `Ubuntu`, `Debian GNU/Linux`:
-		return WithRoot(`apt-get`, `install`, `bat`)
+		err := WithRoot(`apt-get`, `install`, `-y`, `bat`)
+		if err != nil {
+			return err
+		}
+		binDir := oscfg.BinDir()
+		if !futil.Exists(binDir) {
+			if err := futil.CreateDir(binDir); err != nil {
+				return err
+			}
+		}
+		batPath := filepath.Join(binDir, `bat`)
+		batcatPath, err := exec.LookPath(`batcat`)
+		if err != nil {
+			return err
+		}
+		if err := os.Symlink(batcatPath, batPath); err != nil {
+			return err
+		}
+
 	case `Fedora`:
 		return run.Exec(`dnf`, `install`, `bat`, `-y`)
 	case `Darwin`:
@@ -57,6 +89,12 @@ func batGhInstall() error {
 		return err
 	}
 	tarname := getBatTarname()
+	binDir := oscfg.BinDir()
+	if !futil.Exists(binDir) {
+		if err := futil.CreateDir(binDir); err != nil {
+			return err
+		}
+	}
 	downloadPath, err := GhDownload(`sharkdp/bat`, name, tarname)
 	if err != nil {
 		return err
