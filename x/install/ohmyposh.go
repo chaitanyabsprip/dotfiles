@@ -4,17 +4,17 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path/filepath"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/futil"
 
+	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
 	"github.com/Chaitanyabsprip/dotfiles/x/have"
 )
 
 var OhMyPoshCmd = &bonzai.Cmd{
 	Name: `ohmyposh`,
-	Do: func(x *bonzai.Cmd, args ...string) error { return OhMyPosh() },
+	Do:   func(x *bonzai.Cmd, args ...string) error { return OhMyPosh() },
 }
 
 func OhMyPosh() error {
@@ -22,9 +22,11 @@ func OhMyPosh() error {
 		fmt.Println(`ohmyposh is already installed`)
 		return nil
 	}
-	binDir := filepath.Join(os.Getenv(`HOME`), `.local`, `bin`)
-	if err := futil.CreateDir(binDir); err != nil {
-		return err
+	binDir := oscfg.BinDir()
+	if !futil.Exists(binDir) {
+		if err := futil.CreateDir(binDir); err != nil {
+			return err
+		}
 	}
 	if err := unzipPkgInstall(); err != nil {
 		return err

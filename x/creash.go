@@ -5,10 +5,13 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/rwxrob/bonzai/comp"
-	"github.com/rwxrob/bonzai/futil"
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/comp"
+	"github.com/rwxrob/bonzai/fn"
+	"github.com/rwxrob/bonzai/futil"
 	"github.com/rwxrob/bonzai/run"
+
+	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
 )
 
 var creashCmd = &bonzai.Cmd{
@@ -65,13 +68,5 @@ func editor() string {
 }
 
 func scriptsDir() string {
-	scriptsDir := os.Getenv("SCRIPTS")
-	if len(scriptsDir) == 0 {
-		scriptsDir = filepath.Join(
-			os.Getenv("HOME"),
-			".local",
-			"bin",
-		)
-	}
-	return scriptsDir
+	return fn.Or(os.Getenv("SCRIPTS"), oscfg.BinDir())
 }
