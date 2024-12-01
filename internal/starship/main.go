@@ -16,7 +16,7 @@ var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
 	Name:  `starship`,
-	Short: `starship is a utility to manage starship configuration`,
+	Short: `manage starship configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
 }

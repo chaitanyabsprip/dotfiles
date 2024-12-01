@@ -16,7 +16,7 @@ var embedFs embed.FS
 
 var Cmd = &bonzai.Cmd{
 	Name:  `sqlfluff`,
-	Short: `sqlfluff is a utility to manage sqlfluff configuration`,
+	Short: `manage sqlfluff configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{setupCmd},
 }
