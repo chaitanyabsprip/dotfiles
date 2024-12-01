@@ -26,13 +26,15 @@ var Cmd = &bonzai.Cmd{
 	Name:  `zsh`,
 	Short: `zsh is a utility to manage zsh configuration`,
 	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{setupCmd, install.ZshCmd.WithName(`install`)},
+	Cmds: []*bonzai.Cmd{
+		initCmd,
+		setupCmd,
+		install.ZshCmd.WithName(`install`),
+	},
 }
 
-// TODO(me): make zsh configuration modular enough to support following
-// setup options.
-var setupCmd = &bonzai.Cmd{
-	Name:  `setup`,
+var initCmd = &bonzai.Cmd{
+	Name:  `init`,
 	Opts:  `slim|quik|full`,
 	Short: `setup zsh to a specific level of configuration`,
 	Long: `
@@ -59,8 +61,9 @@ mode.
 # ENVIRONMENT:
   - LAUNCH: Set to a truthy value to launch Zsh after setup.
 `,
-	Comp: comp.Opts,
-	Cmds: []*bonzai.Cmd{help.Cmd},
+	MaxArgs: 1,
+	Comp:    comp.Opts,
+	Cmds:    []*bonzai.Cmd{help.Cmd},
 	Do: func(x *bonzai.Cmd, args ...string) (err error) {
 		zshenvPath := filepath.Join(os.Getenv(`HOME`), `.zshenv`)
 		if len(args) == 0 {
@@ -128,5 +131,23 @@ mode.
 			return run.Exec(`zsh`, `-l`)
 		}
 		return nil
+	},
+}
+
+var setupCmd = &bonzai.Cmd{
+	Name:  `setup`,
+	Alias: `conf`,
+	Do: func(_ *bonzai.Cmd, _ ...string) error {
+		zshenvPath := filepath.Join(os.Getenv(`HOME`), `.zshenv`)
+		overrides := map[string]string{
+			`zsh/.zshenv`: zshenvPath,
+		}
+		err := e.SetupAll(
+			embedFs,
+			`zsh`,
+			oscfg.ConfigDir(),
+			overrides,
+		)
+		return err
 	},
 }
