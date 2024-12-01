@@ -12,6 +12,8 @@ import (
 	"github.com/rwxrob/bonzai/run"
 
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
+	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
+	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
 	"github.com/Chaitanyabsprip/dotfiles/x/install"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
@@ -59,7 +61,7 @@ mode.
 `,
 	Comp: comp.Opts,
 	Cmds: []*bonzai.Cmd{help.Cmd},
-	Do: func(x *bonzai.Cmd, args ...string) error {
+	Do: func(x *bonzai.Cmd, args ...string) (err error) {
 		zshenvPath := filepath.Join(os.Getenv(`HOME`), `.zshenv`)
 		if len(args) == 0 {
 			args = append(args, `slim`)
@@ -90,10 +92,16 @@ mode.
 			delete(overrides, `zsh/conf.d/prompt.sh`)
 		}
 		if mode == `full` {
-			err := install.Zap()
-			if err != nil {
+			if err := shell.Cmd.Run(`setup`); err != nil {
 				return err
 			}
+			if err := ohmyposh.Cmd.Run(`setup`); err != nil {
+				return err
+			}
+			if err := install.OhMyPosh(); err != nil {
+				return err
+			}
+			defer func() { err = install.Zap() }()
 			delete(overrides, `zsh/conf.d/brew.sh`)
 			delete(overrides, `zsh/conf.d/cdpath.disable`)
 			delete(overrides, `zsh/conf.d/completions.sh`)
@@ -107,7 +115,7 @@ mode.
 				delete(overrides, `zsh/conf.d/brew.sh`)
 			}
 		}
-		err := e.SetupAll(
+		err = e.SetupAll(
 			embedFs,
 			`zsh`,
 			oscfg.ConfigDir(),
