@@ -4,10 +4,13 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/run"
 
+	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
+	"github.com/Chaitanyabsprip/dotfiles/pkg/with"
 	"github.com/Chaitanyabsprip/dotfiles/x/distro"
 	"github.com/Chaitanyabsprip/dotfiles/x/have"
 )
@@ -46,12 +49,18 @@ var ZapCmd = &bonzai.Cmd{
 	Do:   func(*bonzai.Cmd, ...string) error { return Zap() },
 }
 
-func Zap() error {
+func Zap() (err error) {
 	if path, err := exec.LookPath(`zap`); err == nil {
 		fmt.Println(`zap is already installed at`, path)
 		return err
 	}
-	err := DownloadFile(
+	zshDir := filepath.Join(oscfg.ConfigDir(), `zsh`)
+	pop, err := with.Env(`ZDOTDIR`, zshDir)
+	if err != nil {
+		return err
+	}
+	defer func() { err = pop() }()
+	err = DownloadFile(
 		`https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh`,
 		`install.zsh`,
 	)
@@ -59,11 +68,7 @@ func Zap() error {
 		return err
 	}
 	err = run.Exec(
-		`zsh`,
-		`install.zsh`,
-		`--branch`,
-		`release-v1`,
-		`--keep`,
+		`zsh`, `install.zsh`, `--branch`, `release-v1`, `--keep`,
 	)
 	if err != nil {
 		return err
