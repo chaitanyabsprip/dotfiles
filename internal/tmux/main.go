@@ -24,14 +24,14 @@ var Cmd = &bonzai.Cmd{
 	Short: `manage tmux configuration and related scripts`,
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{
-		setupCmd,
+		initCmd,
 		runCmd,
 		install.TmuxCmd.WithName(`install`),
 	},
 }
 
-var setupCmd = &bonzai.Cmd{
-	Name:  `setup`,
+var initCmd = &bonzai.Cmd{
+	Name:  `init`,
 	Opts:  `slim|quik|full`,
 	Short: `setup tmux to a specific level of configuration`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
@@ -53,7 +53,6 @@ var setupCmd = &bonzai.Cmd{
 			// install harpoon, pbc
 		}
 		if mode == `full` {
-			// install gitmux
 		}
 		return nil
 	},
