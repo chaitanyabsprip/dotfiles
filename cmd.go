@@ -29,37 +29,37 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/x"
 )
 
-var cmds = []*bonzai.Cmd{
-	alacritty.Cmd,
-	bash.Cmd,
-	bat.Cmd,
-	bin.Cmd,
-	brew.Cmd,
-	dirs.Cmd,
-	fish.Cmd,
-	gh.Cmd,
-	git.Cmd,
-	gitui.Cmd,
-	hypr.Cmd,
-	kitty.Cmd,
-	lsd.Cmd,
-	ohmyposh.Cmd,
-	shell.Cmd,
-	sqlfluff.Cmd,
-	starship.Cmd,
-	tmux.Cmd,
-	vimium.Cmd,
-	waybar.Cmd,
-	x.Cmd,
-	zsh.Cmd,
-}
-
 var Cmd = &bonzai.Cmd{
 	Name:  `dot`,
 	Alias: `d`,
 	Short: `manage dotfiles`,
 	Comp:  comp.Cmds,
-	Cmds:  append(cmds, initCmd, help.Cmd),
+	Cmds: []*bonzai.Cmd{
+		alacritty.Cmd,
+		bash.Cmd,
+		bat.Cmd,
+		bin.Cmd,
+		brew.Cmd,
+		dirs.Cmd,
+		fish.Cmd,
+		gh.Cmd,
+		git.Cmd,
+		gitui.Cmd,
+		help.Cmd,
+		hypr.Cmd,
+		initCmd,
+		kitty.Cmd,
+		lsd.Cmd,
+		ohmyposh.Cmd,
+		shell.Cmd,
+		sqlfluff.Cmd,
+		starship.Cmd,
+		tmux.Cmd,
+		vimium.Cmd,
+		waybar.Cmd,
+		x.Cmd,
+		zsh.Cmd,
+	},
 }
 
 var initCmd = &bonzai.Cmd{
@@ -67,8 +67,30 @@ var initCmd = &bonzai.Cmd{
 	Alias: `setup`,
 	Short: `setup dotfiles`,
 	Do: func(_ *bonzai.Cmd, args ...string) error {
-		for _, cmd := range cmds {
-			setupArgs := append([]string{`setup`}, args...)
+		simpleCmds := []*bonzai.Cmd{
+			bash.Cmd,
+			bat.Cmd,
+			bin.Cmd,
+			brew.Cmd,
+			dirs.Cmd,
+			gh.Cmd,
+			git.Cmd,
+			gitui.Cmd,
+			hypr.Cmd,
+			kitty.Cmd,
+			ohmyposh.Cmd,
+			shell.Cmd,
+			vimium.Cmd,
+			waybar.Cmd,
+		}
+		for _, cmd := range simpleCmds {
+			if err := cmd.Run(`setup`); err != nil {
+				return err
+			}
+		}
+		extCmds := []*bonzai.Cmd{tmux.Cmd, zsh.Cmd}
+		for _, cmd := range extCmds {
+			setupArgs := append([]string{`init`}, args...)
 			if err := cmd.Run(setupArgs...); err != nil {
 				return err
 			}
