@@ -9,7 +9,9 @@ import (
 	"github.com/rwxrob/bonzai/comp"
 
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
+	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
+	"github.com/Chaitanyabsprip/dotfiles/x/install"
 )
 
 //go:embed bashrc
@@ -30,6 +32,15 @@ var setupCmd = &bonzai.Cmd{
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		shell.Cmd.Run("setup")
 		home := os.Getenv("HOME")
+		if err := shell.Cmd.Run(`setup`); err != nil {
+			return err
+		}
+		if err := ohmyposh.Cmd.Run(`setup`); err != nil {
+			return err
+		}
+		if err := install.OhMyPosh(); err != nil {
+			return err
+		}
 		return e.SetupAll(
 			embedFs,
 			"bash",
