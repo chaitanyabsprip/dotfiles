@@ -22,22 +22,22 @@ var BatCmd = &bonzai.Cmd{
 func Bat() error {
 	if ok, _ := have.Executable(`bat`); ok {
 		fmt.Println(`bat is already installed`)
-		// return nil
+		return nil
 	}
-	// if err := batPkgInstall(); err == nil {
-	// 	return nil
-	// }
+	if err := batPkgInstall(); err == nil {
+		return nil
+	}
 	if err := batGhInstall(); err != nil {
 		return err
 	}
-	return nil
+	return fmt.Errorf(`unable to install bat`)
 }
 
 func batPkgInstall() error {
 	switch distro.Name() {
 	case `Arch Linux`:
 		WithRoot(`pacman`, `-S`, `bat`)
-	case `Ubuntu`, `Debian`:
+	case `Ubuntu`, `Debian GNU/Linux`:
 		return WithRoot(`apt-get`, `install`, `bat`)
 	case `Fedora`:
 		return run.Exec(`dnf`, `install`, `bat`, `-y`)
