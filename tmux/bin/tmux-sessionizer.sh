@@ -39,13 +39,13 @@ EOF
 			newpath=$1
 		else
 			newpath=$(
-				workdirs -s | fzf-tmux -p 45% --border \
+				SHORT=1 x work d -s | fzf-tmux -p 45% --border \
 					--border-label=' Sessionizer ' \
 					--border-label-pos=6:bottom
 			)
 		fi
 		[ -z "$newpath" ] && exit 0
-		workdirs | grep -w "$newpath$"
+		x work d | grep -w "$newpath$"
 	}
 
 	tmux_inactive() {
