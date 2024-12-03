@@ -18,7 +18,8 @@ var SessionManagerCmd = &bonzai.Cmd{
 		if len(args) == 0 {
 			args = append(args, ``)
 		}
-		return SessionManager(args[0])
+		SessionManager(args[0])
+		return nil
 	},
 }
 

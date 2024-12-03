@@ -9,6 +9,16 @@ import (
 	"github.com/rwxrob/bonzai/run"
 )
 
+var KillCmd = &bonzai.Cmd{
+	Name:  `kill`,
+	Alias: `k`,
+	Short: `kill current tmux session`,
+	Do: func(x *bonzai.Cmd, args ...string) error {
+		KillSession()
+		return nil
+	},
+}
+
 func numOfSession() int {
 	out := run.Out(`tmux`, `list-sessions`)
 	return len(strings.Split(out, "\n")) - 1
@@ -44,13 +54,4 @@ func KillSession() error {
 		`-t`,
 		strings.TrimSpace(currSession),
 	)
-}
-
-var KillCmd = &bonzai.Cmd{
-	Name:  `kill`,
-	Alias: `k`,
-	Short: `kill current tmux session`,
-	Do: func(x *bonzai.Cmd, args ...string) error {
-		return KillSession()
-	},
 }

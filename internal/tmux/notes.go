@@ -22,7 +22,8 @@ var NotesCmd = &bonzai.Cmd{
 		if len(args) == 0 {
 			args = append(args, ``)
 		}
-		return Notes(args[0], os.Getenv(`NOTESPATH`))
+		Notes(args[0], os.Getenv(`NOTESPATH`))
+		return nil
 	},
 }
 
