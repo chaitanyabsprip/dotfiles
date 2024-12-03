@@ -23,10 +23,13 @@ var SessionizerCmd = &bonzai.Cmd{
 		return nil
 	},
 	Do: func(x *bonzai.Cmd, args ...string) error {
+		// should always exit with non-zero status
 		if len(args) > 0 {
-			return Sessionizer(args[0])
+			Sessionizer(args[0])
+			return nil
 		}
-		return Sessionizer(``)
+		Sessionizer(``)
+		return nil
 	},
 }
 
