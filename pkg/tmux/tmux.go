@@ -79,7 +79,7 @@ func FindSession(opts Session) (string, string) {
 	if len(opts.Name) > 0 {
 		results = filt.HasPrefix(ListSessions(), opts.Name)
 	} else if len(opts.Path) > 0 {
-		results = filt.HasPrefix(ListSessions(), opts.Path)
+		results = filt.HasSuffix(ListSessions(), opts.Path)
 	}
 	if len(results) == 0 {
 		return ``, ``
