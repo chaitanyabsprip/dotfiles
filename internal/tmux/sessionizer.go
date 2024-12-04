@@ -78,7 +78,7 @@ func Sessionizer(path string) error {
 }
 
 func selectPath() string {
-	dirs := workdirs.Workdirs()
+	dirs := append(workdirs.Workdirs(), workdirs.Worktrees()...)
 	out, err := fzf.Select(
 		workdirs.Shorten(dirs),
 		`--tmux`, `45%`,
