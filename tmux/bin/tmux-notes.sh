@@ -26,6 +26,6 @@ if tmux has-session -t notes 2>/dev/null; then
 	tmux switch-client -t notes
 	tmux new-window -c "$NOTESPATH" "zsh -lc 'nvim $selected'"
 else
-	tmux new-session -d -s notes -c "$NOTESPATH" "zsh -lc 'nvim $selected'; zsh"
+	tmux new-session -d -s notes -c "$NOTESPATH" "nvim $selected; zsh"
 	tmux switch-client -t notes
 fi
