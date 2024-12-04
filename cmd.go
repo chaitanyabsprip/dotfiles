@@ -87,6 +87,9 @@ var initCmd = &bonzai.Cmd{
 			if err := cmd.Run(`setup`); err != nil {
 				return err
 			}
+			if err := cmd.Run(`install`); err != nil {
+				return err
+			}
 		}
 		extCmds := []*bonzai.Cmd{tmux.Cmd, zsh.Cmd}
 		for _, cmd := range extCmds {
