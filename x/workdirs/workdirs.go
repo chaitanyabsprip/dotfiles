@@ -35,6 +35,12 @@ func Workdirs() []string {
 	)
 	workdirs = append(
 		workdirs,
+		findGitDirs(
+			filepath.Join(os.Getenv("HOME"), "programs"),
+		)...,
+	)
+	workdirs = append(
+		workdirs,
 		os.Getenv("PROJECTS"),
 		os.Getenv("SCRIPTS"),
 		os.Getenv("DOTFILES"),
