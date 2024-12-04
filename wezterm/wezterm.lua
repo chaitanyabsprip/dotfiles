@@ -1,3 +1,4 @@
+---@diagnostic disable: no-unknown
 local wezterm = require("wezterm")
 local theme = wezterm.plugin.require("https://github.com/neapsix/wezterm").main
 return {
@@ -6,10 +7,12 @@ return {
 	automatically_reload_config = true,
 	colors = theme.colors(),
 	enable_tab_bar = false,
-	font = wezterm.font({ family = "MonoLisa Nerd Font", harfbuzz_features = { "ss02", "ss18" } }),
+	font = wezterm.font({
+		family = "MonoLisa Nerd Font",
+		harfbuzz_features = { "ss02", "ss11", "ss12", "ss13", "ss15", "ss16", "ss18", "zero" },
+	}),
 	font_rules = {
-		-- normal-intensity-and-italic
-		{
+		{ -- normal-intensity-and-italic
 			intensity = "Normal",
 			italic = true,
 			font = wezterm.font_with_fallback({
@@ -20,12 +23,12 @@ return {
 		},
 	},
 	font_size = 18,
-	initial_cols = 127,
-	initial_rows = 37,
+	-- initial_cols = 127,
+	-- initial_rows = 37,
 	macos_window_background_blur = 34,
 	window_background_opacity = 0.9,
 	window_close_confirmation = "NeverPrompt",
-	window_decorations = "NONE",
+	window_decorations = "RESIZE",
 	window_padding = {
 		left = 0,
 		right = 0,
