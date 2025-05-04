@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"sync"
 	"unicode"
 
 	"github.com/charlievieth/fastwalk"
@@ -55,10 +56,13 @@ func Workdirs() []string {
 
 // findDirsIn finds all directories in path for depth 1 only.
 func findDirsIn(path string) []string {
+	if path == "" {
+		return nil
+	}
 	dirs := make([]string, 0)
 	fsdirs, err := os.ReadDir(path)
 	if err != nil {
-		return []string{}
+		return nil
 	}
 	for _, fsdir := range fsdirs {
 		if fsdir.IsDir() {
@@ -82,13 +86,16 @@ func findDirsIn(path string) []string {
 
 func findGitDirs(path string) []string {
 	var dirs []string
-	dirCh := make(chan string)
-
-	go func() {
-		for dir := range dirCh {
-			dirs = append(dirs, dir)
-		}
-	}()
+	mu := sync.Mutex{}
+	skipList := map[string]struct{}{
+		"node_modules": {},
+		"flutter":      {},
+		".venv":        {},
+		"nvm":          {},
+		".terraform":   {},
+	}
+	baseDepth := strings.Count(path, string(os.PathSeparator))
+	maxDepth := 6
 
 	err := fastwalk.Walk(
 		&fastwalk.DefaultConfig,
@@ -97,20 +104,26 @@ func findGitDirs(path string) []string {
 			if err != nil || !d.IsDir() {
 				return nil
 			}
-			if d.Name() == "node_modules" {
+			currDepth := strings.Count(path, string(os.PathSeparator))
+			if currDepth-baseDepth > maxDepth {
 				return filepath.SkipDir
 			}
-			if d.Name() == ".git" {
-				dirCh <- filepath.Dir(path)
+			name := d.Name()
+			if _, skip := skipList[name]; skip {
+				return filepath.SkipDir
+			}
+			if name == ".git" {
+				mu.Lock()
+				dirs = append(dirs, filepath.Dir(path))
+				mu.Unlock()
 				return filepath.SkipDir
 			}
 			return nil
 		},
 	)
 	if err != nil {
-		return []string{}
+		return nil
 	}
-	close(dirCh)
 	return dirs
 }
 
@@ -153,13 +166,7 @@ func resolveSymlink(path string) (string, error) {
 // absolute paths of the worktrees.
 func Worktrees() []string {
 	worktrees := make([]string, 0)
-	dirCh := make(chan string)
-
-	go func() {
-		for dir := range dirCh {
-			worktrees = append(worktrees, dir)
-		}
-	}()
+	mu := sync.Mutex{}
 
 	walkfn := func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -174,7 +181,9 @@ func Worktrees() []string {
 			}
 			if isWorktree(filepath.Dir(path)) &&
 				!isSubmodule(filepath.Dir(path)) {
-				dirCh <- filepath.Dir(path)
+				mu.Lock()
+				worktrees = append(worktrees, filepath.Dir(path))
+				mu.Unlock()
 				return filepath.SkipDir
 			}
 		}
@@ -187,10 +196,9 @@ func Worktrees() []string {
 		walkfn,
 	)
 	if err != nil {
-		return []string{}
+		return nil
 	}
 
-	close(dirCh)
 	return worktrees
 }
 
@@ -214,8 +222,9 @@ func isSubmodule(path string) bool {
 
 func Shorten(paths []string) []string {
 	shortPaths := make([]string, 0)
+	home := os.Getenv("HOME")
 	for _, path := range paths {
-		sPath := strings.ReplaceAll(path, os.Getenv("HOME"), "")
+		sPath := strings.ReplaceAll(path, home, "")
 		sPath = strings.TrimLeftFunc(sPath, func(r rune) bool {
 			return !unicode.IsLetter(r)
 		})

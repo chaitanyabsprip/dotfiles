@@ -78,7 +78,9 @@ func Sessionizer(path string) error {
 }
 
 func selectPath() string {
-	dirs := append(workdirs.Workdirs(), workdirs.Worktrees()...)
+	dirs := workdirs.Workdirs()
+	trees := workdirs.Worktrees()
+	dirs = append(dirs, trees...)
 	out, err := fzf.Select(
 		workdirs.Shorten(dirs),
 		`--tmux`, `45%`,
@@ -98,20 +100,36 @@ func selectPath() string {
 }
 
 func diffPath(p1, p2 string) (string, string) {
-	name1 := filepath.Base(p1)
-	name2 := filepath.Base(p2)
-
-	for name1 == name2 && len(name1) > 0 && len(name2) > 0 {
-		p1 = filepath.Dir(p1)
-		p2 = filepath.Dir(p2)
-		name1 = filepath.Join(
-			filepath.Base(p1),
-			filepath.Base(name1),
-		)
-		name2 = filepath.Join(
-			filepath.Base(p2),
-			filepath.Base(name2),
-		)
-	}
-	return name1, name2
+	rel1, _ := filepath.Rel("/", p1)
+	rel2, _ := filepath.Rel("/", p2)
+	return shortenDiff(rel1, rel2)
 }
+
+func shortenDiff(a, b string) (string, string) {
+	partsA := strings.Split(a, string(filepath.Separator))
+	partsB := strings.Split(b, string(filepath.Separator))
+	for len(partsA) > 0 && len(partsB) > 0 && partsA[len(partsA)-1] == partsB[len(partsB)-1] {
+		partsA = partsA[:len(partsA)-1]
+		partsB = partsB[:len(partsB)-1]
+	}
+	return filepath.Join(partsA...), filepath.Join(partsB...)
+}
+
+// func diffPath(p1, p2 string) (string, string) {
+// 	name1 := filepath.Base(p1)
+// 	name2 := filepath.Base(p2)
+//
+// 	for name1 == name2 && len(name1) > 0 && len(name2) > 0 {
+// 		p1 = filepath.Dir(p1)
+// 		p2 = filepath.Dir(p2)
+// 		name1 = filepath.Join(
+// 			filepath.Base(p1),
+// 			filepath.Base(name1),
+// 		)
+// 		name2 = filepath.Join(
+// 			filepath.Base(p2),
+// 			filepath.Base(name2),
+// 		)
+// 	}
+// 	return name1, name2
+// }

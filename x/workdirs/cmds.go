@@ -88,9 +88,9 @@ ENVIRONMENT VARIABLES
 		short := len(os.Getenv(`SHORT`)) > 0 ||
 			len(os.Getenv(`W_SHORT`)) > 0
 		var out string
-		dirs := make([]string, 0)
-		dirs = append(dirs, Workdirs()...)
-		dirs = append(dirs, Worktrees()...)
+		dirs := Workdirs()
+		trees := Worktrees()
+		dirs = append(dirs, trees...)
 		if !short {
 			out = strings.Join(dirs, "\n")
 		} else {
@@ -118,11 +118,12 @@ ENVIRONMENT VARIABLES
 		short := len(os.Getenv(`SHORT`)) > 0 ||
 			len(os.Getenv(`W_SHORT`)) > 0
 		var out string
+		treeList := Worktrees()
 		if !short {
-			out = strings.Join(Worktrees(), "\n")
+			out = strings.Join(treeList, "\n")
 		} else {
 			out = strings.Join(
-				Shorten(Worktrees()),
+				Shorten(treeList),
 				"\n",
 			)
 		}
