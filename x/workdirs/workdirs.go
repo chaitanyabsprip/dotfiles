@@ -11,6 +11,8 @@ import (
 	"unicode"
 
 	"github.com/charlievieth/fastwalk"
+
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )
 
 // Workdirs searches each path in paths for git repositories
@@ -19,37 +21,23 @@ import (
 // directories in that path.
 func Workdirs() []string {
 	workdirs := make([]string, 0)
+	workdirs = append(workdirs, findDirsIn(env.XDG_CONFIG_HOME)...)
+	workdirs = append(workdirs, findDirsIn(env.PROJECTS)...)
+	workdirs = append(workdirs, findDirsIn(env.DOTFILES)...)
+	workdirs = append(workdirs, findGitDirs(env.PROJECTS)...)
 	workdirs = append(
 		workdirs,
-		findDirsIn(os.Getenv("XDG_CONFIG_HOME"))...)
+		findGitDirs(filepath.Join(env.HOME, "programs"))...)
 	workdirs = append(
 		workdirs,
-		findDirsIn(os.Getenv("PROJECTS"))...,
-	)
-	workdirs = append(
-		workdirs,
-		findDirsIn(os.Getenv("DOTFILES"))...,
-	)
-	workdirs = append(
-		workdirs,
-		findGitDirs(os.Getenv("PROJECTS"))...,
-	)
-	workdirs = append(
-		workdirs,
-		findGitDirs(
-			filepath.Join(os.Getenv("HOME"), "programs"),
-		)...,
-	)
-	workdirs = append(
-		workdirs,
-		os.Getenv("PROJECTS"),
-		os.Getenv("SCRIPTS"),
-		os.Getenv("DOTFILES"),
-		os.Getenv("NOTESPATH"),
-		os.Getenv("DOWNLOADS"),
-		filepath.Join(os.Getenv("HOME"), "projects"),
-		filepath.Join(os.Getenv("HOME"), "programs"),
-		filepath.Join(os.Getenv("HOME"), "pictures"),
+		env.PROJECTS,
+		env.SCRIPTS,
+		env.DOTFILES,
+		env.NOTESPATH,
+		env.DOWNLOADS,
+		filepath.Join(env.HOME, "projects"),
+		filepath.Join(env.HOME, "programs"),
+		filepath.Join(env.HOME, "pictures"),
 	)
 	return dedupe(workdirs)
 }
@@ -65,14 +53,12 @@ func findDirsIn(path string) []string {
 		return nil
 	}
 	for _, fsdir := range fsdirs {
+		name := fsdir.Name()
 		if fsdir.IsDir() {
-			dirs = append(
-				dirs,
-				filepath.Join(path, fsdir.Name()),
-			)
+			dirs = append(dirs, filepath.Join(path, name))
 		} else if fsdir.Type()&os.ModeSymlink != 0 {
 			resolvedPath, err := resolveSymlink(
-				filepath.Join(path, fsdir.Name()),
+				filepath.Join(path, name),
 			)
 			if err != nil {
 				continue
@@ -84,16 +70,17 @@ func findDirsIn(path string) []string {
 	return dirs
 }
 
+var skipList = map[string]struct{}{
+	"node_modules": {},
+	"flutter":      {},
+	".venv":        {},
+	"nvm":          {},
+	".terraform":   {},
+}
+
 func findGitDirs(path string) []string {
 	var dirs []string
 	mu := sync.Mutex{}
-	skipList := map[string]struct{}{
-		"node_modules": {},
-		"flutter":      {},
-		".venv":        {},
-		"nvm":          {},
-		".terraform":   {},
-	}
 	baseDepth := strings.Count(path, string(os.PathSeparator))
 	maxDepth := 6
 
@@ -128,11 +115,11 @@ func findGitDirs(path string) []string {
 }
 
 func dedupe(slice []string) []string {
-	seen := make(map[string]bool)
+	seen := make(map[string]struct{})
 	var result []string
 	for _, item := range slice {
-		if !seen[item] {
-			seen[item] = true
+		if _, yes := seen[item]; yes {
+			seen[item] = struct{}{}
 			result = append(result, item)
 		}
 	}
@@ -172,10 +159,11 @@ func Worktrees() []string {
 		if err != nil {
 			return nil
 		}
-		switch d.Name() {
-		case `.venv`, `node_modules`:
+		name := d.Name()
+		if _, skip := skipList[name]; skip {
 			return filepath.SkipDir
-		case `.git`:
+		}
+		if name == ".git" {
 			if d.IsDir() || d.Type()&os.ModeSymlink != 0 {
 				return filepath.SkipDir
 			}
@@ -192,7 +180,7 @@ func Worktrees() []string {
 
 	err := fastwalk.Walk(
 		&fastwalk.DefaultConfig,
-		os.Getenv("PROJECTS"),
+		env.PROJECTS,
 		walkfn,
 	)
 	if err != nil {
@@ -222,9 +210,8 @@ func isSubmodule(path string) bool {
 
 func Shorten(paths []string) []string {
 	shortPaths := make([]string, 0)
-	home := os.Getenv("HOME")
 	for _, path := range paths {
-		sPath := strings.ReplaceAll(path, home, "")
+		sPath := strings.ReplaceAll(path, env.HOME, "")
 		sPath = strings.TrimLeftFunc(sPath, func(r rune) bool {
 			return !unicode.IsLetter(r)
 		})

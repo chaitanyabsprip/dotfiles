@@ -2,17 +2,18 @@ package tmux
 
 import (
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/rwxrob/bonzai/fn/filt"
 	"github.com/rwxrob/bonzai/fn/maps"
 	"github.com/rwxrob/bonzai/run"
 	"github.com/rwxrob/bonzai/to"
+
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )
 
 func IsActive() bool {
-	return len(os.Getenv(`TMUX`)) > 0 ||
+	return len(env.TMUX) > 0 ||
 		len(run.Out(`pgrep`, `tmux`)) > 0
 }
 

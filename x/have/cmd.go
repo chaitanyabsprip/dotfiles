@@ -5,8 +5,10 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/comp"
+
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )
 
 var Cmd = &bonzai.Cmd{
@@ -15,7 +17,7 @@ var Cmd = &bonzai.Cmd{
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		verbose := os.Getenv("VERBOSE") != ""
+		verbose := env.VERBOSE != ""
 		names := os.Args[1:]
 		for _, name := range names {
 			ok, path := Executable(name)

@@ -2,7 +2,6 @@ package bash
 
 import (
 	"embed"
-	"os"
 	"path/filepath"
 
 	"github.com/rwxrob/bonzai"
@@ -11,6 +10,7 @@ import (
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 	"github.com/Chaitanyabsprip/dotfiles/x/install"
 )
 
@@ -31,7 +31,6 @@ var setupCmd = &bonzai.Cmd{
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		shell.Cmd.Run("setup")
-		home := os.Getenv("HOME")
 		if err := shell.Cmd.Run(`setup`); err != nil {
 			return err
 		}
@@ -44,9 +43,9 @@ var setupCmd = &bonzai.Cmd{
 		return e.SetupAll(
 			embedFs,
 			"bash",
-			home,
+			env.HOME,
 			map[string]string{
-				"bashrc": filepath.Join(home, ".bashrc"),
+				"bashrc": filepath.Join(env.HOME, ".bashrc"),
 			},
 		)
 	},

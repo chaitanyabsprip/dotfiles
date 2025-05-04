@@ -15,6 +15,8 @@ import (
 	"github.com/rwxrob/bonzai/github"
 	"github.com/rwxrob/bonzai/run"
 	"github.com/rwxrob/bonzai/web"
+
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )
 
 func WithRoot(args ...string) error {
@@ -145,4 +147,4 @@ func removeFirstPart(path string) string {
 	return filepath.Join(parts[1:]...)
 }
 
-var BinDir = filepath.Join(os.Getenv(`HOME`), `.local`, `bin`)
+var BinDir = filepath.Join(env.HOME, `.local`, `bin`)

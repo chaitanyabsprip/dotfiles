@@ -12,6 +12,7 @@ import (
 	"github.com/rwxrob/bonzai/run"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )
 
 var creashCmd = &bonzai.Cmd{
@@ -51,9 +52,9 @@ func creash(edit bool, names ...string) {
 }
 
 func editor() string {
-	ed := os.Getenv("VISUAL")
+	ed := env.VISUAL
 	if len(ed) == 0 {
-		ed = os.Getenv("EDITOR")
+		ed = env.EDITOR
 	}
 	if len(ed) == 0 {
 		ed = "nvim"
@@ -68,5 +69,5 @@ func editor() string {
 }
 
 func scriptsDir() string {
-	return fn.Or(os.Getenv("SCRIPTS"), oscfg.BinDir())
+	return fn.Or(env.SCRIPTS, oscfg.BinDir())
 }

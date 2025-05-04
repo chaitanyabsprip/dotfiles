@@ -14,6 +14,7 @@ import (
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 	"github.com/Chaitanyabsprip/dotfiles/x/install"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
@@ -65,7 +66,7 @@ mode.
 	Comp:    comp.Opts,
 	Cmds:    []*bonzai.Cmd{help.Cmd},
 	Do: func(x *bonzai.Cmd, args ...string) (err error) {
-		zshenvPath := filepath.Join(os.Getenv(`HOME`), `.zshenv`)
+		zshenvPath := filepath.Join(env.HOME, `.zshenv`)
 		if len(args) == 0 {
 			args = append(args, `slim`)
 		}
@@ -138,7 +139,7 @@ var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Alias: `conf`,
 	Do: func(_ *bonzai.Cmd, _ ...string) error {
-		zshenvPath := filepath.Join(os.Getenv(`HOME`), `.zshenv`)
+		zshenvPath := filepath.Join(env.HOME, `.zshenv`)
 		overrides := map[string]string{
 			`zsh/.zshenv`: zshenvPath,
 		}

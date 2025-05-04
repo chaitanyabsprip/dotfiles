@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )
 
 const Skip = ""
@@ -48,7 +49,7 @@ func CopyFilesRegx(
 	overrides map[string]string,
 ) error {
 	if len(configDir) == 0 {
-		configDir = filepath.Join(os.Getenv("HOME"), ".config")
+		configDir = filepath.Join(env.HOME, ".config")
 	}
 	regx, err := regexp.Compile(pattern)
 	if err != nil {
@@ -85,7 +86,7 @@ func CopyAllFiles(
 	overrides map[string]string,
 ) error {
 	if len(configDir) == 0 {
-		configDir = filepath.Join(os.Getenv("HOME"), ".config")
+		configDir = filepath.Join(env.HOME, ".config")
 	}
 	return fs.WalkDir(
 		embedFs,

@@ -2,7 +2,6 @@ package tmux
 
 import (
 	"io/fs"
-	"os"
 	"path/filepath"
 
 	"github.com/charlievieth/fastwalk"
@@ -11,6 +10,7 @@ import (
 	"github.com/rwxrob/bonzai/fn/maps"
 	"github.com/rwxrob/bonzai/run"
 
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/fzf"
 )
 
@@ -22,7 +22,7 @@ var NotesCmd = &bonzai.Cmd{
 		if len(args) == 0 {
 			args = append(args, ``)
 		}
-		Notes(args[0], os.Getenv(`NOTESPATH`))
+		Notes(args[0], env.NOTESPATH)
 		return nil
 	},
 }

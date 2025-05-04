@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )
 
 type PopFunc func() error
@@ -34,7 +36,7 @@ func Env(name, value string) (PopFunc, error) {
 func Path(dir string) (PopFunc, error) {
 	newPath := fmt.Sprintf(
 		`%s%c%s`,
-		dir, filepath.ListSeparator, os.Getenv(`PATH`),
+		dir, filepath.ListSeparator, env.PATH,
 	)
 	return Env(`PATH`, newPath)
 }

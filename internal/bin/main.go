@@ -2,13 +2,13 @@ package bin
 
 import (
 	"embed"
-	"os"
 	"path/filepath"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
 
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )
 
 //go:embed bin
@@ -27,7 +27,7 @@ var setupCmd = &bonzai.Cmd{
 	Short: `setup bin directory`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		binDir := filepath.Join(os.Getenv("HOME"), ".local")
+		binDir := filepath.Join(env.HOME, ".local")
 		return e.SetupAll(embedFs, "bin", binDir, nil)
 	},
 }

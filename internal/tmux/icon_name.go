@@ -2,12 +2,13 @@ package tmux
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/is"
 	"github.com/rwxrob/bonzai/yq"
+
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )
 
 var IconNameCmd = &bonzai.Cmd{
@@ -24,7 +25,7 @@ var IconNameCmd = &bonzai.Cmd{
 
 func IconName(name string) error {
 	cfgFile := filepath.Join(
-		os.Getenv(`HOME`),
+		env.HOME,
 		`.config`,
 		`tmux`,
 		`icons.yml`,

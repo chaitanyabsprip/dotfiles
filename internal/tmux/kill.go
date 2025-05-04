@@ -2,11 +2,12 @@ package tmux
 
 import (
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/run"
+
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )
 
 var KillCmd = &bonzai.Cmd{
@@ -32,7 +33,7 @@ func switchSession() error {
 	if count > 1 {
 		run.Out(`tmux`, `switch-client -l`)
 	} else {
-		run.Out(`tmux`, `new-session`, `-s`, `home`, `-c`, os.Getenv(`HOME`))
+		run.Out(`tmux`, `new-session`, `-s`, `home`, `-c`, env.HOME)
 	}
 	return nil
 }
