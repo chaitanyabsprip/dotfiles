@@ -38,3 +38,4 @@ for win in jdata["windows"]:
 )
 
 echo "$tabs" >>"$sessiondir/$(date +"%Y-%m-%dT%H-%M-%S")"
+echo "Saved session to $sessiondir"
