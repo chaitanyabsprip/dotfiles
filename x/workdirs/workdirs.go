@@ -20,26 +20,63 @@ import (
 // also looks for the PROJECTS environment variable and returns all
 // directories in that path.
 func Workdirs() []string {
-	workdirs := make([]string, 0)
-	workdirs = append(workdirs, findDirsIn(env.XDG_CONFIG_HOME)...)
-	workdirs = append(workdirs, findDirsIn(env.PROJECTS)...)
-	workdirs = append(workdirs, findDirsIn(env.DOTFILES)...)
-	workdirs = append(workdirs, findGitDirs(env.PROJECTS)...)
+	workdirs := parallelFindDirsIn(
+		env.XDG_CONFIG_HOME,
+		env.PROJECTS,
+		env.DOTFILES,
+	)
 	workdirs = append(
 		workdirs,
-		findGitDirs(filepath.Join(env.HOME, "programs"))...)
+		parallelFindGitDirs(env.PROJECTS, env.PROGRAMS)...)
 	workdirs = append(
 		workdirs,
 		env.PROJECTS,
+		env.PROGRAMS,
 		env.SCRIPTS,
 		env.DOTFILES,
 		env.NOTESPATH,
 		env.DOWNLOADS,
-		filepath.Join(env.HOME, "projects"),
-		filepath.Join(env.HOME, "programs"),
-		filepath.Join(env.HOME, "pictures"),
+		env.PICTURES,
 	)
 	return dedupe(workdirs)
+}
+
+func parallelFindGitDirs(paths ...string) []string {
+	var wg sync.WaitGroup
+	var mu sync.Mutex
+	var allDirs []string
+
+	for _, path := range paths {
+		wg.Add(1)
+		go func(p string) {
+			defer wg.Done()
+			dirs := findGitDirs(p)
+			mu.Lock()
+			allDirs = append(allDirs, dirs...)
+			mu.Unlock()
+		}(path)
+	}
+	wg.Wait()
+	return allDirs
+}
+
+func parallelFindDirsIn(paths ...string) []string {
+	var wg sync.WaitGroup
+	var mu sync.Mutex
+	var allDirs []string
+
+	for _, path := range paths {
+		wg.Add(1)
+		go func(p string) {
+			defer wg.Done()
+			dirs := findDirsIn(p)
+			mu.Lock()
+			allDirs = append(allDirs, dirs...)
+			mu.Unlock()
+		}(path)
+	}
+	wg.Wait()
+	return allDirs
 }
 
 // findDirsIn finds all directories in path for depth 1 only.
@@ -54,6 +91,9 @@ func findDirsIn(path string) []string {
 	}
 	for _, fsdir := range fsdirs {
 		name := fsdir.Name()
+		if _, skip := skipList[name]; skip || name == ".git" {
+			continue
+		}
 		if fsdir.IsDir() {
 			dirs = append(dirs, filepath.Join(path, name))
 		} else if fsdir.Type()&os.ModeSymlink != 0 {
@@ -64,7 +104,6 @@ func findDirsIn(path string) []string {
 				continue
 			}
 			dirs = append(dirs, resolvedPath)
-		} else {
 		}
 	}
 	return dirs
@@ -115,10 +154,10 @@ func findGitDirs(path string) []string {
 }
 
 func dedupe(slice []string) []string {
-	seen := make(map[string]struct{})
-	var result []string
+	seen := make(map[string]struct{}, len(slice))
+	result := make([]string, 0, len(slice))
 	for _, item := range slice {
-		if _, yes := seen[item]; yes {
+		if _, yes := seen[item]; !yes {
 			seen[item] = struct{}{}
 			result = append(result, item)
 		}
@@ -154,6 +193,7 @@ func resolveSymlink(path string) (string, error) {
 func Worktrees() []string {
 	worktrees := make([]string, 0)
 	mu := sync.Mutex{}
+	semaphore := make(chan struct{}, 8)
 
 	walkfn := func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -167,13 +207,16 @@ func Worktrees() []string {
 			if d.IsDir() || d.Type()&os.ModeSymlink != 0 {
 				return filepath.SkipDir
 			}
-			if isWorktree(filepath.Dir(path)) &&
-				!isSubmodule(filepath.Dir(path)) {
-				mu.Lock()
-				worktrees = append(worktrees, filepath.Dir(path))
-				mu.Unlock()
-				return filepath.SkipDir
-			}
+			semaphore <- struct{}{}
+			go func(gitDir string) {
+				defer func() { <-semaphore }()
+				if isWorktree(gitDir) && !isSubmodule(gitDir) {
+					mu.Lock()
+					worktrees = append(worktrees, gitDir)
+					mu.Unlock()
+				}
+			}(filepath.Dir(path))
+			return filepath.SkipDir
 		}
 		return nil
 	}
@@ -211,7 +254,7 @@ func isSubmodule(path string) bool {
 func Shorten(paths []string) []string {
 	shortPaths := make([]string, 0)
 	for _, path := range paths {
-		sPath := strings.ReplaceAll(path, env.HOME, "")
+		sPath := strings.TrimPrefix(path, env.HOME)
 		sPath = strings.TrimLeftFunc(sPath, func(r rune) bool {
 			return !unicode.IsLetter(r)
 		})

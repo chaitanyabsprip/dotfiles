@@ -3,6 +3,7 @@ package workdirs
 import (
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 
 	"github.com/rwxrob/bonzai"
@@ -91,6 +92,7 @@ ENVIRONMENT VARIABLES
 		dirs := Workdirs()
 		trees := Worktrees()
 		dirs = append(dirs, trees...)
+		sort.Strings(dirs)
 		if !short {
 			out = strings.Join(dirs, "\n")
 		} else {
@@ -119,6 +121,7 @@ ENVIRONMENT VARIABLES
 			len(os.Getenv(`W_SHORT`)) > 0
 		var out string
 		treeList := Worktrees()
+		sort.Strings(treeList)
 		if !short {
 			out = strings.Join(treeList, "\n")
 		} else {
