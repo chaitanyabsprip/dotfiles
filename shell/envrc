@@ -24,6 +24,7 @@ _ismac() { [ "$(uname)" = "Darwin" ]; }
 _islinux() { [ "$(uname -s | cut -c 1-5)" = "Linux" ]; }
 
 DISTRO="$(_distro | cut -d : -f1)"
+export DISTRO
 
 export NOTESPATH="$HOME"/projects/library
 export DOWNLOADS="$HOME/downloads"
