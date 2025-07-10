@@ -1,3 +1,5 @@
+// Package with provides utilities for temporarily modifying process state such as
+// working directory, environment variables, and PATH, with automatic restoration.
 package with
 
 import (
@@ -8,8 +10,13 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )
 
+// PopFunc is a function that restores a previous process state, such as
+// working directory or environment variable, and returns an error if restoration fails.
 type PopFunc func() error
 
+// Pwd changes the current working directory to dir and returns a PopFunc that
+// restores the previous working directory. If changing the directory fails,
+// it returns an error.
 func Pwd(dir string) (pop PopFunc, err error) {
 	pwd := ``
 	if pwd, err = os.Getwd(); err != nil {
@@ -21,6 +28,9 @@ func Pwd(dir string) (pop PopFunc, err error) {
 	return func() error { return os.Chdir(pwd) }, nil
 }
 
+// Env sets the environment variable name to value and returns a PopFunc that
+// restores the previous value (or unsets it if it did not exist). If setting
+// the variable fails, it returns an error.
 func Env(name, value string) (PopFunc, error) {
 	old, exists := os.LookupEnv(name)
 	if err := os.Setenv(name, value); err != nil {
@@ -33,6 +43,8 @@ func Env(name, value string) (PopFunc, error) {
 	}
 }
 
+// Path prepends dir to the PATH environment variable and returns a PopFunc that
+// restores the previous PATH value. If setting the variable fails, it returns an error.
 func Path(dir string) (PopFunc, error) {
 	newPath := fmt.Sprintf(
 		`%s%c%s`,
