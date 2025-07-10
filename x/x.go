@@ -2,6 +2,7 @@ package x
 
 import (
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/cmds/help"
 	"github.com/rwxrob/bonzai/comp"
 
 	"github.com/Chaitanyabsprip/dotfiles/x/colors"
@@ -24,6 +25,7 @@ var Cmd = &bonzai.Cmd{
 		distro.Cmd,
 		gpt.Cmd,
 		have.Cmd,
+		help.Cmd,
 		install.Cmd,
 		workdirs.Cmd,
 	},
