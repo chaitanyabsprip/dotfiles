@@ -27,11 +27,10 @@ var Cmd = &bonzai.Cmd{
 }
 
 var setupCmd = &bonzai.Cmd{
-	Name:   `setup`,
-	Opts:   `slim|quik|full`,
-	Short:  `setup alacritty`,
-	Comp:   comp.Opts,
-	NoArgs: true,
+	Name:  `setup`,
+	Opts:  `slim|quik|full`,
+	Short: `setup alacritty`,
+	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, _ ...string) error {
 		return e.SetupAll(embedFs, "alacritty", oscfg.ConfigDir(), nil)
 	},

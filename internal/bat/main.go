@@ -33,11 +33,10 @@ var Cmd = &bonzai.Cmd{
 }
 
 var setupCmd = &bonzai.Cmd{
-	Name:   `setup`,
-	Opts:   `slim|quik|full`,
-	Short:  `setup bat`,
-	Comp:   comp.Opts,
-	NoArgs: true,
+	Name:  `setup`,
+	Opts:  `slim|quik|full`,
+	Short: `setup bat`,
+	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) (err error) {
 		err = e.SetupAll(embedFs, `bat`, oscfg.ConfigDir(), nil)
 		if err != nil {

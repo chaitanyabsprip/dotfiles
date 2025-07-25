@@ -26,11 +26,10 @@ var Cmd = &bonzai.Cmd{
 }
 
 var setupCmd = &bonzai.Cmd{
-	Name:   `setup`,
-	Opts:   `slim|quik|full`,
-	Short:  `setup brew`,
-	Comp:   comp.Opts,
-	NoArgs: true,
+	Name:  `setup`,
+	Opts:  `slim|quik|full`,
+	Short: `setup brew`,
+	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		if runtime.GOOS != "darwin" {
 			return nil

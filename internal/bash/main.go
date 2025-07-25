@@ -29,11 +29,10 @@ var Cmd = &bonzai.Cmd{
 }
 
 var setupCmd = &bonzai.Cmd{
-	Name:   `setup`,
-	Opts:   `slim|quik|full`,
-	Short:  `setup bash`,
-	Comp:   comp.Opts,
-	NoArgs: true,
+	Name:  `setup`,
+	Opts:  `slim|quik|full`,
+	Short: `setup bash`,
+	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		shell.Cmd.Run(`setup`)
 		if err := shell.Cmd.Run(`setup`); err != nil {

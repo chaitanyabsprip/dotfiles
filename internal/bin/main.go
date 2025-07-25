@@ -25,11 +25,10 @@ var Cmd = &bonzai.Cmd{
 }
 
 var setupCmd = &bonzai.Cmd{
-	Name:   `setup`,
-	Opts:   `slim|quik|full`,
-	Short:  `setup bin directory`,
-	Comp:   comp.Opts,
-	NoArgs: true,
+	Name:  `setup`,
+	Opts:  `slim|quik|full`,
+	Short: `setup bin directory`,
+	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, _ ...string) error {
 		binDir := filepath.Join(env.HOME, ".local")
 		return e.SetupAll(embedFs, "bin", binDir, nil)
