@@ -2,12 +2,15 @@ package tmux
 
 import (
 	"embed"
+	"fmt"
+	"path"
 
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
 	"github.com/Chaitanyabsprip/dotfiles/x/install"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
+	"github.com/rwxrob/bonzai/edit"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
 )
@@ -27,6 +30,22 @@ var Cmd = &bonzai.Cmd{
 		initCmd,
 		runCmd,
 		install.TmuxCmd.WithName(`install`),
+		editCmd,
+	},
+}
+
+var editCmd = &bonzai.Cmd{
+	Name:   `edit`,
+	Short:  `edit tmux configuration`,
+	NoArgs: true,
+	Do: func(x *bonzai.Cmd, _ ...string) error {
+		filePath := path.Join(oscfg.ConfigDir(), "tmux", "tmux.conf")
+		if err := edit.Files(filePath); err != nil {
+			return err
+		}
+		fmt.Println("rebuild binary")
+		fmt.Println("re run tmux init")
+		return nil
 	},
 }
 

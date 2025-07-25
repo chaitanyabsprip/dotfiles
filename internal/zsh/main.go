@@ -2,13 +2,16 @@ package zsh
 
 import (
 	"embed"
+	"fmt"
 	"os"
+	"path"
 	"path/filepath"
 	"runtime"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/cmds/help"
 	"github.com/rwxrob/bonzai/comp"
+	"github.com/rwxrob/bonzai/edit"
 	"github.com/rwxrob/bonzai/run"
 
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
@@ -31,6 +34,7 @@ var Cmd = &bonzai.Cmd{
 		initCmd,
 		setupCmd,
 		install.ZshCmd.WithName(`install`),
+		editCmd,
 	},
 }
 
@@ -150,5 +154,20 @@ var setupCmd = &bonzai.Cmd{
 			overrides,
 		)
 		return err
+	},
+}
+
+var editCmd = &bonzai.Cmd{
+	Name:   `edit`,
+	Short:  `edit zsh configuration`,
+	NoArgs: true,
+	Do: func(x *bonzai.Cmd, _ ...string) error {
+		filePath := path.Join(env.HOME, ".zshenv")
+		if err := edit.Files(filePath); err != nil {
+			return err
+		}
+		fmt.Println("rebuild binary")
+		fmt.Println("re run zsh setup")
+		return nil
 	},
 }

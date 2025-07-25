@@ -1,3 +1,5 @@
+// Package oscfg provides functions to manage OS configuration
+// directories and files.
 package oscfg
 
 import (
