@@ -1,3 +1,6 @@
+// Package gh provides functionality for managing GitHub CLI configuration.
+// It offers commands to setup and edit GitHub CLI settings, enabling seamless
+// integration with GitHub services through the command line interface.
 package gh
 
 import (

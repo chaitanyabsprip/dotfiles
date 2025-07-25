@@ -1,3 +1,6 @@
+// Package env provides access to important environment variables used throughout
+// the dotfiles management system. It initializes default values for critical
+// paths when environment variables are not set.
 package env
 
 import (

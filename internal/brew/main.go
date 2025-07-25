@@ -1,3 +1,6 @@
+// Package brew provides functionality for managing Homebrew configuration.
+// It offers commands to setup and edit Brewfile configurations, primarily
+// targeted at macOS systems where Homebrew is commonly used.
 package brew
 
 import (

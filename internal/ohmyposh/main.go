@@ -1,3 +1,6 @@
+// Package ohmyposh provides functionality for managing Oh My Posh shell prompt configuration.
+// It offers commands to setup and customize the Oh My Posh prompt engine, allowing
+// for customized shell prompts with enhanced styling and information display.
 package ohmyposh
 
 import (

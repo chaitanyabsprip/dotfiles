@@ -1,3 +1,6 @@
+// Package x is a utility to manage scripts and provide various command-line tools
+// for system configuration, development, and productivity. It serves as the main
+// entry point for several subcommands that perform specific functions.
 package x
 
 import (

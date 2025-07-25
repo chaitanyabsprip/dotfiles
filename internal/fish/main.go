@@ -1,3 +1,6 @@
+// Package fish provides functionality for managing Fish shell configuration.
+// It offers commands to setup and customize Fish shell settings, including
+// themes, functions, and configuration files for an enhanced shell experience.
 package fish
 
 import (

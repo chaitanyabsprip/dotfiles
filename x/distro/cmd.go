@@ -1,10 +1,13 @@
+// Package distro provides utilities for identifying and querying information about
+// the operating system distribution. It can detect various Linux distributions and
+// other Unix-like systems, and provides methods to retrieve their names and versions.
 package distro
 
 import (
 	"fmt"
 
-	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/comp"
 )
 
 var Cmd = &bonzai.Cmd{
@@ -17,4 +20,3 @@ var Cmd = &bonzai.Cmd{
 		return nil
 	},
 }
-

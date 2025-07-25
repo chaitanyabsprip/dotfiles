@@ -1,3 +1,6 @@
+// Package bin provides functionality for managing user scripts and binaries.
+// It handles the setup and configuration of executable files in the user's local
+// bin directory, offering commands to install and edit these scripts.
 package bin
 
 import (

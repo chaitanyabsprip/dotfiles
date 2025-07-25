@@ -1,3 +1,6 @@
+// Package lsd provides functionality for managing LSD (LSDeluxe) configuration.
+// It offers commands to setup and edit LSD settings, enabling enhanced directory
+// listings with colors, icons, and improved formatting options.
 package lsd
 
 import (

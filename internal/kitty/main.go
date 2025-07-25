@@ -1,3 +1,6 @@
+// Package kitty provides functionality for managing Kitty terminal emulator configuration.
+// It offers commands to setup and edit Kitty settings, including themes, fonts, and key mappings,
+// enabling a customized terminal experience with advanced features.
 package kitty
 
 import (

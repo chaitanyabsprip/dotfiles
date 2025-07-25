@@ -1,3 +1,8 @@
+// Package workdirs provides utilities for finding and managing work directories,
+// particularly focused on Git repositories. It can discover Git repositories and
+// worktrees across a filesystem, handle symlinks, and format paths for display.
+// The package is useful for creating directory-jumping utilities and workspace
+// management tools.
 package workdirs
 
 import (

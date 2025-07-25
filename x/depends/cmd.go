@@ -1,3 +1,6 @@
+// Package depends provides utilities for checking and managing program dependencies.
+// It allows commands to verify if required executables exist in the system PATH and
+// provides appropriate error handling when dependencies are missing.
 package depends
 
 import "github.com/rwxrob/bonzai"

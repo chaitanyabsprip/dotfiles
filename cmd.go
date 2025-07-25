@@ -1,3 +1,6 @@
+// Package dot provides dotfile management functionality through a CLI application.
+// It allows setting up, installing, and managing various configuration files for
+// different tools and applications across the system.
 package dot
 
 import (

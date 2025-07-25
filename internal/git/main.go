@@ -1,3 +1,6 @@
+// Package git provides functionality for managing Git version control configuration.
+// It offers commands to setup and edit Git settings, including global configuration
+// and ignore files, enabling consistent Git behavior across environments.
 package git
 
 import (

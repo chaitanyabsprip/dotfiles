@@ -1,3 +1,6 @@
+// Package gitui provides functionality for managing GitUI terminal-based Git interface.
+// It offers commands to setup and edit GitUI configuration, including key bindings and themes,
+// for an enhanced Git command line user interface experience.
 package gitui
 
 import (

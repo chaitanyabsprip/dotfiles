@@ -1,3 +1,7 @@
+// Package embed provides utilities for working with embedded files and directories.
+// It facilitates copying embedded filesystem contents to the host system,
+// handling operations such as setup, configuration deployment, and file management
+// with appropriate permissions and path handling.
 package embed
 
 import (

@@ -1,3 +1,6 @@
+// Package have provides utilities to check if specific executables exist in
+// the system PATH. It allows commands to verify if required programs are available
+// before attempting to use them, and provides both silent and verbose reporting options.
 package have
 
 import (

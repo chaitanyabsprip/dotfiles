@@ -1,3 +1,6 @@
+// Package fzf provides a Go interface to the fzf fuzzy finder utility.
+// It allows for interactive selection of items from a provided list using
+// fzf's fuzzy matching capabilities.
 package fzf
 
 import (

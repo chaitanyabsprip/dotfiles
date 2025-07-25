@@ -1,3 +1,6 @@
+// Package colors provides commands for printing and manipulating terminal colors
+// in different formats. It includes utilities to display color tables, strip color
+// codes, and visualize terminal color capabilities.
 package colors
 
 import (

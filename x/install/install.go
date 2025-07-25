@@ -1,3 +1,7 @@
+// Package install provides utilities for installing and managing software packages
+// and tools. It includes functions for downloading files, extracting archives,
+// and running commands with root privileges. The package supports installation
+// from GitHub releases and other sources.
 package install
 
 import (

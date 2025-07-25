@@ -1,6 +1,8 @@
-// gpt provides a user-friendly CLI for interacting with
+// Package gpt provides a user-friendly CLI for interacting with
 // charmbracelet/mods CLI. It is a stateful program such that the users
 // will be talking in the same conversation with consecutive calls.
+// The package supports different conversation modes, model selection,
+// and persistent chat history management.
 package gpt
 
 import (

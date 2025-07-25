@@ -1,3 +1,6 @@
+// Package tmux provides a Go interface for interacting with tmux sessions.
+// It includes functions for creating, managing, and manipulating tmux sessions,
+// as well as retrieving information about the current tmux environment.
 package tmux
 
 import (

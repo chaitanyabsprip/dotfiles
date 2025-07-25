@@ -1,3 +1,7 @@
+// Package shell provides functionality for managing cross-shell configuration.
+// It offers commands to setup and edit common shell configuration elements like
+// aliases, environment variables, and other shell utilities that can be shared
+// across different shell environments.
 package shell
 
 import (

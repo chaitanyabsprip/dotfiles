@@ -1,3 +1,6 @@
+// Package dirs provides functionality for managing XDG user directories configuration.
+// It handles setup and customization of user directory paths for the XDG Base Directory
+// Specification, allowing users to control where various types of files are stored.
 package dirs
 
 import (

@@ -1,3 +1,6 @@
+// Package starship provides functionality for managing Starship prompt configuration.
+// It offers commands to setup and customize the Starship cross-shell prompt,
+// enabling a minimalistic, highly customizable and fast shell prompt experience.
 package starship
 
 import (
