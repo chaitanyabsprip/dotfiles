@@ -162,7 +162,8 @@ var editCmd = &bonzai.Cmd{
 	Short:  `edit zsh configuration`,
 	NoArgs: true,
 	Do: func(x *bonzai.Cmd, _ ...string) error {
-		filePath := path.Join(env.HOME, ".zshenv")
+		cfgDir := oscfg.ConfigDir()
+		filePath := path.Join(cfgDir, `zsh`)
 		if err := edit.Files(filePath); err != nil {
 			return err
 		}
