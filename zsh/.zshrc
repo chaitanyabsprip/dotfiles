@@ -31,3 +31,6 @@ _have rbenv && eval "$(rbenv init - zsh)"
 # have note && zsh-defer eval "$(note completion zsh)"
 
 : # shell should start with a zero status code
+
+# bun completions
+[ -s "/Users/chaitanyasharma/.bun/_bun" ] && source "/Users/chaitanyasharma/.bun/_bun"
