@@ -33,7 +33,7 @@ func switchSession() error {
 	if count > 1 {
 		run.Out(`tmux`, `switch-client -l`)
 	} else {
-		run.Out(`tmux`, `new-session`, `-s`, `home`, `-c`, env.HOME)
+		run.Out(`tmux`, `new-session`, `-s`, `home`, `-c`, env.Home)
 	}
 	return nil
 }

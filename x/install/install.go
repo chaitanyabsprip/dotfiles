@@ -151,4 +151,4 @@ func removeFirstPart(path string) string {
 	return filepath.Join(parts[1:]...)
 }
 
-var BinDir = filepath.Join(env.HOME, `.local`, `bin`)
+var BinDir = filepath.Join(env.Home, `.local`, `bin`)

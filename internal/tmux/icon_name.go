@@ -25,7 +25,7 @@ var IconNameCmd = &bonzai.Cmd{
 
 func IconName(name string) error {
 	cfgFile := filepath.Join(
-		env.HOME,
+		env.Home,
 		`.config`,
 		`tmux`,
 		`icons.yml`,

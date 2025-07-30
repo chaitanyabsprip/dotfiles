@@ -52,9 +52,9 @@ func creash(edit bool, names ...string) {
 }
 
 func editor() string {
-	ed := env.VISUAL
+	ed := env.Visual
 	if len(ed) == 0 {
-		ed = env.EDITOR
+		ed = env.Editor
 	}
 	if len(ed) == 0 {
 		ed = "nvim"
@@ -69,5 +69,5 @@ func editor() string {
 }
 
 func scriptsDir() string {
-	return fn.Or(env.SCRIPTS, oscfg.BinDir())
+	return fn.Or(env.Scripts, oscfg.BinDir())
 }

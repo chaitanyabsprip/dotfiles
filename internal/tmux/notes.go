@@ -22,7 +22,7 @@ var NotesCmd = &bonzai.Cmd{
 		if len(args) == 0 {
 			args = append(args, ``)
 		}
-		Notes(args[0], env.NOTESPATH)
+		Notes(args[0], env.Notespath)
 		return nil
 	},
 }

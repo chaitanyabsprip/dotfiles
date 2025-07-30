@@ -26,22 +26,22 @@ import (
 // directories in that path.
 func Workdirs() []string {
 	workdirs := parallelFindDirsIn(
-		env.XDG_CONFIG_HOME,
-		env.PROJECTS,
-		env.DOTFILES,
+		env.XdgConfigHome,
+		env.Projects,
+		env.Dotfiles,
 	)
 	workdirs = append(
 		workdirs,
-		parallelFindGitDirs(env.PROJECTS, env.PROGRAMS)...)
+		parallelFindGitDirs(env.Projects, env.Programs)...)
 	workdirs = append(
 		workdirs,
-		env.PROJECTS,
-		env.PROGRAMS,
-		env.SCRIPTS,
-		env.DOTFILES,
-		env.NOTESPATH,
-		env.DOWNLOADS,
-		env.PICTURES,
+		env.Projects,
+		env.Programs,
+		env.Scripts,
+		env.Dotfiles,
+		env.Notespath,
+		env.Downloads,
+		env.Pictures,
 	)
 	return dedupe(workdirs)
 }
@@ -228,7 +228,7 @@ func Worktrees() []string {
 
 	err := fastwalk.Walk(
 		&fastwalk.DefaultConfig,
-		env.PROJECTS,
+		env.Projects,
 		walkfn,
 	)
 	if err != nil {
@@ -259,7 +259,7 @@ func isSubmodule(path string) bool {
 func Shorten(paths []string) []string {
 	shortPaths := make([]string, 0)
 	for _, path := range paths {
-		sPath := strings.TrimPrefix(path, env.HOME)
+		sPath := strings.TrimPrefix(path, env.Home)
 		sPath = strings.TrimLeftFunc(sPath, func(r rune) bool {
 			return !unicode.IsLetter(r)
 		})

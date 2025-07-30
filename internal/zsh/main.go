@@ -70,7 +70,7 @@ mode.
 	Comp:    comp.Opts,
 	Cmds:    []*bonzai.Cmd{help.Cmd},
 	Do: func(x *bonzai.Cmd, args ...string) (err error) {
-		zshenvPath := filepath.Join(env.HOME, `.zshenv`)
+		zshenvPath := filepath.Join(env.Home, `.zshenv`)
 		if len(args) == 0 {
 			args = append(args, `slim`)
 		}
@@ -143,7 +143,7 @@ var setupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Alias: `conf`,
 	Do: func(_ *bonzai.Cmd, _ ...string) error {
-		zshenvPath := filepath.Join(env.HOME, `.zshenv`)
+		zshenvPath := filepath.Join(env.Home, `.zshenv`)
 		overrides := map[string]string{
 			`zsh/.zshenv`: zshenvPath,
 		}

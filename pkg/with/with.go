@@ -48,7 +48,7 @@ func Env(name, value string) (PopFunc, error) {
 func Path(dir string) (PopFunc, error) {
 	newPath := fmt.Sprintf(
 		`%s%c%s`,
-		dir, filepath.ListSeparator, env.PATH,
+		dir, filepath.ListSeparator, env.Path,
 	)
 	return Env(`PATH`, newPath)
 }

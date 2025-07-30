@@ -11,9 +11,9 @@ import (
 )
 
 func ConfigDir() string {
-	configDir := env.XDG_CONFIG_HOME
+	configDir := env.XdgConfigHome
 	if len(configDir) == 0 {
-		configDir = filepath.Join(env.HOME, ".config")
+		configDir = filepath.Join(env.Home, ".config")
 	}
 	return configDir
 }
@@ -24,5 +24,5 @@ func BackupDir(dir string) string {
 }
 
 func BinDir() string {
-	return filepath.Join(env.HOME, ".local", "bin")
+	return filepath.Join(env.Home, ".local", "bin")
 }

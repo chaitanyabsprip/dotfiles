@@ -47,9 +47,9 @@ var setupCmd = &bonzai.Cmd{
 		return e.SetupAll(
 			embedFs,
 			`bash`,
-			env.HOME,
+			env.Home,
 			map[string]string{
-				`bashrc`: filepath.Join(env.HOME, `.bashrc`),
+				`bashrc`: filepath.Join(env.Home, `.bashrc`),
 			},
 		)
 	},
@@ -60,7 +60,7 @@ var editCmd = &bonzai.Cmd{
 	Short:  `edit bash configuration`,
 	NoArgs: true,
 	Do: func(x *bonzai.Cmd, _ ...string) error {
-		filePath := path.Join(env.HOME, `.bashrc`)
+		filePath := path.Join(env.Home, `.bashrc`)
 		err := edit.Files(filePath)
 		if err != nil {
 			return err

@@ -16,7 +16,7 @@ import (
 )
 
 func IsActive() bool {
-	return len(env.TMUX) > 0 ||
+	return len(env.Tmux) > 0 ||
 		len(run.Out(`pgrep`, `tmux`)) > 0
 }
 

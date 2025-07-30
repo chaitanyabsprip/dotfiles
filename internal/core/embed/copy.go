@@ -53,7 +53,7 @@ func CopyFilesRegx(
 	overrides map[string]string,
 ) error {
 	if len(configDir) == 0 {
-		configDir = filepath.Join(env.HOME, ".config")
+		configDir = filepath.Join(env.Home, ".config")
 	}
 	regx, err := regexp.Compile(pattern)
 	if err != nil {
@@ -90,7 +90,7 @@ func CopyAllFiles(
 	overrides map[string]string,
 ) error {
 	if len(configDir) == 0 {
-		configDir = filepath.Join(env.HOME, ".config")
+		configDir = filepath.Join(env.Home, ".config")
 	}
 	return fs.WalkDir(
 		embedFs,

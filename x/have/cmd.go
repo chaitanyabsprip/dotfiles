@@ -20,7 +20,7 @@ var Cmd = &bonzai.Cmd{
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		verbose := env.VERBOSE != ""
+		verbose := env.Verbose != ""
 		names := os.Args[1:]
 		for _, name := range names {
 			ok, path := Executable(name)

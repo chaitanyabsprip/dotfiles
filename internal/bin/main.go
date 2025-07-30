@@ -33,7 +33,7 @@ var setupCmd = &bonzai.Cmd{
 	Short: `setup bin directory`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, _ ...string) error {
-		binDir := filepath.Join(env.HOME, ".local")
+		binDir := filepath.Join(env.Home, ".local")
 		return e.SetupAll(embedFs, "bin", binDir, nil)
 	},
 }
