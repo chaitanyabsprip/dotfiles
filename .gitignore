@@ -14,3 +14,4 @@ bin/fzf-tmux
 gh/hosts.yml
 bin/harpoon
 bin/.pipx
+bin/htmx-lsp
