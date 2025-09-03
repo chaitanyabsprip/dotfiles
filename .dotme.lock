@@ -18,3 +18,4 @@ dirs: $HOME/.config/user-dirs.dirs
 gh: $HOME/.config/gh
 sqlfluff: $HOME/.config/sqlfluff
 wezterm: $HOME/.config/wezterm
+opencode: $HOME/.config/opencode
