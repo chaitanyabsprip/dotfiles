@@ -1,5 +1,6 @@
 #!/bin/zsh
 
 _have() { type "$1" >/dev/null 2>&1; }
+_ismac() { [ "$(uname)" = "Darwin" ]; }
 
-_have opencode && prepend_path "$HOME/.opencode/bin"
+_have opencode && _ismac && prepend_path "$HOME/.opencode/bin"
