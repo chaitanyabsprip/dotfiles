@@ -23,6 +23,7 @@ var Cmd = &bonzai.Cmd{
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{
 		colors.Cmd,
+		catcCmd,
 		creashCmd,
 		depends.Cmd,
 		distro.Cmd,

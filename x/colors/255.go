@@ -8,7 +8,7 @@ import (
 )
 
 var Color255Cmd = &bonzai.Cmd{
-	Name:  `255`,
+	Name:  `ctwo`,
 	Short: `print 256 colors in terminal`,
 	Comp:  comp.Cmds,
 	Cmds:  []*bonzai.Cmd{},

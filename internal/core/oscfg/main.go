@@ -26,3 +26,10 @@ func BackupDir(dir string) string {
 func BinDir() string {
 	return filepath.Join(env.Home, ".local", "bin")
 }
+
+func CacheDir() string {
+	if cacheDir := env.XdfCacheHome; len(cacheDir) > 0 {
+		return cacheDir
+	}
+	return filepath.Join(env.Home, ".cache")
+}
