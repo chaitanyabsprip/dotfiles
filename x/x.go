@@ -8,6 +8,7 @@ import (
 	"github.com/rwxrob/bonzai/cmds/help"
 	"github.com/rwxrob/bonzai/comp"
 
+	"github.com/Chaitanyabsprip/dotfiles/x/caseconv"
 	"github.com/Chaitanyabsprip/dotfiles/x/colors"
 	"github.com/Chaitanyabsprip/dotfiles/x/depends"
 	"github.com/Chaitanyabsprip/dotfiles/x/distro"
@@ -24,6 +25,7 @@ var Cmd = &bonzai.Cmd{
 	Cmds: []*bonzai.Cmd{
 		colors.Cmd,
 		catcCmd,
+		caseconv.Cmd,
 		creashCmd,
 		depends.Cmd,
 		distro.Cmd,

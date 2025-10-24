@@ -11,6 +11,6 @@ tmux ls -F'#{session_id}' | while read -r s; do
 	fi
 	tmux lsw -t"$s" -F'#{window_id}' | while read -r w; do
 		W=$(tmux lsw -t"$s" -F'#{window_id}#{T:tree_mode_format}' | grep ^"$w")
-		echo "  ﬌ ${W##"$w"}"
+		echo "  ${W##"$w"}"
 	done
 done
