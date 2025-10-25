@@ -8,6 +8,7 @@ import (
 	"github.com/rwxrob/bonzai/cmds/help"
 	"github.com/rwxrob/bonzai/comp"
 
+	"github.com/Chaitanyabsprip/dotfiles/x/base64"
 	"github.com/Chaitanyabsprip/dotfiles/x/caseconv"
 	"github.com/Chaitanyabsprip/dotfiles/x/colors"
 	"github.com/Chaitanyabsprip/dotfiles/x/depends"
@@ -23,9 +24,10 @@ var Cmd = &bonzai.Cmd{
 	Short: `x is a utility to manage scripts`,
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{
-		colors.Cmd,
-		catcCmd,
+		base64.Cmd,
 		caseconv.Cmd,
+		catcCmd,
+		colors.Cmd,
 		creashCmd,
 		depends.Cmd,
 		distro.Cmd,
