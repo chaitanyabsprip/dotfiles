@@ -1,0 +1,7 @@
+#!/bin/sh
+
+{
+	tmux set -g status on
+	sleep 2
+	tmux set -g status off
+} &
