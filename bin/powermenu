@@ -12,7 +12,7 @@ set -e
 [[ -x wofi ]] && exit
 
 action=$(echo -e '  Shut Down\n  Reboot\n  Log Out\n  Lock Screen\n  Suspend' |
-	wofi -dmenu)
+	wofi -i -dmenu)
 
 declare -A actionmap=(
 	["  Log Out"]="logout"

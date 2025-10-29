@@ -35,3 +35,6 @@ open_discord() { discord 2>&1; }
 open_kitty() { kitty 2>&1; }
 open_alacritty() { alacritty 2>&1; }
 open_terminal() { open_kitty; }
+
+: "Notifications"
+dismiss_all() { makoctl dismiss -a; }
