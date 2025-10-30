@@ -57,4 +57,4 @@ screenshot_area_file() { grimblast --notify save area; }
 screenshot_output_file() { grimblast --notify --cursor save output; }
 screenshot_screen_file() { grimblast --notify --cursor save screen; }
 
-tmux_peek() { tmux-peek && : no-notify; }
+tmux_peek() { : no-notify && tmux-peek; }
