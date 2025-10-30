@@ -1,6 +1,6 @@
 #!/bin/sh
 
-: "Volume"
+: Volume
 mute() { v -; }
 volume10() { v 1; }
 volume20() { v 2; }
@@ -13,7 +13,7 @@ volume80() { v 8; }
 volume90() { v 9; }
 volume100() { v f; }
 
-: "Brightness"
+: Brightness
 brightness10() { b 1; }
 brightness20() { b 2; }
 brightness30() { b 3; }
@@ -25,16 +25,36 @@ brightness80() { b 8; }
 brightness90() { b 9; }
 brightness100() { b f; }
 
-: "Connectivity"
+: Connectivity
 wifi() { kitty --class wifi --name wifi -T wifi sudo impala; }
 bluetooth() { kitty --class bluetooth --name bluetooth -T bluetooth bluetui; }
 
-: "Launcher"
+: Launcher
 open_browser() { firefox 2>&1; }
 open_discord() { discord 2>&1; }
 open_kitty() { kitty 2>&1; }
 open_alacritty() { alacritty 2>&1; }
 open_terminal() { open_kitty; }
 
-: "Notifications"
+: Notifications
 dismiss_all() { makoctl dismiss -a; }
+
+: System
+lock_screen() { hyprlock; }
+screenshot_area() { grimblast --notify copysave area; }
+screenshot_output() { grimblast --notify --cursor copysave output; }
+screenshot_screen() { grimblast --notify --cursor copysave screen; }
+reboot() { systemctl reboot; }
+restart_hyprland() { hyprctl reload; }
+
+: Screenshot to clipboard only
+screenshot_area_clipboard() { grimblast --notify copy area; }
+screenshot_output_clipboard() { grimblast --notify --cursor copy output; }
+screenshot_screen_clipboard() { grimblast --notify --cursor copy screen; }
+
+: Screenshot to file only
+screenshot_area_file() { grimblast --notify save area; }
+screenshot_output_file() { grimblast --notify --cursor save output; }
+screenshot_screen_file() { grimblast --notify --cursor save screen; }
+
+tmux_peek() { tmux-peek && : no-notify; }

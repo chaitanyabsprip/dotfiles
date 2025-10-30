@@ -2,6 +2,6 @@
 
 {
 	tmux set -g status on
-	sleep 2
+	sleep 5
 	tmux set -g status off
 } &

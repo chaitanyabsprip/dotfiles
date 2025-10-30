@@ -4,8 +4,11 @@
 . "$HOME/.config/hypr/scripts/commands"
 
 commands_file="$HOME/.config/hypr/scripts/commands"
-cmd="$(grep "()" "${commands_file}" | rofi -dmenu -config ~/.config/rofi/themes/spotlight.rasi -i)"
-cmd="$(echo "${cmd}" | cut -d'(' -f1)"
-notify-send "${cmd}"
+rcmd="$(grep "()" "${commands_file}" | rofi -dmenu -config ~/.config/rofi/themes/spotlight.rasi -i)"
+cmd="$(echo "${rcmd}" | cut -d'(' -f1)"
+case "$rcmd" in
+*no-notify*) ;;
+*) notify-send "$cmd" ;;
+esac
 
 $cmd
