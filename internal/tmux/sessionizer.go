@@ -1,3 +1,4 @@
+// Package tmux
 package tmux
 
 import (
@@ -42,11 +43,8 @@ func Sessionizer(path string) error {
 	if len(newPath) == 0 {
 		return fmt.Errorf(`no path selected`)
 	}
-	sessionName := strings.ReplaceAll(
-		filepath.Base(newPath),
-		`.`,
-		`_`,
-	)
+	sessionName := resolveSessionName(newPath)
+
 	if !tmux.IsActive() {
 		return tmux.NewSession(
 			tmux.Session{Name: sessionName, Path: newPath},
@@ -76,6 +74,14 @@ func Sessionizer(path string) error {
 		return err
 	}
 	return tmux.SwitchClient(sessionName)
+}
+
+func resolveSessionName(path string) string {
+	base := filepath.Base(path)
+	if base == "root" {
+		base = fmt.Sprintf("%s/r", filepath.Base(filepath.Dir(path)))
+	}
+	return strings.ReplaceAll(base, `.`, `_`)
 }
 
 func selectPath() string {
