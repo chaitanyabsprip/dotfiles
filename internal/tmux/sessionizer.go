@@ -112,15 +112,8 @@ func reconcileSessionName(oldPath, newPath string) (string, string) {
 	if oldPath == newPath {
 		if baseA == "root" {
 			parentBase := filepath.Base(filepath.Dir(oldPath))
-			return fmt.Sprintf(
-					"old-%s/%s",
-					parentBase,
-					baseA,
-				), fmt.Sprintf(
-					"%s/%s",
-					parentBase,
-					baseB,
-				)
+			return fmt.Sprintf("old-%s/r", parentBase),
+				fmt.Sprintf("%s/r", parentBase)
 		}
 		return fmt.Sprint("old-", baseA), baseB
 	}
@@ -136,7 +129,8 @@ func reconcileSessionName(oldPath, newPath string) (string, string) {
 			nnBaseB = filepath.Join(nBaseB, nnBaseB)
 		}
 		if baseB == "root" {
-			return baseA, nnBaseB
+			return strings.TrimRight(baseA, "to"),
+				strings.TrimRight(nnBaseB, "to")
 		}
 		return baseA, baseB
 	}

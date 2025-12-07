@@ -17,8 +17,8 @@ func TestReconcileSessionName(t *testing.T) {
 		{"/a/b/c/d", "/a/z/c/d", "b/c/d", "d"},
 		{"/a/b/c/d/e/f", "/a/b/g/d/e/f", "c/d/e/f", "f"},
 		{"/a/b/c", "/a/b/d/e", "c", "e"},
-		{"/a/b/root", "/a/c/root", "b/root", "c/root"},
-		{"/a/b/root", "/a/b/root", "old-b/root", "b/root"},
+		{"/a/b/root", "/a/c/root", "b/r", "c/r"},
+		{"/a/b/root", "/a/b/root", "old-b/r", "b/r"},
 		{"/a/b", "/a/b/c/b", "a/b", "b"},
 		{"/z/a/b", "/z/a/b/c/b", "a/b", "b"},
 	}
