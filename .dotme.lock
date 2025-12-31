@@ -19,3 +19,4 @@ gh: $HOME/.config/gh
 sqlfluff: $HOME/.config/sqlfluff
 wezterm: $HOME/.config/wezterm
 opencode: $HOME/.config/opencode
+glow: $HOME/.config/glow
