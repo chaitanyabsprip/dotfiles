@@ -48,10 +48,11 @@ type rawConfigSection struct {
 }
 
 // buildPattern creates a regex pattern from a key.
-// The key is escaped for exact matching (anchored with ^ and $).
-// This ensures predictable behavior regardless of key content.
+// The pattern matches from the start of the command string.
+// This allows "nvim" to match "nvim", "nvim -c DBUI", "nvim foo", etc.
+// More specific patterns (longer matches) will win via longest-match selection.
 func buildPattern(key string) string {
-	return "^" + regexp.QuoteMeta(key) + "$"
+	return "^" + regexp.QuoteMeta(key)
 }
 
 // parseEntry parses a YAML value into an IconEntry.

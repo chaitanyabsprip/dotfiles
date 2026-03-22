@@ -10,11 +10,11 @@ func TestBuildPattern(t *testing.T) {
 		key      string
 		expected string
 	}{
-		{"nvim", "^nvim$"},
-		{"lazygit", "^lazygit$"},
-		{"nvim -c DBUI", "^nvim -c DBUI$"},
-		{"lazygit|gitui", "^lazygit\\|gitui$"},
-		{"?", "^\\?$"},
+		{"nvim", "^nvim"},
+		{"lazygit", "^lazygit"},
+		{"nvim -c DBUI", "^nvim -c DBUI"},
+		{"lazygit|gitui", "^lazygit\\|gitui"},
+		{"?", "^\\?"},
 	}
 
 	for _, tt := range tests {
@@ -29,7 +29,7 @@ func TestMatch_ExactMatch(t *testing.T) {
 	cfg := &Config{
 		Config: ConfigSection{FallbackIcon: "?", ShowName: true},
 		Icons: map[string]IconEntry{
-			"nvim": {Key: "nvim", DisplayName: "nvim", Icon: "N", Pattern: mustCompile("^nvim$")},
+			"nvim": {Key: "nvim", DisplayName: "nvim", Icon: "N", Pattern: mustCompile("^nvim")},
 		},
 	}
 
@@ -72,7 +72,7 @@ func TestMatch_LongestMatchWins(t *testing.T) {
 	cfg := &Config{
 		Config: ConfigSection{FallbackIcon: "?", ShowName: true},
 		Icons: map[string]IconEntry{
-			"nvim":         {Key: "nvim", DisplayName: "nvim", Icon: "N", Pattern: mustCompile("^nvim$")},
+			"nvim":         {Key: "nvim", DisplayName: "nvim", Icon: "N", Pattern: mustCompile("^nvim")},
 			"nvim -c DBUI": {Key: "nvim -c DBUI", DisplayName: "db", Icon: "D", Pattern: mustCompile("nvim -c DBUI")},
 		},
 	}
@@ -107,7 +107,7 @@ func TestMatch_NoMatchReturnsZeroValue(t *testing.T) {
 	cfg := &Config{
 		Config: ConfigSection{FallbackIcon: "?", ShowName: true},
 		Icons: map[string]IconEntry{
-			"nvim": {Key: "nvim", DisplayName: "nvim", Icon: "N", Pattern: mustCompile("^nvim$")},
+			"nvim": {Key: "nvim", DisplayName: "nvim", Icon: "N", Pattern: mustCompile("^nvim")},
 		},
 	}
 
@@ -161,8 +161,8 @@ func TestParseEntry_StringValue(t *testing.T) {
 	if entry.Key != "nvim" {
 		t.Errorf("Key = %q; want nvim", entry.Key)
 	}
-	if entry.Pattern.String() != "^nvim$" {
-		t.Errorf("Pattern = %v; want ^nvim$", entry.Pattern)
+	if entry.Pattern.String() != "^nvim" {
+		t.Errorf("Pattern = %v; want ^nvim", entry.Pattern)
 	}
 }
 
@@ -218,8 +218,8 @@ icons:
 	if entry.DisplayName != "nvim" {
 		t.Errorf("DisplayName = %q; want nvim", entry.DisplayName)
 	}
-	if entry.Pattern.String() != "^nvim$" {
-		t.Errorf("Pattern = %v; want ^nvim$", entry.Pattern)
+	if entry.Pattern.String() != "^nvim" {
+		t.Errorf("Pattern = %v; want ^nvim", entry.Pattern)
 	}
 }
 
@@ -271,13 +271,13 @@ func TestMerge_UserOverridesEmbedded(t *testing.T) {
 	embedded := &Config{
 		Config: ConfigSection{FallbackIcon: "?"},
 		Icons: map[string]IconEntry{
-			"nvim": {Key: "nvim", DisplayName: "nvim", Icon: "N", Pattern: mustCompile("^nvim$")},
+			"nvim": {Key: "nvim", DisplayName: "nvim", Icon: "N", Pattern: mustCompile("^nvim")},
 		},
 	}
 	user := &Config{
 		Config: ConfigSection{FallbackIcon: "X"},
 		Icons: map[string]IconEntry{
-			"nvim": {Key: "nvim", DisplayName: "nvim", Icon: "X", Pattern: mustCompile("^nvim$")},
+			"nvim": {Key: "nvim", DisplayName: "nvim", Icon: "X", Pattern: mustCompile("^nvim")},
 		},
 	}
 
@@ -295,14 +295,14 @@ func TestMerge_EmbeddedEntriesPreserved(t *testing.T) {
 	embedded := &Config{
 		Config: ConfigSection{FallbackIcon: "?"},
 		Icons: map[string]IconEntry{
-			"nvim": {Key: "nvim", DisplayName: "nvim", Icon: "N", Pattern: mustCompile("^nvim$")},
+			"nvim": {Key: "nvim", DisplayName: "nvim", Icon: "N", Pattern: mustCompile("^nvim")},
 			"git":  {Key: "git", DisplayName: "git", Icon: "G", Pattern: mustCompile("^git$")},
 		},
 	}
 	user := &Config{
 		Config: ConfigSection{FallbackIcon: "X"},
 		Icons: map[string]IconEntry{
-			"nvim": {Key: "nvim", DisplayName: "nvim", Icon: "X", Pattern: mustCompile("^nvim$")},
+			"nvim": {Key: "nvim", DisplayName: "nvim", Icon: "X", Pattern: mustCompile("^nvim")},
 		},
 	}
 
