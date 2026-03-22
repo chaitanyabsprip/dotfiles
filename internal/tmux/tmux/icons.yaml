@@ -1,0 +1,14 @@
+---
+icons:
+  "gh copilot": ""
+  ?: ""
+
+  "nvim -c DBUI":
+    name: "DBUI"
+    icon: ""
+  claude:
+    name: "agent"
+    icon: "󱙺"
+  opencode:
+    name: "agent"
+    icon: "󰚩"
