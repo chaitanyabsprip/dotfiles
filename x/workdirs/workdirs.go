@@ -158,6 +158,35 @@ func findGitDirs(path string) []string {
 	return dirs
 }
 
+func repoWorktrees(repoRoot string) []string {
+	worktreesDir := filepath.Join(repoRoot, ".git", "worktrees")
+	ents, err := os.ReadDir(worktreesDir)
+	if err != nil {
+		return nil
+	}
+	out := make([]string, 0, len(ents))
+	for _, e := range ents {
+		if !e.IsDir() {
+			continue
+		}
+		b, err := os.ReadFile(
+			filepath.Join(worktreesDir, e.Name(), "gitdir"),
+		)
+		if err != nil {
+			continue
+		}
+		p := strings.TrimSpace(string(b))
+		if !filepath.IsAbs(p) {
+			p = filepath.Clean(filepath.Join(worktreesDir, e.Name(), p))
+		}
+		wtRoot := filepath.Dir(p)
+		if fi, err := os.Stat(wtRoot); err == nil && fi.IsDir() {
+			out = append(out, wtRoot)
+		}
+	}
+	return out
+}
+
 func dedupe(slice []string) []string {
 	seen := make(map[string]struct{}, len(slice))
 	result := make([]string, 0, len(slice))
