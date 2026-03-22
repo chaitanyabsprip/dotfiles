@@ -12,6 +12,7 @@ repository.
 | [0003](0003-yaml-config-with-patterns-and-name-substitution.md) | YAML config with pattern matching and name substitution | Accepted | 2026-03-22 |
 | [0004](0004-embedded-config-with-user-merge.md) | Embedded default config with user config merge | Accepted | 2026-03-22 |
 | [0005](0005-flip-config-schema.md) | Change config schema: key = pattern, fields = name + icon | Accepted | 2026-03-22 |
+| [0006](0006-full-setup-only.md) | Full Setup Only - No Tiered Configuration | Accepted | 2026-03-23 |
 
 ## Creating a New ADR
 
