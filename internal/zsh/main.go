@@ -39,8 +39,8 @@ var Cmd = &bonzai.Cmd{
 }
 
 var initCmd = &bonzai.Cmd{
-	Name:  `init`,
-	Opts:  `slim|quik|full`,
+	Name: `init`,
+
 	Short: `setup zsh to a specific level of configuration`,
 	Long: `
 The "setup" command installs and configures Zsh with various options 

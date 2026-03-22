@@ -28,8 +28,8 @@ var Cmd = &bonzai.Cmd{
 }
 
 var setupCmd = &bonzai.Cmd{
-	Name:  `setup`,
-	Opts:  `slim|quik|full`,
+	Name: `setup`,
+
 	Short: `setup kitty`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {

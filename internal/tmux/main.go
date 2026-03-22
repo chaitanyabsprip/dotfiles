@@ -51,27 +51,15 @@ var editCmd = &bonzai.Cmd{
 
 var initCmd = &bonzai.Cmd{
 	Name:  `init`,
-	Opts:  `slim|quik|full`,
-	Short: `setup tmux to a specific level of configuration`,
+	Short: `setup tmux (full setup)`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		if len(args) == 0 {
-			args = append(args, `slim`)
+		err := install.Tmux()
+		if err != nil {
+			return err
 		}
-		mode := args[0]
-		if mode == `slim` || mode == `quik` || mode == `full` {
-			err := install.Tmux()
-			if err != nil {
-				return err
-			}
-			err = e.SetupAll(embedFs, "tmux", oscfg.ConfigDir(), nil)
-			if err != nil {
-				return err
-			}
-		}
-		if mode == `quik` || mode == `full` {
-			// install harpoon, pbc
-		}
-		if mode == `full` {
+		err = e.SetupAll(embedFs, "tmux", oscfg.ConfigDir(), nil)
+		if err != nil {
+			return err
 		}
 		return nil
 	},
