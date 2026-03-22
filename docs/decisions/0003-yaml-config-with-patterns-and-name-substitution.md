@@ -1,7 +1,11 @@
 # ADR-0003: YAML config with pattern matching and name substitution
 
 Date: 2026-03-22
-Status: Accepted
+Status: Superseded
+
+## Superseded by
+
+[ADR-0005](0005-flip-config-schema.md): Change config schema — key = pattern, fields = name + icon
 
 ## Context
 

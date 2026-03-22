@@ -11,6 +11,7 @@ repository.
 | [0002](0002-full-command-line-via-pane-pid.md) | Resolve full command line via pane_pid | Accepted | 2026-03-21 |
 | [0003](0003-yaml-config-with-patterns-and-name-substitution.md) | YAML config with pattern matching and name substitution | Accepted | 2026-03-22 |
 | [0004](0004-embedded-config-with-user-merge.md) | Embedded default config with user config merge | Accepted | 2026-03-22 |
+| [0005](0005-flip-config-schema.md) | Change config schema: key = pattern, fields = name + icon | Accepted | 2026-03-22 |
 
 ## Creating a New ADR
 
