@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"os/exec"
 	"strings"
 
 	"github.com/rwxrob/bonzai/run"
@@ -76,16 +75,6 @@ func Run(opts GptOpts) (string, error) {
 	defer os.Unsetenv(`CLICOLOR_FORCE`)
 	if err := run.SysExec(argList...); err != nil {
 		return "", err
-	}
-	cmd := exec.Command(argList[0], argList[1:]...)
-	cmd.Stdin = opts.Stdin
-	cmd.Env = append(os.Environ(), `CLICOLOR_FORCE=1`)
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		return "", err
-	}
-	if len(out) > 0 {
-		return string(out), nil
 	}
 	return "", nil
 }

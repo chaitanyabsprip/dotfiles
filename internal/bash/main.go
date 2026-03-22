@@ -34,7 +34,6 @@ var setupCmd = &bonzai.Cmd{
 	Short: `setup bash`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		shell.Cmd.Run(`setup`)
 		if err := shell.Cmd.Run(`setup`); err != nil {
 			return err
 		}
