@@ -1,0 +1,178 @@
+---
+config:
+  fallback-icon: "?"
+  show-name: true
+
+icons:
+  apt:
+    icon: ""
+  bash:
+    icon: ""
+  beam:
+    icon: ""
+  brew:
+    icon: ""
+  cargo:
+    icon: ""
+  caffeinate:
+    icon: ""
+  clang:
+    icon: ""
+  cmake:
+    icon: ""
+  code:
+    icon: ""
+  composer:
+    icon: ""
+  curl:
+    icon: ""
+  dart:
+    icon: ""
+  deno:
+    icon: ""
+  docker:
+    icon: ""
+  dotnet:
+    icon: ""
+  emacs:
+    icon: ""
+  fish:
+    icon: ""
+  flutter:
+    icon: ""
+  gdb:
+    icon: ""
+  gcc:
+    icon: ""
+  gh:
+    icon: ""
+  ghc:
+    icon: ""
+  git:
+    icon: ""
+  gitui:
+    icon: ""
+  go:
+    icon: ""
+  helm:
+    icon: "󱃾"
+  htop:
+    icon: ""
+  java:
+    icon: ""
+  jenkins:
+    icon: ""
+  jekyll:
+    icon: ""
+  just:
+    icon: ""
+  k9s:
+    icon: "󱃾"
+  kubectl:
+    icon: "󱃾"
+  lazydocker:
+    icon: ""
+  lazygit:
+    icon: ""
+  lf:
+    icon: ""
+  lfcd:
+    icon: ""
+  lldb:
+    icon: ""
+  lvim:
+    icon: ""
+  make:
+    icon: ""
+  maven:
+    icon: ""
+  minikube:
+    icon: "󱃾"
+  mongo:
+    icon: ""
+  mysql:
+    icon: ""
+  neovim:
+    icon: ""
+  nginx:
+    icon: ""
+  node:
+    icon: ""
+  npm:
+    icon: ""
+  nu:
+    icon: ""
+  nvim:
+    icon: ""
+  pacman:
+    icon: ""
+  paru:
+    icon: ""
+  perl:
+    icon: ""
+  php:
+    icon: ""
+  pip:
+    icon: ""
+  pip3:
+    icon: ""
+  powershell:
+    icon: ""
+  psql:
+    icon: ""
+  python:
+    icon: ""
+  ranger:
+    icon: ""
+  redis:
+    icon: ""
+  ruby:
+    icon: ""
+  rustc:
+    icon: ""
+  rustup:
+    icon: ""
+  scala:
+    icon: ""
+  screen:
+    icon: ""
+  sqlite:
+    icon: ""
+  ssh:
+    icon: "󰣀"
+  stack:
+    icon: ""
+  swift:
+    icon: ""
+  sudo:
+    icon: ""
+  systemctl:
+    icon: ""
+  terraform:
+    icon: "ﲽ"
+  tig:
+    icon: ""
+  tmux:
+    icon: ""
+  top:
+    icon: ""
+  topgrade:
+    icon: "󰚰"
+  tsc:
+    icon: ""
+  valgrind:
+    icon: ""
+  vim:
+    icon: ""
+  vagrant:
+    icon: ""
+  wget:
+    icon: ""
+  yarn:
+    icon: ""
+  yay:
+    icon: ""
+  yazi:
+    icon: ""
+  zsh:
+    icon: ""

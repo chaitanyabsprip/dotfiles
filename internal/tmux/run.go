@@ -3,6 +3,8 @@ package tmux
 import (
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
+
+	"github.com/Chaitanyabsprip/dotfiles/internal/tmux/icon"
 )
 
 var runCmd = &bonzai.Cmd{
@@ -16,7 +18,7 @@ var runCmd = &bonzai.Cmd{
 		PreviewCmd,
 		SessionManagerCmd,
 		NotesCmd,
-		IconNameCmd,
+		icon.Cmd,
 		SuspendCmd,
 		GitmuxCmd,
 	},
