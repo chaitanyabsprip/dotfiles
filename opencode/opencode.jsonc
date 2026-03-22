@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {},
+  "mcp": {
+    "mongo-read": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "mongodb-mcp-server@latest",
+        "--readOnly",
+        "--connectionString",
+        "{env:MONGODB_URI}"
+      ]
+    },
+    "confluence": {
+      "type": "remote",
+      "url": "https://mcp.atlassian.com/v1/mcp",
+      "oauth": {}
+    }
+  }
+}
