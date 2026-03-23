@@ -3,12 +3,18 @@ icons:
   "gh copilot": ""
   ?: ""
 
+  nvim:
+    name: editor
+    icon: 
+  vim:
+    name: editor
+    icon: 
   "nvim -c DBUI":
-    name: "DBUI"
-    icon: ""
+    name: DBUI
+    icon: 
   claude:
-    name: "agent"
-    icon: "󱙺"
+    name: agent
+    icon: 󱙺
   opencode:
-    name: "agent"
-    icon: "󰚩"
+    name: agent
+    icon: 󰚩
