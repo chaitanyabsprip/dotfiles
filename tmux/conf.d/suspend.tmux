@@ -8,4 +8,4 @@ window-status-current-format::, \
 window-status-format::, \
 status-left::, \
 "
-run-shell ~/.config/tmux/bin/tmux-suspend/suspend.tmux
+run-shell "dot tmux x suspend init"
