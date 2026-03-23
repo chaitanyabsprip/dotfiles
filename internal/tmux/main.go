@@ -53,14 +53,6 @@ var initCmd = &bonzai.Cmd{
 	Name:  `init`,
 	Short: `setup tmux (full setup)`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		err := install.Tmux()
-		if err != nil {
-			return err
-		}
-		err = e.SetupAll(embedFs, "tmux", oscfg.ConfigDir(), nil)
-		if err != nil {
-			return err
-		}
-		return nil
+		return e.SetupAll(embedFs, "tmux", oscfg.ConfigDir(), nil)
 	},
 }

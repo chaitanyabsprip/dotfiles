@@ -25,7 +25,21 @@ var Cmd = &bonzai.Cmd{
 	Name:  `bash`,
 	Short: `bash is a utility to manage bash configuration`,
 	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{setupCmd, editCmd},
+	Cmds: []*bonzai.Cmd{
+		setupCmd,
+		installCmd,
+		editCmd,
+	},
+}
+
+var installCmd = &bonzai.Cmd{
+	Name: `install`,
+	Do: func(x *bonzai.Cmd, args ...string) error {
+		if err := ohmyposh.Cmd.Run(`setup`); err != nil {
+			return err
+		}
+		return install.OhMyPosh()
+	},
 }
 
 var setupCmd = &bonzai.Cmd{
@@ -35,12 +49,6 @@ var setupCmd = &bonzai.Cmd{
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		if err := shell.Cmd.Run(`setup`); err != nil {
-			return err
-		}
-		if err := ohmyposh.Cmd.Run(`setup`); err != nil {
-			return err
-		}
-		if err := install.OhMyPosh(); err != nil {
 			return err
 		}
 		return e.SetupAll(
