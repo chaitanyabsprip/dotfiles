@@ -13,6 +13,11 @@ repository.
 | [0004](0004-embedded-config-with-user-merge.md) | Embedded default config with user config merge | Accepted | 2026-03-22 |
 | [0005](0005-flip-config-schema.md) | Change config schema: key = pattern, fields = name + icon | Accepted | 2026-03-22 |
 | [0006](0006-full-setup-only.md) | Full Setup Only - No Tiered Configuration | Accepted | 2026-03-23 |
+| [0007](0007-cli-command-tree-structure.md) | CLI Command Tree Structure | Proposed | - |
+| [0008](0008-module-namespace-architecture.md) | Module and Namespace Architecture | Proposed | - |
+| [0009](0009-init-command-behavior.md) | Init Command Behavior | Proposed | - |
+| [0010](0010-x-utilities-not-managed-tools.md) | X Utilities Are Not Managed Tools | Proposed | - |
+| [0011](0011-deps-recursive-tree-view.md) | Deps Command Shows Recursive Tree View | Proposed | - |
 
 ## Creating a New ADR
 
