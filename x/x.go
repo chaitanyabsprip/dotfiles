@@ -8,6 +8,7 @@ import (
 	"github.com/rwxrob/bonzai/cmds/help"
 	"github.com/rwxrob/bonzai/comp"
 
+	"github.com/Chaitanyabsprip/dotfiles/internal/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/x/base64"
 	"github.com/Chaitanyabsprip/dotfiles/x/caseconv"
 	"github.com/Chaitanyabsprip/dotfiles/x/colors"
@@ -33,6 +34,7 @@ var Cmd = &bonzai.Cmd{
 		gpt.Cmd,
 		have.Cmd,
 		help.Cmd,
+		tmux.XCmd,
 		workdirs.Cmd,
 	},
 }
