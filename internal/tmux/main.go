@@ -6,7 +6,6 @@ import (
 	"path"
 
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
-	"github.com/Chaitanyabsprip/dotfiles/x/install"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
@@ -27,14 +26,20 @@ var Cmd = &bonzai.Cmd{
 	Short: `manage tmux configuration and related scripts`,
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{
-		initCmd,
-		runCmd,
-		install.TmuxCmd.WithName(`install`),
-		editCmd,
+		SetupCmd,
+		XCmd,
+		InstallCmd,
+		EditCmd,
 	},
 }
 
-var editCmd = &bonzai.Cmd{
+var InstallCmd = &bonzai.Cmd{
+	Name:  `install`,
+	Alias: `i`,
+	Do:    func(_ *bonzai.Cmd, _ ...string) error { return installTmux() },
+}
+
+var EditCmd = &bonzai.Cmd{
 	Name:   `edit`,
 	Short:  `edit tmux configuration`,
 	NoArgs: true,
@@ -49,7 +54,7 @@ var editCmd = &bonzai.Cmd{
 	},
 }
 
-var initCmd = &bonzai.Cmd{
+var SetupCmd = &bonzai.Cmd{
 	Name:  `init`,
 	Short: `setup tmux (full setup)`,
 	Do: func(x *bonzai.Cmd, args ...string) error {

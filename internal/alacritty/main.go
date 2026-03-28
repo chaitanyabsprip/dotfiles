@@ -23,10 +23,10 @@ var Cmd = &bonzai.Cmd{
 	Name:  `alacritty`,
 	Short: `manage alacritty configuration`,
 	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{setupCmd, editCmd},
+	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
 }
 
-var setupCmd = &bonzai.Cmd{
+var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 
 	Short: `setup alacritty`,
@@ -36,7 +36,7 @@ var setupCmd = &bonzai.Cmd{
 	},
 }
 
-var editCmd = &bonzai.Cmd{
+var EditCmd = &bonzai.Cmd{
 	Name:   "edit",
 	Short:  `edit alacritty configuration`,
 	NoArgs: true,

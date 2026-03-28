@@ -24,10 +24,10 @@ var Cmd = &bonzai.Cmd{
 	Name:  `ohmyposh`,
 	Short: `manage ohmyposh configuration`,
 	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{setupCmd, editCmd},
+	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
 }
 
-var setupCmd = &bonzai.Cmd{
+var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 
 	Short: `setup ohmyposh`,
@@ -37,7 +37,7 @@ var setupCmd = &bonzai.Cmd{
 	},
 }
 
-var editCmd = &bonzai.Cmd{
+var EditCmd = &bonzai.Cmd{
 	Name:   `edit`,
 	Short:  `edit ohmyposh configuration`,
 	NoArgs: true,

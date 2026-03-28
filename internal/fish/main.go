@@ -24,10 +24,10 @@ var Cmd = &bonzai.Cmd{
 	Name:  `fish`,
 	Short: `fish is a utility to manage fish configuration`,
 	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{setupCmd, editCmd},
+	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
 }
 
-var setupCmd = &bonzai.Cmd{
+var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 
 	Short: `setup fish`,
@@ -37,7 +37,7 @@ var setupCmd = &bonzai.Cmd{
 	},
 }
 
-var editCmd = &bonzai.Cmd{
+var EditCmd = &bonzai.Cmd{
 	Name:   `edit`,
 	Short:  `edit fish configuration`,
 	NoArgs: true,

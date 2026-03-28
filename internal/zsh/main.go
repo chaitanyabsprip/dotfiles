@@ -18,7 +18,6 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
-	"github.com/Chaitanyabsprip/dotfiles/x/install"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
 )
@@ -32,10 +31,16 @@ var Cmd = &bonzai.Cmd{
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{
 		initCmd,
-		setupCmd,
-		install.ZshCmd.WithName(`install`),
-		editCmd,
+		SetupCmd,
+		InstallCmd,
+		EditCmd,
 	},
+}
+
+var InstallCmd = &bonzai.Cmd{
+	Name:  `install`,
+	Alias: `i`,
+	Do:    func(_ *bonzai.Cmd, _ ...string) error { return installZsh() },
 }
 
 var initCmd = &bonzai.Cmd{
@@ -90,8 +95,7 @@ mode.
 		}
 		mode := args[0]
 		if mode == `slim` || mode == `quik` || mode == `full` {
-			err := install.ZshCmd.Run()
-			if err != nil {
+			if err := installZsh(); err != nil {
 				return err
 			}
 		}
@@ -106,10 +110,10 @@ mode.
 			if err := ohmyposh.Cmd.Run(`setup`); err != nil {
 				return err
 			}
-			if err := install.OhMyPosh(); err != nil {
+			if err := installOhMyPosh(); err != nil {
 				return err
 			}
-			defer func() { err = install.Zap() }()
+			defer func() { err = installZap() }()
 			delete(overrides, `zsh/conf.d/brew.sh`)
 			delete(overrides, `zsh/conf.d/cdpath.disable`)
 			delete(overrides, `zsh/conf.d/completions.sh`)
@@ -139,7 +143,7 @@ mode.
 	},
 }
 
-var setupCmd = &bonzai.Cmd{
+var SetupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Alias: `conf`,
 	Do: func(_ *bonzai.Cmd, _ ...string) error {
@@ -157,7 +161,7 @@ var setupCmd = &bonzai.Cmd{
 	},
 }
 
-var editCmd = &bonzai.Cmd{
+var EditCmd = &bonzai.Cmd{
 	Name:   `edit`,
 	Short:  `edit zsh configuration`,
 	NoArgs: true,

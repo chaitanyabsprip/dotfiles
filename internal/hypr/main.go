@@ -22,10 +22,10 @@ var Cmd = &bonzai.Cmd{
 	Name:  `hypr`,
 	Short: `manage hypr configuration`,
 	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{setupCmd, editCmd},
+	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
 }
 
-var setupCmd = &bonzai.Cmd{
+var SetupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Short: `setup hypr`,
 	Do: func(x *bonzai.Cmd, _ ...string) error {
@@ -36,7 +36,7 @@ var setupCmd = &bonzai.Cmd{
 	},
 }
 
-var editCmd = &bonzai.Cmd{
+var EditCmd = &bonzai.Cmd{
 	Name:   `edit`,
 	Short:  `edit hypr configuration`,
 	NoArgs: true,

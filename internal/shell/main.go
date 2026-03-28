@@ -25,10 +25,10 @@ var Cmd = &bonzai.Cmd{
 	Name:  `shell`,
 	Short: `shell is a utility to manage shell configuration`,
 	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{setupCmd, editCmd},
+	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
 }
 
-var setupCmd = &bonzai.Cmd{
+var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 
 	Short: `setup shell`,
@@ -38,7 +38,7 @@ var setupCmd = &bonzai.Cmd{
 	},
 }
 
-var editCmd = &bonzai.Cmd{
+var EditCmd = &bonzai.Cmd{
 	Name:   `edit`,
 	Short:  `edit shell configuration`,
 	NoArgs: true,

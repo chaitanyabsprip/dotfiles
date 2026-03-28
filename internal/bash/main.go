@@ -15,7 +15,6 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
-	"github.com/Chaitanyabsprip/dotfiles/x/install"
 )
 
 //go:embed bashrc
@@ -26,23 +25,23 @@ var Cmd = &bonzai.Cmd{
 	Short: `bash is a utility to manage bash configuration`,
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{
-		setupCmd,
-		installCmd,
-		editCmd,
+		SetupCmd,
+		InstallCmd,
+		EditCmd,
 	},
 }
 
-var installCmd = &bonzai.Cmd{
+var InstallCmd = &bonzai.Cmd{
 	Name: `install`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		if err := ohmyposh.Cmd.Run(`setup`); err != nil {
 			return err
 		}
-		return install.OhMyPosh()
+		return installOhMyPosh()
 	},
 }
 
-var setupCmd = &bonzai.Cmd{
+var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 
 	Short: `setup bash`,
@@ -62,7 +61,7 @@ var setupCmd = &bonzai.Cmd{
 	},
 }
 
-var editCmd = &bonzai.Cmd{
+var EditCmd = &bonzai.Cmd{
 	Name:   `edit`,
 	Short:  `edit bash configuration`,
 	NoArgs: true,

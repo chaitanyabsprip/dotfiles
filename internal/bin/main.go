@@ -24,10 +24,10 @@ var Cmd = &bonzai.Cmd{
 	Name:  `bin`,
 	Short: `manage scripts`,
 	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{setupCmd, editCmd},
+	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
 }
 
-var setupCmd = &bonzai.Cmd{
+var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 
 	Short: `setup bin directory`,
@@ -38,7 +38,7 @@ var setupCmd = &bonzai.Cmd{
 	},
 }
 
-var editCmd = &bonzai.Cmd{
+var EditCmd = &bonzai.Cmd{
 	Name:   "edit",
 	Short:  `edit bin configuration`,
 	NoArgs: true,

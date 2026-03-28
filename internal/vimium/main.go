@@ -21,10 +21,10 @@ var Cmd = &bonzai.Cmd{
 	Name:  `vimium`,
 	Short: `vimium is a utility to manage vimium configuration`,
 	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{setupCmd, editCmd},
+	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
 }
 
-var setupCmd = &bonzai.Cmd{
+var SetupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Short: `setup vimium`,
 	Do: func(x *bonzai.Cmd, _ ...string) error {
@@ -32,7 +32,7 @@ var setupCmd = &bonzai.Cmd{
 	},
 }
 
-var editCmd = &bonzai.Cmd{
+var EditCmd = &bonzai.Cmd{
 	Name:   `edit`,
 	Short:  `edit vimium configuration`,
 	NoArgs: true,

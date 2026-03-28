@@ -13,7 +13,6 @@ import (
 
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/with"
-	"github.com/Chaitanyabsprip/dotfiles/x/install"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
 )
@@ -26,13 +25,29 @@ var Cmd = &bonzai.Cmd{
 	Short: `manage bat configuration`,
 	Comp:  comp.Cmds,
 	Cmds: []*bonzai.Cmd{
-		setupCmd,
-		install.BatCmd.WithName(`install`),
-		editCmd,
+		SetupCmd,
+		InstallCmd,
+		EditCmd,
 	},
 }
 
-var setupCmd = &bonzai.Cmd{
+var InstallCmd = &bonzai.Cmd{
+	Name: `install`,
+	Cmds: []*bonzai.Cmd{batGhInstallCmd, batPkgInstallCmd},
+	Do:   func(x *bonzai.Cmd, args ...string) error { return installBat() },
+}
+
+var batPkgInstallCmd = &bonzai.Cmd{
+	Name: `pkg`,
+	Do:   func(x *bonzai.Cmd, args ...string) error { return batPkgInstall() },
+}
+
+var batGhInstallCmd = &bonzai.Cmd{
+	Name: `gh`,
+	Do:   func(x *bonzai.Cmd, args ...string) error { return batGhInstall() },
+}
+
+var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 
 	Short: `setup bat`,
@@ -51,7 +66,7 @@ var setupCmd = &bonzai.Cmd{
 	},
 }
 
-var editCmd = &bonzai.Cmd{
+var EditCmd = &bonzai.Cmd{
 	Name:   "edit",
 	Short:  `edit bat configuration`,
 	NoArgs: true,
