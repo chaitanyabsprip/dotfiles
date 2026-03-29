@@ -47,7 +47,7 @@ var EditCmd = &bonzai.Cmd{
 	NoArgs: true,
 	Do: func(x *bonzai.Cmd, _ ...string) error {
 		cfgDir := oscfg.ConfigDir()
-		filePath := path.Join(cfgDir, "brew", "Brewfile")
+		filePath := path.Join(cfgDir, "Brewfile")
 		if err := edit.Files(filePath); err != nil {
 			fmt.Println(err)
 			return err

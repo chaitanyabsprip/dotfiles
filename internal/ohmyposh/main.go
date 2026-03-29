@@ -44,7 +44,6 @@ var EditCmd = &bonzai.Cmd{
 	Do: func(x *bonzai.Cmd, _ ...string) error {
 		filePath := path.Join(
 			oscfg.ConfigDir(),
-			"ohmyposh",
 			"oh-my-posh.rc.toml",
 		)
 		if err := edit.Files(filePath); err != nil {
