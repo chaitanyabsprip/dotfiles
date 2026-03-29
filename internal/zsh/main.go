@@ -92,10 +92,10 @@ mode.
 			delete(overrides, `zsh/conf.d/prompt.sh`)
 		}
 		if mode == `full` {
-			if err := shell.Cmd.Run(`setup`); err != nil {
+			if err := shell.SetupCmd.Run(``); err != nil {
 				return err
 			}
-			if err := ohmyposh.Cmd.Run(`setup`); err != nil {
+			if err := ohmyposh.SetupCmd.Run(``); err != nil {
 				return err
 			}
 			if err := installOhMyPosh(); err != nil {

@@ -13,9 +13,9 @@ import (
 
 // InstallCmds contains per-tool install commands composed from tools that have them.
 var InstallCmds = []*bonzai.Cmd{
-	{Name: `bash`, Do: func(x *bonzai.Cmd, args ...string) error { return bash.InstallCmd.Do(bash.InstallCmd, args...) }},
-	{Name: `bat`, Do: func(x *bonzai.Cmd, args ...string) error { return bat.InstallCmd.Do(bat.InstallCmd, args...) }},
-	{Name: `zsh`, Do: func(x *bonzai.Cmd, args ...string) error { return zsh.InstallCmd.Do(zsh.InstallCmd, args...) }},
+	bash.InstallCmd.WithName(`bash`),
+	bat.InstallCmd.WithName(`bat`),
+	zsh.InstallCmd.WithName(`zsh`),
 }
 
 var allCmd = &bonzai.Cmd{
@@ -26,7 +26,7 @@ var allCmd = &bonzai.Cmd{
 
 func installAll() error {
 	for _, cmd := range InstallCmds {
-		if err := cmd.Do(cmd); err != nil {
+		if err := cmd.Run(""); err != nil {
 			return err
 		}
 	}
@@ -48,7 +48,7 @@ var InstallCmd = &bonzai.Cmd{
 		}
 		for _, cmd := range InstallCmds {
 			if cmd.Name == args[0] {
-				return cmd.Do(cmd, args[1:]...)
+				return cmd.Run(args[1:]...)
 			}
 		}
 		return fmt.Errorf(`unknown tool: %s`, args[0])

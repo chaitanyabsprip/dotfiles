@@ -31,74 +31,32 @@ import (
 
 // SetupCmds contains per-tool setup commands composed from all 21 tools.
 var SetupCmds = []*bonzai.Cmd{
-	{Name: `alacritty`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return alacritty.SetupCmd.Do(alacritty.SetupCmd, args...)
-	}},
-	{Name: `bash`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return bash.SetupCmd.Do(bash.SetupCmd, args...)
-	}},
-	{Name: `bat`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return bat.SetupCmd.Do(bat.SetupCmd, args...)
-	}},
-	{Name: `bin`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return bin.SetupCmd.Do(bin.SetupCmd, args...)
-	}},
-	{Name: `brew`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return brew.SetupCmd.Do(brew.SetupCmd, args...)
-	}},
-	{Name: `dirs`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return dirs.SetupCmd.Do(dirs.SetupCmd, args...)
-	}},
-	{Name: `fish`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return fish.SetupCmd.Do(fish.SetupCmd, args...)
-	}},
-	{Name: `gh`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return gh.SetupCmd.Do(gh.SetupCmd, args...)
-	}},
-	{Name: `git`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return git.SetupCmd.Do(git.SetupCmd, args...)
-	}},
-	{Name: `gitui`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return gitui.SetupCmd.Do(gitui.SetupCmd, args...)
-	}},
-	{Name: `hypr`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return hypr.SetupCmd.Do(hypr.SetupCmd, args...)
-	}},
-	{Name: `kitty`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return kitty.SetupCmd.Do(kitty.SetupCmd, args...)
-	}},
-	{Name: `lsd`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return lsd.SetupCmd.Do(lsd.SetupCmd, args...)
-	}},
-	{Name: `ohmyposh`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return ohmyposh.SetupCmd.Do(ohmyposh.SetupCmd, args...)
-	}},
-	{Name: `shell`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return shell.SetupCmd.Do(shell.SetupCmd, args...)
-	}},
-	{Name: `sqlfluff`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return sqlfluff.SetupCmd.Do(sqlfluff.SetupCmd, args...)
-	}},
-	{Name: `starship`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return starship.SetupCmd.Do(starship.SetupCmd, args...)
-	}},
-	{Name: `tmux`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return tmux.SetupCmd.Do(tmux.SetupCmd, args...)
-	}},
-	{Name: `vimium`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return vimium.SetupCmd.Do(vimium.SetupCmd, args...)
-	}},
-	{Name: `waybar`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return waybar.SetupCmd.Do(waybar.SetupCmd, args...)
-	}},
-	{Name: `zsh`, Do: func(x *bonzai.Cmd, args ...string) error {
-		return zsh.SetupCmd.Do(zsh.SetupCmd, args...)
-	}},
+	alacritty.SetupCmd.WithName(`alacritty`),
+	bash.SetupCmd.WithName(`bash`),
+	bat.SetupCmd.WithName(`bat`),
+	bin.SetupCmd.WithName(`bin`),
+	brew.SetupCmd.WithName(`brew`),
+	dirs.SetupCmd.WithName(`dirs`),
+	fish.SetupCmd.WithName(`fish`),
+	gh.SetupCmd.WithName(`gh`),
+	git.SetupCmd.WithName(`git`),
+	gitui.SetupCmd.WithName(`gitui`),
+	hypr.SetupCmd.WithName(`hypr`),
+	kitty.SetupCmd.WithName(`kitty`),
+	lsd.SetupCmd.WithName(`lsd`),
+	ohmyposh.SetupCmd.WithName(`ohmyposh`),
+	shell.SetupCmd.WithName(`shell`),
+	sqlfluff.SetupCmd.WithName(`sqlfluff`),
+	starship.SetupCmd.WithName(`starship`),
+	tmux.SetupCmd.WithName(`tmux`),
+	vimium.SetupCmd.WithName(`vimium`),
+	waybar.SetupCmd.WithName(`waybar`),
+	zsh.SetupCmd.WithName(`zsh`),
 }
 
 func setupAll() error {
 	for _, cmd := range SetupCmds {
-		if err := cmd.Do(cmd); err != nil {
+		if err := cmd.Run(""); err != nil {
 			return err
 		}
 	}
@@ -117,7 +75,7 @@ var SetupCmd = &bonzai.Cmd{
 		}
 		for _, cmd := range SetupCmds {
 			if cmd.Name == args[0] {
-				return cmd.Do(cmd, args[1:]...)
+				return cmd.Run(args[1:]...)
 			}
 		}
 		return fmt.Errorf(`unknown tool: %s`, args[0])

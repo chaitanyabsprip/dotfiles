@@ -23,7 +23,7 @@ var embedFs embed.FS
 var InstallCmd = &bonzai.Cmd{
 	Name: `install`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		if err := ohmyposh.Cmd.Run(`setup`); err != nil {
+		if err := ohmyposh.SetupCmd.Run(``); err != nil {
 			return err
 		}
 		return installOhMyPosh()
@@ -36,7 +36,7 @@ var SetupCmd = &bonzai.Cmd{
 	Short: `setup bash`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		if err := shell.Cmd.Run(`setup`); err != nil {
+		if err := shell.SetupCmd.Run(``); err != nil {
 			return err
 		}
 		return e.SetupAll(
