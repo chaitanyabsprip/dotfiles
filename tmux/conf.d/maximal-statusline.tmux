@@ -6,7 +6,7 @@ set -g status-position top
 set -g status-style "fg=#{@c_status_fg},bg=#{@c_status_bg}"
 set -g automatic-rename on
 set -g automatic-rename-format "\
-#(dot tmux x icon #{pane_pid} #{pane_current_command})"
+#(dot x tmux icon #{pane_pid} #{pane_current_command})"
 
 set -g window-size latest
 set -g status-left-length 100
@@ -18,7 +18,7 @@ set -g status-left '\
 
 set -g status-right-length 100
 set -g status-right '\
-#(dot tmux x gitmux "#{pane_current_path}")\
+#(dot x tmux gitmux "#{pane_current_path}")\
 #[fg=#{@c_green},bold]\
 #{?#{!=:#(pomo), - }, #(pomo),}\
 #[fg=#{@c_status_fg},bg=#{@c_status_bg},nobold]\
