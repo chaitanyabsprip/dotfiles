@@ -20,13 +20,6 @@ import (
 //go:embed starship.toml
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `starship`,
-	Short: `manage starship configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

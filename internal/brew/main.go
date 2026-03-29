@@ -21,13 +21,6 @@ import (
 //go:embed Brewfile
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `brew`,
-	Short: `brew is a utility to manage brew configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

@@ -20,13 +20,6 @@ import (
 //go:embed gitui
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `gitui`,
-	Short: `gitui is a utility to manage gitui configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

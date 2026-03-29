@@ -17,13 +17,6 @@ import (
 //go:embed all:sqlfluff
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `sqlfluff`,
-	Short: `manage sqlfluff configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

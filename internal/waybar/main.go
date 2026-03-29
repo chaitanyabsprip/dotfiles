@@ -17,13 +17,6 @@ import (
 //go:embed waybar
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `waybar`,
-	Short: `waybar is a utility to manage waybar configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

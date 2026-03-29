@@ -20,13 +20,6 @@ import (
 //go:embed lsd
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `lsd`,
-	Short: `lsd is a utility to manage lsd configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

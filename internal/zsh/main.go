@@ -25,18 +25,6 @@ import (
 //go:embed all:zsh
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `zsh`,
-	Short: `zsh is a utility to manage zsh configuration`,
-	Comp:  comp.Cmds,
-	Cmds: []*bonzai.Cmd{
-		initCmd,
-		SetupCmd,
-		InstallCmd,
-		EditCmd,
-	},
-}
-
 var InstallCmd = &bonzai.Cmd{
 	Name:  `install`,
 	Alias: `i`,

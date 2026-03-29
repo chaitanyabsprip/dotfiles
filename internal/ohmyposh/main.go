@@ -20,13 +20,6 @@ import (
 //go:embed oh-my-posh.rc.toml
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `ohmyposh`,
-	Short: `manage ohmyposh configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

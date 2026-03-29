@@ -19,13 +19,6 @@ import (
 //go:embed alacritty
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `alacritty`,
-	Short: `manage alacritty configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

@@ -20,13 +20,6 @@ import (
 //go:embed bin
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `bin`,
-	Short: `manage scripts`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

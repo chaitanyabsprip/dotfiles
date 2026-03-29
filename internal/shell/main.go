@@ -21,13 +21,6 @@ import (
 //go:embed shell
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `shell`,
-	Short: `shell is a utility to manage shell configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

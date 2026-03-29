@@ -20,13 +20,6 @@ import (
 //go:embed git
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `git`,
-	Short: `git is a utility to manage git configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

@@ -20,17 +20,6 @@ import (
 //go:embed bat
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `bat`,
-	Short: `manage bat configuration`,
-	Comp:  comp.Cmds,
-	Cmds: []*bonzai.Cmd{
-		SetupCmd,
-		InstallCmd,
-		EditCmd,
-	},
-}
-
 var InstallCmd = &bonzai.Cmd{
 	Name: `install`,
 	Cmds: []*bonzai.Cmd{batGhInstallCmd, batPkgInstallCmd},

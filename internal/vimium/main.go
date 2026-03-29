@@ -6,7 +6,6 @@ import (
 	"path"
 
 	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai/edit"
 
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
@@ -16,13 +15,6 @@ import (
 
 //go:embed vimium_c.json
 var embedFs embed.FS
-
-var Cmd = &bonzai.Cmd{
-	Name:  `vimium`,
-	Short: `vimium is a utility to manage vimium configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
 
 var SetupCmd = &bonzai.Cmd{
 	Name:  `setup`,

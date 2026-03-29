@@ -20,13 +20,6 @@ import (
 //go:embed fish
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `fish`,
-	Short: `fish is a utility to manage fish configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

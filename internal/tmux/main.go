@@ -8,7 +8,6 @@ import (
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
 
 	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai/edit"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
@@ -20,18 +19,6 @@ import (
 
 //go:embed all:tmux
 var embedFs embed.FS
-
-var Cmd = &bonzai.Cmd{
-	Name:  `tmux`,
-	Short: `manage tmux configuration and related scripts`,
-	Comp:  comp.Cmds,
-	Cmds: []*bonzai.Cmd{
-		SetupCmd,
-		XCmd,
-		InstallCmd,
-		EditCmd,
-	},
-}
 
 var InstallCmd = &bonzai.Cmd{
 	Name:  `install`,

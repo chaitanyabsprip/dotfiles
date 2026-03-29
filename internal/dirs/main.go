@@ -21,13 +21,6 @@ import (
 //go:embed dirs
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `dirs`,
-	Short: `manage dirs configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

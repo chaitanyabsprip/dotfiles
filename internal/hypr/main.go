@@ -7,7 +7,6 @@ import (
 	"runtime"
 
 	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai/edit"
 
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
@@ -17,13 +16,6 @@ import (
 
 //go:embed hypr
 var embedFs embed.FS
-
-var Cmd = &bonzai.Cmd{
-	Name:  `hypr`,
-	Short: `manage hypr configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
 
 var SetupCmd = &bonzai.Cmd{
 	Name:  `setup`,

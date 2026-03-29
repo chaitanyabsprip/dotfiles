@@ -20,13 +20,6 @@ import (
 //go:embed kitty
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `kitty`,
-	Short: `kitty is a utility to manage kitty configuration`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{SetupCmd, EditCmd},
-}
-
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

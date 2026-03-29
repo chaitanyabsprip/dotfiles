@@ -20,17 +20,6 @@ import (
 //go:embed bashrc
 var embedFs embed.FS
 
-var Cmd = &bonzai.Cmd{
-	Name:  `bash`,
-	Short: `bash is a utility to manage bash configuration`,
-	Comp:  comp.Cmds,
-	Cmds: []*bonzai.Cmd{
-		SetupCmd,
-		InstallCmd,
-		EditCmd,
-	},
-}
-
 var InstallCmd = &bonzai.Cmd{
 	Name: `install`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
