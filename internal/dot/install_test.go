@@ -18,14 +18,14 @@ func TestInstallCmdDoAll(t *testing.T) {
 
 	called := map[string]bool{}
 	InstallCmds = []*bonzai.Cmd{
-		{Name: `mock1`, Do: func(x *bonzai.Cmd, _ ...string) error { called[`mock1`] = true; return nil }},
-		{Name: `mock2`, Do: func(x *bonzai.Cmd, _ ...string) error { called[`mock2`] = true; return nil }},
+		{Name: `bash`, Do: func(x *bonzai.Cmd, _ ...string) error { called[`bash`] = true; return nil }},
+		{Name: `zsh`, Do: func(x *bonzai.Cmd, _ ...string) error { called[`zsh`] = true; return nil }},
 	}
 
 	if err := InstallCmd.Do(InstallCmd, `all`); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	for _, name := range []string{`mock1`, `mock2`} {
+	for _, name := range []string{`bash`, `zsh`} {
 		if !called[name] {
 			t.Errorf("tool %q was not installed by 'all'", name)
 		}
