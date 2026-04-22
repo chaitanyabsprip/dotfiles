@@ -1,6 +1,9 @@
 package icon
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func Format(entry IconEntry, cfg ConfigSection, fallbackName string) string {
 	icon := entry.Icon
@@ -8,7 +11,12 @@ func Format(entry IconEntry, cfg ConfigSection, fallbackName string) string {
 
 	if entry.DisplayName == "" {
 		icon = cfg.FallbackIcon
-		name = fallbackName
+		args := strings.Fields(fallbackName)
+		if len(args) > 0 {
+			name = args[0]
+		} else {
+			name = fallbackName
+		}
 	}
 
 	if cfg.ShowName && name != "" {
