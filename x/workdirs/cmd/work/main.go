@@ -5,5 +5,9 @@ import (
 )
 
 func main() {
+	if workdirs.IsRefreshWorker() {
+		workdirs.RefreshCacheWorker()
+		return
+	}
 	workdirs.Cmd.Exec()
 }

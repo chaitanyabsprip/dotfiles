@@ -9,6 +9,10 @@ import (
 )
 
 func main() {
+	if workdirs.IsRefreshWorker() {
+		workdirs.RefreshCacheWorker()
+		return
+	}
 	short := flag.Bool("s", false, "short")
 	refresh := flag.Bool("r", false, "refresh cache")
 	flag.Parse()

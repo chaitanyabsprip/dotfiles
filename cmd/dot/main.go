@@ -2,8 +2,15 @@
 // It initializes and executes the main dot command tree.
 package main
 
-import dot "github.com/Chaitanyabsprip/dotfiles"
+import (
+	dot "github.com/Chaitanyabsprip/dotfiles"
+	"github.com/Chaitanyabsprip/dotfiles/x/workdirs"
+)
 
 func main() {
+	if workdirs.IsRefreshWorker() {
+		workdirs.RefreshCacheWorker()
+		return
+	}
 	dot.Cmd.Exec()
 }

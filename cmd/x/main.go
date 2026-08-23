@@ -2,8 +2,15 @@
 // It initializes and executes the main x command tree.
 package main
 
-import "github.com/Chaitanyabsprip/dotfiles/x"
+import (
+	"github.com/Chaitanyabsprip/dotfiles/x"
+	"github.com/Chaitanyabsprip/dotfiles/x/workdirs"
+)
 
 func main() {
+	if workdirs.IsRefreshWorker() {
+		workdirs.RefreshCacheWorker()
+		return
+	}
 	x.Cmd.Exec()
 }
