@@ -26,10 +26,13 @@ import (
 // directories in that path.
 func Workdirs() []string {
 	workdirs := parallelFindDirsIn(
+		1,
 		env.XdgConfigHome,
-		env.Projects,
 		env.Dotfiles,
 	)
+	workdirs = append(
+		workdirs,
+		parallelFindDirsIn(2, env.Projects)...)
 	workdirs = append(
 		workdirs,
 		parallelFindGitDirs(env.Projects, env.Programs)...)
@@ -65,7 +68,7 @@ func parallelFindGitDirs(paths ...string) []string {
 	return allDirs
 }
 
-func parallelFindDirsIn(paths ...string) []string {
+func parallelFindDirsIn(depth int, paths ...string) []string {
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 	var allDirs []string
@@ -74,7 +77,7 @@ func parallelFindDirsIn(paths ...string) []string {
 		wg.Add(1)
 		go func(p string) {
 			defer wg.Done()
-			dirs := findDirsIn(p)
+			dirs := findDirsIn(p, depth)
 			mu.Lock()
 			allDirs = append(allDirs, dirs...)
 			mu.Unlock()
@@ -84,9 +87,10 @@ func parallelFindDirsIn(paths ...string) []string {
 	return allDirs
 }
 
-// findDirsIn finds all directories in path for depth 1 only.
-func findDirsIn(path string) []string {
-	if path == "" {
+// findDirsIn finds all directories in path up to the given depth.
+// depth=1 returns immediate children, depth=2 returns grandchildren, etc.
+func findDirsIn(path string, depth int) []string {
+	if path == "" || depth < 1 {
 		return nil
 	}
 	dirs := make([]string, 0)
@@ -99,12 +103,15 @@ func findDirsIn(path string) []string {
 		if _, skip := skipList[name]; skip || name == ".git" {
 			continue
 		}
+		fullPath := filepath.Join(path, name)
 		if fsdir.IsDir() {
-			dirs = append(dirs, filepath.Join(path, name))
+			if depth == 1 {
+				dirs = append(dirs, fullPath)
+			} else {
+				dirs = append(dirs, findDirsIn(fullPath, depth-1)...)
+			}
 		} else if fsdir.Type()&os.ModeSymlink != 0 {
-			resolvedPath, err := resolveSymlink(
-				filepath.Join(path, name),
-			)
+			resolvedPath, err := resolveSymlink(fullPath)
 			if err != nil {
 				continue
 			}
