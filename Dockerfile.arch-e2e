@@ -1,0 +1,10 @@
+FROM archlinux:latest
+
+RUN sed -i '/\[options\]/a DisableSandbox' /etc/pacman.conf
+RUN pacman -Syu --noconfirm --needed go git sudo
+
+WORKDIR /root/dot
+COPY go.mod go.sum /root/dot/
+RUN go mod download
+COPY . /root/dot/
+RUN go install -v ./cmd/dot
