@@ -234,6 +234,7 @@ func resolveSymlink(path string) (string, error) {
 func Worktrees() []string {
 	worktrees := make([]string, 0)
 	mu := sync.Mutex{}
+	var wg sync.WaitGroup
 	semaphore := make(chan struct{}, 8)
 
 	walkfn := func(path string, d fs.DirEntry, err error) error {
@@ -248,8 +249,10 @@ func Worktrees() []string {
 			if d.IsDir() || d.Type()&os.ModeSymlink != 0 {
 				return filepath.SkipDir
 			}
+			wg.Add(1)
 			semaphore <- struct{}{}
 			go func(gitDir string) {
+				defer wg.Done()
 				defer func() { <-semaphore }()
 				if isWorktree(gitDir) && !isSubmodule(gitDir) {
 					mu.Lock()
@@ -270,6 +273,7 @@ func Worktrees() []string {
 	if err != nil {
 		return nil
 	}
+	wg.Wait()
 
 	return worktrees
 }
