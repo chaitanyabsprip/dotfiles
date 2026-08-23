@@ -8,6 +8,7 @@ import (
 	"github.com/rwxrob/bonzai/cmds/help"
 	"github.com/rwxrob/bonzai/comp"
 
+	"github.com/Chaitanyabsprip/dotfiles/internal/claude"
 	idot "github.com/Chaitanyabsprip/dotfiles/internal/dot"
 	"github.com/Chaitanyabsprip/dotfiles/x"
 )
@@ -24,6 +25,7 @@ var Cmd = &bonzai.Cmd{
 		idot.DepsCmd,
 		idot.InitCmd,
 		x.Cmd,
+		claude.Cmd,
 		help.Cmd,
 	},
 }

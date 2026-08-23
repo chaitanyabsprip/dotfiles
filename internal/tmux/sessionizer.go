@@ -9,6 +9,7 @@ import (
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/fn/filt"
 
+	"github.com/Chaitanyabsprip/dotfiles/internal/claude"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/fzf"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/x/depends"
@@ -45,9 +46,12 @@ func Sessionizer(path string) error {
 	sessionName := resolveSessionName(newPath)
 
 	if !tmux.IsActive() {
-		return tmux.NewSession(
+		if err := tmux.NewSession(
 			tmux.Session{Name: sessionName, Path: newPath},
-		)
+		); err != nil {
+			return err
+		}
+		return claude.ResumeSessions(sessionName)
 	}
 
 	fopts := tmux.Session{Path: newPath}
@@ -69,6 +73,9 @@ func Sessionizer(path string) error {
 		tmux.Session{Name: sessionName, Path: newPath},
 	)
 	if err != nil {
+		return err
+	}
+	if err := claude.ResumeSessions(sessionName); err != nil {
 		return err
 	}
 	return tmux.SwitchClient(sessionName)
