@@ -3,12 +3,12 @@ package tmux
 import (
 	"fmt"
 	"os"
-	"os/exec"
 
 	"github.com/rwxrob/bonzai/run"
 
 	"github.com/Chaitanyabsprip/dotfiles/x/distro"
 	"github.com/Chaitanyabsprip/dotfiles/x/have"
+	"github.com/Chaitanyabsprip/dotfiles/x/install"
 )
 
 func installTmux() error {
@@ -18,9 +18,9 @@ func installTmux() error {
 	}
 	switch distro.Name() {
 	case `Arch Linux`:
-		return withRoot(`pacman`, `-S`, `tmux`)
+		return install.WithRoot(`pacman`, `-S`, `tmux`)
 	case `Ubuntu`, `Debian GNU/Linux`:
-		return withRoot(`apt-get`, `install`, `-y`, `tmux`)
+		return install.WithRoot(`apt-get`, `install`, `-y`, `tmux`)
 	case `Fedora Linux`:
 		return run.Exec(`dnf`, `install`, `tmux`, `-y`)
 	case `Darwin`:
@@ -29,14 +29,4 @@ func installTmux() error {
 		fmt.Fprintln(os.Stderr, `Unsupported operating system. Please install tmux manually.`)
 	}
 	return nil
-}
-
-func withRoot(args ...string) error {
-	if os.Geteuid() != 0 {
-		if _, err := exec.LookPath(`sudo`); err != nil {
-			return fmt.Errorf(`user not root and sudo not found`)
-		}
-		args = append([]string{`sudo`}, args...)
-	}
-	return run.Exec(args...)
 }

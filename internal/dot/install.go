@@ -8,6 +8,7 @@ import (
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/bash"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bat"
+	"github.com/Chaitanyabsprip/dotfiles/internal/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/internal/zsh"
 )
 
@@ -16,6 +17,7 @@ var InstallCmds = []*bonzai.Cmd{
 	bash.InstallCmd.WithName(`bash`),
 	bat.InstallCmd.WithName(`bat`),
 	zsh.InstallCmd.WithName(`zsh`),
+	tmux.InstallCmd.WithName(`tmux`),
 }
 
 var allCmd = &bonzai.Cmd{
