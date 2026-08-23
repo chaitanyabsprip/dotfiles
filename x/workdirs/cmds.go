@@ -82,17 +82,21 @@ var dirsCmd = &bonzai.Cmd{
 Lists local work directories, including Git worktree repositories.
 Set SHORT=1 for a compact output format.
 
+Filesystem scanning is always fresh by default. On machines where that
+scan is slow (e.g. endpoint-security agents that tax filesystem
+syscalls), opt into an on-disk cache with WORKDIRS_CACHE=1.
+
 ENVIRONMENT VARIABLES
-  SHORT|W_SHORT     Set SHORT=1 to display compact output
+  SHORT|W_SHORT         Set SHORT=1 to display compact output
+  WORKDIRS_CACHE        Set to 1 to enable the on-disk cache (default off)
+  WORKDIRS_CACHE_TTL    Cache lifetime in seconds (default 600)
+  WORKDIRS_REFRESH      Set to 1 to force a fresh scan even if caching is on
 `,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		short := len(os.Getenv(`SHORT`)) > 0 ||
 			len(os.Getenv(`W_SHORT`)) > 0
 		var out string
-		dirs := Workdirs()
-		trees := Worktrees()
-		dirs = append(dirs, trees...)
-		sort.Strings(dirs)
+		dirs := CachedAllDirs(false)
 		if !short {
 			out = strings.Join(dirs, "\n")
 		} else {

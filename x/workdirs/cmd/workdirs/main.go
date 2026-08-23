@@ -10,10 +10,9 @@ import (
 
 func main() {
 	short := flag.Bool("s", false, "short")
+	refresh := flag.Bool("r", false, "refresh cache")
 	flag.Parse()
-	dirs := make([]string, 0)
-	dirs = append(dirs, workdirs.Workdirs()...)
-	dirs = append(dirs, workdirs.Worktrees()...)
+	dirs := workdirs.CachedAllDirs(*refresh)
 	if *short {
 		fmt.Println(strings.Join(workdirs.Shorten(dirs), "\n"))
 		return

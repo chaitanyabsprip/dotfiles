@@ -4,7 +4,6 @@ package tmux
 import (
 	"fmt"
 	"path/filepath"
-	"sort"
 	"strings"
 
 	"github.com/rwxrob/bonzai"
@@ -84,10 +83,7 @@ func resolveSessionName(path string) string {
 }
 
 func selectPath() string {
-	dirs := workdirs.Workdirs()
-	trees := workdirs.Worktrees()
-	dirs = append(dirs, trees...)
-	sort.Strings(dirs)
+	dirs := workdirs.CachedAllDirs(false)
 	out, err := fzf.Select(
 		workdirs.Shorten(dirs),
 		`--tmux`, `45%`,
