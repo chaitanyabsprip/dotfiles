@@ -26,7 +26,7 @@ var InstallCmd = &bonzai.Cmd{
 		if err := ohmyposh.SetupCmd.Run(``); err != nil {
 			return err
 		}
-		return installOhMyPosh()
+		return ohmyposh.InstallCmd.Run(``)
 	},
 }
 
