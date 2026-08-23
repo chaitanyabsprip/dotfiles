@@ -30,7 +30,7 @@ func InstallUnzip() error {
 func unzipPkgInstall() error {
 	switch distro.Name() {
 	case `Arch Linux`:
-		return install.WithRoot(`pacman`, `-S`, `unzip`)
+		return install.WithRoot(`pacman`, `-S`, `--noconfirm`, `unzip`)
 	case `Ubuntu`, `Debian GNU/Linux`:
 		return install.WithRoot(`apt-get`, `install`, `unzip`, `-y`)
 	case `Fedora`:

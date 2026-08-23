@@ -36,7 +36,7 @@ var EditCmd = &bonzai.Cmd{
 			return err
 		}
 		fmt.Println("rebuild binary")
-		fmt.Println("re run tmux init")
+		fmt.Println("re run tmux setup")
 		return nil
 	},
 }

@@ -34,7 +34,7 @@ func installBat() error {
 func batPkgInstall() error {
 	switch distro.Name() {
 	case `Arch Linux`:
-		return install.WithRoot(`pacman`, `-S`, `bat`)
+		return install.WithRoot(`pacman`, `-S`, `--noconfirm`, `bat`)
 	case `Ubuntu`, `Debian GNU/Linux`:
 		err := install.WithRoot(`apt-get`, `install`, `-y`, `bat`)
 		if err != nil {

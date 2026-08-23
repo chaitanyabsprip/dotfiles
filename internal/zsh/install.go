@@ -18,7 +18,7 @@ func installZsh() error {
 	}
 	switch distro.Name() {
 	case `Arch Linux`:
-		return install.WithRoot(`pacman`, `-S`, `zsh`)
+		return install.WithRoot(`pacman`, `-S`, `--noconfirm`, `zsh`)
 	case `Ubuntu`, `Debian GNU/Linux`:
 		return install.WithRoot(`apt-get`, `install`, `-y`, `zsh`)
 	case `Fedora Linux`:

@@ -18,7 +18,7 @@ func installTmux() error {
 	}
 	switch distro.Name() {
 	case `Arch Linux`:
-		return install.WithRoot(`pacman`, `-S`, `tmux`)
+		return install.WithRoot(`pacman`, `-S`, `--noconfirm`, `tmux`)
 	case `Ubuntu`, `Debian GNU/Linux`:
 		return install.WithRoot(`apt-get`, `install`, `-y`, `tmux`)
 	case `Fedora Linux`:
