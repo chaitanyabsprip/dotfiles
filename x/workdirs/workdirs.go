@@ -35,7 +35,10 @@ func Workdirs() []string {
 		parallelFindDirsIn(2, env.Projects)...)
 	workdirs = append(
 		workdirs,
-		parallelFindGitDirs(env.Projects, env.Programs)...)
+		parallelFindGitDirs(6, env.Projects)...)
+	workdirs = append(
+		workdirs,
+		parallelFindGitDirs(2, env.Programs)...)
 	workdirs = append(
 		workdirs,
 		env.Projects,
@@ -49,7 +52,7 @@ func Workdirs() []string {
 	return dedupe(workdirs)
 }
 
-func parallelFindGitDirs(paths ...string) []string {
+func parallelFindGitDirs(maxDepth int, paths ...string) []string {
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 	var allDirs []string
@@ -58,7 +61,7 @@ func parallelFindGitDirs(paths ...string) []string {
 		wg.Add(1)
 		go func(p string) {
 			defer wg.Done()
-			dirs := findGitDirs(p)
+			dirs := findGitDirs(p, maxDepth)
 			mu.Lock()
 			allDirs = append(allDirs, dirs...)
 			mu.Unlock()
@@ -129,11 +132,10 @@ var skipList = map[string]struct{}{
 	".terraform":   {},
 }
 
-func findGitDirs(path string) []string {
+func findGitDirs(path string, maxDepth int) []string {
 	var dirs []string
 	mu := sync.Mutex{}
 	baseDepth := strings.Count(path, string(os.PathSeparator))
-	maxDepth := 6
 
 	err := fastwalk.Walk(
 		&fastwalk.DefaultConfig,
