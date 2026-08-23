@@ -1,6 +1,6 @@
 # ADR-0010: X Utilities Are Not Managed Tools
 
-Status: Proposed
+Status: Accepted
 
 ## Context
 
