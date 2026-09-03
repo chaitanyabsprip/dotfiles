@@ -1,8 +1,6 @@
 package tmux
 
 import (
-	"fmt"
-
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/run"
 
@@ -47,11 +45,8 @@ func SessionManager(path string) error {
 }
 
 func selectSession() string {
-	exe := run.ExeName()
 	out, err := fzf.Select(tmux.ListSessionsF(`#{session_name}`),
-		`--tmux`, `80%,90%`,
-		`--preview`, fmt.Sprintf(`%s tmux x p s {}`, exe),
-		`--preview-window`, `top,85%`,
+		`--tmux`, `45%`,
 	)
 	if err != nil {
 		return ``
