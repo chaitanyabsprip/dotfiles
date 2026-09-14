@@ -21,3 +21,6 @@ icons:
   pi:
     name: pi
     icon: 󰚩
+  leaf:
+    name: leaf
+    icon: 󰌪
