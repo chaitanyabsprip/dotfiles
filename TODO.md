@@ -98,19 +98,27 @@ settled the "decide scope" question this list used to raise):
       which would've fired as a side effect even under `status`/`diff`'s
       read-only mode.
 
-## P2 — Per-tool `x` utilities beyond tmux
+## P2 — Per-tool `x` utilities beyond tmux ✅
 
-PRD user stories 7/9/15 want every tool's utilities reachable as
-`dot x <tool> <cmd>`, organized by tool prefix. Only `internal/tmux/x.go`
-does this today.
+Done 2026-09-26 — turned out to be a two-step check, not a build:
 
-- [ ] Confirm target shape: PRD's proposed `internal/x/x.go` composing
-      package doesn't exist — top-level `x/x.go` currently plays that role
-      with a different layout. Pick one and document it (update ADR-0010
-      or add a new one) before adding more tools here.
-- [ ] Migrate/add tool-specific utilities for tools that have them today
-      outside the `x` namespace (audit `internal/<tool>/` for anything
-      script-like first — don't invent utilities that don't exist yet).
+- [x] Target shape confirmed via ADR-0012: top-level `x/x.go` (public
+      `package x`) is correct, not the PRD/ADR-0008's `internal/x/x.go` —
+      `x` is meant to work as its own standalone binary
+      (`cmd/x/main.go`), and every utility sub-package it composes
+      (`x/base64`, `x/depends`, etc.) is already top-level and public, so
+      nesting only the composing root under `internal/` would be an
+      inconsistent split for no functional gain.
+- [x] Audited every tool package for non-`Setup`/`Install`/`Edit`/`Deps`
+      commands (`grep`, not guessing): `tmux` is genuinely the only one
+      with standalone utility scripts today. `bat`'s
+      `batGhInstallCmd`/`batPkgInstallCmd` and `shell`'s
+      `InstallUnzipCmd` are install-time helpers, not user-facing
+      utilities. `claude`'s `HookCmd`/`SessionStartCmd`/`RestoreCmd` are
+      already correctly root-level (`dot claude hook ...`, outside
+      ADR-0010's managed-tool/utility split entirely) — moving them under
+      `x` would break hook paths already configured in people's
+      `~/.claude/settings.json`. Nothing to migrate.
 
 ## P3 — Polish & release
 

@@ -17,7 +17,8 @@ repository.
 | [0008](0008-module-namespace-architecture.md) | Module and Namespace Architecture | Accepted | 2026-08-23 |
 | [0009](0009-init-command-behavior.md) | Init Command Behavior | Accepted | 2026-08-23 |
 | [0010](0010-x-utilities-not-managed-tools.md) | X Utilities Are Not Managed Tools | Accepted | 2026-08-23 |
-| [0011](0011-deps-recursive-tree-view.md) | Deps Command Shows Recursive Tree View | Proposed | - |
+| [0011](0011-deps-recursive-tree-view.md) | Deps Command Shows Recursive Tree View | Accepted | 2026-09-25 |
+| [0012](0012-x-composing-package-location.md) | The x Composing Package Lives at Top-Level `x/`, Not `internal/x/` | Accepted | 2026-09-26 |
 
 ## Creating a New ADR
 
