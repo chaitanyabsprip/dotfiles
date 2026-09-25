@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [monolith] # TODO: switch to main once this branch merges
   pull_request:
 
 jobs:
