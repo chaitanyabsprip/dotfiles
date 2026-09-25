@@ -7,11 +7,14 @@ are kept at `.archive/{TODO,tasks}.md.bak`.
 ## Project Status
 
 Verb-first CLI restructuring (`docs/prd-cli-restructuring.md`, ADR-0007-0010)
-is implemented and landed: `setup`/`edit`/`install`/`deps`/`init` compose all
-22 tool packages, tiered `slim|quik|full` modes are gone (ADR-0006).
+is implemented and landed: `setup`/`edit`/`install`/`deps`/`status`/`diff`/`init`
+compose all 22 tool packages, tiered `slim|quik|full` modes are gone (ADR-0006).
 
-Confirmed against `internal/dot/install.go` on 2026-09-25:
-tool packages with a working `InstallCmd`: **bash, bat, ohmyposh, zsh, tmux**.
+P0 and P1 are both done (below). `internal/dot/install.go` now has an
+`InstallCmd` for all 15 tools that need one (bash, bat, ohmyposh, zsh, tmux
+plus the 10 added in P0); the other 7 (bin, brew, claude, git, hypr, shell,
+vimium) don't install anything — no CLI binary to install, or they're
+config-only/self-managing.
 
 ---
 
@@ -39,9 +42,11 @@ these 8 straightforward tools instead of copy-pasting it 10 times.
 No install needed (skip, per `x/install` + PRD): bash ✅, git, bin, shell,
 vimium.
 
-Also resolve: does `tmux`'s `runCmd` still belong now that setup is
-full-only, or should it fold into `InstallCmd`/`SetupCmd`? (Carried over
-from old `tasks.md`, still open.)
+`tmux`'s `runCmd` question (carried over from old `tasks.md`) — resolved
+2026-09-26: `internal/tmux/run.go`'s `runCmd` was a byte-for-byte, unwired
+duplicate of `x.go`'s `XCmd` (the one actually composed into `dot x tmux`
+via `x/x.go`). Dead code left over from before the verb-first restructure.
+Deleted.
 
 ## P1 — Config drift / tracking foundation ✅
 
@@ -85,6 +90,13 @@ settled the "decide scope" question this list used to raise):
 - [x] ADR-0011 flipped to `Accepted`, example corrected to match the
       real tree (moved `ohmyposh` from under `tmux` to under `bash`,
       where the code actually puts it).
+- [x] `dot status` (list drifted files across all tools) and `dot diff`
+      (show their diffs) — added a `CheckMode` to `copy()` so both preview
+      drift with zero writes, reusing every tool's existing `SetupCmd`
+      instead of new per-tool wiring. Caught and fixed a real bug in the
+      process: `bat.SetupCmd` ran `bat cache --build` unconditionally,
+      which would've fired as a side effect even under `status`/`diff`'s
+      read-only mode.
 
 ## P2 — Per-tool `x` utilities beyond tmux
 
@@ -112,9 +124,12 @@ would otherwise re-test:
 - [ ] Empty `docs/tasks/` directory — either fill it from this file's
       task breakdown or delete it; don't leave it as dead scaffolding
 
-Explicitly out of scope (PRD "Out of Scope" + VISION.md "Dropped"):
-`dot status`/`dot diff` as originally conceived, tool groups
-(`dot setup terminal`), bidirectional `dot pull`/`dot commit` sync.
+Explicitly out of scope (PRD "Out of Scope" + VISION.md "Dropped"): tool
+groups (`dot setup terminal`), bidirectional `dot pull`/`dot commit` sync.
+(`dot status`/`dot diff` were listed here too, but got built as part of
+P1 2026-09-26 — read-only drift preview across tools, not the originally-
+deferred bidirectional-sync idea, so the PRD's concern didn't actually
+apply once scoped that way.)
 
 ---
 
