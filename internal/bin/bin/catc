@@ -1,4 +1,0 @@
-#!/bin/sh
-set -eu
-path="$(which "$1")"
-exec bat "$path"
