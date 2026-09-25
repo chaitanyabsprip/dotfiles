@@ -20,6 +20,12 @@ import (
 //go:embed lsd
 var embedFs embed.FS
 
+var InstallCmd = &bonzai.Cmd{
+	Name:  `install`,
+	Alias: `i`,
+	Do:    func(_ *bonzai.Cmd, _ ...string) error { return installLsd() },
+}
+
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

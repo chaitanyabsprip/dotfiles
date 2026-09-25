@@ -21,13 +21,18 @@ import (
 //go:embed dirs
 var embedFs embed.FS
 
+var InstallCmd = &bonzai.Cmd{
+	Name:  `install`,
+	Alias: `i`,
+	Do:    func(_ *bonzai.Cmd, _ ...string) error { return installDirs() },
+}
+
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 
 	Short: `setup dirs`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		// TODO(chaitanya): install xdg-user-dirs
 		return e.SetupAll(embedFs, "dirs", oscfg.ConfigDir(),
 			map[string]string{
 				`dirs`: filepath.Join(

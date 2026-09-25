@@ -17,6 +17,12 @@ import (
 //go:embed waybar
 var embedFs embed.FS
 
+var InstallCmd = &bonzai.Cmd{
+	Name:  `install`,
+	Alias: `i`,
+	Do:    func(_ *bonzai.Cmd, _ ...string) error { return installWaybar() },
+}
+
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

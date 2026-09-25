@@ -18,6 +18,12 @@ import (
 //go:embed gh
 var embedFs embed.FS
 
+var InstallCmd = &bonzai.Cmd{
+	Name:  `install`,
+	Alias: `i`,
+	Do:    func(_ *bonzai.Cmd, _ ...string) error { return installGh() },
+}
+
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

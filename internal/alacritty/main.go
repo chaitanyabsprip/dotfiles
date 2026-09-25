@@ -19,6 +19,12 @@ import (
 //go:embed alacritty
 var embedFs embed.FS
 
+var InstallCmd = &bonzai.Cmd{
+	Name:  `install`,
+	Alias: `i`,
+	Do:    func(_ *bonzai.Cmd, _ ...string) error { return installAlacritty() },
+}
+
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 

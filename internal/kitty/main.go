@@ -20,6 +20,12 @@ import (
 //go:embed kitty
 var embedFs embed.FS
 
+var InstallCmd = &bonzai.Cmd{
+	Name:  `install`,
+	Alias: `i`,
+	Do:    func(_ *bonzai.Cmd, _ ...string) error { return installKitty() },
+}
+
 var SetupCmd = &bonzai.Cmd{
 	Name: `setup`,
 
