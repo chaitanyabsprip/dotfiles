@@ -16,7 +16,7 @@ get_target_ref() {
 	tags=$(git tag | awk '{print "'"$red"'tag'"$reset"'\t" $1}') || return
 	branches=$(
 		git branch --all | grep -v HEAD |
-			sed "s/.* //" | sed "s#remotes/##" |
+			sed -e "s/.* //" -e "s#remotes/\(origin/\)##" |
 			sort -u | awk '{print "'"$blue"'branch'"$reset"'\t" $1}'
 	) || return
 	options=$(

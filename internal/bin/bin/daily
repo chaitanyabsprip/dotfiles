@@ -1,11 +1,14 @@
 #!/bin/sh
 
 filename="$NOTESPATH/transient/$(date '+%Y-%m-%d')".md
+last_note="$(ls -t "$NOTESPATH"/transient/*.md 2>/dev/null | head -n 1)"
 [ ! -f "$filename" ] && {
 	echo "# $(date '+%Y-%m-%d')"
 	echo
 	echo "## Todo"
 	echo
+	grep -h "^\s*-\s\+\[ \]" "$last_note" 2>/dev/null || true
+	echo
 	echo "## Notes"
 } >"$filename"
-$EDITOR "$filename"
+exec $EDITOR "$filename"

@@ -8,7 +8,7 @@
 _have() { type "$1" >/dev/null 2>&1; }
 _have entr || { echo "${0##*/} depends on entr" && exit 127; }
 
-{ _have glow && cmd="glow"; } || { _have bat && cmd="bat -p"; } || { cmd="cat"; }
+{ _have bat && cmd="bat -p"; } || { _have glow && cmd="glow"; } || { cmd="cat"; }
 
 # Create the command here so that entr accepts "bat -p" argument as multiple
 # argument and not as a single string argument

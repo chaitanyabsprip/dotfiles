@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# removes all new lines and converts all white space to single spaces.
+# It accepts input from stdin
+
+minify() {
+	tr -d '\n' | tr -s ' '
+}
+
+minify

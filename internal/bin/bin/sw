@@ -10,13 +10,15 @@ setwall_hyprpaper() {
 	done
 }
 
-setwall_swww() {
+setwall_awww() {
 	ln -sf "$WALLPAPER" ~/.wallpaper
-	swww img ~/.wallpaper
+	awww img ~/.wallpaper
 }
 
 if pgrep -fa hyprpaper >/dev/null; then
 	setwall_hyprpaper "$1"
+elif pgrep -fa awww-daemon >/dev/null; then
+	setwall_awww "$1"
 else
-	setwall_swww "$1"
+	setwall_hyprpaper "$1"
 fi

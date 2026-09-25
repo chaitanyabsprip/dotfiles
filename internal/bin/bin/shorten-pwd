@@ -1,0 +1,1 @@
+pwd | awk -F/ '{for(i=1;i<NF;i++) if(length($i)>0) printf "/%s", substr($i,1,1); printf "/%s\n", $NF}'

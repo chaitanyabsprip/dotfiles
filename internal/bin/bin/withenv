@@ -1,0 +1,15 @@
+#!/bin/sh
+
+envfile="$1"
+shift
+
+if [ -f "$envfile" ]; then
+	set -a
+	. "$envfile"
+	set +a
+else
+	echo "File not found: $envfile" >&2
+	exit 1
+fi
+
+exec "$@"
