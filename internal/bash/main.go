@@ -15,6 +15,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
+	"github.com/Chaitanyabsprip/dotfiles/x/depends"
 )
 
 //go:embed bashrc
@@ -28,6 +29,12 @@ var InstallCmd = &bonzai.Cmd{
 		}
 		return ohmyposh.InstallCmd.Run(``)
 	},
+}
+
+// Deps mirrors InstallCmd above, which sets up and installs ohmyposh for
+// the prompt — see ADR-0011.
+var Deps = []depends.Dep{
+	{Name: `ohmyposh`, Note: `prompt`, Deps: ohmyposh.Deps},
 }
 
 var SetupCmd = &bonzai.Cmd{

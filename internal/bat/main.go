@@ -43,7 +43,10 @@ var SetupCmd = &bonzai.Cmd{
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) (err error) {
 		err = e.SetupAll(embedFs, `bat`, oscfg.ConfigDir(), nil)
-		if err != nil {
+		if err != nil || e.Check != e.CheckOff {
+			// `dot status`/`dot diff` run every tool's SetupCmd in a
+			// read-only check mode; skip the real `bat cache --build` side
+			// effect below when that's what's happening.
 			return err
 		}
 		reset, err := with.Path(oscfg.BinDir())

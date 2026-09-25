@@ -23,6 +23,13 @@ func BackupDir(dir string) string {
 	return filepath.Join(dir, newName)
 }
 
+func StateDir() string {
+	if len(env.XdgStateHome) > 0 {
+		return env.XdgStateHome
+	}
+	return filepath.Join(env.Home, ".local", "state")
+}
+
 func BinDir() string {
 	return filepath.Join(env.Home, ".local", "bin")
 }

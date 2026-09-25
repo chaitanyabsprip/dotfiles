@@ -1,6 +1,6 @@
 # ADR-0011: Deps Command Shows Recursive Tree View
 
-Status: Proposed
+Status: Accepted
 
 ## Context
 
@@ -21,11 +21,23 @@ The `dot deps` verb (ADR-0007) displays dependencies for managed tools. The pres
 
 ```
 tmux
-├── fzf (sessionizer)
 ├── tmux (binary)
-└── ohmyposh
-    └── unzip
+└── fzf (sessionizer)
 ```
+
+(Implementation note: dependencies are declared per tool only where the
+code actually shells out to something extra — grounded by grepping every
+`exec.Command`/`run.Exec` call, not invented. `ohmyposh` is a dependency
+of `bash` (which sets it up for the prompt), not of `tmux`:
+
+```
+bash
+└── ohmyposh (prompt)
+    └── unzip (install)
+```
+
+A tool with no extra runtime dependency renders as a bare leaf — most
+tools have none beyond the binary `dot install` already gets for them.)
 
 ### Rationale
 

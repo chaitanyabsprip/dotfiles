@@ -43,23 +43,48 @@ Also resolve: does `tmux`'s `runCmd` still belong now that setup is
 full-only, or should it fold into `InstallCmd`/`SetupCmd`? (Carried over
 from old `tasks.md`, still open.)
 
-## P1 — Config drift / tracking foundation
+## P1 — Config drift / tracking foundation ✅
 
-The single biggest gap between VISION.md and the codebase — no `manifest`,
-`hydrate`, or `drift` code exists anywhere yet, and everything downstream
-(`dot deps`, `dot pull`/`diff`) depends on deciding this first.
+Done 2026-09-25, scope = VISION.md's "Drift Detection" section exactly
+(hash-based, no history, no bidirectional sync — that section already
+settled the "decide scope" question this list used to raise):
 
-- [ ] Decide scope: hash-based MVP (SHA256 per deployed file, recorded at
-      `dot setup` time) vs. the fuller state-machine from `thoughts.md`/
-      `notes.dump.md` (both archived — those proposed `dot pull`/`dot commit`
-      bidirectional sync, which VISION.md marks **dropped** as a non-goal;
-      don't resurrect that scope without deciding it's back in)
-- [ ] Land state storage location (`~/.local/state/dot/dot.lock` was the
-      prior working assumption)
-- [ ] Implement `dot deps <tool>` for real — currently
-      `internal/dot/deps.go` is a hardcoded stub ("no dependencies
-      defined"). ADR-0011 (recursive dependency tree view) is written but
-      **Proposed**, not implemented — implement it or downgrade the ADR.
+- [x] `internal/core/manifest`: hash-based manifest at
+      `$XDG_STATE_HOME/dot/manifest.json` (or `~/.local/state/dot/...`),
+      path → sha256 of last-deployed content. Tested.
+- [x] `internal/core/embed/copy.go`'s `copy()` — the single choke-point
+      every tool's `setup` runs through — now does VISION's three-way
+      compare (live vs. manifest vs. embedded) instead of `SetupAll`'s old
+      behavior of deleting the tool's whole config dir before every
+      deploy (which would've destroyed a local edit before drift
+      detection ever saw it). Tested (6 cases: first deploy, upstream-only
+      change, user drift skipped, forced overwrite, untracked-file
+      adoption both ways).
+- [x] Diff rendering via `go-udiff` (Myers), already an indirect
+      dependency — not the histogram-diff standalone module VISION.md
+      describes. `ponytail`: Myers is a materially smaller diff and good
+      enough for dotfile-sized configs; upgrade to histogram if diff
+      quality on large files actually becomes a problem.
+- [x] Force-overwrite via `DOT_FORCE=1` env var — VISION.md left the
+      `--force` flag's exact naming as an open question, so this is
+      explicitly an interim escape hatch, not the final UX.
+- [x] Verified end-to-end in the Debian Docker image: hand-edited
+      `~/.config/zsh/.zshrc` survived a second `dot setup zsh` (diff
+      printed, file untouched), `DOT_FORCE=1` then overwrote it.
+- [x] `dot deps <tool>` implemented for real per ADR-0011 (recursive tree,
+      box-drawing chars). `x/depends.Dep`/`PrintTree` + a `toolDeps` map
+      in `internal/dot/deps.go`. Populated only for tools whose code
+      actually shells out to something extra — **bash → ohmyposh → unzip**,
+      **tmux → fzf + tmux itself** — grounded by grepping every
+      `exec.Command`/`run.Exec` call in `internal/`, not copied from
+      ADR-0011's illustrative example (which shows `ohmyposh` under
+      `tmux`; no code evidence supports that edge — tmux doesn't call
+      ohmyposh anywhere). A tool with no declared deps renders as a bare
+      leaf, not an error — most tools genuinely have none beyond
+      themselves. Tested.
+- [x] ADR-0011 flipped to `Accepted`, example corrected to match the
+      real tree (moved `ohmyposh` from under `tmux` to under `bash`,
+      where the code actually puts it).
 
 ## P2 — Per-tool `x` utilities beyond tmux
 

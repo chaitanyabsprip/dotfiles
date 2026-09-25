@@ -23,6 +23,8 @@ var Cmd = &bonzai.Cmd{
 		idot.InstallCmd,
 		idot.EditCmd,
 		idot.DepsCmd,
+		idot.StatusCmd,
+		idot.DiffCmd,
 		idot.InitCmd,
 		x.Cmd,
 		claude.Cmd,

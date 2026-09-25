@@ -7,6 +7,7 @@ toolchain go1.24.2
 require (
 	github.com/Chaitanyabsprip/gitmux v0.13.0
 	github.com/arl/gitstatus v0.7.0
+	github.com/aymanbagabas/go-udiff v0.2.0
 	github.com/charlievieth/fastwalk v1.0.14
 	github.com/rwxrob/bonzai v0.56.6
 	github.com/rwxrob/bonzai/cmds/help v0.8.2
@@ -16,14 +17,12 @@ require (
 	github.com/rwxrob/bonzai/fn v0.9.0
 	github.com/rwxrob/bonzai/futil v0.4.0
 	github.com/rwxrob/bonzai/github v0.1.0
-	github.com/rwxrob/bonzai/is v0.3.0
 	github.com/rwxrob/bonzai/run v0.7.0
 	github.com/rwxrob/bonzai/term v0.2.1
 	github.com/rwxrob/bonzai/to v0.6.1
 	github.com/rwxrob/bonzai/vars v0.12.0
 	github.com/rwxrob/bonzai/web v0.1.1
 	github.com/rwxrob/bonzai/yq v0.1.0
-	github.com/sergi/go-diff v1.3.1
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -41,6 +40,7 @@ require (
 	github.com/charmbracelet/x/exp/slice v0.0.0-20251023181713-f594ac034d6b // indirect
 	github.com/charmbracelet/x/term v0.2.1 // indirect
 	github.com/clipperhouse/uax29/v2 v2.2.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/dlclark/regexp2 v1.11.5 // indirect
 	github.com/elliotchance/orderedmap v1.8.0 // indirect
@@ -65,6 +65,7 @@ require (
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/rwxrob/bonzai/anim v0.1.0 // indirect
 	github.com/rwxrob/bonzai/ds v0.1.1 // indirect
+	github.com/rwxrob/bonzai/is v0.3.0 // indirect
 	github.com/rwxrob/bonzai/json v0.1.0 // indirect
 	github.com/rwxrob/bonzai/mark v0.12.0 // indirect
 	github.com/rwxrob/bonzai/mark/funcs v0.8.6 // indirect
@@ -80,5 +81,6 @@ require (
 	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/term v0.36.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
+	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473 // indirect
 )

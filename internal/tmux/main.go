@@ -11,7 +11,15 @@ import (
 	"github.com/rwxrob/bonzai/edit"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
+	"github.com/Chaitanyabsprip/dotfiles/x/depends"
 )
+
+// Deps lists tmux's real runtime dependencies, per ADR-0011 — fzf backs
+// the sessionizer, session manager, and notes picker (pkg/fzf).
+var Deps = []depends.Dep{
+	{Name: `tmux`, Note: `binary`},
+	{Name: `fzf`, Note: `sessionizer`},
+}
 
 // TODO(me):
 // - dependencies

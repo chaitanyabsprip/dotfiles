@@ -19,6 +19,12 @@ var InstallCmd = &bonzai.Cmd{
 	Do:   func(x *bonzai.Cmd, args ...string) error { return installOhMyPosh() },
 }
 
+// Deps lists ohmyposh's real runtime dependencies, per ADR-0011 — see
+// installOhMyPosh below, which shells out to unzip.
+var Deps = []depends.Dep{
+	{Name: `unzip`, Note: `install`},
+}
+
 func installOhMyPosh() error {
 	if ok, _ := have.Executable(`ohmyposh`); ok {
 		fmt.Println(`ohmyposh is already installed`)

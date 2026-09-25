@@ -24,6 +24,7 @@ var (
 	Visual          = os.Getenv(`VISUAL`)
 	XdgConfigHome   = os.Getenv(`XDG_CONFIG_HOME`)
 	XdfCacheHome    = os.Getenv(`XDG_CACHE_HOME`)
+	XdgStateHome    = os.Getenv(`XDG_STATE_HOME`)
 )
 
 func init() {
