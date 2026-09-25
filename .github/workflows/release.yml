@@ -1,0 +1,51 @@
+name: Release
+
+# Tag-triggered, not push-to-main: VISION.md left this cadence as an open
+# question ("more control over what 'latest' means" vs. "less friction,
+# noisier release list"). Tags win — dot upgrade and the bootstrap script
+# both resolve "latest" against GitHub Releases, and a release on every
+# main-branch commit would make that resolve to whatever just landed,
+# not a deliberate cut.
+on:
+  push:
+    tags: ['v*.*.*']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, darwin]
+        goarch: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: |
+          mkdir -p dist
+          go build -o dist/dot ./cmd/dot
+          go build -o dist/x ./cmd/x
+          tar -C dist -czf dot_${{ matrix.goos }}_${{ matrix.goarch }}.tar.gz dot x
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dot_${{ matrix.goos }}_${{ matrix.goarch }}
+          path: dot_${{ matrix.goos }}_${{ matrix.goarch }}.tar.gz
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*.tar.gz
+          generate_release_notes: true

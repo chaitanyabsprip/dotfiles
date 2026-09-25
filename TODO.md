@@ -125,8 +125,20 @@ Done 2026-09-26 — turned out to be a two-step check, not a build:
 Lowest priority; do after P0-P2 land, since they change surface area these
 would otherwise re-test:
 
-- [ ] `dot upgrade` + GitHub Releases self-update flow
-- [ ] CI build/release pipeline (per-OS/arch binaries on push/tag)
+- [ ] `dot upgrade` + GitHub Releases self-update flow — blocked on the
+      release pipeline below (needs binaries to actually fetch), and on
+      `dot version` (build-time version/commit metadata isn't embedded
+      yet, so there's nothing for it to report or compare against).
+- [x] CI build/release pipeline. Done 2026-09-26:
+      `.github/workflows/ci.yml` (build/vet/test on every push to `main`
+      + every PR, Linux and macOS) and `.github/workflows/release.yml`
+      (linux/darwin × amd64/arm64 for `dot` and `x`, published as GitHub
+      Release assets, tag-triggered on `v*.*.*` — resolves VISION.md's
+      "release cadence" open question in favor of tags over push-to-main,
+      since `dot upgrade`/the bootstrap script resolve "latest" against
+      releases and every-push would make that noisy and undeliberate).
+      Verified all 4 target combos actually cross-compile locally before
+      committing to them in CI; both workflows pass `actionlint` clean.
 - [ ] Static binary build, startup benchmarks
 - [ ] Complete test coverage
 - [ ] Empty `docs/tasks/` directory — either fill it from this file's
