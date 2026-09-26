@@ -10,6 +10,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/bash"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bat"
 	"github.com/Chaitanyabsprip/dotfiles/internal/dirs"
+	"github.com/Chaitanyabsprip/dotfiles/internal/eza"
 	"github.com/Chaitanyabsprip/dotfiles/internal/fd"
 	"github.com/Chaitanyabsprip/dotfiles/internal/fish"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gh"
@@ -24,6 +25,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/starship"
 	"github.com/Chaitanyabsprip/dotfiles/internal/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/internal/waybar"
+	"github.com/Chaitanyabsprip/dotfiles/internal/yq"
 	"github.com/Chaitanyabsprip/dotfiles/internal/zsh"
 )
 
@@ -33,6 +35,7 @@ var InstallCmds = []*bonzai.Cmd{
 	bash.InstallCmd.WithName(`bash`),
 	bat.InstallCmd.WithName(`bat`),
 	dirs.InstallCmd.WithName(`dirs`),
+	eza.InstallCmd.WithName(`eza`),
 	fd.InstallCmd.WithName(`fd`),
 	fish.InstallCmd.WithName(`fish`),
 	gh.InstallCmd.WithName(`gh`),
@@ -47,6 +50,7 @@ var InstallCmds = []*bonzai.Cmd{
 	starship.InstallCmd.WithName(`starship`),
 	tmux.InstallCmd.WithName(`tmux`),
 	waybar.InstallCmd.WithName(`waybar`),
+	yq.InstallCmd.WithName(`yq`),
 	zsh.InstallCmd.WithName(`zsh`),
 }
 

@@ -54,7 +54,7 @@ func TestInstallCmdsIncludeCLITools(t *testing.T) {
 	for _, c := range InstallCmds {
 		names[c.Name] = true
 	}
-	for _, want := range []string{`fd`, `jq`, `neovim`, `rg`} {
+	for _, want := range []string{`eza`, `fd`, `jq`, `neovim`, `rg`, `yq`} {
 		if !names[want] {
 			t.Errorf("dot install is missing %q", want)
 		}
