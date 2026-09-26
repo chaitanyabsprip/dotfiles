@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/rwxrob/bonzai"
@@ -92,10 +93,17 @@ func scanProject(root string) (repo string, linked []string, err error) {
 	return repo, linked, err
 }
 
+// worktreeGitdir matches a gitdir that is a worktree admin dir. Submodule
+// gitdirs end in modules/<name>, even inside worktrees/<wt>/modules/.
+var worktreeGitdir = regexp.MustCompile(`/worktrees/[^/]+/?$`)
+
 // isWorktreeGitfile reports whether the .git file at p belongs to a
-// linked worktree. Submodules use .git files too, but they point into
-// modules/, not worktrees/.
+// linked worktree rather than a submodule.
 func isWorktreeGitfile(p string) bool {
 	b, err := os.ReadFile(p)
-	return err == nil && strings.Contains(filepath.ToSlash(string(b)), `/worktrees/`)
+	if err != nil {
+		return false
+	}
+	gitdir, ok := strings.CutPrefix(strings.TrimSpace(string(b)), `gitdir:`)
+	return ok && worktreeGitdir.MatchString(filepath.ToSlash(strings.TrimSpace(gitdir)))
 }

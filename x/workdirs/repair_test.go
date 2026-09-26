@@ -21,6 +21,17 @@ func TestRepairProjectAfterMove(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	// A submodule inside a linked worktree points under worktrees/x/modules/;
+	// it is not a worktree either.
+	wtSub := filepath.Join(old, `feat`, `x`, `lib`)
+	if err := os.MkdirAll(wtSub, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	wtGitfile := []byte("gitdir: ../../../root/.git/worktrees/x/modules/lib\n")
+	if err := os.WriteFile(filepath.Join(wtSub, `.git`), wtGitfile, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
 	moved := old + `-moved`
 	if err := os.Rename(old, moved); err != nil {
 		t.Fatal(err)
