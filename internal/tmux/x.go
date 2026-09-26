@@ -21,5 +21,6 @@ var XCmd = &bonzai.Cmd{
 		icon.Cmd,
 		SuspendCmd,
 		GitmuxCmd,
+		HarpoonCmd,
 	},
 }
