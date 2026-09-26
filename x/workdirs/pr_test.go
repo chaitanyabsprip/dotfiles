@@ -175,6 +175,41 @@ func TestPRDoneKeepsUnpushedCommits(t *testing.T) {
 	}
 }
 
+// gh checks out a fork's PR as a plain local branch with no
+// remote-tracking ref. Its commits are on GitHub as the PR head, so done
+// must not call them unpushed — but a local commit on top still is.
+func TestPRDoneForkPR(t *testing.T) {
+	project := homeBase(t)
+	root := filepath.Join(project, `root`)
+	fakeGH(t, nil, func(dir, _ string) error {
+		if _, err := git(dir, `switch`, `-q`, `-c`, `feat/fork`); err != nil {
+			return err
+		}
+		_, err := git(dir, `commit`, `-q`, `--allow-empty`, `-m`, `fork work`)
+		return err
+	})
+	head := ``
+	ghPRView = func(_, _ string) (prInfo, error) {
+		return prInfo{State: `OPEN`, HeadRefName: `feat/fork`, HeadRefOid: head}, nil
+	}
+
+	path, err := prCheckout(project, `8`, ``, noInput, io.Discard)
+	if err != nil {
+		t.Fatal(err)
+	}
+	head = gitT(t, root, `rev-parse`, `feat/fork`) // what GitHub has
+
+	gitT(t, path, `commit`, `-q`, `--allow-empty`, `-m`, `local only`)
+	if _, err := prDone(project, `8`, ``, io.Discard); err == nil {
+		t.Error(`a commit beyond the PR head should block done`)
+	}
+
+	gitT(t, path, `reset`, `-q`, `--hard`, head)
+	if _, err := prDone(project, `8`, ``, io.Discard); err != nil {
+		t.Errorf("clean fork PR worktree should be removable: %v", err)
+	}
+}
+
 func TestPRDoneRejectsBadNumber(t *testing.T) {
 	project := homeBase(t)
 	other := filepath.Join(project, `feat`, `x`)

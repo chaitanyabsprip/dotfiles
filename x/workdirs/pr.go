@@ -97,12 +97,13 @@ var prPruneCmd = &bonzai.Cmd{
 type prInfo struct {
 	State       string `json:"state"`
 	HeadRefName string `json:"headRefName"`
+	HeadRefOid  string `json:"headRefOid"` // PR head commit as GitHub has it
 }
 
 // Seams over the gh CLI; tests replace them.
 var (
 	ghPRView = func(dir, n string) (prInfo, error) {
-		cmd := exec.Command(`gh`, `pr`, `view`, n, `--json`, `state,headRefName`)
+		cmd := exec.Command(`gh`, `pr`, `view`, n, `--json`, `state,headRefName,headRefOid`)
 		cmd.Dir = dir
 		out, err := cmd.Output()
 		if err != nil {
@@ -205,7 +206,7 @@ func prDone(dir, n, rel string, out io.Writer) (string, error) {
 	inside := isInside(dir, wt.Path)
 	info, _ := ghPRView(p.Repo, n)
 	// Run from the common dir: dir may be the worktree being removed.
-	if err := removeWorktree(p.Common, wt, out, info.State == `MERGED`); err != nil {
+	if err := removeWorktree(p.Common, wt, out, info); err != nil {
 		return ``, err
 	}
 	if inside {
@@ -226,7 +227,7 @@ func prPrune(dir string, in io.Reader, out io.Writer) error {
 	}
 	var found int
 	var stale []worktree
-	merged := map[string]bool{}
+	infos := map[string]prInfo{}
 	for _, wt := range wts {
 		n := prFromPath(p.Root, wt.Path)
 		if n == `` {
@@ -234,7 +235,8 @@ func prPrune(dir string, in io.Reader, out io.Writer) error {
 		}
 		found++
 		state := `UNKNOWN`
-		if info, err := ghPRView(p.Repo, n); err == nil {
+		info, err := ghPRView(p.Repo, n)
+		if err == nil {
 			state = info.State
 		}
 		branch := wt.Branch
@@ -244,7 +246,7 @@ func prPrune(dir string, in io.Reader, out io.Writer) error {
 		fmt.Fprintf(out, "  pr/%-6s  %-8s  %s\n", n, state, branch)
 		if state == `MERGED` || state == `CLOSED` {
 			stale = append(stale, wt)
-			merged[wt.Path] = state == `MERGED`
+			infos[wt.Path] = info
 		}
 	}
 	switch {
@@ -262,7 +264,7 @@ func prPrune(dir string, in io.Reader, out io.Writer) error {
 	}
 	var errs []error
 	for _, wt := range stale {
-		errs = append(errs, removeWorktree(p.Common, wt, out, merged[wt.Path]))
+		errs = append(errs, removeWorktree(p.Common, wt, out, infos[wt.Path]))
 	}
 	return errors.Join(errs...)
 }
@@ -271,11 +273,17 @@ func prPrune(dir string, in io.Reader, out io.Writer) error {
 // refuses a worktree with uncommitted or untracked files, and, unless
 // the PR was merged, a branch with commits that exist nowhere else.
 // Merged is exempt because squash merges leave such commits behind.
-func removeWorktree(repo string, wt worktree, out io.Writer, merged bool) error {
-	if wt.Branch != `` && !merged {
-		n, err := git(repo, `rev-list`, `--count`, wt.Branch, `--not`,
-			// With --branches, --exclude patterns omit the refs/heads/ prefix.
-			`--exclude=`+wt.Branch, `--branches`, `--remotes`)
+// Commits reachable from the PR head count as pushed: a fork's PR is
+// checked out with no remote-tracking branch.
+func removeWorktree(repo string, wt worktree, out io.Writer, pr prInfo) error {
+	if wt.Branch != `` && pr.State != `MERGED` {
+		// With --branches, --exclude patterns omit the refs/heads/ prefix.
+		args := []string{`rev-list`, `--count`, wt.Branch, `--not`,
+			`--exclude=` + wt.Branch, `--branches`, `--remotes`}
+		if _, err := git(repo, `cat-file`, `-e`, pr.HeadRefOid+`^{commit}`); pr.HeadRefOid != `` && err == nil {
+			args = append(args, pr.HeadRefOid)
+		}
+		n, err := git(repo, args...)
 		if err != nil {
 			return err
 		}
