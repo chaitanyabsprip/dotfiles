@@ -136,6 +136,59 @@ func TestPRDone(t *testing.T) {
 	}
 }
 
+// The shell passes $PWD unresolved; git records resolved paths
+// (macOS /var -> /private/var). The cd target must still be the root.
+func TestPRDoneFromUnresolvedPath(t *testing.T) {
+	project := homeBase(t)
+	fakeGH(t, map[string]prInfo{`7`: {State: `OPEN`, HeadRefName: `feat/seven`}},
+		createBranch(`feat/seven`))
+	if _, err := prCheckout(project, `7`, ``, noInput, io.Discard); err != nil {
+		t.Fatal(err)
+	}
+	cd, err := prDone(filepath.Join(project, `pr`, `7`), ``, ``, io.Discard)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !samePath(cd, project) {
+		t.Errorf("cd target = %s, want %s", cd, project)
+	}
+}
+
+func TestPRDoneKeepsUnpushedCommits(t *testing.T) {
+	project := homeBase(t)
+	fakeGH(t, map[string]prInfo{`7`: {State: `OPEN`, HeadRefName: `feat/seven`}},
+		createBranch(`feat/seven`))
+	path, err := prCheckout(project, `7`, ``, noInput, io.Discard)
+	if err != nil {
+		t.Fatal(err)
+	}
+	gitT(t, path, `commit`, `-q`, `--allow-empty`, `-m`, `local only`)
+
+	if _, err := prDone(project, `7`, ``, io.Discard); err == nil {
+		t.Error(`done with unpushed commits should fail`)
+	}
+	if _, err := os.Stat(path); err != nil {
+		t.Errorf("worktree removed: %v", err)
+	}
+	if out := gitT(t, filepath.Join(project, `root`), `branch`, `--list`, `feat/seven`); out == `` {
+		t.Error(`branch with unpushed commits was deleted`)
+	}
+}
+
+func TestPRDoneRejectsBadNumber(t *testing.T) {
+	project := homeBase(t)
+	other := filepath.Join(project, `feat`, `x`)
+	gitT(t, filepath.Join(project, `root`), `worktree`, `add`, `-q`, `-b`, `feat/x`, other)
+	fakeGH(t, nil, createBranch(`x`))
+
+	if _, err := prDone(project, `../feat/x`, ``, io.Discard); err == nil {
+		t.Error(`non-numeric PR should be rejected`)
+	}
+	if _, err := os.Stat(other); err != nil {
+		t.Errorf("unrelated worktree removed: %v", err)
+	}
+}
+
 func TestPRDoneKeepsDirtyWorktree(t *testing.T) {
 	project := homeBase(t)
 	fakeGH(t, map[string]prInfo{`7`: {State: `OPEN`, HeadRefName: `feat/seven`}},
@@ -172,6 +225,8 @@ func TestPRPrune(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	// Squash-merged PRs leave local-only commits; merged still prunes.
+	gitT(t, p7, `commit`, `-q`, `--allow-empty`, `-m`, `squashed upstream`)
 	ghPRView = func(_, n string) (prInfo, error) {
 		if n == `7` {
 			return prInfo{State: `MERGED`}, nil

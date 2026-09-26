@@ -186,6 +186,9 @@ func prDone(dir, n, rel string, out io.Writer) (string, error) {
 			return ``, fmt.Errorf(`no PR number given and %s is not in a pr/<number> worktree`, dir)
 		}
 	}
+	if !prNumber.MatchString(n) {
+		return ``, fmt.Errorf(`invalid PR number %q`, n)
+	}
 	if rel == `` {
 		rel = filepath.Join(`pr`, n)
 	}
@@ -198,11 +201,14 @@ func prDone(dir, n, rel string, out io.Writer) (string, error) {
 		fmt.Fprintf(out, "no worktree at %s, nothing to remove\n", rel)
 		return dir, nil
 	}
+	// Decide before removal: once the dir is gone its symlinks can't resolve.
+	inside := isInside(dir, wt.Path)
+	info, _ := ghPRView(p.Repo, n)
 	// Run from the common dir: dir may be the worktree being removed.
-	if err := removeWorktree(p.Common, wt, out); err != nil {
+	if err := removeWorktree(p.Common, wt, out, info.State == `MERGED`); err != nil {
 		return ``, err
 	}
-	if isInside(dir, wt.Path) {
+	if inside {
 		return p.Root, nil
 	}
 	return dir, nil
@@ -220,6 +226,7 @@ func prPrune(dir string, in io.Reader, out io.Writer) error {
 	}
 	var found int
 	var stale []worktree
+	merged := map[string]bool{}
 	for _, wt := range wts {
 		n := prFromPath(p.Root, wt.Path)
 		if n == `` {
@@ -237,6 +244,7 @@ func prPrune(dir string, in io.Reader, out io.Writer) error {
 		fmt.Fprintf(out, "  pr/%-6s  %-8s  %s\n", n, state, branch)
 		if state == `MERGED` || state == `CLOSED` {
 			stale = append(stale, wt)
+			merged[wt.Path] = state == `MERGED`
 		}
 	}
 	switch {
@@ -254,14 +262,27 @@ func prPrune(dir string, in io.Reader, out io.Writer) error {
 	}
 	var errs []error
 	for _, wt := range stale {
-		errs = append(errs, removeWorktree(p.Common, wt, out))
+		errs = append(errs, removeWorktree(p.Common, wt, out, merged[wt.Path]))
 	}
 	return errors.Join(errs...)
 }
 
 // removeWorktree removes a clean worktree and its local branch. It
-// refuses a worktree with uncommitted or untracked files.
-func removeWorktree(repo string, wt worktree, out io.Writer) error {
+// refuses a worktree with uncommitted or untracked files, and, unless
+// the PR was merged, a branch with commits that exist nowhere else.
+// Merged is exempt because squash merges leave such commits behind.
+func removeWorktree(repo string, wt worktree, out io.Writer, merged bool) error {
+	if wt.Branch != `` && !merged {
+		n, err := git(repo, `rev-list`, `--count`, wt.Branch, `--not`,
+			// With --branches, --exclude patterns omit the refs/heads/ prefix.
+			`--exclude=`+wt.Branch, `--branches`, `--remotes`)
+		if err != nil {
+			return err
+		}
+		if n != `0` {
+			return fmt.Errorf(`%s has %s unpushed commit(s); push them or delete the branch yourself`, wt.Branch, n)
+		}
+	}
 	if _, err := git(repo, `worktree`, `remove`, wt.Path); err != nil {
 		return fmt.Errorf(`%w (commit or stash first, or: git worktree remove --force %s)`, err, wt.Path)
 	}
