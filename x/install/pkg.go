@@ -55,3 +55,12 @@ func Pkg(name string, overrides map[string]string) error {
 	fmt.Printf("%s: not available on this OS via a package manager, install manually\n", name)
 	return nil
 }
+
+// IsApt reports whether Pkg installs with apt on this system.
+func IsApt() bool {
+	switch distro.Name() {
+	case `Ubuntu`, `Debian GNU/Linux`:
+		return true
+	}
+	return false
+}
