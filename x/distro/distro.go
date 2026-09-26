@@ -49,9 +49,9 @@ func Name() string {
 		}
 		return strings.Trim(parts[1], `"`)
 	} else if ok, _ := have.Executable(`lsb_release`); ok {
-		return strings.TrimSpace(run.Out(`lsb_release -si`))
+		return strings.TrimSpace(run.Out(`lsb_release`, `-si`))
 	} else {
-		return strings.TrimSpace(run.Out(`uname -s`))
+		return strings.TrimSpace(run.Out(`uname`, `-s`))
 	}
 }
 

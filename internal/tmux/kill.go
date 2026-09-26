@@ -31,7 +31,7 @@ func switchSession() error {
 		return fmt.Errorf("no tmux session found")
 	}
 	if count > 1 {
-		run.Out(`tmux`, `switch-client -l`)
+		run.Out(`tmux`, `switch-client`, `-l`)
 	} else {
 		run.Out(`tmux`, `new-session`, `-s`, `home`, `-c`, env.Home)
 	}
