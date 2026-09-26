@@ -10,12 +10,16 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/bash"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bat"
 	"github.com/Chaitanyabsprip/dotfiles/internal/dirs"
+	"github.com/Chaitanyabsprip/dotfiles/internal/fd"
 	"github.com/Chaitanyabsprip/dotfiles/internal/fish"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gitui"
+	"github.com/Chaitanyabsprip/dotfiles/internal/jq"
 	"github.com/Chaitanyabsprip/dotfiles/internal/kitty"
 	"github.com/Chaitanyabsprip/dotfiles/internal/lsd"
+	"github.com/Chaitanyabsprip/dotfiles/internal/neovim"
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
+	"github.com/Chaitanyabsprip/dotfiles/internal/ripgrep"
 	"github.com/Chaitanyabsprip/dotfiles/internal/sqlfluff"
 	"github.com/Chaitanyabsprip/dotfiles/internal/starship"
 	"github.com/Chaitanyabsprip/dotfiles/internal/tmux"
@@ -29,12 +33,16 @@ var InstallCmds = []*bonzai.Cmd{
 	bash.InstallCmd.WithName(`bash`),
 	bat.InstallCmd.WithName(`bat`),
 	dirs.InstallCmd.WithName(`dirs`),
+	fd.InstallCmd.WithName(`fd`),
 	fish.InstallCmd.WithName(`fish`),
 	gh.InstallCmd.WithName(`gh`),
 	gitui.InstallCmd.WithName(`gitui`),
+	jq.InstallCmd.WithName(`jq`),
 	kitty.InstallCmd.WithName(`kitty`),
 	lsd.InstallCmd.WithName(`lsd`),
+	neovim.InstallCmd.WithName(`neovim`),
 	ohmyposh.InstallCmd.WithName(`ohmyposh`),
+	ripgrep.InstallCmd.WithName(`rg`),
 	sqlfluff.InstallCmd.WithName(`sqlfluff`),
 	starship.InstallCmd.WithName(`starship`),
 	tmux.InstallCmd.WithName(`tmux`),

@@ -48,3 +48,15 @@ func TestInstallCmdDoSpecificTool(t *testing.T) {
 		t.Error("bash install was not called for Do('bash')")
 	}
 }
+
+func TestInstallCmdsIncludeCLITools(t *testing.T) {
+	names := map[string]bool{}
+	for _, c := range InstallCmds {
+		names[c.Name] = true
+	}
+	for _, want := range []string{`fd`, `jq`, `neovim`, `rg`} {
+		if !names[want] {
+			t.Errorf("dot install is missing %q", want)
+		}
+	}
+}
