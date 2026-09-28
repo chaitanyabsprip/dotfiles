@@ -125,10 +125,14 @@ Done 2026-09-26 — turned out to be a two-step check, not a build:
 Lowest priority; do after P0-P2 land, since they change surface area these
 would otherwise re-test:
 
-- [ ] `dot upgrade` + GitHub Releases self-update flow — blocked on the
-      release pipeline below (needs binaries to actually fetch), and on
-      `dot version` (build-time version/commit metadata isn't embedded
-      yet, so there's nothing for it to report or compare against).
+- [ ] `dot upgrade` + GitHub Releases self-update flow — release pipeline
+      (below) and `dot version` are both done now (2026-09-29:
+      `internal/core/version` holds a `Version` var set via `-ldflags` in
+      `build.yml`/`release.yml` to the exact tag on the built commit, or
+      its short hash if untagged — never `git describe`'s
+      `<tag>-<N>-g<hash>` form; `dot version`/`x version` print it, `dev`
+      with no ldflags). What's still missing: the actual fetch-latest
+      release-and-replace-the-running-binary logic itself.
 - [x] CI build/release pipeline. Done 2026-09-26, revised 2026-09-29:
       `.github/workflows/test.yml` (build+vet+test, PRs only, Linux and
       macOS — running it on every push duplicated the PR check for no

@@ -14,13 +14,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # need tag history for the version ldflags below
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
       - run: |
+          VERSION=$(git describe --tags --exact-match 2>/dev/null || git rev-parse --short HEAD)
           mkdir -p dist
-          go build -o dist/dot ./cmd/dot
-          go build -o dist/x ./cmd/x
+          go build -ldflags "-X github.com/Chaitanyabsprip/dotfiles/internal/core/version.Version=$VERSION" -o dist/dot ./cmd/dot
+          go build -ldflags "-X github.com/Chaitanyabsprip/dotfiles/internal/core/version.Version=$VERSION" -o dist/x ./cmd/x
       - uses: actions/upload-artifact@v4
         with:
           name: dot-${{ matrix.os }}

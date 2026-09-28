@@ -19,6 +19,8 @@ jobs:
         goarch: [amd64, arm64]
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # need tag history for the version ldflags below
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
@@ -26,9 +28,10 @@ jobs:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
         run: |
+          VERSION=$(git describe --tags --exact-match 2>/dev/null || git rev-parse --short HEAD)
           mkdir -p dist
-          go build -o dist/dot ./cmd/dot
-          go build -o dist/x ./cmd/x
+          go build -ldflags "-X github.com/Chaitanyabsprip/dotfiles/internal/core/version.Version=$VERSION" -o dist/dot ./cmd/dot
+          go build -ldflags "-X github.com/Chaitanyabsprip/dotfiles/internal/core/version.Version=$VERSION" -o dist/x ./cmd/x
           tar -C dist -czf dot_${{ matrix.goos }}_${{ matrix.goarch }}.tar.gz dot x
       - uses: actions/upload-artifact@v4
         with:
