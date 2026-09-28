@@ -15,6 +15,10 @@ var catcCmd = &bonzai.Cmd{
 	Name:    `catc`,
 	Vers:    `v1.0.0`,
 	Short:   `find a script in path and cat the contents`,
+	Usage:   `<name>...`,
+	Long: `
+Finds each named command on the PATH and prints its contents with
+bat, falling back to plain cat when bat isn't installed.`,
 	MinArgs: 1,
 	Comp:    comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {

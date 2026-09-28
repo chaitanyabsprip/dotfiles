@@ -10,8 +10,11 @@ import (
 var TableCmd = &bonzai.Cmd{
 	Name:  `table`,
 	Short: `print color table`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{},
+	Long: `
+Prints every combination of the 8 standard foreground and background
+colors as a table, alongside the escape sequence that produces it.`,
+	Comp: comp.Cmds,
+	Cmds: []*bonzai.Cmd{},
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		Table()
 		return nil

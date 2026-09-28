@@ -10,8 +10,11 @@ import (
 var StripCmd = &bonzai.Cmd{
 	Name:  `strip`,
 	Short: `print 24 bit colors in strips`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{},
+	Long: `
+Prints strips of true (24 bit) color: red, green, blue, and a rainbow
+gradient, to check terminal color support.`,
+	Comp: comp.Cmds,
+	Cmds: []*bonzai.Cmd{},
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		Strip()
 		return nil

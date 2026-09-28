@@ -16,9 +16,13 @@ import (
 
 var Cmd = &bonzai.Cmd{
 	Name:  `have`,
-	Short: `have <command>`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{},
+	Short: `check that commands are on the PATH`,
+	Long: `
+Checks that every named command is on the PATH, exiting non-zero if
+any is missing. Set VERBOSE=1 to print which ones were found or
+missing.`,
+	Comp: comp.Cmds,
+	Cmds: []*bonzai.Cmd{},
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		verbose := env.Verbose != ""
 		names := os.Args[1:]

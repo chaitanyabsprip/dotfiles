@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/cmds/help"
 	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai/fn/each"
 	"github.com/rwxrob/bonzai/vars"
@@ -52,7 +53,13 @@ var Cmd = &bonzai.Cmd{
 	Name:  `gpt`,
 	Vers:  `v0.1.0`,
 	Short: `persistent conversation with LLM model using mods`,
-	Comp:  comp.Combine{comp.Cmds},
+	Long: `
+Sends args, or stdin when given none, to an LLM via charmbracelet/mods
+and prints the reply, continuing the same conversation on later calls.
+The model comes from $GPT_MODEL, mods' own default-model config, or
+"gemini-free". See 'gpt help' for the specialised roles (commit, dev,
+shell, comment) and 'gpt list' for past conversations.`,
+	Comp: comp.Combine{comp.Cmds},
 	Cmds: []*bonzai.Cmd{
 		vars.Cmd,
 		commitCmd,
@@ -60,6 +67,7 @@ var Cmd = &bonzai.Cmd{
 		shellCmd,
 		commentCmd,
 		listCmd,
+		help.Cmd,
 	},
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		depends.On(nil, "mods")
@@ -92,6 +100,12 @@ var Cmd = &bonzai.Cmd{
 var commitCmd = &bonzai.Cmd{
 	Name:  `commit`,
 	Alias: `gc|gptc`,
+	Short: `write a commit message for args or stdin`,
+	Long: `
+Asks the LLM to write a commit message for args, or stdin when given
+none (typically 'git diff --staged'), and prints it. Runs quiet and
+uncached: each call is a one-off, not part of the ongoing gpt
+conversation.`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		opts := GptOpts{
 			Model: stateVar(
@@ -118,7 +132,11 @@ var commitCmd = &bonzai.Cmd{
 var devCmd = &bonzai.Cmd{
 	Name:  `dev`,
 	Alias: `code|d`,
-	Cmds:  []*bonzai.Cmd{vars.Cmd},
+	Short: `ask the LLM in its developer role`,
+	Long: `
+Sends args, or stdin when given none, to the LLM under the "dev" role
+(mods role config), for coding questions rather than general chat.`,
+	Cmds: []*bonzai.Cmd{vars.Cmd, help.Cmd},
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		opts := GptOpts{
 			Model: stateVar(
@@ -145,7 +163,11 @@ var devCmd = &bonzai.Cmd{
 var shellCmd = &bonzai.Cmd{
 	Name:  `shell`,
 	Alias: `s`,
-	Cmds:  []*bonzai.Cmd{vars.Cmd},
+	Short: `ask the LLM in its shell role`,
+	Long: `
+Sends args, or stdin when given none, to the LLM under the "shell"
+role (mods role config), for shell command questions.`,
+	Cmds: []*bonzai.Cmd{vars.Cmd, help.Cmd},
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		opts := GptOpts{
 			Model: stateVar(
@@ -172,7 +194,12 @@ var shellCmd = &bonzai.Cmd{
 var commentCmd = &bonzai.Cmd{
 	Name:  `comment`,
 	Alias: `c|doc|document`,
-	Cmds:  []*bonzai.Cmd{vars.Cmd},
+	Short: `write a doc comment for a function`,
+	Long: `
+Asks the LLM to write a doc comment for the function given in args or
+stdin, wrapped at 72 columns, with the function itself immediately
+after and any symbol reference bracketed. Runs quiet and uncached.`,
+	Cmds: []*bonzai.Cmd{vars.Cmd, help.Cmd},
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		opts := GptOpts{
 			Model: stateVar(
@@ -200,6 +227,7 @@ var commentCmd = &bonzai.Cmd{
 var listCmd = &bonzai.Cmd{
 	Name:  `list`,
 	Alias: `ls`,
+	Short: `list past conversations`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		convs, err := ListConversations()
 		if err != nil {

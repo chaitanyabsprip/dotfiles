@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/cmds/help"
 	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai/run"
 
@@ -16,18 +17,35 @@ var SuspendCmd = &bonzai.Cmd{
 	Name:  `suspend`,
 	Alias: `susp`,
 	Short: `switch tmux server suspend on or off`,
-	Comp:  comp.Cmds,
+	Long: `
+Binds a key (default F12, or the '@suspend_key' tmux option) to toggle
+a "suspended" tmux state: options change, a command runs, and the
+prefix key is disabled until the same key resumes it. See 'suspend
+help' for the init/on/off commands.`,
+	Comp: comp.Cmds,
 	Cmds: []*bonzai.Cmd{
 		suspendInitCmd,
 		suspendOnCmd,
 		suspendOffCmd,
+		help.Cmd,
+	},
+	Do: func(x *bonzai.Cmd, _ ...string) error {
+		fmt.Printf("%s - %s\n\n", x.Name, x.Short)
+		fmt.Println(`COMMANDS:`)
+		for _, c := range x.Cmds {
+			fmt.Printf("  %-10s - %s\n", c.Name, c.Short)
+		}
+		return nil
 	},
 }
 
 var suspendInitCmd = &bonzai.Cmd{
 	Name:  `init`,
 	Alias: `setup`,
-	Short: `toggle the tmux server suspend state`,
+	Short: `bind the suspend key`,
+	Long: `
+Binds the suspend key (see 'suspend help') to run 'tmux x suspend on'
+and 'tmux x suspend off'. Run this once, e.g. from tmux.conf.`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		return SuspendInit()
 	},
@@ -36,7 +54,13 @@ var suspendInitCmd = &bonzai.Cmd{
 var suspendOnCmd = &bonzai.Cmd{
 	Name:    `on`,
 	Short:   `suspend the tmux server`,
+	Usage:   `<on-suspend-cmd> <suspend-opts>`,
 	NumArgs: 2,
+	Long: `
+Enters the suspended state: disables the prefix key, switches to the
+"suspended" key table, cancels any copy mode, un-syncs panes, applies
+` + "`<suspend-opts>`" + ` (from '@suspend_suspended_options'), and runs
+` + "`<on-suspend-cmd>`" + `. Called by the key binding 'suspend init' sets up.`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		return SuspendOn(args[0], args[1])
 	},
@@ -45,7 +69,12 @@ var suspendOnCmd = &bonzai.Cmd{
 var suspendOffCmd = &bonzai.Cmd{
 	Name:    `off`,
 	Short:   `resume the tmux server`,
+	Usage:   `<on-resume-cmd>`,
 	NumArgs: 1,
+	Long: `
+Reverses 'suspend on': runs ` + "`<on-resume-cmd>`" + `, restores the options
+'suspend on' overwrote, restores the prefix key, and clears the key
+table. Called by the key binding 'suspend init' sets up.`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		return SuspendOff(args[0])
 	},

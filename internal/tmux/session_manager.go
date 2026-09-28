@@ -12,6 +12,10 @@ var SessionManagerCmd = &bonzai.Cmd{
 	Name:  `session-manager`,
 	Alias: `sm`,
 	Short: `list and switch existing sessions`,
+	Usage: `[name]`,
+	Long: `
+Switches the client to the tmux session named by [name], or, without
+it, fuzzy-picks one with fzf. A no-op with only one session.`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		if len(args) == 0 {
 			args = append(args, ``)

@@ -13,6 +13,12 @@ var Cmd = &bonzai.Cmd{
 	Name:  `icon`,
 	Alias: `iname|i|name`,
 	Short: `display icon and name for pane foreground process`,
+	Usage: `<pane-pid> [pane-command]`,
+	Long: `
+Prints an icon for the process running in a tmux pane, resolved from
+` + "`<pane-pid>`" + ` (#{pane_pid}), for a tmux statusline. Falls back to
+[pane-command] (#{pane_current_command}) for an idle pane, or "?" if
+neither resolves.`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		if len(args) == 0 {
 			fmt.Fprint(os.Stderr, "?")

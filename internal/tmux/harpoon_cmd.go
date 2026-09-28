@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/cmds/help"
 	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai/run"
 
@@ -20,38 +21,63 @@ var HarpoonCmd = &bonzai.Cmd{
 	Name:  `harpoon`,
 	Alias: `hp`,
 	Short: `jump between bookmarked tmux sessions`,
-	Comp:  comp.Cmds,
+	Long: `
+Bookmarks tmux sessions (or panes) into numbered slots stored in a
+file shared with the standalone harpoon tool, for quick switching. See
+'harpoon help' for the individual commands.`,
+	Comp: comp.Cmds,
 	Cmds: []*bonzai.Cmd{
 		hpAddCmd, hpPaneCmd, hpSetCmd, hpSetPaneCmd,
-		hpRmCmd, hpListCmd, hpGoCmd, hpEditCmd,
+		hpRmCmd, hpListCmd, hpGoCmd, hpEditCmd, help.Cmd,
+	},
+	Do: func(x *bonzai.Cmd, _ ...string) error {
+		fmt.Printf("%s - %s\n\n", x.Name, x.Short)
+		fmt.Println(`COMMANDS:`)
+		for _, c := range x.Cmds {
+			fmt.Printf("  %-10s - %s\n", c.Name, c.Short)
+		}
+		return nil
 	},
 }
 
 var hpAddCmd = &bonzai.Cmd{
 	Name: `add`, Alias: `a`, Short: `bookmark the current session`, NoArgs: true,
-	Do: func(_ *bonzai.Cmd, _ ...string) error { return track(false, 0) },
+	Long: `Appends the current session to the bookmark list, at the next slot.`,
+	Do:   func(_ *bonzai.Cmd, _ ...string) error { return track(false, 0) },
 }
 
 var hpPaneCmd = &bonzai.Cmd{
 	Name: `pane`, Alias: `p`, Short: `bookmark the current pane`, NoArgs: true,
+	Long: `
+Appends the current session and pane to the bookmark list, at the
+next slot, so 'go' returns to this exact pane, not just the session.`,
 	Do: func(_ *bonzai.Cmd, _ ...string) error { return track(true, 0) },
 }
 
 var hpSetCmd = &bonzai.Cmd{
 	Name: `set`, Alias: `r`, Short: `bookmark the current session at slot n`,
-	Usage: `set <n>`, NumArgs: 1,
+	Usage: `<n>`, NumArgs: 1,
+	Long: `
+Replaces the bookmark at slot ` + "`<n>`" + ` with the current session, or
+appends it past the end. Slots are 1-based.`,
 	Do: func(_ *bonzai.Cmd, args ...string) error { return trackAt(false, args[0]) },
 }
 
 var hpSetPaneCmd = &bonzai.Cmd{
 	Name: `setpane`, Alias: `sp`, Short: `bookmark the current pane at slot n`,
-	Usage: `setpane <n>`, NumArgs: 1,
+	Usage: `<n>`, NumArgs: 1,
+	Long: `
+Replaces the bookmark at slot ` + "`<n>`" + ` with the current session and
+pane, or appends it past the end. Slots are 1-based.`,
 	Do: func(_ *bonzai.Cmd, args ...string) error { return trackAt(true, args[0]) },
 }
 
 var hpRmCmd = &bonzai.Cmd{
 	Name: `rm`, Alias: `d`, Short: `stop tracking a session (default: current)`,
-	Usage: `rm [session]`, MaxArgs: 1,
+	Usage: `[session]`, MaxArgs: 1,
+	Long: `
+Removes every bookmark for [session], or the current session when
+given none.`,
 	Do: func(_ *bonzai.Cmd, args ...string) error {
 		session := ``
 		if len(args) == 1 {
@@ -63,11 +89,15 @@ var hpRmCmd = &bonzai.Cmd{
 
 var hpListCmd = &bonzai.Cmd{
 	Name: `list`, Alias: `l`, Short: `pick a bookmark with fzf`, NoArgs: true,
-	Do: func(_ *bonzai.Cmd, _ ...string) error { return pick() },
+	Long: `Fuzzy-picks a bookmark with fzf, then switches to it, like 'go'.`,
+	Do:   func(_ *bonzai.Cmd, _ ...string) error { return pick() },
 }
 
 var hpGoCmd = &bonzai.Cmd{
-	Name: `go`, Alias: `s`, Short: `switch to bookmark n`, Usage: `go <n>`, NumArgs: 1,
+	Name: `go`, Alias: `s`, Short: `switch to bookmark n`, Usage: `<n>`, NumArgs: 1,
+	Long: `
+Switches to the session (and pane, if bookmarked) at slot ` + "`<n>`" + `,
+recreating the session first if it no longer exists.`,
 	Do: func(_ *bonzai.Cmd, args ...string) error {
 		n, err := slot(args[0])
 		if err != nil {
@@ -79,6 +109,7 @@ var hpGoCmd = &bonzai.Cmd{
 
 var hpEditCmd = &bonzai.Cmd{
 	Name: `edit`, Alias: `e`, Short: `edit the bookmarks file`, NoArgs: true,
+	Long: `Opens the bookmarks file in $EDITOR (default: vi) in a tmux popup.`,
 	Do: func(_ *bonzai.Cmd, _ ...string) error {
 		editor := os.Getenv(`EDITOR`)
 		if editor == `` {

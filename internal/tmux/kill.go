@@ -14,6 +14,10 @@ var KillCmd = &bonzai.Cmd{
 	Name:  `kill`,
 	Alias: `k`,
 	Short: `kill current tmux session`,
+	Long: `
+Kills the current tmux session, first switching the client to another
+session (the last one, if there are several) or creating a "home"
+session if this was the only one.`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		KillSession()
 		return nil

@@ -19,7 +19,11 @@ var GitmuxCmd = &bonzai.Cmd{
 	Name:    `gitmux`,
 	Alias:   `gm`,
 	Short:   `tmux plugin for git stats in statusline`,
+	Usage:   `[dir]`,
 	MaxArgs: 1,
+	Long: `
+Prints [dir]'s (default: the current directory's) git status
+formatted per gitmux.conf, for embedding in a tmux statusline.`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		if len(args) == 0 {
 			args = append(args, ".")

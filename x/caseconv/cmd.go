@@ -15,8 +15,13 @@ var Cmd = &bonzai.Cmd{
 	Name:  "case",
 	Short: "convert text to various cases",
 	Opts:  `lower|upper|camel|title|constant|header|sentence|snake|kebab`,
-	Usage: `case <type> [text]  (reads stdin line by line when text is omitted)`,
-	Comp:  comp.Opts,
+	Usage: `<type> [text]  (reads stdin line by line when text is omitted)`,
+	Long: `
+Converts text to the given case: lower, upper, camel, title, constant
+(SCREAMING_SNAKE), header (Kebab-Title), sentence, snake, or kebab.
+Splits words on case changes too, so ` + "`fooBar`" + ` and ` + "`FooBar`" + ` both become
+` + "`foo_bar`" + ` in snake case.`,
+	Comp: comp.Opts,
 	Do: func(_ *bonzai.Cmd, args ...string) error {
 		if len(args) < 1 {
 			return fmt.Errorf("missing output type")

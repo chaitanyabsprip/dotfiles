@@ -10,8 +10,11 @@ import (
 var TermCmd = &bonzai.Cmd{
 	Name:  `term`,
 	Short: `print terminal colors`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{},
+	Long: `
+Prints the 8 standard terminal colors as their POSIX shell variable
+assignments, then as a demo of normal and bold text in each color.`,
+	Comp: comp.Cmds,
+	Cmds: []*bonzai.Cmd{},
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		Term()
 		return nil

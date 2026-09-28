@@ -10,8 +10,11 @@ import (
 var Color255Cmd = &bonzai.Cmd{
 	Name:  `ctwo`,
 	Short: `print 256 colors in terminal`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{},
+	Long: `
+Prints all 256 terminal colors: their numbers as foreground text on
+one line, then again as background swatches on the next.`,
+	Comp: comp.Cmds,
+	Cmds: []*bonzai.Cmd{},
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		Color255()
 		return nil

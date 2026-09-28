@@ -20,6 +20,11 @@ var creashCmd = &bonzai.Cmd{
 	Alias:   "csh",
 	Vers:    "v1.0.0",
 	Short:   `create a new shell script in pwd`,
+	Usage:   `<name>...`,
+	Long: `
+Creates each named file in the current directory with a '#!/bin/sh'
+shebang and makes it executable. Skips a file that already exists. Set
+EDIT=1 to open the new files in $VISUAL or $EDITOR afterwards.`,
 	MinArgs: 1,
 	Comp:    comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {

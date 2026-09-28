@@ -12,9 +12,13 @@ import (
 
 var Cmd = &bonzai.Cmd{
 	Name:  `distro`,
-	Short: `distro <command>`,
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{},
+	Short: `print the OS distro name and version`,
+	Long: `
+Prints "name:version" for the current OS: read from /etc/os-release
+on Linux, from lsb_release if that file is missing, or from uname
+otherwise (e.g. Darwin on macOS).`,
+	Comp: comp.Cmds,
+	Cmds: []*bonzai.Cmd{},
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		fmt.Println(Name())
 		return nil

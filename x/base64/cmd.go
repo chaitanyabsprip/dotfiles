@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/cmds/help"
 	"github.com/rwxrob/bonzai/comp"
 )
 
@@ -18,6 +19,10 @@ func isURLSafe() bool {
 var EncodeCmd = &bonzai.Cmd{
 	Name:  "encode",
 	Short: "encode input to base64",
+	Long: `
+Encodes args, or stdin when no args are given, as base64. Set
+BASE64_URLSAFE=1 to use the URL-safe alphabet instead of the standard
+one.`,
 	Do: func(_ *bonzai.Cmd, args ...string) error {
 		var input string
 		if len(args) > 0 {
@@ -42,6 +47,9 @@ var EncodeCmd = &bonzai.Cmd{
 var DecodeCmd = &bonzai.Cmd{
 	Name:  "decode",
 	Short: "decode base64 input",
+	Long: `
+Decodes args, or stdin when no args are given, from base64. Set
+BASE64_URLSAFE=1 if the input used the URL-safe alphabet.`,
 	Do: func(_ *bonzai.Cmd, args ...string) error {
 		var input string
 		if len(args) > 0 {
@@ -67,6 +75,17 @@ var Cmd = &bonzai.Cmd{
 	Name:  "pem",
 	Alias: `base64|b64`,
 	Short: "base64 encode/decode utility",
-	Comp:  comp.Cmds,
-	Cmds:  []*bonzai.Cmd{EncodeCmd, DecodeCmd},
+	Long: `
+Encodes or decodes text as base64. See 'pem help' for the two
+commands.`,
+	Comp: comp.Cmds,
+	Cmds: []*bonzai.Cmd{EncodeCmd, DecodeCmd, help.Cmd},
+	Do: func(x *bonzai.Cmd, _ ...string) error {
+		fmt.Printf("%s - %s\n\n", x.Name, x.Short)
+		fmt.Println(`COMMANDS:`)
+		for _, c := range x.Cmds {
+			fmt.Printf("  %-10s - %s\n", c.Name, c.Short)
+		}
+		return nil
+	},
 }

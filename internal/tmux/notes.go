@@ -18,6 +18,11 @@ var NotesCmd = &bonzai.Cmd{
 	Name:  `notes`,
 	Alias: `n`,
 	Short: `fuzzy search notes`,
+	Usage: `[name]`,
+	Long: `
+Opens $NOTESPATH's markdown files in a "notes" tmux window and nvim.
+With [name] given, opens the note whose path ends with it; otherwise
+fuzzy-picks one with fzf.`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		if len(args) == 0 {
 			args = append(args, ``)
