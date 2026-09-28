@@ -1,0 +1,27 @@
+name: Build
+
+# Push only — a quick "does it still compile" artifact build, cheaper
+# than the full test suite (which runs on PRs instead, see test.yml).
+on:
+  push:
+    branches: [monolith] # TODO: switch to main once this branch merges
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: |
+          mkdir -p dist
+          go build -o dist/dot ./cmd/dot
+          go build -o dist/x ./cmd/x
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dot-${{ matrix.os }}
+          path: dist/

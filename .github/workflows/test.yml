@@ -1,8 +1,10 @@
-name: CI
+name: Test
 
+# PRs only — running the full build+vet+test suite on every push is
+# redundant with this, since a push either becomes a PR (tested here) or
+# is direct-to-branch (covered by build.yml's cheaper artifact-only
+# check instead).
 on:
-  push:
-    branches: [monolith] # TODO: switch to main once this branch merges
   pull_request:
 
 jobs:
