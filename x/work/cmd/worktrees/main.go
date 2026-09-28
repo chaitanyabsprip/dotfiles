@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Chaitanyabsprip/dotfiles/x/workdirs"
+	"github.com/Chaitanyabsprip/dotfiles/x/work"
 )
 
 func main() {
@@ -13,9 +13,9 @@ func main() {
 	flag.Parse()
 	if *short {
 		fmt.Println(
-			strings.Join(workdirs.Shorten(workdirs.Worktrees()), "\n"),
+			strings.Join(work.Shorten(work.Worktrees()), "\n"),
 		)
 		return
 	}
-	fmt.Println(strings.Join(workdirs.Worktrees(), "\n"))
+	fmt.Println(strings.Join(work.Worktrees(), "\n"))
 }

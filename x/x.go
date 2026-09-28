@@ -17,7 +17,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/x/gpt"
 	"github.com/Chaitanyabsprip/dotfiles/x/have"
 	"github.com/Chaitanyabsprip/dotfiles/x/url"
-	"github.com/Chaitanyabsprip/dotfiles/x/workdirs"
+	"github.com/Chaitanyabsprip/dotfiles/x/work"
 )
 
 var Cmd = &bonzai.Cmd{
@@ -37,6 +37,6 @@ var Cmd = &bonzai.Cmd{
 		help.Cmd,
 		tmux.XCmd,
 		url.Cmd,
-		workdirs.Cmd,
+		work.Cmd,
 	},
 }

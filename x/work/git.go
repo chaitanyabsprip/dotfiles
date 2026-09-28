@@ -1,4 +1,4 @@
-package workdirs
+package work
 
 import (
 	"bytes"
@@ -58,6 +58,7 @@ func parseWorktrees(porcelain string) []worktree {
 	return out
 }
 
+// listWorktrees lists dir's project's worktrees.
 func listWorktrees(dir string) ([]worktree, error) {
 	out, err := git(dir, `worktree`, `list`, `--porcelain`)
 	if err != nil {
@@ -105,6 +106,7 @@ func repoDir(dir string) (string, error) {
 // symlinks (macOS temp dirs sit behind /var -> /private/var).
 func samePath(a, b string) bool { return resolve(a) == resolve(b) }
 
+// resolve resolves symlinks in p, falling back to a cleaned p if that fails.
 func resolve(p string) string {
 	if r, err := filepath.EvalSymlinks(p); err == nil {
 		return r

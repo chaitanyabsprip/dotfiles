@@ -13,13 +13,18 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/pkg/fzf"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/x/depends"
-	"github.com/Chaitanyabsprip/dotfiles/x/workdirs"
+	"github.com/Chaitanyabsprip/dotfiles/x/work"
 )
 
 var SessionizerCmd = &bonzai.Cmd{
 	Name:  `sessionizer`,
 	Alias: `sz`,
 	Short: `create a new or switch to an existing session`,
+	Usage: `[path]`,
+	Long: `
+Switches to the tmux session for [path], or, without it, fuzzy-picks
+a work directory with fzf. Creates the session (and resumes any
+Claude Code sessions there) if none exists yet for that path.`,
 	Init: func(x *bonzai.Cmd, args ...string) error {
 		depends.On(nil, `fzf`, `tmux`)
 		return nil
@@ -90,9 +95,9 @@ func resolveSessionName(path string) string {
 }
 
 func selectPath() string {
-	dirs := workdirs.CachedAllDirs(false)
+	dirs := work.CachedAllDirs(false)
 	out, err := fzf.Select(
-		workdirs.Shorten(dirs),
+		work.Shorten(dirs),
 		`--tmux`, `45%`,
 		`--border`,
 		`--border-label`, ` Sessionizer `,

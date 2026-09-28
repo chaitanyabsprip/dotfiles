@@ -1,4 +1,4 @@
-package workdirs
+package work
 
 import (
 	"fmt"
@@ -20,7 +20,7 @@ var Cmd = &bonzai.Cmd{
 Git worktree repositories. It supports compact output when SHORT=1 is
 set.`,
 	Def:  helpCmd,
-	Cmds: []*bonzai.Cmd{helpCmd, dirsCmd, treeCmd, addCmd, repairCmd, prCmd},
+	Cmds: []*bonzai.Cmd{helpCmd, dirsCmd, treeCmd, addCmd, repairCmd, prCmd, doneCmd, pruneCmd, approveCmd},
 	Comp: comp.Cmds,
 }
 
@@ -29,7 +29,7 @@ set.`,
 var helpCmd = &bonzai.Cmd{
 	Name:  `help`,
 	Short: `show help for a command`,
-	Opts:  `dirs|trees|add|repair|pr`,
+	Opts:  `dirs|trees|add|repair|pr|done|prune|approve`,
 	Comp:  comp.Opts,
 	Long: `
 Displays usage and description for all available commands, or detailed
@@ -43,7 +43,7 @@ EXAMPLES
   work help dirs  # shows help for 'dirs' command
   work help trees # shows help for 'trees' command`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		cmds := []*bonzai.Cmd{dirsCmd, treeCmd, addCmd, repairCmd, prCmd}
+		cmds := []*bonzai.Cmd{dirsCmd, treeCmd, addCmd, repairCmd, prCmd, doneCmd, pruneCmd, approveCmd}
 		if len(args) == 0 {
 			fmt.Printf("%s - %s\n\n", x.Name, x.Short)
 			fmt.Println("COMMANDS:")

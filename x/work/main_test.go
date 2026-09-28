@@ -1,4 +1,4 @@
-package workdirs
+package work
 
 import (
 	"errors"
@@ -21,6 +21,7 @@ func TestMain(m *testing.M) {
 	}
 	ghPRView = func(string, string) (prInfo, error) { return prInfo{}, errGHInTests }
 	ghPRCheckout = func(string, string) error { return errGHInTests }
+	ghApprove = func(string) error { return errGHInTests }
 	code := m.Run()
 	cleanup()
 	os.Exit(code)
@@ -33,5 +34,8 @@ func TestGHFailsClosed(t *testing.T) {
 	}
 	if err := ghPRCheckout(t.TempDir(), `1`); !errors.Is(err, errGHInTests) {
 		t.Errorf("ghPRCheckout: err = %v, want errGHInTests", err)
+	}
+	if err := ghApprove(`https://github.com/o/r/pull/1`); !errors.Is(err, errGHInTests) {
+		t.Errorf("ghApprove: err = %v, want errGHInTests", err)
 	}
 }

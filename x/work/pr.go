@@ -1,4 +1,4 @@
-package workdirs
+package work
 
 import (
 	"bufio"
@@ -18,16 +18,15 @@ import (
 var prCmd = &bonzai.Cmd{
 	Name:    `pr`,
 	Short:   `check out a GitHub PR into a worktree`,
-	Usage:   `pr <number> [path] | pr done [number] [path] | pr prune`,
+	Usage:   `<number> [path]`,
 	MinArgs: 1,
 	MaxArgs: 2,
-	Cmds:    []*bonzai.Cmd{prDoneCmd, prPruneCmd},
 	Long: `
-Checks out GitHub PR <number> into a worktree at pr/<number> (or [path])
-under the project root and prints the worktree path, so
-'cd "$(work pr 17)"' lands in it. Running it again for the same PR just
-prints the path. If the PR's branch is already checked out elsewhere,
-that worktree is printed instead. Needs the gh CLI.`,
+Checks out GitHub PR ` + "`<number>`" + ` into a worktree at ` + "`pr/<number>`" + ` (or
+[path]) under the project root and prints the worktree path, so
+'cd "$(x work pr 17)"' lands in it. Running it again for the same PR
+just prints the path. If the PR's branch is already checked out
+elsewhere, that worktree is printed instead. Needs the gh CLI.`,
 	Do: func(_ *bonzai.Cmd, args ...string) error {
 		wd, err := os.Getwd()
 		if err != nil {
@@ -46,17 +45,17 @@ that worktree is printed instead. Needs the gh CLI.`,
 	},
 }
 
-var prDoneCmd = &bonzai.Cmd{
+var doneCmd = &bonzai.Cmd{
 	Name:    `done`,
 	Alias:   `d`,
 	Short:   `remove a PR worktree and its branch`,
-	Usage:   `done [number] [path]`,
+	Usage:   `[number] [path]`,
 	MaxArgs: 2,
 	Long: `
 Removes the worktree for PR [number] and its local branch, then prints
 the directory to be in afterwards: the project root when you were inside
 the removed worktree. Without [number] the PR is taken from the current
-pr/<number> worktree. A worktree with uncommitted or untracked files is
+` + "`pr/<number>`" + ` worktree. A worktree with uncommitted or untracked files is
 kept.`,
 	Do: func(_ *bonzai.Cmd, args ...string) error {
 		wd, err := os.Getwd()
@@ -79,11 +78,16 @@ kept.`,
 	},
 }
 
-var prPruneCmd = &bonzai.Cmd{
+var pruneCmd = &bonzai.Cmd{
 	Name:   `prune`,
 	Alias:  `p`,
 	Short:  `remove worktrees of merged or closed PRs`,
 	NoArgs: true,
+	Long: `
+Lists every ` + "`pr/<number>`" + ` worktree along with its PR state (OPEN, MERGED,
+CLOSED, or UNKNOWN if gh can't be reached), then asks once before
+removing the worktrees and branches whose PR is merged or closed. A
+worktree with uncommitted or untracked files is kept.`,
 	Do: func(_ *bonzai.Cmd, _ ...string) error {
 		wd, err := os.Getwd()
 		if err != nil {

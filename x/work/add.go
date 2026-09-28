@@ -1,4 +1,4 @@
-package workdirs
+package work
 
 import (
 	"fmt"
@@ -13,14 +13,14 @@ var addCmd = &bonzai.Cmd{
 	Name:    `add`,
 	Alias:   `a`,
 	Short:   `create a worktree for a branch`,
-	Usage:   `add <branch>`,
+	Usage:   `<branch>`,
 	NumArgs: 1,
 	Long: `
-Creates a worktree for <branch> under the project root and prints its
-path, so 'cd "$(work add feat/x)"' lands in it. The path keeps the
-branch's first and last segments: feat/mod/TICKET-1/short-desc becomes
-feat/short-desc. An existing local or remote branch is checked out; a
-new name creates the branch. If the branch already has a worktree, that
+Creates a worktree for ` + "`<branch>`" + ` under the project root and prints
+its path, so 'cd "$(x work add feat/x)"' lands in it. The path keeps
+the branch's first and last segments: feat/mod/TICKET-1/short-desc
+becomes feat/short-desc. An existing local or remote branch is checked
+out; a new name creates the branch. If the branch already has a worktree, that
 worktree's path is printed instead.`,
 	Do: func(_ *bonzai.Cmd, args ...string) error {
 		wd, err := os.Getwd()

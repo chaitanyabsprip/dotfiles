@@ -1,4 +1,4 @@
-package workdirs
+package work
 
 import (
 	"path/filepath"
@@ -56,6 +56,6 @@ func TestOpenProject(t *testing.T) {
 	}
 
 	if _, err := openProject(t.TempDir()); err == nil {
-		t.Error("openProject outside any repo should fail")
+		t.Error("OpenProject outside any repo should fail")
 	}
 }

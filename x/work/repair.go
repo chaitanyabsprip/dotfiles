@@ -1,4 +1,4 @@
-package workdirs
+package work
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ var repairCmd = &bonzai.Cmd{
 	Name:    `repair`,
 	Alias:   `r`,
 	Short:   `reconnect worktrees after moving a project`,
-	Usage:   `repair [dir]`,
+	Usage:   `[dir]`,
 	MaxArgs: 1,
 	Long: `
 Reconnects a project's worktrees after the project directory was moved

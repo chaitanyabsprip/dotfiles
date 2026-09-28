@@ -4,12 +4,12 @@ package main
 
 import (
 	dot "github.com/Chaitanyabsprip/dotfiles"
-	"github.com/Chaitanyabsprip/dotfiles/x/workdirs"
+	"github.com/Chaitanyabsprip/dotfiles/x/work"
 )
 
 func main() {
-	if workdirs.IsRefreshWorker() {
-		workdirs.RefreshCacheWorker()
+	if work.IsRefreshWorker() {
+		work.RefreshCacheWorker()
 		return
 	}
 	dot.Cmd.Exec()
