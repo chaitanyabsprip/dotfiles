@@ -129,16 +129,19 @@ would otherwise re-test:
       release pipeline below (needs binaries to actually fetch), and on
       `dot version` (build-time version/commit metadata isn't embedded
       yet, so there's nothing for it to report or compare against).
-- [x] CI build/release pipeline. Done 2026-09-26:
-      `.github/workflows/ci.yml` (build/vet/test on every push to `main`
-      + every PR, Linux and macOS) and `.github/workflows/release.yml`
-      (linux/darwin × amd64/arm64 for `dot` and `x`, published as GitHub
-      Release assets, tag-triggered on `v*.*.*` — resolves VISION.md's
-      "release cadence" open question in favor of tags over push-to-main,
-      since `dot upgrade`/the bootstrap script resolve "latest" against
-      releases and every-push would make that noisy and undeliberate).
-      Verified all 4 target combos actually cross-compile locally before
-      committing to them in CI; both workflows pass `actionlint` clean.
+- [x] CI build/release pipeline. Done 2026-09-26, revised 2026-09-29:
+      `.github/workflows/test.yml` (build+vet+test, PRs only, Linux and
+      macOS — running it on every push duplicated the PR check for no
+      reason), `.github/workflows/build.yml` (push to `monolith`, compiles
+      `dot`+`x` and uploads as a workflow artifact — a cheap "does it
+      still compile" check, not a release), and `.github/workflows/release.yml`
+      (linux/darwin × amd64/arm64, published as GitHub Release assets,
+      tag-triggered on `v*.*.*` — resolves VISION.md's "release cadence"
+      open question in favor of tags over push-to-main, since `dot
+      upgrade`/the bootstrap script resolve "latest" against releases and
+      every-push would make that noisy and undeliberate). All three pass
+      `actionlint` clean; all 4 release target combos verified to
+      cross-compile locally before committing to them in CI.
 - [ ] Static binary build, startup benchmarks
 - [ ] Complete test coverage
 - [ ] Empty `docs/tasks/` directory — either fill it from this file's
