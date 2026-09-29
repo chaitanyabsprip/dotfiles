@@ -16,8 +16,10 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/x/depends"
 	"github.com/Chaitanyabsprip/dotfiles/x/distro"
 	"github.com/Chaitanyabsprip/dotfiles/x/gpt"
+	"github.com/Chaitanyabsprip/dotfiles/x/has"
 	"github.com/Chaitanyabsprip/dotfiles/x/have"
 	"github.com/Chaitanyabsprip/dotfiles/x/last"
+	"github.com/Chaitanyabsprip/dotfiles/x/say"
 	"github.com/Chaitanyabsprip/dotfiles/x/url"
 	"github.com/Chaitanyabsprip/dotfiles/x/work"
 )
@@ -35,9 +37,11 @@ var Cmd = &bonzai.Cmd{
 		depends.Cmd,
 		distro.Cmd,
 		gpt.Cmd,
+		has.Cmd,
 		have.Cmd,
 		help.Cmd,
 		last.Cmd,
+		say.Cmd,
 		tmux.XCmd,
 		url.Cmd,
 		version.Cmd,
