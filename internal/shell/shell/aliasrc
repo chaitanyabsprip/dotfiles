@@ -14,7 +14,7 @@ _have base64 && {
 }
 
 _have /usr/bin/vim && alias vi=/usr/bin/vim
-_have /usr/local/bin/nvim && alias vim=/usr/local/bin/nvim vimdiff='vim -d'
+_have /usr/local/bin/nvim && alias vim=/usr/local/bin/nvim vimdiff='vim -d' db='vim -c DBUI'
 _have bat && alias cat='bat'
 
 md() { [ -z "$1" ] && exit 1 || mkdir -p "$1" && cd "$1" || return; }
@@ -41,13 +41,19 @@ _have fd && _have fzf && {
 			fzf --height=20% --border --margin=0 --padding=0 \
 				--bind='enter:become(nvim {})'
 	}
-	_have workdirs && {
+	_have x && {
 		jump() {
 			program="${1:-cd}"
-			selected="$(workdirs -s | fzf --height=20% --border --margin=0 --padding=0)"
-			$program "$(workdirs | grep -w "$selected$")"
+			selected="$(SHORT=1 x work dirs | fzf --height=20% --border --margin=0 --padding=0)"
+			$program "$(x work dirs | grep -w "$selected$")"
 		}
 	}
+}
+
+_have mods && {
+	_have x && alias '?'='x gpt'
+	_have x && alias '??'='x gpt dev'
+	_have x && alias '???'='x gpt shell'
 }
 
 if [ "$(uname)" = "Darwin" ]; then

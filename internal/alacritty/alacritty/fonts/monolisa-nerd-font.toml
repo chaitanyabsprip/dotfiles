@@ -1,6 +1,6 @@
 [font]
 builtin_box_drawing = true
-size = 10
+size = 14
 
 [font.bold]
 family = "MonoLisa Nerd Font"

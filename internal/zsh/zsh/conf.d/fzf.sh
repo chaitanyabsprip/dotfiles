@@ -9,6 +9,6 @@ _have fzf && {
 	# }
 	# zle -N fzf-history-widget-accept
 	# bindkey '^X' fzf-history-widget-accept
-	#
+
 	source <(fzf --zsh)
 }

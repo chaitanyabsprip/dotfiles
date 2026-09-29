@@ -1,1 +1,77 @@
-../../shell/aliasrc
+#!/bin/sh
+
+_have() { type "$1" >/dev/null 2>&1; }
+
+# Use as an alias to disable builtin commands
+donothing() { echo "$*" >/dev/null 2>&1; }
+
+alias mkdir='mkdir -pv'
+alias view='vi -R'
+
+_have base64 && {
+	alias encode='base64 -w 0'
+	alias decode='base64 -d'
+}
+
+_have /usr/bin/vim && alias vi=/usr/bin/vim
+_have /usr/local/bin/nvim && alias vim=/usr/local/bin/nvim vimdiff='vim -d' db='vim -c DBUI'
+_have bat && alias cat='bat'
+
+md() { [ -z "$1" ] && exit 1 || mkdir -p "$1" && cd "$1" || return; }
+
+_have note && {
+	alias bm='note b'
+	alias todo='note todo'
+	alias peek='note peek'
+}
+
+_have docker && {
+	alias d='docker'
+	alias dps='docker ps'
+	alias di='docker images'
+}
+
+_have gh && {
+	alias ghp='gh pull'
+}
+
+_have fd && _have fzf && {
+	edit() {
+		fd . -Ht f -d 6 -E .git -E .DS_Store |
+			fzf --height=20% --border --margin=0 --padding=0 \
+				--bind='enter:become(nvim {})'
+	}
+	_have x && {
+		jump() {
+			program="${1:-cd}"
+			selected="$(SHORT=1 x work dirs | fzf --height=20% --border --margin=0 --padding=0)"
+			$program "$(x work dirs | grep -w "$selected$")"
+		}
+	}
+}
+
+_have mods && {
+	_have x && alias '?'='x gpt'
+	_have x && alias '??'='x gpt dev'
+	_have x && alias '???'='x gpt shell'
+}
+
+if [ "$(uname)" = "Darwin" ]; then
+	alias bup='brew update && brew upgrade'
+	alias bout='brew outdated'
+	alias bin='brew install'
+	alias brm='brew uninstall'
+	alias bls='brew list'
+	alias bs='brew search'
+	alias binf='brew info'
+	alias bdr='brew doctor'
+
+	# Useful stuff for presentation and seeing dotfiles
+	alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+	alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+	alias showall='defaults write com.apple.finder AppleShowAllFiles YES && killall Finder'
+	alias hideall='defaults write com.apple.finder AppleShowAllFiles NO && killall Finder'
+
+	# Get rid of those pesky .DS_Store files recursively
+	alias dsclean='find . -type f -name .DS_Store -print0 | xargs -0 rm'
+fi

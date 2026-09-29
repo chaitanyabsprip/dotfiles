@@ -21,13 +21,12 @@ done
 unset conf
 
 # key-bindings
-autoload -Uz edit-command-line
-zle -N edit-command-line
-bindkey '^v' edit-command-line
-_have jump && bindkey -s ^o '^ujump\n'
+bindkey -s ^o '^ujump\n'
 
 # initialisations
 _have rbenv && eval "$(rbenv init - zsh)"
 # have note && zsh-defer eval "$(note completion zsh)"
 
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 : # shell should start with a zero status code
