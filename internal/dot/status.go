@@ -98,14 +98,21 @@ func checkDrift(name string, mode e.CheckMode) (map[string][]string, error) {
 	return result, nil
 }
 
-// driftCheckCmds is SetupCmds minus claude.SetupCmd: claude's setup merges
-// ~/.claude/settings.json directly and never goes through
-// internal/core/embed, so it has no manifest/drift concept to check and
-// running it here would perform a real write instead of a preview.
+// nonDriftCheckable are SetupCmds that don't go through
+// internal/core/embed, so they have no manifest/drift concept to check
+// and running them here would perform a real side effect instead of a
+// preview: claude's setup merges ~/.claude/settings.json directly;
+// neovim's clones/pulls its config from a separate git repo.
+var nonDriftCheckable = map[string]bool{
+	`claude`: true,
+	`neovim`: true,
+}
+
+// driftCheckCmds is SetupCmds minus nonDriftCheckable.
 var driftCheckCmds = func() []*bonzai.Cmd {
-	cmds := make([]*bonzai.Cmd, 0, len(SetupCmds)-1)
+	cmds := make([]*bonzai.Cmd, 0, len(SetupCmds))
 	for _, cmd := range SetupCmds {
-		if cmd.Name != `claude` {
+		if !nonDriftCheckable[cmd.Name] {
 			cmds = append(cmds, cmd)
 		}
 	}

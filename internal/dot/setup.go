@@ -17,9 +17,12 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/gh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/git"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gitui"
+	"github.com/Chaitanyabsprip/dotfiles/internal/glow"
 	"github.com/Chaitanyabsprip/dotfiles/internal/hypr"
 	"github.com/Chaitanyabsprip/dotfiles/internal/kitty"
+	"github.com/Chaitanyabsprip/dotfiles/internal/leaf"
 	"github.com/Chaitanyabsprip/dotfiles/internal/lsd"
+	"github.com/Chaitanyabsprip/dotfiles/internal/neovim"
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
 	"github.com/Chaitanyabsprip/dotfiles/internal/sqlfluff"
@@ -27,10 +30,11 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/internal/vimium"
 	"github.com/Chaitanyabsprip/dotfiles/internal/waybar"
+	"github.com/Chaitanyabsprip/dotfiles/internal/wezterm"
 	"github.com/Chaitanyabsprip/dotfiles/internal/zsh"
 )
 
-// SetupCmds contains per-tool setup commands composed from all 22 tools.
+// SetupCmds contains per-tool setup commands composed from all 26 tools.
 var SetupCmds = []*bonzai.Cmd{
 	alacritty.SetupCmd.WithName(`alacritty`),
 	bash.SetupCmd.WithName(`bash`),
@@ -43,9 +47,12 @@ var SetupCmds = []*bonzai.Cmd{
 	gh.SetupCmd.WithName(`gh`),
 	git.SetupCmd.WithName(`git`),
 	gitui.SetupCmd.WithName(`gitui`),
+	glow.SetupCmd.WithName(`glow`),
 	hypr.SetupCmd.WithName(`hypr`),
 	kitty.SetupCmd.WithName(`kitty`),
+	leaf.SetupCmd.WithName(`leaf`),
 	lsd.SetupCmd.WithName(`lsd`),
+	neovim.SetupCmd.WithName(`neovim`),
 	ohmyposh.SetupCmd.WithName(`ohmyposh`),
 	shell.SetupCmd.WithName(`shell`),
 	sqlfluff.SetupCmd.WithName(`sqlfluff`),
@@ -53,6 +60,7 @@ var SetupCmds = []*bonzai.Cmd{
 	tmux.SetupCmd.WithName(`tmux`),
 	vimium.SetupCmd.WithName(`vimium`),
 	waybar.SetupCmd.WithName(`waybar`),
+	wezterm.SetupCmd.WithName(`wezterm`),
 	zsh.SetupCmd.WithName(`zsh`),
 }
 

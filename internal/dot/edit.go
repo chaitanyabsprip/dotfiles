@@ -16,9 +16,12 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/gh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/git"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gitui"
+	"github.com/Chaitanyabsprip/dotfiles/internal/glow"
 	"github.com/Chaitanyabsprip/dotfiles/internal/hypr"
 	"github.com/Chaitanyabsprip/dotfiles/internal/kitty"
+	"github.com/Chaitanyabsprip/dotfiles/internal/leaf"
 	"github.com/Chaitanyabsprip/dotfiles/internal/lsd"
+	"github.com/Chaitanyabsprip/dotfiles/internal/neovim"
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
 	"github.com/Chaitanyabsprip/dotfiles/internal/sqlfluff"
@@ -26,6 +29,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/internal/vimium"
 	"github.com/Chaitanyabsprip/dotfiles/internal/waybar"
+	"github.com/Chaitanyabsprip/dotfiles/internal/wezterm"
 	"github.com/Chaitanyabsprip/dotfiles/internal/zsh"
 )
 
@@ -41,9 +45,12 @@ var EditCmds = []*bonzai.Cmd{
 	gh.EditCmd.WithName(`gh`),
 	git.EditCmd.WithName(`git`),
 	gitui.EditCmd.WithName(`gitui`),
+	glow.EditCmd.WithName(`glow`),
 	hypr.EditCmd.WithName(`hypr`),
 	kitty.EditCmd.WithName(`kitty`),
+	leaf.EditCmd.WithName(`leaf`),
 	lsd.EditCmd.WithName(`lsd`),
+	neovim.EditCmd.WithName(`neovim`),
 	ohmyposh.EditCmd.WithName(`ohmyposh`),
 	shell.EditCmd.WithName(`shell`),
 	sqlfluff.EditCmd.WithName(`sqlfluff`),
@@ -51,6 +58,7 @@ var EditCmds = []*bonzai.Cmd{
 	tmux.EditCmd.WithName(`tmux`),
 	vimium.EditCmd.WithName(`vimium`),
 	waybar.EditCmd.WithName(`waybar`),
+	wezterm.EditCmd.WithName(`wezterm`),
 	zsh.EditCmd.WithName(`zsh`),
 }
 
