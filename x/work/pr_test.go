@@ -268,7 +268,7 @@ func TestPRPrune(t *testing.T) {
 		}
 		return prInfo{State: `OPEN`}, nil
 	}
-	if err := prPrune(project, strings.NewReader("y\n"), io.Discard); err != nil {
+	if err := prPrune(project, strings.NewReader("y\n"), io.Discard, true); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := os.Stat(p7); !os.IsNotExist(err) {
@@ -276,5 +276,52 @@ func TestPRPrune(t *testing.T) {
 	}
 	if _, err := os.Stat(p8); err != nil {
 		t.Errorf("open PR worktree was pruned: %v", err)
+	}
+}
+
+func TestPRPruneDryRunRemovesNothing(t *testing.T) {
+	project := homeBase(t)
+	fakeGH(t, map[string]prInfo{`7`: {State: `OPEN`, HeadRefName: `b7`}},
+		func(dir, n string) error { _, err := git(dir, `switch`, `-q`, `-c`, `b`+n); return err })
+	p7, err := prCheckout(project, `7`, ``, noInput, io.Discard)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ghPRView = func(_, n string) (prInfo, error) { return prInfo{State: `MERGED`}, nil }
+
+	// No input consumed: a dry run must not prompt for confirmation.
+	if err := prPrune(project, strings.NewReader(``), io.Discard, false); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(p7); err != nil {
+		t.Errorf("dry run pruned a worktree: %v", err)
+	}
+}
+
+func TestPruneWriteMode(t *testing.T) {
+	t.Setenv(`WORK_PRUNE_WRITE`, ``)
+	if write, err := pruneWriteMode(nil); err != nil || write {
+		t.Errorf("pruneWriteMode(nil) = %v, %v, want false, nil", write, err)
+	}
+	for _, arg := range []string{`write`, `w`} {
+		if write, err := pruneWriteMode([]string{arg}); err != nil || !write {
+			t.Errorf("pruneWriteMode(%q) = %v, %v, want true, nil", arg, write, err)
+		}
+	}
+	for _, arg := range []string{`dryrun`, `dry`, `d`} {
+		if write, err := pruneWriteMode([]string{arg}); err != nil || write {
+			t.Errorf("pruneWriteMode(%q) = %v, %v, want false, nil", arg, write, err)
+		}
+	}
+	if _, err := pruneWriteMode([]string{`bogus`}); err == nil {
+		t.Error(`pruneWriteMode("bogus") should error`)
+	}
+
+	t.Setenv(`WORK_PRUNE_WRITE`, `1`)
+	if write, err := pruneWriteMode(nil); err != nil || !write {
+		t.Errorf("pruneWriteMode(nil) with WORK_PRUNE_WRITE=1 = %v, %v, want true, nil", write, err)
+	}
+	if write, err := pruneWriteMode([]string{`dry`}); err != nil || write {
+		t.Errorf("pruneWriteMode(dry) with WORK_PRUNE_WRITE=1 = %v, %v, want false, nil", write, err)
 	}
 }

@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/rwxrob/bonzai"
+	"github.com/rwxrob/bonzai/comp"
 )
 
 var prCmd = &bonzai.Cmd{
@@ -79,22 +80,50 @@ kept.`,
 }
 
 var pruneCmd = &bonzai.Cmd{
-	Name:   `prune`,
-	Alias:  `p`,
-	Short:  `remove worktrees of merged or closed PRs`,
-	NoArgs: true,
+	Name:    `prune`,
+	Alias:   `p`,
+	Short:   `remove worktrees of merged or closed PRs`,
+	Usage:   `[write|w|dryrun|dry|d]`,
+	MaxArgs: 1,
+	Comp:    comp.Opts,
+	Opts:    `write|w|dryrun|dry|d`,
 	Long: `
 Lists every ` + "`pr/<number>`" + ` worktree along with its PR state (OPEN, MERGED,
-CLOSED, or UNKNOWN if gh can't be reached), then asks once before
-removing the worktrees and branches whose PR is merged or closed. A
-worktree with uncommitted or untracked files is kept.`,
-	Do: func(_ *bonzai.Cmd, _ ...string) error {
+CLOSED, or UNKNOWN if gh can't be reached). Defaults to a dry run: it
+only prints what would be pruned. Pass ` + "`write`" + ` (or ` + "`w`" + `) to actually
+remove the worktrees and branches whose PR is merged or closed, after
+asking once. Set ` + "`WORK_PRUNE_WRITE=1`" + ` to flip the default to write,
+then pass ` + "`dryrun`" + ` (` + "`dry`" + `/` + "`d`" + `) to preview instead. A worktree
+with uncommitted or untracked files is kept either way.`,
+	Do: func(_ *bonzai.Cmd, args ...string) error {
 		wd, err := os.Getwd()
 		if err != nil {
 			return err
 		}
-		return prPrune(wd, os.Stdin, os.Stderr)
+		write, err := pruneWriteMode(args)
+		if err != nil {
+			return err
+		}
+		return prPrune(wd, os.Stdin, os.Stderr, write)
 	},
+}
+
+// pruneWriteMode decides whether prune should actually remove
+// worktrees: an explicit write|w or dryrun|dry|d argument always
+// wins; with no argument it falls back to WORK_PRUNE_WRITE (any
+// non-empty value means write, defaulting to a dry run).
+func pruneWriteMode(args []string) (bool, error) {
+	if len(args) == 1 {
+		switch args[0] {
+		case `write`, `w`:
+			return true, nil
+		case `dryrun`, `dry`, `d`:
+			return false, nil
+		default:
+			return false, fmt.Errorf(`invalid argument %q, want write|w|dryrun|dry|d`, args[0])
+		}
+	}
+	return os.Getenv(`WORK_PRUNE_WRITE`) != ``, nil
 }
 
 // prInfo is the part of `gh pr view --json` that pr needs.
@@ -219,8 +248,9 @@ func prDone(dir, n, rel string, out io.Writer) (string, error) {
 	return dir, nil
 }
 
-// prPrune removes the worktrees of merged or closed PRs after asking.
-func prPrune(dir string, in io.Reader, out io.Writer) error {
+// prPrune removes the worktrees of merged or closed PRs after asking,
+// or with write false, only prints what would be pruned.
+func prPrune(dir string, in io.Reader, out io.Writer, write bool) error {
 	p, err := openProject(dir)
 	if err != nil {
 		return err
@@ -259,6 +289,10 @@ func prPrune(dir string, in io.Reader, out io.Writer) error {
 		return nil
 	case len(stale) == 0:
 		fmt.Fprintln(out, `nothing to prune, all PR worktrees are open`)
+		return nil
+	}
+	if !write {
+		fmt.Fprintf(out, "dry run: %d worktree(s) would be pruned. Run 'x work prune write' to remove them.\n", len(stale))
 		return nil
 	}
 	q := fmt.Sprintf(`%d worktree(s) can be pruned. Remove?`, len(stale))
