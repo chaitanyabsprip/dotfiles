@@ -123,7 +123,10 @@ Done 2026-09-26 — turned out to be a two-step check, not a build:
 ## P3 — Polish & release
 
 Lowest priority; do after P0-P2 land, since they change surface area these
-would otherwise re-test:
+would otherwise re-test.
+
+**Deferred 2026-09-29** — everything below is intentionally paused, not
+abandoned; revisit when picked back up:
 
 - [ ] `dot upgrade` + GitHub Releases self-update flow — release pipeline
       (below) and `dot version` are both done now (2026-09-29:
