@@ -24,3 +24,6 @@ icons:
   leaf:
     name: leaf
     icon: 󰌪
+  x:
+    name: tools
+    icon: 󱁤
