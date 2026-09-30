@@ -47,7 +47,7 @@ var SetupCmd = &bonzai.Cmd{
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		dest := filepath.Join(oscfg.ConfigDir(), `nvim`)
 		if !futil.Exists(dest) {
-			return run.Exec(`git`, `clone`, `--branch`, `master`, repoURL, dest)
+			return run.Exec(`git`, `clone`, `--branch`, `main`, repoURL, dest)
 		}
 		if !futil.Exists(filepath.Join(dest, `.git`)) {
 			return fmt.Errorf(`%s exists and isn't a git repo — resolve manually`, dest)
