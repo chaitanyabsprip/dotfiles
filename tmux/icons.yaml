@@ -25,5 +25,5 @@ icons:
     name: leaf
     icon: 󰌪
   x:
-    name: tools
-    icon: 󱁤
+    name: cmd
+    icon: 󰘳
