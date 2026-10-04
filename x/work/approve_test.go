@@ -6,6 +6,10 @@ import (
 )
 
 func TestApproveRejectsNonPRURL(t *testing.T) {
+	orig := ghRepoURL
+	defer func() { ghRepoURL = orig }()
+	ghRepoURL = func() (string, error) { return ``, errors.New(`not a git repo`) }
+
 	tests := []string{
 		``,
 		`123`,
@@ -34,6 +38,34 @@ func TestApproveCallsGhForValidURL(t *testing.T) {
 	}
 	if got != url {
 		t.Errorf("ghApprove called with %q, want %q", got, url)
+	}
+}
+
+func TestApproveExpandsPRNumber(t *testing.T) {
+	origApprove, origRepo := ghApprove, ghRepoURL
+	defer func() { ghApprove, ghRepoURL = origApprove, origRepo }()
+
+	var got string
+	ghApprove = func(url string) error { got = url; return nil }
+	ghRepoURL = func() (string, error) { return `https://github.com/owner/repo`, nil }
+
+	if err := approve(`42`); err != nil {
+		t.Fatal(err)
+	}
+	if want := `https://github.com/owner/repo/pull/42`; got != want {
+		t.Errorf("ghApprove called with %q, want %q", got, want)
+	}
+}
+
+func TestApproveRejectsPRNumberOutsideGitHub(t *testing.T) {
+	origApprove, origRepo := ghApprove, ghRepoURL
+	defer func() { ghApprove, ghRepoURL = origApprove, origRepo }()
+
+	ghApprove = func(string) error { t.Error(`ghApprove should not be called`); return nil }
+	ghRepoURL = func() (string, error) { return `https://gitlab.com/owner/repo`, nil }
+
+	if err := approve(`42`); err == nil {
+		t.Error(`a non-GitHub repo should be rejected`)
 	}
 }
 
