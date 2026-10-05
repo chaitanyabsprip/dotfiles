@@ -111,6 +111,61 @@ func TestCopyUntrackedFileDifferingFromEmbeddedIsTreatedAsDrift(t *testing.T) {
 	}
 }
 
+func TestCopyCheckModeCollectsMissingWithoutWriting(t *testing.T) {
+	dest := filepath.Join(t.TempDir(), `sample.txt`)
+	m := manifest.Manifest{}
+	Check = CheckList
+	Missing, Drifted = nil, nil
+	defer func() { Check = CheckOff }()
+
+	if err := copy(testFs, m, sampleDirEntry(t), embeddedPath, dest); err != nil {
+		t.Fatalf(`copy: %v`, err)
+	}
+	if _, err := os.Stat(dest); !os.IsNotExist(err) {
+		t.Fatalf(`check mode must not write dest, got err=%v`, err)
+	}
+	if len(Missing) != 1 || Missing[0] != dest {
+		t.Fatalf(`Missing = %v, want [%s]`, Missing, dest)
+	}
+	if len(Drifted) != 0 {
+		t.Fatalf(`Drifted = %v, want empty`, Drifted)
+	}
+}
+
+func TestCopyCheckModeCollectsDriftWithoutWriting(t *testing.T) {
+	dest := writeDest(t, `hand-edited-content`)
+	m := manifest.Manifest{dest: manifest.Hash([]byte(`what-was-last-deployed`))}
+	Check = CheckList
+	Missing, Drifted = nil, nil
+	defer func() { Check = CheckOff }()
+
+	if err := copy(testFs, m, sampleDirEntry(t), embeddedPath, dest); err != nil {
+		t.Fatalf(`copy: %v`, err)
+	}
+	assertContent(t, dest, `hand-edited-content`) // untouched
+	if len(Drifted) != 1 || Drifted[0] != dest {
+		t.Fatalf(`Drifted = %v, want [%s]`, Drifted, dest)
+	}
+	if len(Missing) != 0 {
+		t.Fatalf(`Missing = %v, want empty`, Missing)
+	}
+}
+
+func TestCopyCheckModeCleanFileCollectsNeither(t *testing.T) {
+	dest := writeDest(t, embeddedContent)
+	m := manifest.Manifest{dest: manifest.Hash([]byte(embeddedContent))}
+	Check = CheckList
+	Missing, Drifted = nil, nil
+	defer func() { Check = CheckOff }()
+
+	if err := copy(testFs, m, sampleDirEntry(t), embeddedPath, dest); err != nil {
+		t.Fatalf(`copy: %v`, err)
+	}
+	if len(Drifted) != 0 || len(Missing) != 0 {
+		t.Fatalf(`clean file should collect nothing: Drifted=%v Missing=%v`, Drifted, Missing)
+	}
+}
+
 func assertContent(t *testing.T, path, want string) {
 	t.Helper()
 	got, err := os.ReadFile(path)

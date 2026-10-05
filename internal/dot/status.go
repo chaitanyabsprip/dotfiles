@@ -9,64 +9,76 @@ import (
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
 )
 
-// StatusCmd lists every drifted file across all tools (or one tool),
-// without touching disk or printing diffs — a preview before `dot setup`
-// would decide, per file, to skip-and-warn or deploy.
+// StatusCmd lists every drifted or never-deployed config file across all
+// tools (or one tool), without touching disk or printing diffs — a
+// preview before `dot setup` would decide, per file, to skip-and-warn,
+// create, or update.
 var StatusCmd = &bonzai.Cmd{
 	Name:  `status`,
-	Short: `list drifted config files`,
+	Short: `list drifted and un-hydrated config files`,
 	Comp:  comp.Cmds,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		tool := ``
 		if len(args) > 0 && args[0] != `all` {
 			tool = args[0]
 		}
-		drift, err := checkDrift(tool, e.CheckList)
+		results, err := checkDrift(tool, e.CheckList)
 		if err != nil {
 			return err
 		}
-		if len(drift) == 0 {
-			fmt.Println(`clean — no drifted config files`)
+		if len(results) == 0 {
+			fmt.Println(`clean — nothing drifted or un-hydrated`)
 			return nil
 		}
 		for _, cmd := range driftCheckCmds {
-			paths, ok := drift[cmd.Name]
+			result, ok := results[cmd.Name]
 			if !ok {
 				continue
 			}
-			for _, path := range paths {
-				fmt.Printf("%s\t%s\n", cmd.Name, path)
+			for _, path := range result.Drifted {
+				fmt.Printf("%s\t%s\tdrifted\n", cmd.Name, path)
+			}
+			for _, path := range result.Missing {
+				fmt.Printf("%s\t%s\tmissing\n", cmd.Name, path)
 			}
 		}
 		return nil
 	},
 }
 
-// DiffCmd shows the diff for every drifted file in a tool (or all tools).
+// DiffCmd shows the diff for every drifted file in a tool (or all tools),
+// and for every never-deployed file, the diff against nothing (i.e. what
+// `dot setup` would create).
 var DiffCmd = &bonzai.Cmd{
 	Name:  `diff`,
-	Short: `show diff for a tool's drifted config files`,
+	Short: `show diff for a tool's drifted and un-hydrated config files`,
 	Comp:  comp.Cmds,
 	Do: func(x *bonzai.Cmd, args ...string) error {
 		tool := ``
 		if len(args) > 0 && args[0] != `all` {
 			tool = args[0]
 		}
-		drift, err := checkDrift(tool, e.CheckDiff)
+		results, err := checkDrift(tool, e.CheckDiff)
 		if err != nil {
 			return err
 		}
-		if len(drift) == 0 {
-			fmt.Println(`clean — no drifted config files`)
+		if len(results) == 0 {
+			fmt.Println(`clean — nothing drifted or un-hydrated`)
 		}
 		return nil
 	},
 }
 
+// toolCheck is one tool's findings from a checkDrift run.
+type toolCheck struct {
+	Drifted []string
+	Missing []string
+}
+
 // checkDrift runs the named tool's setup (or every driftCheckCmds tool, if
-// name is "") in the given e.CheckMode and returns each tool alongside the
-// dest paths it found drifted. Supports StatusCmd and DiffCmd above.
-func checkDrift(name string, mode e.CheckMode) (map[string][]string, error) {
+// name is "") in the given e.CheckMode and returns each tool alongside
+// what it found. Supports StatusCmd and DiffCmd above.
+func checkDrift(name string, mode e.CheckMode) (map[string]toolCheck, error) {
 	cmds := driftCheckCmds
 	if name != `` {
 		found := false
@@ -85,14 +97,15 @@ func checkDrift(name string, mode e.CheckMode) (map[string][]string, error) {
 	e.Check = mode
 	defer func() { e.Check = e.CheckOff }()
 
-	result := map[string][]string{}
+	result := map[string]toolCheck{}
 	for _, cmd := range cmds {
 		e.Drifted = nil
+		e.Missing = nil
 		if err := cmd.Run(``); err != nil {
 			return nil, err
 		}
-		if len(e.Drifted) > 0 {
-			result[cmd.Name] = e.Drifted
+		if len(e.Drifted) > 0 || len(e.Missing) > 0 {
+			result[cmd.Name] = toolCheck{Drifted: e.Drifted, Missing: e.Missing}
 		}
 	}
 	return result, nil

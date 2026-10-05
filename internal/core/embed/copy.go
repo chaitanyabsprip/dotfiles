@@ -45,6 +45,13 @@ var Check CheckMode
 // run they want isolated to one tool.
 var Drifted []string
 
+// Missing collects dest paths that have never been deployed at all
+// (nothing exists there yet) during a CheckList/CheckDiff run. Reset the
+// same way as Drifted. Distinct from Drifted: a missing file was never
+// hydrated, so there's no local edit at risk of being overwritten —
+// `dot setup` would just create it, not skip-and-warn.
+var Missing []string
+
 // SetupAll deploys every file embedded under name into configDir,
 // per-file drift-aware (see copy). It replaces an older, cruder
 // implementation that deleted the tool's whole config directory before
@@ -173,6 +180,13 @@ func copy(embedFs embed.FS, m manifest.Manifest, d fs.DirEntry, path, dest strin
 	}
 
 	if Check != CheckOff {
+		if os.IsNotExist(err) {
+			Missing = append(Missing, dest)
+			if Check == CheckDiff {
+				printDiff(dest, nil, content)
+			}
+			return nil
+		}
 		if drifted {
 			Drifted = append(Drifted, dest)
 			if Check == CheckDiff {
