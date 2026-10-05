@@ -14,4 +14,4 @@ RUN dpkg-reconfigure -f noninteractive tzdata && \
         dpkg-reconfigure --frontend=noninteractive locales && \
         update-locale LANG=en_US.UTF-8
 COPY . /root/dot/
-RUN go install -v ./cmd/dot
+RUN go install -v ./cmd/dot ./cmd/x
