@@ -80,7 +80,7 @@ var SetupCmd = &bonzai.Cmd{
 	Comp:  comp.Cmds,
 	Cmds:  SetupCmds,
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		if len(args) == 0 {
+		if len(args) == 0 || args[0] == `all` {
 			return setupAll()
 		}
 		for _, cmd := range SetupCmds {
