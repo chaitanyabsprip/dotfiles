@@ -9,6 +9,15 @@ import (
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
 )
 
+// Fixed-width icons for StatusCmd's output, so a line's status is always
+// the first character — never shifting around based on tool-name or
+// path length the way a trailing word would (git status's "M "/"??"
+// prefixes are the same idea).
+const (
+	iconDrifted = `~`
+	iconMissing = `+`
+)
+
 // StatusCmd lists every drifted or never-deployed config file across all
 // tools (or one tool), without touching disk or printing diffs — a
 // preview before `dot setup` would decide, per file, to skip-and-warn,
@@ -30,16 +39,23 @@ var StatusCmd = &bonzai.Cmd{
 			fmt.Println(`clean — nothing drifted or un-hydrated`)
 			return nil
 		}
+		nameWidth := 0
+		for _, cmd := range driftCheckCmds {
+			if _, ok := results[cmd.Name]; ok && len(cmd.Name) > nameWidth {
+				nameWidth = len(cmd.Name)
+			}
+		}
+		fmt.Printf("%s missing  %s drifted\n", iconMissing, iconDrifted)
 		for _, cmd := range driftCheckCmds {
 			result, ok := results[cmd.Name]
 			if !ok {
 				continue
 			}
 			for _, path := range result.Drifted {
-				fmt.Printf("%s\t%s\tdrifted\n", cmd.Name, path)
+				fmt.Printf("%s %-*s %s\n", iconDrifted, nameWidth, cmd.Name, path)
 			}
 			for _, path := range result.Missing {
-				fmt.Printf("%s\t%s\tmissing\n", cmd.Name, path)
+				fmt.Printf("%s %-*s %s\n", iconMissing, nameWidth, cmd.Name, path)
 			}
 		}
 		return nil
