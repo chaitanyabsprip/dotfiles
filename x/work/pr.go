@@ -16,7 +16,8 @@ import (
 	"github.com/rwxrob/bonzai/comp"
 )
 
-var prCmd = &bonzai.Cmd{
+// PRCmd is exported so other bonzai trees (e.g. ss) can mount it.
+var PRCmd = &bonzai.Cmd{
 	Name:    `pr`,
 	Short:   `check out a GitHub PR into a worktree`,
 	Usage:   `<number> [path]`,

@@ -20,7 +20,7 @@ var Cmd = &bonzai.Cmd{
 Git worktree repositories. It supports compact output when SHORT=1 is
 set.`,
 	Def:  helpCmd,
-	Cmds: []*bonzai.Cmd{helpCmd, dirsCmd, treeCmd, addCmd, repairCmd, prCmd, doneCmd, pruneCmd, approveCmd, statusCmd},
+	Cmds: []*bonzai.Cmd{helpCmd, dirsCmd, treeCmd, addCmd, repairCmd, PRCmd, doneCmd, pruneCmd, ApproveCmd, statusCmd},
 	Comp: comp.Cmds,
 }
 
@@ -43,7 +43,7 @@ EXAMPLES
   work help dirs  # shows help for 'dirs' command
   work help trees # shows help for 'trees' command`,
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		cmds := []*bonzai.Cmd{dirsCmd, treeCmd, addCmd, repairCmd, prCmd, doneCmd, pruneCmd, approveCmd, statusCmd}
+		cmds := []*bonzai.Cmd{dirsCmd, treeCmd, addCmd, repairCmd, PRCmd, doneCmd, pruneCmd, ApproveCmd, statusCmd}
 		if len(args) == 0 {
 			fmt.Printf("%s - %s\n\n", x.Name, x.Short)
 			fmt.Println("COMMANDS:")

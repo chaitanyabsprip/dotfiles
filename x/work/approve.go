@@ -10,7 +10,8 @@ import (
 	"github.com/rwxrob/bonzai"
 )
 
-var approveCmd = &bonzai.Cmd{
+// ApproveCmd is exported so other bonzai trees (e.g. ss) can mount it.
+var ApproveCmd = &bonzai.Cmd{
 	Name:    `approve`,
 	Short:   `approve a github pull request`,
 	Usage:   `<pr-url>|<pr-number>`,
