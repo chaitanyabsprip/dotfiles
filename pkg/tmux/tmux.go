@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rwxrob/bonzai/fn/filt"
 	"github.com/rwxrob/bonzai/fn/maps"
 	"github.com/rwxrob/bonzai/run"
 	"github.com/rwxrob/bonzai/to"
@@ -42,6 +41,23 @@ type Session struct {
 	Path string
 }
 
+// parseSessionLines splits "name=path" lines (as ListSessions
+// produces) into Sessions, so callers can match the name or path
+// fields exactly instead of as a raw substring of the whole line —
+// a literal prefix/suffix check on "name=path" false-matches, e.g.
+// querying for session name "ss" would otherwise match "ss_ui=...".
+func parseSessionLines(lines []string) []Session {
+	sessions := make([]Session, 0, len(lines))
+	for _, line := range lines {
+		name, path, ok := strings.Cut(line, `=`)
+		if !ok {
+			continue
+		}
+		sessions = append(sessions, Session{Name: name, Path: path})
+	}
+	return sessions
+}
+
 func CurrentSession() (Session, error) {
 	out := run.Out(
 		`tmux`,
@@ -68,31 +84,24 @@ func NewSession(opts Session) error {
 }
 
 func SessionExists(opts Session) bool {
-	if len(opts.Name) > 0 {
-		return len(
-			filt.HasPrefix(ListSessions(), opts.Name),
-		) > 0
-	} else if len(opts.Path) > 0 {
-		return len(filt.HasSuffix(ListSessions(), opts.Path)) > 0
-	}
-	return false
+	name, _ := FindSession(opts)
+	return len(name) > 0
 }
 
 func FindSession(opts Session) (string, string) {
-	var results []string
-	if len(opts.Name) > 0 {
-		results = filt.HasPrefix(ListSessions(), opts.Name)
-	} else if len(opts.Path) > 0 {
-		results = filt.HasSuffix(ListSessions(), opts.Path)
+	return findSession(parseSessionLines(ListSessions()), opts)
+}
+
+func findSession(sessions []Session, opts Session) (string, string) {
+	for _, s := range sessions {
+		if len(opts.Name) > 0 && s.Name == opts.Name {
+			return s.Name, s.Path
+		}
+		if len(opts.Path) > 0 && s.Path == opts.Path {
+			return s.Name, s.Path
+		}
 	}
-	if len(results) == 0 {
-		return ``, ``
-	}
-	parts := strings.Split(results[0], `=`)
-	if len(parts) < 2 {
-		return ``, ``
-	}
-	return parts[0], parts[1]
+	return ``, ``
 }
 
 func SwitchClient(name string) error {

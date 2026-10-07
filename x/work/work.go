@@ -251,6 +251,11 @@ func Worktrees() []string {
 			if d.IsDir() || d.Type()&os.ModeSymlink != 0 {
 				return filepath.SkipDir
 			}
+			// A plain file here is a worktree's gitdir pointer, not a
+			// directory to descend into, so there's nothing to skip —
+			// returning SkipDir would also skip this .git file's
+			// siblings (e.g. a bare root's own pointer file sits next
+			// to its worktree directories).
 			wg.Add(1)
 			semaphore <- struct{}{}
 			go func(gitDir string) {
@@ -262,7 +267,7 @@ func Worktrees() []string {
 					mu.Unlock()
 				}
 			}(filepath.Dir(path))
-			return filepath.SkipDir
+			return nil
 		}
 		return nil
 	}

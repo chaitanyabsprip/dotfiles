@@ -66,13 +66,12 @@ func Sessionizer(path string) error {
 	if _, oldPath := tmux.FindSession(tmux.Session{Name: sessionName}); len(
 		oldPath,
 	) > 0 {
-
-		oldSessionNewName, sessionName := reconcileSessionName(
-			newPath,
-			oldPath,
-		)
+		collidingName := sessionName
+		var oldSessionNewName string
+		oldSessionNewName, sessionName = reconcileSessionName(oldPath, newPath)
 		sessionName = strings.ReplaceAll(sessionName, `.`, `_`)
-		tmux.RenameSession(sessionName, oldSessionNewName)
+		oldSessionNewName = strings.ReplaceAll(oldSessionNewName, `.`, `_`)
+		tmux.RenameSession(collidingName, oldSessionNewName)
 	}
 	err := tmux.NewSession(
 		tmux.Session{Name: sessionName, Path: newPath},
