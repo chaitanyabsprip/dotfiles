@@ -64,6 +64,23 @@ func TestTransferMovesNewestFile(t *testing.T) {
 	}
 }
 
+func TestTransferIntoExistingDirReportsFullPath(t *testing.T) {
+	downloads := withDownloads(t)
+	touch(t, filepath.Join(downloads, `report.pdf`), time.Now())
+
+	wd := t.TempDir()
+	_, to, err := transfer(FindFile, wd, `.`, moveOp)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := filepath.Join(wd, `report.pdf`); to != want {
+		t.Errorf("to = %q, want %q", to, want)
+	}
+	if _, err := os.Stat(to); err != nil {
+		t.Errorf("moved file missing at %s: %v", to, err)
+	}
+}
+
 func TestTransferNoMatch(t *testing.T) {
 	withDownloads(t) // empty
 	if _, _, err := transfer(FindFile, t.TempDir(), `x`, moveOp); err == nil {

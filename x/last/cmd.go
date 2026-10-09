@@ -6,11 +6,14 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
+	"strconv"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/cmds/help"
 	"github.com/rwxrob/bonzai/comp"
 	"github.com/rwxrob/bonzai/run"
+	"github.com/rwxrob/bonzai/vars"
 
 	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/prompt"
@@ -28,10 +31,16 @@ var Cmd = &bonzai.Cmd{
 Prints the newest entry (file or directory) in [path]. [path] defaults
 to ` + "`$DOWNLOADS`" + ` (or ` + "`~/downloads`" + `); pass ` + "`.`" + ` for the current
 directory instead. See 'last help' for the dir/file/mv/cp/edit
-commands.`,
+commands.
+
+last, 'last dir' and 'last file' print the newest ` + "`$LAST_COUNT`" + `
+entries (default 1), newest first; set ` + "`$LAST_ORDER`" + ` to "oldest"
+to print oldest first. Both can be persisted instead with
+'last var set last-count 5' and 'last var set last-order oldest'; the
+env var wins when set.`,
 	Comp: comp.Cmds,
-	Cmds: []*bonzai.Cmd{dirCmd, fileCmd, mvCmd, cpCmd, editCmd, rmCmd, help.Cmd},
-	Do:   doPrint(Find),
+	Cmds: []*bonzai.Cmd{dirCmd, fileCmd, mvCmd, cpCmd, editCmd, rmCmd, vars.Cmd, help.Cmd},
+	Do:   doPrint(nil),
 }
 
 // downloadsDir is $DOWNLOADS, falling back to ~/downloads when unset.
@@ -51,16 +60,63 @@ func pathArg(args []string) string {
 	return downloadsDir()
 }
 
-// doPrint returns a Do that prints what find locates in pathArg(args).
-func doPrint(find lookup) func(_ *bonzai.Cmd, args ...string) error {
+// doPrint returns a Do that prints the newest entries in pathArg(args)
+// that match (nil means any), one per line. How many and in what order
+// come from printOpts.
+func doPrint(match func(isDir bool) bool) func(_ *bonzai.Cmd, args ...string) error {
 	return func(_ *bonzai.Cmd, args ...string) error {
-		n, err := find(pathArg(args))
+		n, oldestFirst, err := printOpts()
 		if err != nil {
 			return err
 		}
-		fmt.Println(n)
+		paths, err := findN(pathArg(args), n, match)
+		if err != nil {
+			return err
+		}
+		if oldestFirst {
+			slices.Reverse(paths)
+		}
+		for _, p := range paths {
+			fmt.Println(p)
+		}
 		return nil
 	}
+}
+
+const (
+	CountEnv = `LAST_COUNT`
+	OrderEnv = `LAST_ORDER`
+)
+
+// printOpts reads the count (default 1) and order ("newest", the
+// default, or "oldest" first) for the print commands.
+func printOpts() (n int, oldestFirst bool, err error) {
+	count := setting(`last-count`, CountEnv, `1`)
+	if n, err = strconv.Atoi(count); err != nil || n < 1 {
+		return 0, false, fmt.Errorf(`count must be a positive integer, got %q`, count)
+	}
+	switch order := setting(`last-order`, OrderEnv, `newest`); order {
+	case `newest`:
+		return n, false, nil
+	case `oldest`:
+		return n, true, nil
+	default:
+		return 0, false, fmt.Errorf(`order must be "newest" or "oldest", got %q`, order)
+	}
+}
+
+// setting returns $envVar if set, else the value persisted with
+// 'last var set <key>', else fallback.
+func setting(key, envVar, fallback string) string {
+	if v, ok := os.LookupEnv(envVar); ok {
+		return v
+	}
+	if vars.Data != nil {
+		if v, err := vars.Data.Get(key); err == nil && v != `` {
+			return v
+		}
+	}
+	return fallback
 }
 
 var dirCmd = &bonzai.Cmd{
@@ -71,7 +127,7 @@ var dirCmd = &bonzai.Cmd{
 	Long: `
 Prints the newest subdirectory directly inside [path] (default:
 ` + "`$DOWNLOADS`" + `; pass ` + "`.`" + ` for the current directory).`,
-	Do: doPrint(FindDir),
+	Do: doPrint(isDirMatch),
 }
 
 var fileCmd = &bonzai.Cmd{
@@ -82,7 +138,7 @@ var fileCmd = &bonzai.Cmd{
 	Long: `
 Prints the newest non-directory entry directly inside [path] (default:
 ` + "`$DOWNLOADS`" + `; pass ` + "`.`" + ` for the current directory).`,
-	Do: doPrint(FindFile),
+	Do: doPrint(isFileMatch),
 }
 
 var editCmd = &bonzai.Cmd{
@@ -250,6 +306,10 @@ func transfer(find lookup, wd, dest string, op func(from, to string) error) (fro
 		return ``, ``, fmt.Errorf(`no matching entry in %s`, dir)
 	}
 	to = filepath.Join(wd, dest)
+	// mv/cp drop from inside an existing directory; report where it lands.
+	if info, err := os.Stat(to); err == nil && info.IsDir() {
+		to = filepath.Join(to, filepath.Base(from))
+	}
 	if err := op(from, to); err != nil {
 		return ``, ``, err
 	}

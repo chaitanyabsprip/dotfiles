@@ -3,6 +3,7 @@ package last
 import (
 	"os"
 	"path/filepath"
+	"slices"
 	"testing"
 	"time"
 )
@@ -91,6 +92,43 @@ func TestFindDirIgnoresSubdirContents(t *testing.T) {
 	}
 	if want := sub; got != want {
 		t.Errorf("FindDir(%s) = %q, want %q (the subdir itself, not its contents)", dir, got, want)
+	}
+}
+
+func TestFindNNewestFirstAndCapped(t *testing.T) {
+	dir := t.TempDir()
+	now := time.Now()
+	touch(t, filepath.Join(dir, `a`), now.Add(-2*time.Hour))
+	touch(t, filepath.Join(dir, `b`), now)
+	mkdirAt(t, filepath.Join(dir, `c`), now.Add(-time.Hour))
+
+	got, err := findN(dir, 2, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := []string{filepath.Join(dir, `b`), filepath.Join(dir, `c`)}
+	if !slices.Equal(got, want) {
+		t.Errorf("findN(dir, 2) = %q, want %q", got, want)
+	}
+	if got, _ := findN(dir, 10, isFileMatch); len(got) != 2 {
+		t.Errorf("findN(dir, 10, files) = %q, want 2 files", got)
+	}
+}
+
+func TestPrintOpts(t *testing.T) {
+	t.Setenv(CountEnv, `3`)
+	t.Setenv(OrderEnv, `oldest`)
+	if n, oldest, err := printOpts(); err != nil || n != 3 || !oldest {
+		t.Errorf("printOpts() = %d, %v, %v; want 3, true, nil", n, oldest, err)
+	}
+	t.Setenv(CountEnv, `0`)
+	if _, _, err := printOpts(); err == nil {
+		t.Error(`printOpts with count 0 should fail`)
+	}
+	t.Setenv(CountEnv, `1`)
+	t.Setenv(OrderEnv, `sideways`)
+	if _, _, err := printOpts(); err == nil {
+		t.Error(`printOpts with a bad order should fail`)
 	}
 }
 
