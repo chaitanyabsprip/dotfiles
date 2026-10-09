@@ -15,6 +15,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/x/colors"
 	"github.com/Chaitanyabsprip/dotfiles/x/depends"
 	"github.com/Chaitanyabsprip/dotfiles/x/distro"
+	"github.com/Chaitanyabsprip/dotfiles/x/env"
 	"github.com/Chaitanyabsprip/dotfiles/x/gpt"
 	"github.com/Chaitanyabsprip/dotfiles/x/has"
 	"github.com/Chaitanyabsprip/dotfiles/x/have"
@@ -36,6 +37,7 @@ var Cmd = &bonzai.Cmd{
 		creashCmd,
 		depends.Cmd,
 		distro.Cmd,
+		env.Cmd,
 		gpt.Cmd,
 		has.Cmd,
 		have.Cmd,

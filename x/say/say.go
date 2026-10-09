@@ -6,8 +6,8 @@ package say
 
 import "github.com/rwxrob/bonzai/term"
 
-func Error(msg string) string      { return colorize(term.Bold+term.Red, " ❌"+msg) }
-func Warning(msg string) string    { return colorize(term.Bold+term.Yellow, " ⚠️"+msg) }
+func Error(msg string) string      { return colorize(term.Bold+term.Red, " ❌ "+msg) }
+func Warning(msg string) string    { return colorize(term.Bold+term.Yellow, " ⚠️ "+msg) }
 func Success(msg string) string    { return colorize(term.Bold+term.Green, " ✔ "+msg) }
 func InProgress(msg string) string { return colorize(term.Bold+term.Blue, " ... "+msg) }
 func Bold(msg string) string       { return colorize(term.Bold, msg) }

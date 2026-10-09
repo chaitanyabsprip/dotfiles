@@ -11,8 +11,8 @@ func TestStyles(t *testing.T) {
 		fn   func(string) string
 		want string
 	}{
-		{`Error`, Error, " ❌boom"},
-		{`Warning`, Warning, " ⚠️boom"},
+		{`Error`, Error, " ❌ boom"},
+		{`Warning`, Warning, " ⚠️ boom"},
 		{`Success`, Success, " ✔ boom"},
 		{`InProgress`, InProgress, " ... boom"},
 		{`Bold`, Bold, `boom`},

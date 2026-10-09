@@ -1,7 +1,6 @@
 package work
 
 import (
-	"bufio"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -14,6 +13,8 @@ import (
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
+
+	"github.com/Chaitanyabsprip/dotfiles/pkg/prompt"
 )
 
 var prCmd = &bonzai.Cmd{
@@ -48,7 +49,6 @@ elsewhere, that worktree is printed instead. Needs the gh CLI.`,
 
 var doneCmd = &bonzai.Cmd{
 	Name:    `done`,
-	Alias:   `d`,
 	Short:   `remove a PR worktree and its branch`,
 	Usage:   `[number] [path]`,
 	MaxArgs: 2,
@@ -186,7 +186,7 @@ func prCheckout(dir, n, rel string, in io.Reader, out io.Writer) (string, error)
 	}
 	if info.State == `MERGED` || info.State == `CLOSED` {
 		q := fmt.Sprintf(`PR #%s is %s. Check it out anyway?`, n, info.State)
-		if !confirm(in, out, q) {
+		if !prompt.Confirm(in, out, q) {
 			return ``, errAborted
 		}
 	}
@@ -296,7 +296,7 @@ func prPrune(dir string, in io.Reader, out io.Writer, write bool) error {
 		return nil
 	}
 	q := fmt.Sprintf(`%d worktree(s) can be pruned. Remove?`, len(stale))
-	if !confirm(in, out, q) {
+	if !prompt.Confirm(in, out, q) {
 		fmt.Fprintln(out, `aborted`)
 		return nil
 	}
@@ -376,10 +376,4 @@ func prFromDir(root, dir string) string {
 func isInside(dir, root string) bool {
 	d, r := resolve(dir), resolve(root)
 	return d == r || strings.HasPrefix(d, r+string(filepath.Separator))
-}
-
-func confirm(in io.Reader, out io.Writer, question string) bool {
-	fmt.Fprintf(out, "%s [y/N] ", question)
-	line, _ := bufio.NewReader(in).ReadString('\n')
-	return strings.EqualFold(strings.TrimSpace(line), `y`)
 }

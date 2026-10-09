@@ -1,6 +1,8 @@
 package last
 
 import (
+	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -11,6 +13,7 @@ import (
 	"github.com/rwxrob/bonzai/run"
 
 	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
+	"github.com/Chaitanyabsprip/dotfiles/pkg/prompt"
 )
 
 // lookup finds a path to act on, given a directory to search.
@@ -27,7 +30,7 @@ to ` + "`$DOWNLOADS`" + ` (or ` + "`~/downloads`" + `); pass ` + "`.`" + ` for t
 directory instead. See 'last help' for the dir/file/mv/cp/edit
 commands.`,
 	Comp: comp.Cmds,
-	Cmds: []*bonzai.Cmd{dirCmd, fileCmd, mvCmd, cpCmd, editCmd, help.Cmd},
+	Cmds: []*bonzai.Cmd{dirCmd, fileCmd, mvCmd, cpCmd, editCmd, rmCmd, help.Cmd},
 	Do:   doPrint(Find),
 }
 
@@ -114,6 +117,37 @@ func editorCmd() string {
 		return env.Editor
 	}
 	return `nvim`
+}
+
+var rmCmd = &bonzai.Cmd{
+	Name:    `rm`,
+	Short:   `delete the newest download`,
+	Usage:   `[path]`,
+	MaxArgs: 1,
+	Long: `
+Deletes the newest entry (file or directory) in [path] (default:
+` + "`$DOWNLOADS`" + `; pass ` + "`.`" + ` for the current directory).
+Irreversible, so it asks twice: a y/N prompt, then a random word you
+must type back exactly.`,
+	Do: func(_ *bonzai.Cmd, args ...string) error {
+		dir := pathArg(args)
+		n, err := Find(dir)
+		if err != nil {
+			return err
+		}
+		if n == `` {
+			return fmt.Errorf(`no matching entry in %s`, dir)
+		}
+		fmt.Printf("About to delete: %s\n", n)
+		in := bufio.NewReader(os.Stdin)
+		if !prompt.Confirm(in, os.Stdout, `Are you sure?`) {
+			return errors.New(`aborted`)
+		}
+		if !prompt.ConfirmWord(in, os.Stdout) {
+			return errors.New(`aborted`)
+		}
+		return os.RemoveAll(n)
+	},
 }
 
 var mvCmd = &bonzai.Cmd{
