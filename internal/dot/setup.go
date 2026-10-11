@@ -11,7 +11,6 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/bat"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bin"
 	"github.com/Chaitanyabsprip/dotfiles/internal/brew"
-	"github.com/Chaitanyabsprip/dotfiles/internal/claude"
 	"github.com/Chaitanyabsprip/dotfiles/internal/dirs"
 	"github.com/Chaitanyabsprip/dotfiles/internal/fish"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gh"
@@ -34,14 +33,13 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/zsh"
 )
 
-// SetupCmds contains per-tool setup commands composed from all 26 tools.
+// SetupCmds contains per-tool setup commands composed from all 25 tools.
 var SetupCmds = []*bonzai.Cmd{
 	alacritty.SetupCmd.WithName(`alacritty`),
 	bash.SetupCmd.WithName(`bash`),
 	bat.SetupCmd.WithName(`bat`),
 	bin.SetupCmd.WithName(`bin`),
 	brew.SetupCmd.WithName(`brew`),
-	claude.SetupCmd.WithName(`claude`),
 	dirs.SetupCmd.WithName(`dirs`),
 	fish.SetupCmd.WithName(`fish`),
 	gh.SetupCmd.WithName(`gh`),

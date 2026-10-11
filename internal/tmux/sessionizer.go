@@ -3,13 +3,13 @@ package tmux
 
 import (
 	"fmt"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/fn/filt"
 
-	"github.com/Chaitanyabsprip/dotfiles/internal/claude"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/fzf"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/x/depends"
@@ -56,7 +56,8 @@ func Sessionizer(path string) error {
 		); err != nil {
 			return err
 		}
-		return claude.ResumeSessions(sessionName)
+		resumeClaude(sessionName)
+		return nil
 	}
 
 	fopts := tmux.Session{Path: newPath}
@@ -79,10 +80,14 @@ func Sessionizer(path string) error {
 	if err != nil {
 		return err
 	}
-	if err := claude.ResumeSessions(sessionName); err != nil {
-		return err
-	}
+	resumeClaude(sessionName)
 	return tmux.SwitchClient(sessionName)
+}
+
+// resumeClaude runs the optional out-of-repo `claude-tmux` script, if
+// installed, to resume Claude Code sessions remembered for this session.
+func resumeClaude(sessionName string) {
+	_ = exec.Command(`claude-tmux`, `restore`, sessionName).Run()
 }
 
 func resolveSessionName(path string) string {

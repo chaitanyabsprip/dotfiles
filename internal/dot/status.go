@@ -130,10 +130,8 @@ func checkDrift(name string, mode e.CheckMode) (map[string]toolCheck, error) {
 // nonDriftCheckable are SetupCmds that don't go through
 // internal/core/embed, so they have no manifest/drift concept to check
 // and running them here would perform a real side effect instead of a
-// preview: claude's setup merges ~/.claude/settings.json directly;
-// neovim's clones/pulls its config from a separate git repo.
+// preview: neovim's clones/pulls its config from a separate git repo.
 var nonDriftCheckable = map[string]bool{
-	`claude`: true,
 	`neovim`: true,
 }
 
