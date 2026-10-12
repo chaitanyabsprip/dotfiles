@@ -10,6 +10,7 @@ import (
 
 	"github.com/rwxrob/bonzai"
 
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/fzf"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/x/depends"
@@ -48,6 +49,11 @@ func Sessionizer(path string) error {
 	if len(newPath) == 0 {
 		return fmt.Errorf(`no path selected`)
 	}
+	// tmux stores session paths absolute and clean; match that so "." or
+	// "dir/" find their session instead of colliding with it.
+	if abs, err := filepath.Abs(newPath); err == nil {
+		newPath = abs
+	}
 	sessionName := resolveSessionName(newPath)
 
 	if !tmux.IsActive() {
@@ -70,8 +76,6 @@ func Sessionizer(path string) error {
 		collidingName := sessionName
 		var oldSessionNewName string
 		oldSessionNewName, sessionName = reconcileSessionName(oldPath, newPath)
-		sessionName = strings.ReplaceAll(sessionName, `.`, `_`)
-		oldSessionNewName = strings.ReplaceAll(oldSessionNewName, `.`, `_`)
 		tmux.RenameSession(collidingName, oldSessionNewName)
 	}
 	err := tmux.NewSession(
@@ -119,33 +123,36 @@ func selectPath() string {
 	return ``
 }
 
+// reconcileSessionName returns the names for two sessions whose names
+// collide: the old one is renamed to its shortest trailing path that
+// differs from the new path's ("ss/main" vs "ui/main"), the new one
+// keeps resolveSessionName. Compares sanitized names, so "foo.bar" and
+// "foo_bar" don't both end up "foo_bar".
 func reconcileSessionName(oldPath, newPath string) (string, string) {
-	dirA, baseA := filepath.Split(oldPath)
-	dirB, baseB := filepath.Split(newPath)
-	if oldPath == newPath {
-		if baseA == "root" {
-			parentBase := filepath.Base(filepath.Dir(oldPath))
-			return fmt.Sprintf("old-%s/r", parentBase),
-				fmt.Sprintf("%s/r", parentBase)
+	a, b := pathParts(oldPath), pathParts(newPath)
+	for n := 1; n <= max(len(a), len(b)); n++ {
+		if oldName := trailingName(a, n); oldName != trailingName(b, n) {
+			return oldName, resolveSessionName(newPath)
 		}
-		return fmt.Sprint("old-", baseA), baseB
 	}
-	fmt.Println(dirA, baseA, dirB, baseB)
-	if baseA == baseB {
-		nBaseB := baseB
-		nBaseA := baseA
-		nnBaseB := nBaseB
-		for nnBaseB == baseA {
-			dirA, nBaseA = filepath.Split(strings.TrimRight(dirA, "/"))
-			baseA = filepath.Join(nBaseA, baseA)
-			dirB, nBaseB = filepath.Split(strings.TrimRight(dirB, "/"))
-			nnBaseB = filepath.Join(nBaseB, nnBaseB)
-		}
-		if baseB == "root" {
-			return strings.TrimRight(baseA, "to"),
-				strings.TrimRight(nnBaseB, "to")
-		}
-		return baseA, baseB
+	return `old-` + resolveSessionName(oldPath), resolveSessionName(newPath)
+}
+
+// pathParts splits path into its parts, with a path under $HOME rooted
+// at "~" so names read "~/dotfiles", not "<user>/dotfiles".
+func pathParts(path string) []string {
+	if rest, ok := strings.CutPrefix(path, env.Home+`/`); ok && env.Home != `` {
+		path = `~/` + rest
 	}
-	return baseA, baseB
+	return strings.Split(strings.Trim(path, `/`), `/`)
+}
+
+// trailingName joins the last n path parts as a session name, with a
+// trailing "root" shortened to "r" and dots made tmux-safe.
+func trailingName(parts []string, n int) string {
+	parts = slices.Clone(parts[max(0, len(parts)-n):])
+	if last := len(parts) - 1; parts[last] == `root` {
+		parts[last] = `r`
+	}
+	return strings.ReplaceAll(strings.Join(parts, `/`), `.`, `_`)
 }

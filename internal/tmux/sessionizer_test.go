@@ -1,6 +1,10 @@
 package tmux
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
+)
 
 func TestReconcileSessionName(t *testing.T) {
 	tests := []struct {
@@ -21,7 +25,16 @@ func TestReconcileSessionName(t *testing.T) {
 		{"/a/b/root", "/a/b/root", "old-b/r", "b/r"},
 		{"/a/b", "/a/b/c/b", "a/b", "b"},
 		{"/z/a/b", "/z/a/b/c/b", "a/b", "b"},
+		{"/p/x/ss/root", "/p/y/ss/root", "x/ss/r", "ss/r"},
+		{"/p/foo.bar", "/p/foo_bar", "old-foo_bar", "foo_bar"},
+		{"/p/a/my.app", "/p/b/my.app", "a/my_app", "my_app"},
+		{"/home/u/dotfiles", "/home/u/projects/cb/dotfiles", "~/dotfiles", "dotfiles"},
+		{"/home/u/projects/cb/dotfiles", "/home/u/dotfiles", "cb/dotfiles", "dotfiles"},
+		{"/home/user2/dotfiles", "/home/u/dotfiles", "user2/dotfiles", "dotfiles"},
 	}
+	orig := env.Home
+	env.Home = `/home/u`
+	defer func() { env.Home = orig }()
 	for _, tt := range tests {
 		got1, got2 := reconcileSessionName(tt.oldPath, tt.newPath)
 		if got1 != tt.want1 || got2 != tt.want2 {
