@@ -120,17 +120,15 @@ _rg() {
     have rg || install-rg
 }
 
-_starship() {
-    heading starship
-    have starship && echo "Already installed at $(which starship)" && return
-    if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "Linux" ]; then
-        curl -sS https://starship.rs/install.sh -o starship.sh
-        sh starship.sh -y 1>/dev/null 2>&1
-        rm starship.sh
+_oh_my_posh() {
+    heading oh-my-posh
+    have oh-my-posh && echo "Already installed at $(which oh-my-posh)" && return
+    if [ "$(uname)" = "Darwin" ]; then
+        brew install oh-my-posh
     else
-        error "Couldn't install starship"
+        curl -sS https://ohmyposh.dev/install.sh | bash -s -- -d "$HOME/.local/bin"
     fi
-    success "starship successfully installed"
+    success "oh-my-posh successfully installed"
 }
 
 _tmux() {
@@ -179,7 +177,7 @@ _zsh() {
 setup_zsh_complete() {
     heading Complete ZSH setup
     _zsh
-    _starship
+    _oh_my_posh
     _zap
     _bat # --
     _fd
