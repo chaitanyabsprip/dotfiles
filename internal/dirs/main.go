@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"path"
 	"path/filepath"
+	"runtime"
 
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
@@ -33,6 +34,10 @@ var SetupCmd = &bonzai.Cmd{
 	Short: `setup dirs`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
+		// XDG user dirs are a freedesktop convention; macOS ignores the file.
+		if runtime.GOOS != `linux` {
+			return nil
+		}
 		return e.SetupAll(embedFs, "dirs", oscfg.ConfigDir(),
 			map[string]string{
 				`dirs`: filepath.Join(
