@@ -17,7 +17,6 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/gitui"
 	"github.com/Chaitanyabsprip/dotfiles/internal/glow"
 	"github.com/Chaitanyabsprip/dotfiles/internal/hypr"
-	"github.com/Chaitanyabsprip/dotfiles/internal/kitty"
 	"github.com/Chaitanyabsprip/dotfiles/internal/leaf"
 	"github.com/Chaitanyabsprip/dotfiles/internal/lsd"
 	"github.com/Chaitanyabsprip/dotfiles/internal/neovim"
@@ -45,7 +44,6 @@ var SetupCmds = []*bonzai.Cmd{
 	gitui.SetupCmd.WithName(`gitui`),
 	glow.SetupCmd.WithName(`glow`),
 	hypr.SetupCmd.WithName(`hypr`),
-	kitty.SetupCmd.WithName(`kitty`),
 	leaf.SetupCmd.WithName(`leaf`),
 	lsd.SetupCmd.WithName(`lsd`),
 	neovim.SetupCmd.WithName(`neovim`),
