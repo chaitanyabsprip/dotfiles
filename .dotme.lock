@@ -1,7 +1,6 @@
 alacritty: $HOME/.config/alacritty
 zsh: $HOME/.config/zsh
 zsh/.zshenv: $HOME/.zshenv
-kitty: $HOME/.config/kitty
 tmux: $HOME/.config/tmux
 oh-my-posh.rc.toml: $HOME/.config/oh-my-posh.rc.toml
 gitui: $HOME/.config/gitui
