@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os/exec"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/fn/filt"
 
 	"github.com/Chaitanyabsprip/dotfiles/pkg/fzf"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/tmux"
@@ -100,8 +100,9 @@ func resolveSessionName(path string) string {
 
 func selectPath() string {
 	dirs := work.CachedAllDirs(false)
+	short := work.Shorten(dirs)
 	out, err := fzf.Select(
-		work.Shorten(dirs),
+		short,
 		`--tmux`, `45%`,
 		`--border`,
 		`--border-label`, ` Sessionizer `,
@@ -110,12 +111,12 @@ func selectPath() string {
 	if err != nil || len(out) == 0 {
 		return ``
 	}
-	matches := filt.HasSuffix(dirs, out)
-	if len(matches) == 0 {
-		return ``
-	} else {
-		return matches[len(matches)-1]
+	// Shorten keeps order, so map the pick back by index; a suffix match
+	// would confuse `dotfiles` with `projects/.../dotfiles`.
+	if i := slices.Index(short, out); i >= 0 {
+		return dirs[i]
 	}
+	return ``
 }
 
 func reconcileSessionName(oldPath, newPath string) (string, string) {
