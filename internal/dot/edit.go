@@ -27,7 +27,6 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/internal/vimium"
 	"github.com/Chaitanyabsprip/dotfiles/internal/waybar"
-	"github.com/Chaitanyabsprip/dotfiles/internal/wezterm"
 	"github.com/Chaitanyabsprip/dotfiles/internal/zsh"
 )
 
@@ -54,7 +53,6 @@ var EditCmds = []*bonzai.Cmd{
 	tmux.EditCmd.WithName(`tmux`),
 	vimium.EditCmd.WithName(`vimium`),
 	waybar.EditCmd.WithName(`waybar`),
-	wezterm.EditCmd.WithName(`wezterm`),
 	zsh.EditCmd.WithName(`zsh`),
 }
 
