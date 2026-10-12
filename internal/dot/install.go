@@ -15,6 +15,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/gh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gitui"
 	"github.com/Chaitanyabsprip/dotfiles/internal/jq"
+	"github.com/Chaitanyabsprip/dotfiles/internal/mise"
 	"github.com/Chaitanyabsprip/dotfiles/internal/neovim"
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/ripgrep"
@@ -36,6 +37,7 @@ var InstallCmds = []*bonzai.Cmd{
 	gh.InstallCmd.WithName(`gh`),
 	gitui.InstallCmd.WithName(`gitui`),
 	jq.InstallCmd.WithName(`jq`),
+	mise.InstallCmd.WithName(`mise`),
 	neovim.InstallCmd.WithName(`neovim`),
 	ohmyposh.InstallCmd.WithName(`ohmyposh`),
 	ripgrep.InstallCmd.WithName(`rg`),

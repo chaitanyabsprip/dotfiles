@@ -18,6 +18,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/glow"
 	"github.com/Chaitanyabsprip/dotfiles/internal/hypr"
 	"github.com/Chaitanyabsprip/dotfiles/internal/leaf"
+	"github.com/Chaitanyabsprip/dotfiles/internal/mise"
 	"github.com/Chaitanyabsprip/dotfiles/internal/neovim"
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
@@ -42,6 +43,7 @@ var SetupCmds = []*bonzai.Cmd{
 	glow.SetupCmd.WithName(`glow`),
 	hypr.SetupCmd.WithName(`hypr`),
 	leaf.SetupCmd.WithName(`leaf`),
+	mise.SetupCmd.WithName(`mise`),
 	neovim.SetupCmd.WithName(`neovim`),
 	ohmyposh.SetupCmd.WithName(`ohmyposh`),
 	shell.SetupCmd.WithName(`shell`),
