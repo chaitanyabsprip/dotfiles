@@ -17,3 +17,4 @@ bin/.pipx
 bin/htmx-lsp
 bash/conf.d/local.bash
 git/local
+*.save
