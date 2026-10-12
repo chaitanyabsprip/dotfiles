@@ -7,9 +7,11 @@
 [blame]
 	coloring = highlightRecent
 
-[column]
-	ui = always
+[branch]
 	sort = -committerdate
+
+[column]
+	ui = auto
 
 [commit]
 	verbose = true
@@ -77,6 +79,9 @@
 
 [status]
 	showStash = true
+
+[tag]
+	sort = version:refname
 
 [user]
 	name = Chaitanya Sharma
