@@ -173,7 +173,6 @@ _zsh() {
     heading zsh
     pkg_install zsh
     _depends zsh
-    echo export ZDOTDIR="$HOME"/.config/zsh >>"$HOME"/.profile
     success "Successfully installed zsh"
 }
 
