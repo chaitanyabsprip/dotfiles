@@ -67,7 +67,7 @@ _fzf() {
     rm ./install
     have fzf-tmux && return
     spinner curl -LsS https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux -o "$SCRIPTS"/fzf-tmux
-    chmox "$SCRIPTS"/fzf-tmux
+    chmod +x "$SCRIPTS"/fzf-tmux
     success "successfully installed fzf"
 }
 
@@ -135,13 +135,7 @@ _starship() {
 
 _tmux() {
     heading tmux
-    case "$DISTRO" in
-    Debian | Ubuntu) sudo apt install tmux -y ;;
-    Fedora | CentOS | RHEL) dnf install tmux -y ;;
-    openSUSE | SUSE) zypper install tmux -y ;;
-    Arch\ Linux) sudo pacman -S --nocomfirm tmux ;;
-    *) return 1 ;;
-    esac
+    pkg_install tmux
     _depends tmux
     success "tmux successfully installed"
 }
@@ -177,13 +171,7 @@ _zap() {
 
 _zsh() {
     heading zsh
-    case "$DISTRO" in
-    Debian | Ubuntu) sudo apt install zsh -y ;;
-    Fedora | CentOS | RHEL) dnf install zsh -y ;;
-    openSUSE | SUSE) zypper install zsh -y ;;
-    Arch\ Linux) sudo pacman -S --nocomfirm zsh ;;
-    *) return 1 ;;
-    esac
+    pkg_install zsh
     _depends zsh
     echo export ZDOTDIR="$HOME"/.config/zsh >>"$HOME"/.profile
     success "Successfully installed zsh"
@@ -215,7 +203,19 @@ setup_neovim() {
     success "neovim setup complete"
 }
 
-DISTRO=$(distro | cut -d ':' -f1)
+# os-release ID (debian, ubuntu, fedora, arch, opensuse-*), or Darwin on macOS
+DISTRO="$(. /etc/os-release 2>/dev/null && echo "$ID" || uname -s)"
+
+pkg_install() {
+    case "$DISTRO" in
+    Darwin) brew install "$@" ;;
+    debian | ubuntu) sudo apt-get install -y "$@" ;;
+    fedora | centos | rhel) sudo dnf install -y "$@" ;;
+    opensuse*) sudo zypper install -y "$@" ;;
+    arch) sudo pacman -S --noconfirm --needed "$@" ;;
+    *) error "Don't know how to install $* on $DISTRO" && return 1 ;;
+    esac
+}
 
 # shellcheck disable=2016
 setup_env() {
@@ -229,7 +229,7 @@ echo "Running setup for $1"
 ! [ -d "${SCRIPTS:-$HOME/.local/bin}" ] && mkdir -p "${SCRIPTS:-$HOME/.local/bin}"
 
 subcommand="${1:-all}"
-shift
+[ $# -gt 0 ] && shift
 
 igo="$(echo "$*" | grep -wq -- '--go' && echo 1)"
 
