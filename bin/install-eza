@@ -28,7 +28,7 @@ main() {
 			sudo apt install -y eza
 			;;
 		fedora) sudo dnf install eza -y ;;
-		centos | rhel) ;;
+		centos | rhel) return 1 ;;
 		opensuse* | sles)
 			sudo zypper ar https://download.opensuse.org/tumbleweed/repo/oss/ factory-oss
 			sudo zypper in eza -y

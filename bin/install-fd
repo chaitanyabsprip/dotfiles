@@ -26,7 +26,7 @@ main() {
 			sudo dnf install fd-find -y &&
 				ln -sf "$(which fdfind)" "$SCRIPTS"/fd
 			;;
-		centos | rhel) ;;
+		centos | rhel) return 1 ;;
 		opensuse* | sles) sudo zypper install fd -y ;;
 		arch) sudo pacman -S --noconfirm fd ;;
 		*) return 1 ;;

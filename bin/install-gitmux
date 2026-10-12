@@ -4,7 +4,7 @@ pkg_install() {
 	case "$DISTRO" in
 	debian | ubuntu) return 1 ;;
 	fedora) return 1 ;;
-	centos | rhel) ;;
+	centos | rhel) return 1 ;;
 	opensuse* | sles) return 1 ;;
 	arch) paru -S --noconfirm gitmux ;;
 	*) return 1 ;;

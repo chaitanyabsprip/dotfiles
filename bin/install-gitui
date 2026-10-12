@@ -20,7 +20,7 @@ main() {
 		case "$DISTRO" in
 		debian | ubuntu) return 1 ;;
 		fedora) sudo dnf install gitui -y ;;
-		centos | rhel) ;;
+		centos | rhel) return 1 ;;
 		opensuse* | sles) sudo zypper install gitui -y ;;
 		arch) sudo pacman -S --noconfirm gitui ;;
 		*) return 1 ;;

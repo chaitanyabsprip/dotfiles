@@ -22,7 +22,7 @@ main() {
 			ln -sf "$(which batcat)" "$SCRIPTS"/bat
 			;;
 		fedora) dnf install bat -y ;;
-		centos | rhel) ;;
+		centos | rhel) return 1 ;;
 		opensuse* | sles) zypper install bat -y ;;
 		arch) sudo pacman -S --noconfirm bat ;;
 		*) return 1 ;;
