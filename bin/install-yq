@@ -22,7 +22,7 @@ main() {
 		fedora) return 1 ;;
 		centos | rhel) return 1 ;;
 		opensuse* | sles) return 1 ;;
-		arch) sudo pacman -S --nocomfirm go-yq ;;
+		arch) sudo pacman -S --noconfirm go-yq ;;
 		*) return 1 ;;
 		esac
 	}

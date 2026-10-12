@@ -5,7 +5,7 @@ pkg_install() {
 	debian | ubuntu) sudo apt-get install ripgrep -y ;;
 	fedora) sudo dnf install ripgrep -y ;;
 	opensuse* | sles) sudo zypper install ripgrep -y ;;
-	arch) sudo pacman -S --nocomfirm ripgrep ;;
+	arch) sudo pacman -S --noconfirm ripgrep ;;
 	*) return 1 ;;
 	esac
 }

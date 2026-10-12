@@ -6,7 +6,7 @@ pkg_install() {
 	fedora) sudo dnf install jq -y ;;
 	centos | rhel) ;;
 	opensuse* | sles) sudo zypper install jq -y ;;
-	arch) sudo pacman -S --nocomfirm jq ;;
+	arch) sudo pacman -S --noconfirm jq ;;
 	*) return 1 ;;
 	esac
 }

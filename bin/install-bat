@@ -24,7 +24,7 @@ main() {
 		fedora) dnf install bat -y ;;
 		centos | rhel) ;;
 		opensuse* | sles) zypper install bat -y ;;
-		arch) sudo pacman -S --nocomfirm bat ;;
+		arch) sudo pacman -S --noconfirm bat ;;
 		*) return 1 ;;
 		esac
 	}
