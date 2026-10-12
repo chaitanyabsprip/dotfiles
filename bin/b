@@ -15,7 +15,7 @@ i | inc)
 d | dec)
 	brightnessctl set 5%-
 	;;
-m | max)
+max)
 	brightnessctl set 100%
 	;;
 m | min)
