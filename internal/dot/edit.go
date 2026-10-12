@@ -18,7 +18,6 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/glow"
 	"github.com/Chaitanyabsprip/dotfiles/internal/hypr"
 	"github.com/Chaitanyabsprip/dotfiles/internal/leaf"
-	"github.com/Chaitanyabsprip/dotfiles/internal/lsd"
 	"github.com/Chaitanyabsprip/dotfiles/internal/neovim"
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
@@ -44,7 +43,6 @@ var EditCmds = []*bonzai.Cmd{
 	glow.EditCmd.WithName(`glow`),
 	hypr.EditCmd.WithName(`hypr`),
 	leaf.EditCmd.WithName(`leaf`),
-	lsd.EditCmd.WithName(`lsd`),
 	neovim.EditCmd.WithName(`neovim`),
 	ohmyposh.EditCmd.WithName(`ohmyposh`),
 	shell.EditCmd.WithName(`shell`),
