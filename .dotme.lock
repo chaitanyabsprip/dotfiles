@@ -3,7 +3,6 @@ zsh/.zshenv: $HOME/.zshenv
 tmux: $HOME/.config/tmux
 oh-my-posh.rc.toml: $HOME/.config/oh-my-posh.rc.toml
 gitui: $HOME/.config/gitui
-lsd: $HOME/.config/lsd
 fish: $HOME/.config/fish
 nvim: $HOME/.config/nvim
 bash/bashrc: $HOME/.bashrc
