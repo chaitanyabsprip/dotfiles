@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# edit: fuzzy-pick a file (6 levels deep) and open it in nvim
+fd . -Ht f -d 6 -E .git -E .DS_Store |
+	fzf --height=20% --border --margin=0 --padding=0 \
+		--bind='enter:become(nvim {})'

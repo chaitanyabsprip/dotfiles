@@ -1,32 +1,23 @@
 #!/bin/zsh
 
+# Interactive zsh. Environment comes from .zshenv (shell/env.sh).
+
+HISTFILE="$ZDOTDIR/.zsh_history"
+HISTSIZE=1000000
+SAVEHIST=1000000
 HISTORY_IGNORE="(la|ls|cd|pwd|exit|history|cd -|cd ..|q|c|vim|nvim)"
-SAVEHIST=200000
-HISTFILE=~/.config/zsh/.zsh_history
-HISTFILESIZE=1000000000
-HISTSIZE=1000000000
 ZLE_RPROMPT_INDENT=0
 
-_have() { type "$1" >/dev/null 2>&1; }
+_have() { (( $+commands[$1] )); }
 
-# Load separated config files
-plugin_file=$HOME/.config/zsh/plugs.zsh
-config_dir=$HOME/.config/zsh/conf.d
+# Shared with bash and fish
+. "$DOTFILES/shell/aliases"
+. "$DOTFILES/shell/functions.sh"
+_have fzf && . "$DOTFILES/shell/fzf.sh"
 
-[ -r $plugin_file ] && source $plugin_file
-
-for conf in "$config_dir/"*.sh; do
-	[ -r "$conf" ] && source "$conf"
-done
+# zsh only. Disable a conf.d file by renaming it to *.off; work.zsh is gitignored.
+[ -r "$ZDOTDIR/plugs.zsh" ] && . "$ZDOTDIR/plugs.zsh"
+for conf in "$ZDOTDIR"/conf.d/*.zsh(N); do . "$conf"; done
 unset conf
 
-# key-bindings
-bindkey -s ^o '^ujump\n'
-
-# initialisations
-_have rbenv && eval "$(rbenv init - zsh)"
-# have note && zsh-defer eval "$(note completion zsh)"
-
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 : # shell should start with a zero status code

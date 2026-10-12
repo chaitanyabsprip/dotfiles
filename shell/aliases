@@ -1,0 +1,56 @@
+#!/bin/sh
+
+# Aliases shared by bash, zsh and fish. Same COMMON SUBSET rules as env.sh:
+# one `alias name='cmd'` per line. Guard with `command -v` only when the alias
+# replaces a standard command (ls, cat, vim): a dangling alias to a missing
+# tool is harmless, a broken `ls` is not.
+#
+# Need a shell function? Only if it must cd/export/source -> functions.sh
+# (+ fish/functions/). Anything else is a script in bin/.
+
+alias mkdir='mkdir -pv'
+alias view='vi -R'
+alias encode='base64 -w 0'
+alias decode='base64 -d'
+
+[ -x /usr/bin/vim ] && alias vi='/usr/bin/vim'
+command -v nvim >/dev/null && alias vim='nvim'
+command -v nvim >/dev/null && alias vimdiff='nvim -d'
+alias db='nvim -c DBUI'
+command -v bat >/dev/null && alias cat='bat'
+
+command -v eza >/dev/null && alias ls='eza -F --group-directories-first --icons --git -1'
+command -v eza >/dev/null && alias lt='eza --tree -ahD -L=2 --icons --git'
+alias ll='ls -lhF'
+alias la='ll -a'
+
+alias bm='note b'
+alias todo='note todo'
+alias peek='note peek'
+
+alias d='docker'
+alias dps='docker ps'
+alias di='docker images'
+
+alias ghp='gh pull'
+alias issues='jira issue list -a$(jira me) -s~Done'
+
+alias '?'='x gpt'
+alias '??'='x gpt dev'
+alias '???'='x gpt shell'
+
+alias bup='brew update && brew upgrade'
+alias bout='brew outdated'
+alias bin='brew install'
+alias brm='brew uninstall'
+alias bls='brew list'
+alias bs='brew search'
+alias binf='brew info'
+alias bdr='brew doctor'
+
+# macOS: Finder tweaks for presentations, and .DS_Store cleanup
+alias hidedesktop='defaults write com.apple.finder CreateDesktop -bool false && killall Finder'
+alias showdesktop='defaults write com.apple.finder CreateDesktop -bool true && killall Finder'
+alias showall='defaults write com.apple.finder AppleShowAllFiles YES && killall Finder'
+alias hideall='defaults write com.apple.finder AppleShowAllFiles NO && killall Finder'
+alias dsclean='find . -type f -name .DS_Store -print0 | xargs -0 rm'

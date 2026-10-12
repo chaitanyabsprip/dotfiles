@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Login bash. Machine-local lines that installers append (sdkman, kiro, ...)
+# belong in ~/.bash_profile.local, not here.
+[ -r "$HOME/.bashrc" ] && . "$HOME/.bashrc"
+[ -r "$HOME/.bash_profile.local" ] && . "$HOME/.bash_profile.local"

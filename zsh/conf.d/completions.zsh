@@ -13,3 +13,5 @@ complete -C x x
 complete -C kimono kimono
 complete -C tug tug
 complete -C ss ss
+
+[ -s "$HOME/.bun/_bun" ] && . "$HOME/.bun/_bun"

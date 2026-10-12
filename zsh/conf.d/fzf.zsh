@@ -1,7 +1,5 @@
 #!/bin/zsh
 
-_have() { type "$1" >/dev/null 2>&1; }
-
 _have fzf && {
 	# fzf-history-widget-accept() {
 	# 	fzf-history-widget
