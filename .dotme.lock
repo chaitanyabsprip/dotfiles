@@ -22,3 +22,4 @@ wezterm: $HOME/.config/wezterm
 opencode: $HOME/.config/opencode
 glow: $HOME/.config/glow
 leaf: $HOME/.config/leaf
+mise: $HOME/.config/mise
