@@ -2,10 +2,10 @@
 
 pkg_install() {
 	case "$DISTRO" in
-	Debian | Ubuntu) sudo apt-get install ripgrep -y ;;
-	Fedora) sudo dnf install ripgrep -y ;;
-	openSUSE | SUSE) sudo zypper install ripgrep -y ;;
-	Arch\ Linux) sudo pacman -S --nocomfirm ripgrep ;;
+	debian | ubuntu) sudo apt-get install ripgrep -y ;;
+	fedora) sudo dnf install ripgrep -y ;;
+	opensuse* | sles) sudo zypper install ripgrep -y ;;
+	arch) sudo pacman -S --nocomfirm ripgrep ;;
 	*) return 1 ;;
 	esac
 }

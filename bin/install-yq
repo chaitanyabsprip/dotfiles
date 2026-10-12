@@ -18,11 +18,11 @@ main() {
 
 	pkg_install() {
 		case "$DISTRO" in
-		Debian | Ubuntu) return 1 ;;
-		Fedora) return 1 ;;
-		CentOS | RHEL) return 1 ;;
-		openSUSE | SUSE) return 1 ;;
-		Arch\ Linux) sudo pacman -S --nocomfirm go-yq ;;
+		debian | ubuntu) return 1 ;;
+		fedora) return 1 ;;
+		centos | rhel) return 1 ;;
+		opensuse* | sles) return 1 ;;
+		arch) sudo pacman -S --nocomfirm go-yq ;;
 		*) return 1 ;;
 		esac
 	}

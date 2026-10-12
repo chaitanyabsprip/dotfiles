@@ -6,8 +6,8 @@ export FVM_CACHE_PATH="$HOME"/programs/flutter
 export PATH="$PATH:$FVM_CACHE_PATH/default/bin"
 
 case "$(distro | cut -d ':' -f1)" in
-Debian | Ubuntu) sudo apt install clang ninja-build cmake pkg-config libgtk-3-dev -y ;;
-Arch\ Linux) sudo pacman -S clang ninja cmake pkg-config gtk3 --noconfirm ;;
+debian | ubuntu) sudo apt install clang ninja-build cmake pkg-config libgtk-3-dev -y ;;
+arch) sudo pacman -S clang ninja cmake pkg-config gtk3 --noconfirm ;;
 *) return 1 ;;
 esac
 

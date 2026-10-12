@@ -17,7 +17,7 @@ main() {
 
 	pkg_install() {
 		case "$DISTRO" in
-		Debian | Ubuntu)
+		debian | ubuntu)
 			depends wget || exit 1
 			have gpg || sudo apt install -y gpg
 			sudo mkdir -p /etc/apt/keyrings
@@ -27,13 +27,13 @@ main() {
 			sudo apt update
 			sudo apt install -y eza
 			;;
-		Fedora) sudo dnf install eza -y ;;
-		CentOS | RHEL) ;;
-		openSUSE | SUSE)
+		fedora) sudo dnf install eza -y ;;
+		centos | rhel) ;;
+		opensuse* | sles)
 			sudo zypper ar https://download.opensuse.org/tumbleweed/repo/oss/ factory-oss
 			sudo zypper in eza -y
 			;;
-		Arch\ Linux) sudo pacman -S --noconfirm eza ;;
+		arch) sudo pacman -S --noconfirm eza ;;
 		*) return 1 ;;
 		esac
 	}

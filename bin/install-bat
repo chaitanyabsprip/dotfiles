@@ -17,14 +17,14 @@ main() {
 
 	pkg_install() {
 		case "$DISTRO" in
-		Debian | Ubuntu)
+		debian | ubuntu)
 			sudo apt install bat -y
 			ln -sf "$(which batcat)" "$SCRIPTS"/bat
 			;;
-		Fedora) dnf install bat -y ;;
-		CentOS | RHEL) ;;
-		openSUSE | SUSE) zypper install bat -y ;;
-		Arch\ Linux) sudo pacman -S --nocomfirm bat ;;
+		fedora) dnf install bat -y ;;
+		centos | rhel) ;;
+		opensuse* | sles) zypper install bat -y ;;
+		arch) sudo pacman -S --nocomfirm bat ;;
 		*) return 1 ;;
 		esac
 	}

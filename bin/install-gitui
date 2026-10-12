@@ -18,11 +18,11 @@ main() {
 
 	pkg_install() {
 		case "$DISTRO" in
-		Debian | Ubuntu) return 1 ;;
-		Fedora) sudo dnf install gitui -y ;;
-		CentOS | RHEL) ;;
-		openSUSE | SUSE) sudo zypper install gitui -y ;;
-		Arch\ Linux) sudo pacman -S --noconfirm gitui ;;
+		debian | ubuntu) return 1 ;;
+		fedora) sudo dnf install gitui -y ;;
+		centos | rhel) ;;
+		opensuse* | sles) sudo zypper install gitui -y ;;
+		arch) sudo pacman -S --noconfirm gitui ;;
 		*) return 1 ;;
 		esac
 	}
