@@ -22,10 +22,12 @@ Hyprland/Wayland desktop, **[gnu]** needs GNU coreutils/date.
 - `origins` — print origin remote URLs
 - `pdgit` — print nearest ancestor dir containing `.git`
 - `status` — porcelain status for every git repo under a dir
+- `clone` — bare-clone `<user/repo>` into `~/projects` with a worktree per branch; prints the dir (the `clone` shell function cds into it)
 
 ## tmux
 
 - `cheat` — fzf pick a language/command and query cht.sh
+- `claude-tmux` — record Claude Code sessions per pane so tmux-resurrect can resume them
 - `gitpeek` — git log in a tmux popup
 - `gitwatch` — live-updating git log in a split pane
 - `tmux-peek` — show the tmux status bar for 5 seconds
@@ -78,6 +80,7 @@ Hyprland/Wayland desktop, **[gnu]** needs GNU coreutils/date.
 - `align` / `ralign` — align stdin on a character / right-align
 - `bold` / `italic` — print text bold / italic
 - `chmox` — `chmod +x`
+- `edit` — fzf pick a file (6 levels deep) and open it in nvim
 - `compress` / `extract` — create / unpack archives by extension
 - `countf` — count files under a path, optionally by name glob
 - `diffc` — diff the output of two commands
