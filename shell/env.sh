@@ -15,7 +15,7 @@ export DOTFILES="$HOME/dotfiles"
 export PROJECTS="$HOME/projects"
 export NOTESPATH="$HOME/projects/library"
 export DOWNLOADS="$HOME/downloads"
-export SCRIPTS="$HOME/.local/bin"
+export SCRIPTS="$HOME/.local/bin" # untracked: installer drops, `hem` scratch scripts
 export GITUSER="Chaitanyabsprip"
 
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -74,3 +74,4 @@ export ANDROID_HOME="$ANDROID_SDK_ROOT"
 [ -d "$HOME/.opencode/bin" ] && export PATH="$HOME/.opencode/bin:$PATH"
 [ -d "$SCRIPTS" ] && export PATH="$SCRIPTS:$PATH"
 [ -d "$SCRIPTS/overrides" ] && export PATH="$SCRIPTS/overrides:$PATH"
+[ -d "$DOTFILES/bin" ] && export PATH="$DOTFILES/bin:$PATH"
