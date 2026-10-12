@@ -55,3 +55,5 @@ runs one part (`packages`, `zsh`, `tmux`, `nvim`, `mise`, `go`, ...).
 - **A new tool's config:** `./dotme track ~/.config/<tool>` moves it into the
   repo, links it back and records it in `.dotme.lock` (`-m`/`-l` for
   macOS/Linux only).
+- **Neovim plugins:** turn one off without touching its spec by adding its
+  name to `vim.g.disabled_plugins` (read in `nvim/lua/config/lazy.lua`).
