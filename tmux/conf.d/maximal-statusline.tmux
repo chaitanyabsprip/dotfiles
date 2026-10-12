@@ -1,7 +1,7 @@
 set -g message-command-style "bg=#{@c_message_command_bg},fg=#{@c_message_command_fg}"
 set -g message-style "bg=#{@c_message_bg},fg=#{@c_message_fg}"
 
-set -g status-interval 1
+set -g status-interval 5
 set -g status-position top
 set -g status-style "fg=#{@c_status_fg},bg=#{@c_status_bg}"
 set -g automatic-rename on
