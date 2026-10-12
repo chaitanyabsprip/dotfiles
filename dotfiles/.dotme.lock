@@ -1,19 +1,21 @@
-alacritty: $HOME/.config/alacritty
 zsh: $HOME/.config/zsh
 zsh/.zshenv: $HOME/.zshenv
-bin: $HOME/.local/bin
-kitty: $HOME/.config/kitty
 tmux: $HOME/.config/tmux
-starship.toml: $HOME/.config/starship.toml
+oh-my-posh.rc.toml: $HOME/.config/oh-my-posh.rc.toml
 gitui: $HOME/.config/gitui
-lsd: $HOME/.config/lsd
 fish: $HOME/.config/fish
 nvim: $HOME/.config/nvim
-bashrc: $HOME/.bashrc
+bash/bashrc: $HOME/.bashrc
+bash/bash_profile: $HOME/.bash_profile
 hypr: $HOME/.config/hypr: linux
 git: $HOME/.config/git
 waybar: $HOME/.config/waybar: linux
 bat: $HOME/.config/bat
-dirs: $HOME/.config/user-dirs.dirs
-gh: $HOME/.config/gh
+dirs: $HOME/.config/user-dirs.dirs: linux
+gh/config.yml: $HOME/.config/gh/config.yml
 sqlfluff: $HOME/.config/sqlfluff
+opencode: $HOME/.config/opencode
+glow: $HOME/.config/glow
+leaf: $HOME/.config/leaf
+mise: $HOME/.config/mise
+ghostty: $HOME/.config/ghostty
