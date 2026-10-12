@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# fzf options shared by bash, zsh and fish (COMMON SUBSET, see env.sh).
+# Theme first: FZF_COMPLETION_OPTS below builds on FZF_DEFAULT_OPTS.
+. "$DOTFILES/shell/fzf-themes/material-rosepine-dark"
+
 export FZF_DEFAULT_COMMAND='fd --type file --hidden --exclude .git'
 
 export FZF_COMPLETION_TRIGGER='..'
@@ -20,5 +24,3 @@ export FZF_CTRL_T_OPTS="
     --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 export FZF_ALT_C_COMMAND="fd . -t d --hidden"
 export FZF_ALT_C_OPTS="--preview='eza --tree {} | head -50'"
-
-. "$(dirname "$0")"/fzf-themes/material-rosepine-dark

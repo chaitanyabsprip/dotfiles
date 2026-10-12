@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Interactive bash; bash_profile sources this for login shells too.
+
+. "$HOME/dotfiles/shell/env.sh"
+PATH="$(printf %s "$PATH" | awk -v RS=: -v ORS=: '!seen[$0]++')" # dedupe, keeping the first occurrence
+export PATH="${PATH%:}"
+
+[[ $- == *i* ]] || return
+
+HISTSIZE=1000000
+HISTFILESIZE=1000000
+HISTCONTROL=ignoreboth:erasedups
+shopt -s histappend
+stty stop undef # Disable ctrl-s to freeze terminal.
+
+set -o vi
+bind -m vi-insert '"\C-a": beginning-of-line'
+bind -m vi-insert '"\C-e": end-of-line'
+bind -m vi-insert '"\C-o": "\C-ujump\n"'
+
+_have() { type "$1" >/dev/null 2>&1; }
+
+# Shared with zsh and fish
+. "$DOTFILES/shell/aliases"
+. "$DOTFILES/shell/functions.sh"
+_have fzf && . "$DOTFILES/shell/fzf.sh" && eval "$(fzf --bash)"
+
+_have mise && eval "$(mise activate bash)"
+# oh-my-posh needs bash 4+; macOS /bin/bash is 3.2 (use Homebrew's bash)
+((BASH_VERSINFO[0] >= 4)) && _have oh-my-posh && eval "$(oh-my-posh init bash --config "$DOTFILES/oh-my-posh.rc.toml")"
+
+# Drop-in config: bash/conf.d/*.bash (local.bash is gitignored)
+for conf in "$DOTFILES"/bash/conf.d/*.bash; do [ -r "$conf" ] && . "$conf"; done
+unset conf

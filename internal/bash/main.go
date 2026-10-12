@@ -18,7 +18,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/x/depends"
 )
 
-//go:embed bashrc
+//go:embed bash
 var embedFs embed.FS
 
 var InstallCmd = &bonzai.Cmd{
@@ -50,8 +50,12 @@ var SetupCmd = &bonzai.Cmd{
 			embedFs,
 			`bash`,
 			env.Home,
+			// Machine-local lines belong in ~/.bash_profile.local, which
+			// bash_profile sources and dot never touches.
 			map[string]string{
-				`bashrc`: filepath.Join(env.Home, `.bashrc`),
+				`bash`:              e.Skip, // don't create ~/bash
+				`bash/bashrc`:       filepath.Join(env.Home, `.bashrc`),
+				`bash/bash_profile`: filepath.Join(env.Home, `.bash_profile`),
 			},
 		)
 	},

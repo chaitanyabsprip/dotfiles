@@ -36,7 +36,7 @@ var EditCmd = &bonzai.Cmd{
 	Short:  `edit shell configuration`,
 	NoArgs: true,
 	Do: func(x *bonzai.Cmd, _ ...string) error {
-		filePath := path.Join(oscfg.ConfigDir(), "shell", "aliasrc")
+		filePath := path.Join(oscfg.ConfigDir(), "shell", "aliases")
 		if err := edit.Files(filePath); err != nil {
 			return err
 		}
