@@ -2,7 +2,6 @@
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 	root = rev-parse --show-toplevel
 	sh = !"git log --oneline | fzf -m -d ' ' --preview \"git show --color=always {1}\" | cut -d ' ' -f 1 | xargs -n 9999"
-	tags = tag --list --sort=version:refname
 
 [blame]
 	coloring = highlightRecent
