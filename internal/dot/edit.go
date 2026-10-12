@@ -6,7 +6,6 @@ import (
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
 
-	"github.com/Chaitanyabsprip/dotfiles/internal/alacritty"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bash"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bat"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bin"
@@ -35,7 +34,6 @@ import (
 
 // EditCmds contains per-tool edit commands composed from all tool packages.
 var EditCmds = []*bonzai.Cmd{
-	alacritty.EditCmd.WithName(`alacritty`),
 	bash.EditCmd.WithName(`bash`),
 	bat.EditCmd.WithName(`bat`),
 	bin.EditCmd.WithName(`bin`),

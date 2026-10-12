@@ -6,7 +6,6 @@ import (
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
 
-	"github.com/Chaitanyabsprip/dotfiles/internal/alacritty"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bash"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bat"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bin"
@@ -33,9 +32,8 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/zsh"
 )
 
-// SetupCmds contains per-tool setup commands composed from all 25 tools.
+// SetupCmds contains per-tool setup commands composed from every tool.
 var SetupCmds = []*bonzai.Cmd{
-	alacritty.SetupCmd.WithName(`alacritty`),
 	bash.SetupCmd.WithName(`bash`),
 	bat.SetupCmd.WithName(`bat`),
 	bin.SetupCmd.WithName(`bin`),

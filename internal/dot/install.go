@@ -6,7 +6,6 @@ import (
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
 
-	"github.com/Chaitanyabsprip/dotfiles/internal/alacritty"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bash"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bat"
 	"github.com/Chaitanyabsprip/dotfiles/internal/dirs"
@@ -31,7 +30,6 @@ import (
 
 // InstallCmds contains per-tool install commands composed from tools that have them.
 var InstallCmds = []*bonzai.Cmd{
-	alacritty.InstallCmd.WithName(`alacritty`),
 	bash.InstallCmd.WithName(`bash`),
 	bat.InstallCmd.WithName(`bat`),
 	dirs.InstallCmd.WithName(`dirs`),
