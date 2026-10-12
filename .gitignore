@@ -16,5 +16,5 @@ bin/harpoon
 bin/.pipx
 bin/htmx-lsp
 bash/conf.d/local.bash
-git/local
+git/local*
 *.save
