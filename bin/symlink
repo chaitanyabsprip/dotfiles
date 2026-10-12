@@ -8,7 +8,7 @@ symlink () {
     return 1
   fi
   echo Linking $from'` -> `'$to 
-  ln -sf $to $from
+  ln -sf "$to" "$from"
 }
 
-symlink $*
+symlink "$@"
