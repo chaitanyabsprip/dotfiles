@@ -22,7 +22,6 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
 	"github.com/Chaitanyabsprip/dotfiles/internal/sqlfluff"
-	"github.com/Chaitanyabsprip/dotfiles/internal/starship"
 	"github.com/Chaitanyabsprip/dotfiles/internal/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/internal/vimium"
 	"github.com/Chaitanyabsprip/dotfiles/internal/waybar"
@@ -47,7 +46,6 @@ var EditCmds = []*bonzai.Cmd{
 	ohmyposh.EditCmd.WithName(`ohmyposh`),
 	shell.EditCmd.WithName(`shell`),
 	sqlfluff.EditCmd.WithName(`sqlfluff`),
-	starship.EditCmd.WithName(`starship`),
 	tmux.EditCmd.WithName(`tmux`),
 	vimium.EditCmd.WithName(`vimium`),
 	waybar.EditCmd.WithName(`waybar`),

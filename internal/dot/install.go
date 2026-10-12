@@ -19,7 +19,6 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/ripgrep"
 	"github.com/Chaitanyabsprip/dotfiles/internal/sqlfluff"
-	"github.com/Chaitanyabsprip/dotfiles/internal/starship"
 	"github.com/Chaitanyabsprip/dotfiles/internal/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/internal/waybar"
 	"github.com/Chaitanyabsprip/dotfiles/internal/yq"
@@ -41,7 +40,6 @@ var InstallCmds = []*bonzai.Cmd{
 	ohmyposh.InstallCmd.WithName(`ohmyposh`),
 	ripgrep.InstallCmd.WithName(`rg`),
 	sqlfluff.InstallCmd.WithName(`sqlfluff`),
-	starship.InstallCmd.WithName(`starship`),
 	tmux.InstallCmd.WithName(`tmux`),
 	waybar.InstallCmd.WithName(`waybar`),
 	yq.InstallCmd.WithName(`yq`),
