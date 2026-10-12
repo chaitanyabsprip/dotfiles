@@ -32,12 +32,15 @@ track() {
 		is_git_dir=true
 	fi
 
-	if grep -q "$entry" "$lock_file"; then
+	if grep -qxF "$entry" "$lock_file"; then
 		echo "Already tracking $name_clean" && exit 1
 	fi
 	mv "$config" "$script_dir"
 	ln -sf "$script_dir/$name_base" "$config"
-	if [ "$is_git_dir" ]; then git submodule add "$script_dir/$name_base"; fi
+	if [ "$is_git_dir" ]; then
+		url="$(git -C "$script_dir/$name_base" remote get-url origin)"
+		git -C "$script_dir" submodule add "$url" "$name_base"
+	fi
 	echo "$entry" >>"$lock_file"
 	echo "Configuration $name_clean is now being tracked"
 	unset name_clean name_base entry config
@@ -52,26 +55,24 @@ prepare() {
 	fi
 }
 
+# Idempotent: entries already linked to this repo are skipped; anything else
+# at the destination (file, directory or foreign link) is moved aside first.
 serve() {
-	[ -d ~/.config ] || mkdir -p ~/.config
-	[ -d ~/.local ] || mkdir -p ~/.local
 	while IFS= read -r line; do
 		name="$(echo "$line" | cut -d ':' -f 1)"
 		dest="$(echo "$line" | cut -d ':' -f 2 | tr -d ' ' | sed "s|\$HOME|$HOME|")"
 		os="$(echo "$line" | cut -d ':' -f 3 | tr -d ' ')"
 		src="$script_dir/$name"
-		if [ -n "$name" ] && [ -e "$src" ] && [ -n "$dest" ]; then
-			if [ -f "$dest" ] || symlinkexists "$dest"; then
-				echo "Making backup of existing $dest" && mv "$dest" "$dest.bak"
-			fi
-			is_os_match "$os" && symlink "$src" "$dest"
+		[ -n "$name" ] && [ -e "$src" ] && [ -n "$dest" ] || continue
+		is_os_match "$os" || continue
+		[ "$(readlink "$dest")" = "$src" ] && continue
+		if [ -e "$dest" ] || [ -h "$dest" ]; then
+			backup="$dest.bak.$(date +%Y%m%d%H%M%S)"
+			echo "Moving existing $dest to $backup" && mv "$dest" "$backup"
 		fi
+		mkdir -p "$(dirname "$dest")"
+		ln -sn "$src" "$dest" && echo "linked $name -> $dest"
 	done <"$lock_file"
-}
-
-symlinkexists() {
-	dest="$1"
-	[ -h "$dest" ] && [ "$(dirname "$(readlink "$dest")")" != "$script_dir" ]
 }
 
 is_os_match() {
@@ -80,13 +81,6 @@ is_os_match() {
 }
 islinux() { [ "$(uname -s | cut -c 1-5)" = "Linux" ]; }
 ismac() { [ "$(uname -s)" = "Darwin" ]; }
-
-symlink() {
-	src="$1"
-	dest="$2"
-	ln -s "$src" "$dest" >/dev/null 2>&1
-	echo "linking $name to $dest"
-}
 
 validate_flags() {
 	error="$1"
