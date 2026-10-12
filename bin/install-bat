@@ -21,9 +21,9 @@ main() {
 			sudo apt install bat -y
 			ln -sf "$(which batcat)" "$SCRIPTS"/bat
 			;;
-		fedora) dnf install bat -y ;;
+		fedora) sudo dnf install bat -y ;;
 		centos | rhel) return 1 ;;
-		opensuse* | sles) zypper install bat -y ;;
+		opensuse* | sles) sudo zypper install bat -y ;;
 		arch) sudo pacman -S --noconfirm bat ;;
 		*) return 1 ;;
 		esac
