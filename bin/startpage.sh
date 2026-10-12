@@ -17,7 +17,7 @@ started="false"
 if _have python3 && ! { pgrep -fa http.server | grep -q $PORT; }; then
 	started="python3 server"
 	setup
-	nohup /usr/bin/python3 -m http.server $PORT >>"$log_file" 2>&1 &
+	nohup python3 -m http.server $PORT >>"$log_file" 2>&1 &
 fi
 
 if [ "$started" = "false" ]; then
