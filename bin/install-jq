@@ -12,12 +12,8 @@ pkg_install() {
 }
 
 gh_install() {
-	depends jq || exit 1
 	archi=$(uname -sm)
 	repo='jqlang/jq'
-	latest="https://api.github.com/repos/$repo/releases/latest"
-	ver=$(curl -sS "$latest" | jq -r .zipball_url) && test -n "$ver"
-	ver=${ver##*/}
 	tarname=''
 	case "$archi" in
 	Darwin\ arm64) tarname="jq-macos-arm64" ;;
@@ -28,8 +24,9 @@ gh_install() {
 	Linux\ *64) tarname="jq-linux-amd64" ;;
 	*) return 1 ;;
 	esac
-	curl -sSLO "https://github.com/$repo/releases/download/$ver/$tarname"
-	mv "$tarname" "$SCRIPTS"/jq
+	curl -fsSLO "https://github.com/$repo/releases/latest/download/$tarname" &&
+		chmod +x "$tarname" &&
+		mv "$tarname" "$SCRIPTS"/jq
 
 }
 
