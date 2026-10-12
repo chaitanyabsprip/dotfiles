@@ -7,14 +7,14 @@ toml="$HOME/.config/alacritty/alacritty.toml"
 [ ! -f "$toml" ] && echo "Could not find alacritty config at $toml" && exit 1
 
 if [ "$#" -ne 1 ]; then
-	echo "Usage: ${0##/} <size>"
+	echo "Usage: ${0##*/} <size>"
 	exit 1
 fi
 
 fontsize="\([0-9][0-9]*\(\.[0-9]\)\{0,1\}\)"
 
 if ! expr "$1" : "$fontsize" >/dev/null 2>&1; then
-	echo "Usage: ${0##/} <size>"
+	echo "Usage: ${0##*/} <size>"
 	exit 1
 fi
 

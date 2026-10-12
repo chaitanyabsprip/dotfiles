@@ -2,11 +2,11 @@
 
 pkg_install() {
 	case "$DISTRO" in
-	Debian | Ubuntu) return 1 ;;
-	Fedora) return 1 ;;
-	CentOS | RHEL) ;;
-	openSUSE | SUSE) return 1 ;;
-	Arch\ Linux) paru -S --noconfirm gitmux ;;
+	debian | ubuntu) return 1 ;;
+	fedora) return 1 ;;
+	centos | rhel) return 1 ;;
+	opensuse* | sles) return 1 ;;
+	arch) paru -S --noconfirm gitmux ;;
 	*) return 1 ;;
 	esac
 }

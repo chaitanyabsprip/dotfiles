@@ -4,11 +4,7 @@ sessiondir="$HOME/.local/share/ffsessions"
 
 [ -d "$sessiondir" ] || { echo "No sessions found" && exit 1; }
 
-_have() { type "$1" >/dev/null 2>&1; }
-
-_have firefox || {
-	echo "This script requires firefox, please install and try again" && exit 1
-}
+depends firefox || exit 1
 
 _firefox() {
 	for url in "$@"; do

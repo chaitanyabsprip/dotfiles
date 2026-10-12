@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# Tracks Claude Code sessions per tmux pane so tmux-resurrect can resume
+# `claude --resume <id>` into the right pane after a restore.
+#
+#   claude-tmux start            Claude Code SessionStart hook (payload on stdin)
+#   claude-tmux restore [session] tmux-resurrect post-restore-all hook
+#
+# Only SessionStart is hooked: SessionEnd also fires on the SIGHUP every pane
+# gets when tmux dies, which would wipe the state restore needs. Stale entries
+# are pruned lazily instead, once their transcript file disappears.
+set -euo pipefail
+
+dir="${XDG_CACHE_HOME:-$HOME/.cache}/claude-tmux/sessions"
+
+start() {
+	local payload addr=() id
+	payload=$(cat)
+	id=$(jq -r '.session_id' <<<"$payload")
+	if [ -n "${TMUX_PANE:-}" ]; then
+		IFS=$'\t' read -r -a addr < <(tmux display-message -p -t "$TMUX_PANE" \
+			'#{session_name}	#{window_index}	#{pane_index}')
+	fi
+	mkdir -p "$dir"
+	jq --arg s "${addr[0]:-}" --arg w "${addr[1]:-0}" --arg p "${addr[2]:-0}" \
+		--arg t "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '{
+			session_id, cwd, transcript_path,
+			tmux_session: $s, tmux_window: ($w|tonumber), tmux_pane: ($p|tonumber),
+			updated_at: $t
+		}' <<<"$payload" >"$dir/$id.json"
+	prune
+}
+
+# Entries untouched for 5 minutes whose transcript is gone; the grace period
+# covers Claude writing the transcript slightly after SessionStart fires.
+prune() {
+	local f t
+	find "$dir" -name '*.json' -mmin +5 | while read -r f; do
+		t=$(jq -r '.transcript_path // ""' "$f" 2>/dev/null) || continue
+		if [ -n "$t" ] && [ ! -e "$t" ]; then rm -f "$f"; fi
+	done
+}
+
+# Panes are matched to saved sessions by relative order within each
+# (tmux session, cwd) group, not by absolute index: renumber-windows can shift
+# indices across a restore, but always preserves relative order.
+restore() {
+	local filter="${1:-}" panes entries busy
+	if [ -n "$filter" ]; then
+		panes=$(tmux list-panes -s -t "$filter" -F '#{session_name}	#{pane_current_path}	#{window_index}	#{pane_index}	#{pane_pid}')
+	else
+		panes=$(tmux list-panes -a -F '#{session_name}	#{pane_current_path}	#{window_index}	#{pane_index}	#{pane_pid}')
+	fi
+	# Every ancestor pid of a running claude. pane_current_command can't tell:
+	# shell wrappers (e.g. kiro-cli-term) run claude on an inner pty, so tmux
+	# only ever sees the wrapper shell.
+	busy=$(ps -A -o pid=,ppid=,comm= | awk '
+		{ parent[$1] = $2; if ($3 ~ /(^|\/)claude$/) c[$1] }
+		END { for (p in c) for (q = parent[p]; q > 1; q = parent[q]) print q }' | tr '\n' ' ')
+	# Newest file first, keeping only the latest session per pane slot: a pane
+	# runs one Claude at a time, and older entries for it are stale.
+	entries=$(ls -t "$dir"/*.json 2>/dev/null | xargs cat | jq -r --arg f "$filter" '
+		select(.tmux_session // "" | length > 0)
+		| select($f == "" or .tmux_session == $f)
+		| [.tmux_session, .cwd, (.tmux_window // 0), (.tmux_pane // 0), .session_id]
+		| @tsv' | awk -F'\t' '!seen[$1, $3, $4]++') || true
+
+	# Number each row within its (session, cwd) group, then join on that.
+	# A pane already running claude still takes its slot in the order, so the
+	# panes after it keep their matches; it just isn't sent anything.
+	awk -F'\t' -v OFS='\t' -v busy="$busy" '
+		function clean(p) { sub(/\/+$/, "", p); return p == "" ? "/" : p }
+		BEGIN { n = split(busy, b, " "); for (i = 1; i <= n; i++) skip[b[i]] }
+		{ k = $1 SUBSEP clean($2) }
+		NR == FNR { e[k, ++ne[k]] = $5; next }
+		(k, ++np[k]) in e && !($5 in skip) { print $1 ":" $3 "." $4, e[k, np[k]] }
+	' <(sort -t$'\t' -k1,1 -k2,2 -k3,3n -k4,4n <<<"$entries") \
+		<(sort -t$'\t' -k1,1 -k2,2 -k3,3n -k4,4n <<<"$panes") |
+		while IFS=$'\t' read -r target id; do
+			tmux send-keys -t "$target" "claude --resume $id" Enter
+		done
+}
+
+case "${1:-}" in
+start) start ;;
+restore) restore "${2:-}" ;;
+*)
+	echo "usage: claude-tmux start|restore [session]" >&2
+	exit 2
+	;;
+esac

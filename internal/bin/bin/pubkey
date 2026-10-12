@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Define an array of possible default SSH key names
 default_keys=("id_rsa" "id_ed25519")

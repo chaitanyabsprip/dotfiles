@@ -8,9 +8,7 @@
 #
 # Depends on: tmux, git
 
-_have() { type "$1" >/dev/null 2>&1; }
-
-_have tmux && tmux ls | grep scratch && tmux detach-client -s scratch
+have tmux && tmux ls | grep scratch && tmux detach-client -s scratch
 
 cd "$(tmux display-message -p -F '#{pane_current_path}')" || exit 1
 

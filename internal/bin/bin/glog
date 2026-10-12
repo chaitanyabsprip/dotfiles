@@ -2,9 +2,7 @@
 
 # https://cocktailmake.github.io/posts/improvement-of-git-commands-with-fzf/
 
-_have() { type "$1" >/dev/null 2>&1; }
-
-_have tmux && tmux ls | grep scratch && tmux detach-client -s scratch
+have tmux && tmux ls | grep scratch && tmux detach-client -s scratch
 
 is_in_git_repo() { git rev-parse HEAD >/dev/null; }
 

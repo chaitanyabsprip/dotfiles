@@ -1,6 +1,6 @@
 #!/bin/sh
 
-case "$DISTRO" in
+case "$(uname)" in
 Darwin)
 	netstat -an -ptcp | grep LISTEN
 	lsof -i -P | grep -i "listen"

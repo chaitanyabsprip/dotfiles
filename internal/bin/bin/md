@@ -7,7 +7,6 @@
 toc () {
   declare file=$(mktemp)
   #TODO make it smarter, just need something quick for now
-  echo cat $file
   while IFS= read -r line;do
     if [[ $line =~ ^#+\  ]]; then
       echo $line >> $file
@@ -18,7 +17,7 @@ toc () {
 
 imagelinks () {
   declare dir="${1-.}"
-  find "$dir" -regextype posix-extended -regex '.+(png|jpg|gif)$' -printf "![](%p)\n"
+  find "$dir" \( -name '*.png' -o -name '*.jpg' -o -name '*.gif' \) -exec printf '![](%s)\n' {} +
 }
 
 ########################## Command Delegation ##########################
@@ -40,7 +39,7 @@ fi
 
 for i in ${commands[@]}; do
   if [[ $i == "$subcommand" ]]; then
-    "$subcommand" $*
+    "$subcommand" "$@"
     exit 0
   fi
 done
