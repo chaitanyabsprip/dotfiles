@@ -13,6 +13,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/fd"
 	"github.com/Chaitanyabsprip/dotfiles/internal/fish"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gh"
+	"github.com/Chaitanyabsprip/dotfiles/internal/ghostty"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gitui"
 	"github.com/Chaitanyabsprip/dotfiles/internal/jq"
 	"github.com/Chaitanyabsprip/dotfiles/internal/mise"
@@ -35,6 +36,7 @@ var InstallCmds = []*bonzai.Cmd{
 	fd.InstallCmd.WithName(`fd`),
 	fish.InstallCmd.WithName(`fish`),
 	gh.InstallCmd.WithName(`gh`),
+	ghostty.InstallCmd.WithName(`ghostty`),
 	gitui.InstallCmd.WithName(`gitui`),
 	jq.InstallCmd.WithName(`jq`),
 	mise.InstallCmd.WithName(`mise`),

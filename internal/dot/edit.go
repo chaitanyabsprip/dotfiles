@@ -13,6 +13,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/dirs"
 	"github.com/Chaitanyabsprip/dotfiles/internal/fish"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gh"
+	"github.com/Chaitanyabsprip/dotfiles/internal/ghostty"
 	"github.com/Chaitanyabsprip/dotfiles/internal/git"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gitui"
 	"github.com/Chaitanyabsprip/dotfiles/internal/glow"
@@ -38,6 +39,7 @@ var EditCmds = []*bonzai.Cmd{
 	dirs.EditCmd.WithName(`dirs`),
 	fish.EditCmd.WithName(`fish`),
 	gh.EditCmd.WithName(`gh`),
+	ghostty.EditCmd.WithName(`ghostty`),
 	git.EditCmd.WithName(`git`),
 	gitui.EditCmd.WithName(`gitui`),
 	glow.EditCmd.WithName(`glow`),

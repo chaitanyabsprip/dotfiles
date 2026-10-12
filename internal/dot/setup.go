@@ -13,6 +13,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/dirs"
 	"github.com/Chaitanyabsprip/dotfiles/internal/fish"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gh"
+	"github.com/Chaitanyabsprip/dotfiles/internal/ghostty"
 	"github.com/Chaitanyabsprip/dotfiles/internal/git"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gitui"
 	"github.com/Chaitanyabsprip/dotfiles/internal/glow"
@@ -38,6 +39,7 @@ var SetupCmds = []*bonzai.Cmd{
 	dirs.SetupCmd.WithName(`dirs`),
 	fish.SetupCmd.WithName(`fish`),
 	gh.SetupCmd.WithName(`gh`),
+	ghostty.SetupCmd.WithName(`ghostty`),
 	git.SetupCmd.WithName(`git`),
 	gitui.SetupCmd.WithName(`gitui`),
 	glow.SetupCmd.WithName(`glow`),

@@ -1,0 +1,31 @@
+# This is the configuration file for Ghostty.
+#
+# This template file has been automatically created at the following
+# path since Ghostty couldn't find any existing config files on your system:
+#
+#   /Users/chaitanyasharma/Library/Application Support/com.mitchellh.ghostty/config
+#
+# The template does not set any default options, since Ghostty ships
+# with sensible defaults for all options. Users should only need to set
+# options that they want to change from the default.
+#
+# Run `ghostty +show-config --default --docs` to view a list of
+# all available config options and their default values.
+#
+# Additionally, each config option is also explained in detail
+# on Ghostty's website, at https://ghostty.org/docs/config.
+
+font-family = "MonoLisa Nerd Font"
+font-feature = ss02, ss11, ss12, ss13, ss15 ss16 ss18 zero
+font-size = 16
+
+adjust-cell-height = 0%
+theme = Rose Pine
+background = #07080d
+background-blur = 30
+background-opacity = 0.9
+fullscreen = true
+window-decoration = true
+shell-integration = zsh
+macos-option-as-alt = true
+initial-command="zsh -l"
