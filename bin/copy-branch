@@ -1,6 +1,6 @@
 #!/bin/sh
 
-printf 'Prefix: '
+printf 'Suffix: '
 read -r suffix
 git_branch="$(git rev-parse --abbrev-ref HEAD)"
 new_branch="$git_branch-$suffix"
