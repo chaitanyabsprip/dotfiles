@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # used to display the power menu with options like 'Logout, Shutdown,
 # Sleep' etc.
