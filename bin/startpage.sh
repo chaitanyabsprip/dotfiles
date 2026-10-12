@@ -1,7 +1,5 @@
 #!/bin/sh
 
-_have() { type "$1" >/dev/null 2>&1; }
-
 PORT=8910
 
 cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}"
@@ -14,7 +12,7 @@ setup() {
 }
 
 started="false"
-if _have python3 && ! { pgrep -fa http.server | grep -q $PORT; }; then
+if have python3 && ! { pgrep -fa http.server | grep -q $PORT; }; then
 	started="python3 server"
 	setup
 	nohup python3 -m http.server $PORT >>"$log_file" 2>&1 &

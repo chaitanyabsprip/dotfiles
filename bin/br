@@ -2,10 +2,7 @@
 
 # This is a utility to make it easy to start pomodoro timer for breaks.
 
-_have() { type "$1" >/dev/null 2>&1; }
-_have pomo || { echo "${0##*/} depends on chaitanyabsprip/pomo" && exit 127; }
-_have back || { echo "${0##*/} depends on back utility" && exit 127; }
-_have bc || { echo "${0##*/} depends on bc utility" && exit 127; }
+depends pomo back bc || exit 1
 
 validate_time() {
 	time_regex="^\([0-9]\{1,\}h\)\{0,1\}\([0-9]\{1,\}m\)\{0,1\}\([0-9]\{1,\}s\)\{0,1\}$"

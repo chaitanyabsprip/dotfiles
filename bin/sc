@@ -2,14 +2,13 @@
 
 [ $# -gt 1 ] && echo 'Usage: sc <errorcode> or program | sc' && exit 1
 
-_have() { type "$1" >/dev/null 2>&1; }
-_have pandoc || { echo "${0##*/} depends on pandoc" && exit 1; }
-_have glow || { echo "${0##*/} depends on glow, use it for better experience"; }
+depends pandoc || exit 1
+have glow || { echo "${0##*/} depends on glow, use it for better experience"; }
 
 preview() {
 	content=
 	[ -p /dev/stdin ] || return
-	{ _have glow && cat | glow -p; } || { _have bat && cat | bat -p; } || cat
+	{ have glow && cat | glow -p; } || { have bat && cat | bat -p; } || cat
 }
 
 [ ! -p /dev/stdin ] && [ -z "$1" ] && printf 'shellcheck error: '
