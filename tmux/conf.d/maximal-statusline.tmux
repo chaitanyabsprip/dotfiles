@@ -27,6 +27,7 @@ set -g status-right '\
 set -g window-status-format '\
 #[fg=#{@c_window_fg},bg=#{@c_window_bg}]#{?window_index, ,}#{window_name} \
 '
+set -g window-status-current-style default
 set -g window-status-current-format '\
 #[bg=#{@c_window_current_bg},fg=#{@c_window_current_fg}] #{window_name} \
 '

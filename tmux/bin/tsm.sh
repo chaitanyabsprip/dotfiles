@@ -32,5 +32,5 @@ fi
 if [ "$current" = "$selected" ] || [ -z "$selected" ]; then
 	exit 0
 else
-	tmux switch -t "$selected"
+	tmux switch-client -t "$selected"
 fi
