@@ -1,4 +1,3 @@
-alacritty: $HOME/.config/alacritty
 zsh: $HOME/.config/zsh
 zsh/.zshenv: $HOME/.zshenv
 tmux: $HOME/.config/tmux
