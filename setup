@@ -101,18 +101,14 @@ _jq() {
     have jq || install-jq
 }
 
-_nvm() {
-    heading nvm
-    have nvm && echo "Already installed at $(which nvm)" && return
-    curl -o nvmi https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh
-    chmod +x ./nvmi
-    mkdir -p "$HOME"/programs/nvm
-    NVM_DIR="$HOME/programs/nvm"
-    export NVM_DIR
-    PROFILE=/dev/null ./nvmi
-    # shellcheck disable=1091
-    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR"/nvm.sh
-    nvm install stable
+# Runtimes (node, python, ...) from mise/config.toml, linked to ~/.config/mise
+_mise() {
+    heading mise
+    if ! have mise; then
+        if [ "$(uname)" = "Darwin" ]; then brew install mise; else curl -sS https://mise.run | sh; fi
+    fi
+    "$(command -v mise || echo "$HOME/.local/bin/mise")" install
+    success "mise runtimes installed"
 }
 
 _rg() {
@@ -238,8 +234,8 @@ env) setup_env ;;
 fzf) _fzf ;;
 bat) _bat ;;
 go) _go ;;
-nvm) _nvm ;;
-extra) _nvm ;;
+mise) _mise ;;
+extra) _mise ;;
 all)
     [ "$igo" = 1 ] && _go
     _jq
