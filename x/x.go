@@ -19,6 +19,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/x/gpt"
 	"github.com/Chaitanyabsprip/dotfiles/x/has"
 	"github.com/Chaitanyabsprip/dotfiles/x/have"
+	"github.com/Chaitanyabsprip/dotfiles/x/json"
 	"github.com/Chaitanyabsprip/dotfiles/x/last"
 	"github.com/Chaitanyabsprip/dotfiles/x/say"
 	"github.com/Chaitanyabsprip/dotfiles/x/url"
@@ -42,6 +43,7 @@ var Cmd = &bonzai.Cmd{
 		has.Cmd,
 		have.Cmd,
 		help.Cmd,
+		json.Cmd,
 		last.Cmd,
 		say.Cmd,
 		tmux.XCmd,
