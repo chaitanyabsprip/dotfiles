@@ -78,4 +78,5 @@ export ANDROID_HOME="$ANDROID_SDK_ROOT"
 
 # Machine-local env (untracked), last so it can override anything above.
 # Fish sources it too: same COMMON SUBSET rules as this file.
-[ ! -r "$HOME/.env.local" ] || . "$HOME/.env.local" # || so a missing file still returns 0
+[ ! -r "$HOME/.env.local" ] || . "$HOME/.env.local"
+true # end on 0: a missing file, or (in fish) a comment-only one, leaves the test's 1
