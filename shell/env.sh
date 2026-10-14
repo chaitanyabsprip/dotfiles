@@ -75,3 +75,7 @@ export ANDROID_HOME="$ANDROID_SDK_ROOT"
 [ -d "$SCRIPTS" ] && export PATH="$SCRIPTS:$PATH"
 [ -d "$SCRIPTS/overrides" ] && export PATH="$SCRIPTS/overrides:$PATH"
 [ -d "$DOTFILES/bin" ] && export PATH="$DOTFILES/bin:$PATH"
+
+# Machine-local env (untracked), last so it can override anything above.
+# Fish sources it too: same COMMON SUBSET rules as this file.
+[ ! -r "$HOME/.env.local" ] || . "$HOME/.env.local" # || so a missing file still returns 0
