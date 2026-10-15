@@ -30,8 +30,17 @@ func StateDir() string {
 	return filepath.Join(env.Home, ".local", "state")
 }
 
+// BinDir is ~/.local/bin, the untracked dir installers drop binaries in.
 func BinDir() string {
 	return filepath.Join(env.Home, ".local", "bin")
+}
+
+// DotfilesDir is ~/dotfiles, where the shell, bin and oh-my-posh configs
+// live: the embedded configs reference them there by literal path
+// ("$HOME/dotfiles/shell/env.sh"), so it ignores $DOTFILES. On a machine
+// with a ~/dotfiles git checkout it is that checkout.
+func DotfilesDir() string {
+	return filepath.Join(env.Home, "dotfiles")
 }
 
 func CacheDir() string {

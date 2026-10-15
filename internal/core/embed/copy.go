@@ -5,6 +5,7 @@
 package embed
 
 import (
+	"bytes"
 	"embed"
 	"fmt"
 	"io/fs"
@@ -199,6 +200,12 @@ func copy(embedFs embed.FS, m manifest.Manifest, d fs.DirEntry, path, dest strin
 	if drifted && os.Getenv(`DOT_FORCE`) == `` {
 		fmt.Printf("drift: %s has local changes, skipping (set DOT_FORCE=1 to overwrite)\n", dest)
 		printDiff(dest, live, content)
+		return nil
+	}
+	// Already identical (e.g. a ~/dotfiles git checkout): record it, don't
+	// rewrite it.
+	if err == nil && bytes.Equal(live, content) {
+		m[dest] = manifest.Hash(content)
 		return nil
 	}
 	if err := os.WriteFile(dest, content, getFileMode(path)); err != nil {
