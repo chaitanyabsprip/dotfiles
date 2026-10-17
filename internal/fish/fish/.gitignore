@@ -1,2 +1,4 @@
-
 fish_variables
+conf.d/local.fish
+# kiro-cli injects these on every machine it's installed on
+conf.d/*_fig_*.fish

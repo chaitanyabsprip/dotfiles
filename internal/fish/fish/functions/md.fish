@@ -1,3 +1,4 @@
-function md -a dir
-  mkdir -p $dir && cd $dir
+function md -a dir -d "mkdir + cd"
+    test -n "$dir"; or return 1
+    mkdir -p $dir; and cd $dir
 end

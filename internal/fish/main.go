@@ -15,6 +15,7 @@ import (
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
+	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
 )
 
 //go:embed fish
@@ -32,6 +33,10 @@ var SetupCmd = &bonzai.Cmd{
 	Short: `setup fish`,
 	Comp:  comp.Opts,
 	Do: func(x *bonzai.Cmd, args ...string) error {
+		// config.fish sources ~/dotfiles/shell, so set that up too.
+		if err := shell.SetupCmd.Run(``); err != nil {
+			return err
+		}
 		return e.SetupAll(embedFs, "fish", oscfg.ConfigDir(), nil)
 	},
 }

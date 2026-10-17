@@ -1,255 +1,145 @@
 #!/bin/sh
 
-# setup environment
-# first check dependencies
-# install brew on mac
-# install curl and git on *unix systems
+# Install the tools these dotfiles expect. Run after `./dotme serve`.
+#
+#   ./setup [target] [--go]
+#
+# Targets: all (default), packages, zsh, tmux, nvim, mise (alias: extra),
+#          go, fzf, bat. `--go` adds the Go toolchain to `all`.
+#
+# macOS: Homebrew + Brewfile. Linux: the distro's package manager, falling
+# back to bin/install-* for tools the distro doesn't package (or packages
+# too old). Every step is skipped when the tool is already installed.
 
-_depends() {
-    have "$1" ||
-        { warning "utility depends on $1, please install and try again." && exit 1; }
-}
-
-_depends curl
-_depends git
-
-_essentials() {
-    _git
-    _curl
-}
-
-_bat() {
-    heading bat
-    have bat && echo "Already installed at $(which bat)" && return
-    if [ "$(uname)" = 'Darwin' ]; then
-        _depends brew || return 1
-        brew install bat
-        return
-    elif [ "$(uname)" = 'Linux' ]; then
-        install-bat
-    fi
-}
-
-_brew() { echo "TODO: install brew"; }
-
-_curl() { echo "TODO: install curl"; }
-
-_eza() {
-    heading eza
-    have eza && echo "Already installed at $(which eza)" && return
-    if [ "$(uname)" = 'Darwin' ]; then
-        _depends brew
-        brew install eza
-        return
-    elif [ "$(uname)" = 'Linux' ]; then
-        install-eza
-    fi
-    ln -sf "$(which eza)" ~/.local/bin/exa
-}
-
-_fd() {
-    heading fd
-    have fd && echo "Already installed at $(which fd)" && return
-    if [ "$(uname)" = 'Darwin' ]; then
-        _depends brew
-        brew install fd
-        return
-    elif [ "$(uname)" = 'Linux' ]; then
-        install-fd
-    fi
-}
-
-_fzf() {
-    heading fzf
-    have fzf && echo "Already installed at $(which fzf)" && return
-    spinner curl -LsS https://raw.githubusercontent.com/junegunn/fzf/master/install -o install
-    spinner bash ./install --all
-    rm ./install
-    have fzf-tmux && return
-    spinner curl -LsS https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux -o "$SCRIPTS"/fzf-tmux
-    chmox "$SCRIPTS"/fzf-tmux
-    success "successfully installed fzf"
-}
-
-_git() {
-    echo "TODO: install git"
-}
-
-_gitmux() {
-    heading gitmux
-    have gitmux || install-gitmux
-}
-
-_gitui() {
-    heading gitui
-    _depends git
-    have gitui || install-gitui
-}
-
-_go() {
-    have go && echo "Already installed at $(which go)" && return
-    heading go
-    _depends wget
-    mkdir temp "$HOME"/programs
-    cd temp || :
-    curl -SsL https://git.io/go-installer.sh | bash
-    cd .. && [ -d temp ] && rm -rd temp
-}
-
-_jq() {
-    heading jq
-    have jq || install-jq
-}
-
-_nvm() {
-    heading nvm
-    have nvm && echo "Already installed at $(which nvm)" && return
-    curl -o nvmi https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh
-    chmod +x ./nvmi
-    mkdir -p "$HOME"/programs/nvm
-    NVM_DIR="$HOME/programs/nvm"
-    export NVM_DIR
-    PROFILE=/dev/null ./nvmi
-    # shellcheck disable=1091
-    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR"/nvm.sh
-    nvm install stable
-}
-
-_rg() {
-    heading rg
-    have rg || install-rg
-}
-
-_starship() {
-    heading starship
-    have starship && echo "Already installed at $(which starship)" && return
-    if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "Linux" ]; then
-        curl -sS https://starship.rs/install.sh -o starship.sh
-        sh starship.sh -y 1>/dev/null 2>&1
-        rm starship.sh
-    else
-        error "Couldn't install starship"
-    fi
-    success "starship successfully installed"
-}
-
-_tmux() {
-    heading tmux
-    case "$DISTRO" in
-    Debian | Ubuntu) sudo apt install tmux -y ;;
-    Fedora | CentOS | RHEL) dnf install tmux -y ;;
-    openSUSE | SUSE) zypper install tmux -y ;;
-    Arch\ Linux) sudo pacman -S --nocomfirm tmux ;;
-    *) return 1 ;;
+main() {
+    target="${1:-all}"
+    [ $# -gt 0 ] && shift
+    echo "Running setup for $target"
+    case "$target" in
+    all)
+        echo "$*" | grep -wq -- '--go' && _go
+        _packages
+        _mise
+        _zsh_extras
+        setup_neovim
+        ;;
+    packages) _packages ;;
+    zsh) pkg_install zsh && _zsh_extras ;;
+    tmux) pkg_install tmux ;;
+    nvim) setup_neovim ;;
+    mise | extra) _mise ;;
+    go) _go ;;
+    fzf) _fzf ;;
+    bat) have bat || pkg_install bat || install-bat ;;
+    *) echo "unknown target: $target" && exit 1 ;;
     esac
-    _depends tmux
-    success "tmux successfully installed"
 }
 
-setup_tmux_complete() {
-    heading Complete TMUX setup
-    _tmux
-    _yq
-    _gitmux
-    _gitui
-    _fd
-    _fzf
-    success "tmux setup completed successfully"
+DOTFILES="$(cd "$(dirname "$0")" && pwd)"
+PATH="$DOTFILES/bin:$HOME/.local/bin:$PATH" # have, heading, success, install-*
+mkdir -p "$HOME/.local/bin"
+
+# os-release ID (debian, ubuntu, fedora, arch, opensuse-*), or Darwin on macOS
+DISTRO="$(. /etc/os-release 2>/dev/null && echo "$ID" || uname -s)"
+
+_packages() {
+    heading packages
+    if [ "$DISTRO" = Darwin ]; then
+        have brew || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        brew bundle --file "$DOTFILES/Brewfile"
+    else
+        pkg_install git curl zsh tmux jq
+        for tool in bat eza fd rg yq gitui gitmux; do
+            have "$tool" || "install-$tool"
+        done
+        _fzf
+    fi
+    success "packages installed"
 }
 
-_yq() {
-    heading yq
-    have yq || install-yq
+pkg_install() {
+    case "$DISTRO" in
+    Darwin) brew install "$@" ;;
+    debian | ubuntu) sudo apt-get install -y "$@" ;;
+    fedora | centos | rhel) sudo dnf install -y "$@" ;;
+    opensuse*) sudo zypper install -y "$@" ;;
+    arch) sudo pacman -S --noconfirm --needed "$@" ;;
+    *) error "Don't know how to install $* on $DISTRO" && return 1 ;;
+    esac
+}
+
+# Runtimes (node, python, ...) from mise/config.toml, linked to ~/.config/mise
+_mise() {
+    heading mise
+    if ! have mise; then
+        if [ "$DISTRO" = Darwin ]; then brew install mise; else curl -sS https://mise.run | sh; fi
+    fi
+    "$(command -v mise || echo "$HOME/.local/bin/mise")" install
+    success "mise runtimes installed"
+}
+
+_zsh_extras() {
+    _oh_my_posh
+    _zap
+}
+
+_oh_my_posh() {
+    heading oh-my-posh
+    have oh-my-posh && echo "Already installed at $(which oh-my-posh)" && return
+    if [ "$DISTRO" = Darwin ]; then
+        brew install oh-my-posh
+    else
+        curl -sS https://ohmyposh.dev/install.sh | bash -s -- -d "$HOME/.local/bin"
+    fi
+    success "oh-my-posh successfully installed"
 }
 
 _zap() {
     heading zap
-    have zap && echo "Already installed at $(which zap)" && return
-    if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "Linux" ]; then
-        curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh -o install.zsh
-        zsh install.zsh --branch release-v1 --keep
-        rm install.zsh
-    else
-        error "Couldn't install zap-zsh"
-    fi
+    [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && echo "Already installed" && return
+    curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh -o install.zsh
+    zsh install.zsh --branch release-v1 --keep
+    rm install.zsh
     success "zap-zsh successfully installed"
 }
 
-_zsh() {
-    heading zsh
-    case "$DISTRO" in
-    Debian | Ubuntu) sudo apt install zsh -y ;;
-    Fedora | CentOS | RHEL) dnf install zsh -y ;;
-    openSUSE | SUSE) zypper install zsh -y ;;
-    Arch\ Linux) sudo pacman -S --nocomfirm zsh ;;
-    *) return 1 ;;
-    esac
-    _depends zsh
-    echo export ZDOTDIR="$HOME"/.config/zsh >>"$HOME"/.profile
-    success "Successfully installed zsh"
+# Distro fzf is often too old for `fzf --zsh`; use upstream's installer.
+_fzf() {
+    heading fzf
+    have fzf && echo "Already installed at $(which fzf)" && return
+    [ -d "$HOME/programs/fzf" ] || git clone --depth 1 https://github.com/junegunn/fzf "$HOME/programs/fzf"
+    "$HOME/programs/fzf/install" --bin
+    ln -sf "$HOME/programs/fzf/bin/fzf" "$HOME/programs/fzf/bin/fzf-tmux" "$HOME/.local/bin/"
+    success "successfully installed fzf"
 }
 
-setup_zsh_complete() {
-    heading Complete ZSH setup
-    _zsh
-    _starship
-    _zap
-    _bat # --
-    _fd
-    _fzf
-    _gitui # --
-    _eza
-    _rg
-    success "zsh shell setup complete"
-}
-
-_neovim() {
-    heading Neovim
-    install-neovim.sh stable
-    success "successfully installed neovim"
-}
+# Neovim nightly, built from source into /usr/local (bin/update-neovim)
 setup_neovim() {
     heading "Complete Neovim Setup"
-    _neovim
+    have nvim || {
+        _neovim_build_deps
+        update-neovim stable
+    }
     nvim --headless "+Lazy! sync" "+sleep 60" +qa
     success "neovim setup complete"
 }
 
-DISTRO=$(distro | cut -d ':' -f1)
-
-# shellcheck disable=2016
-setup_env() {
-    echo 'export PATH=.:"$PATH"'
-    echo 'export PATH="$PATH":~/.local/bin'
+_neovim_build_deps() {
+    case "$DISTRO" in
+    Darwin) xcode-select --install 2>/dev/null || :; brew install ninja gettext cmake ;;
+    debian | ubuntu) pkg_install ninja-build gettext cmake unzip curl make ;;
+    fedora | centos | rhel) pkg_install ninja-build cmake gcc make gettext curl glibc-gconv-extra ;;
+    opensuse*) pkg_install ninja cmake gcc-c++ gettext-tools curl ;;
+    arch) pkg_install base-devel cmake unzip ninja curl ;;
+    esac
 }
 
-eval "$(setup_env)"
+_go() {
+    heading go
+    have go && echo "Already installed at $(which go)" && return
+    [ "$DISTRO" = Darwin ] && brew install go && return
+    mkdir -p "$HOME/programs"
+    curl -SsL https://git.io/go-installer.sh | bash
+}
 
-echo "Running setup for $1"
-! [ -d "${SCRIPTS:-$HOME/.local/bin}" ] && mkdir -p "${SCRIPTS:-$HOME/.local/bin}"
-
-subcommand="${1:-all}"
-shift
-
-igo="$(echo "$*" | grep -wq -- '--go' && echo 1)"
-
-case "$subcommand" in
-zsh) _zsh ;;
-tmux) _tmux ;;
-nvim) setup_neovim ;;
-env) setup_env ;;
-fzf) _fzf ;;
-bat) _bat ;;
-go) _go ;;
-nvm) _nvm ;;
-extra) _nvm ;;
-all)
-    [ "$igo" = 1 ] && _go
-    _jq
-    setup_zsh_complete
-    setup_tmux_complete
-    setup_neovim
-    _fzf
-    ;;
-*) echo "specify a target" && exit 1 ;;
-esac
+main "$@"

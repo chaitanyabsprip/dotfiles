@@ -14,7 +14,6 @@ import (
 
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
-	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )
 
 //go:embed bin
@@ -25,9 +24,10 @@ var SetupCmd = &bonzai.Cmd{
 
 	Short: `setup bin directory`,
 	Comp:  comp.Opts,
+	// ~/dotfiles/bin, which shell/env.sh puts on PATH ahead of ~/.local/bin;
+	// ~/.local/bin stays an untracked dir for installer drops.
 	Do: func(x *bonzai.Cmd, _ ...string) error {
-		binDir := filepath.Join(env.Home, ".local")
-		return e.SetupAll(embedFs, "bin", binDir, nil)
+		return e.SetupAll(embedFs, "bin", oscfg.DotfilesDir(), nil)
 	},
 }
 
@@ -36,7 +36,7 @@ var EditCmd = &bonzai.Cmd{
 	Short:  `edit bin configuration`,
 	NoArgs: true,
 	Do: func(x *bonzai.Cmd, _ ...string) error {
-		if err := edit.Files(oscfg.BinDir()); err != nil {
+		if err := edit.Files(filepath.Join(oscfg.DotfilesDir(), "bin")); err != nil {
 			return err
 		}
 		fmt.Println("rebuild binary")

@@ -12,15 +12,15 @@ import (
 
 var Cmd = &bonzai.Cmd{
 	Name:  `distro`,
-	Short: `print the OS distro name and version`,
+	Short: `print the OS distro id and version`,
 	Long: `
-Prints "name:version" for the current OS: read from /etc/os-release
-on Linux, from lsb_release if that file is missing, or from uname
-otherwise (e.g. Darwin on macOS).`,
+Prints "id:version" for the current OS (e.g. "ubuntu:24.04"): ID and
+VERSION_ID from /etc/os-release on Linux, from lsb_release if that file
+is missing, or from uname otherwise (e.g. "Darwin:25.5.0" on macOS).`,
 	Comp: comp.Cmds,
 	Cmds: []*bonzai.Cmd{},
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		fmt.Println(Name())
+		fmt.Printf("%s:%s\n", ID(), Version())
 		return nil
 	},
 }

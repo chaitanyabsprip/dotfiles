@@ -26,8 +26,10 @@ var SetupCmd = &bonzai.Cmd{
 
 	Short: `setup shell`,
 	Comp:  comp.Opts,
+	// ~/dotfiles/shell: zsh, bash and fish source env.sh, aliases,
+	// functions.sh and fzf.sh from there by literal path.
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		return e.SetupAll(embedFs, "shell", oscfg.ConfigDir(), nil)
+		return e.SetupAll(embedFs, "shell", oscfg.DotfilesDir(), nil)
 	},
 }
 
@@ -36,7 +38,7 @@ var EditCmd = &bonzai.Cmd{
 	Short:  `edit shell configuration`,
 	NoArgs: true,
 	Do: func(x *bonzai.Cmd, _ ...string) error {
-		filePath := path.Join(oscfg.ConfigDir(), "shell", "aliasrc")
+		filePath := path.Join(oscfg.DotfilesDir(), "shell", "aliases")
 		if err := edit.Files(filePath); err != nil {
 			return err
 		}

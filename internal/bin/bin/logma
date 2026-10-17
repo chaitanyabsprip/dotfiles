@@ -5,10 +5,9 @@
 # I couldn't use tail -n $file because that doesn't update when some preview
 # line is deleted. It only updates on new lines.
 
-_have() { type "$1" >/dev/null 2>&1; }
-_have entr || { echo "${0##*/} depends on entr" && exit 127; }
+depends entr || exit 1
 
-{ _have bat && cmd="bat -p"; } || { _have glow && cmd="glow"; } || { cmd="cat"; }
+{ have bat && cmd="bat -p"; } || { have glow && cmd="glow"; } || { cmd="cat"; }
 
 # Create the command here so that entr accepts "bat -p" argument as multiple
 # argument and not as a single string argument

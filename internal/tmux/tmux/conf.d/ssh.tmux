@@ -3,4 +3,3 @@ unbind C-a
 set -g prefix C-b
 bind C-b send-prefix
 %endif
-run ''

@@ -2,14 +2,15 @@
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 	root = rev-parse --show-toplevel
 	sh = !"git log --oneline | fzf -m -d ' ' --preview \"git show --color=always {1}\" | cut -d ' ' -f 1 | xargs -n 9999"
-	tags = tag --list --sort=version:refname
 
 [blame]
 	coloring = highlightRecent
 
-[column]
-	ui = always
+[branch]
 	sort = -committerdate
+
+[column]
+	ui = auto
 
 [commit]
 	verbose = true
@@ -39,6 +40,8 @@
 	colorMoved = default
 	colorMovedWs = allow-indentation-change
 	compactionHeuristic = true
+	mnemonicPrefix = true
+	renames = true
 	tool = nvimdiff4
 
 [difftool "nvimdiff4"]
@@ -52,6 +55,9 @@
 
 [github]
 	user = Chaitanyabsprip
+
+[help]
+	autocorrect = prompt
 
 [init]
 	defaultBranch = main
@@ -74,11 +80,28 @@
 
 [push]
 	autoSetupRemote = true
+	followTags = true
+
+[rebase]
+	autoStash = true
+	updateRefs = true
+
+[rerere]
+	enabled = true
+	autoupdate = true
 
 [status]
 	showStash = true
 
+[tag]
+	sort = version:refname
+
 [user]
 	name = Chaitanya Sharma
 	useConfigOnly = true
+
+# Per-machine settings (e.g. user.email, or includeIf "gitdir:~/work/" for a
+# work identity). Gitignored; git skips it silently when missing.
+[include]
+	path = local
 

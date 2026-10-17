@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/manifest"
 )
@@ -45,6 +46,34 @@ func TestCopyFirstDeploy(t *testing.T) {
 	assertContent(t, dest, embeddedContent)
 	if m[dest] != manifest.Hash([]byte(embeddedContent)) {
 		t.Fatalf(`manifest not recorded for first deploy`)
+	}
+}
+
+// A dest already matching the embedded file (e.g. inside a ~/dotfiles git
+// checkout) is recorded but not rewritten: mtime and mode stay put.
+func TestCopyIdenticalFileIsNotRewritten(t *testing.T) {
+	dest := writeDest(t, embeddedContent)
+	if err := os.Chmod(dest, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	past := time.Now().Add(-time.Hour).Truncate(time.Second)
+	if err := os.Chtimes(dest, past, past); err != nil {
+		t.Fatal(err)
+	}
+	m := manifest.Manifest{}
+	if err := copy(testFs, m, sampleDirEntry(t), embeddedPath, dest); err != nil {
+		t.Fatalf(`copy: %v`, err)
+	}
+	info, err := os.Stat(dest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !info.ModTime().Equal(past) || info.Mode().Perm() != 0o600 {
+		t.Errorf("identical dest rewritten: mtime %v (want %v), mode %v (want 0600)",
+			info.ModTime(), past, info.Mode().Perm())
+	}
+	if m[dest] != manifest.Hash([]byte(embeddedContent)) {
+		t.Fatalf(`manifest not recorded for identical dest`)
 	}
 }
 

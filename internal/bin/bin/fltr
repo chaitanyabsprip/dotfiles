@@ -2,7 +2,7 @@
 
 type entr >/dev/null 2>&1 || { echo "This program requires entr" && exit 1; }
 
-pidfile="$XDG_CACHE_HOME/flutter-$$.pid"
+pidfile="${XDG_CACHE_HOME:-$HOME/.cache}/flutter-$$.pid"
 touch "$pidfile"
 
 setup_hotreload() {

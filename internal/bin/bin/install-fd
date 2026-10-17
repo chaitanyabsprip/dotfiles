@@ -17,18 +17,18 @@ main() {
 
 	pkg_install() {
 		case "$DISTRO" in
-		Debian | Ubuntu)
+		debian | ubuntu)
 			sudo apt install fd-find -y || return 1
 			ln -sf "$(which fdfind)" "${SCRIPTS:-$HOME/.local/bin}"/fd
 			ls -la "$SCRIPTS"/fd
 			;;
-		Fedora)
+		fedora)
 			sudo dnf install fd-find -y &&
 				ln -sf "$(which fdfind)" "$SCRIPTS"/fd
 			;;
-		CentOS | RHEL) ;;
-		openSUSE | SUSE) sudo zypper install fd -y ;;
-		Arch\ Linux) sudo pacman -S --noconfirm fd ;;
+		centos | rhel) return 1 ;;
+		opensuse* | sles) sudo zypper install fd -y ;;
+		arch) sudo pacman -S --noconfirm fd ;;
 		*) return 1 ;;
 		esac
 	}

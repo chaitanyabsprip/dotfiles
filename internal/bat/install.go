@@ -32,10 +32,10 @@ func installBat() error {
 }
 
 func batPkgInstall() error {
-	switch distro.Name() {
-	case `Arch Linux`:
+	switch distro.ID() {
+	case `arch`:
 		return install.WithRoot(`pacman`, `-S`, `--noconfirm`, `bat`)
-	case `Ubuntu`, `Debian GNU/Linux`:
+	case `ubuntu`, `debian`:
 		err := install.WithRoot(`apt-get`, `install`, `-y`, `bat`)
 		if err != nil {
 			return err
@@ -54,7 +54,7 @@ func batPkgInstall() error {
 		if err := os.Symlink(batcatPath, batPath); err != nil {
 			return err
 		}
-	case `Fedora`:
+	case `fedora`:
 		return run.Exec(`dnf`, `install`, `bat`, `-y`)
 	case `Darwin`:
 		return run.Exec(`brew`, `install`, `tmux`)

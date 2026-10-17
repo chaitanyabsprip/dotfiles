@@ -16,12 +16,10 @@ Usage: ${0##*/} [-f FILE] [-n number] [-l number]
 EOF
 }
 
-_have() { type "$1" >/dev/null 2>&1; }
-
 preview() {
 	content="$1"
-	{ _have glow && echo "$content" | glow; } ||
-		{ _have bat && echo "$content" | bat -p; } ||
+	{ have glow && echo "$content" | glow; } ||
+		{ have bat && echo "$content" | bat -p; } ||
 		echo "$content" | cat
 }
 

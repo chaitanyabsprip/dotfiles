@@ -22,4 +22,4 @@ godistbuild () {
   done
 }
 
-godistbuild $*
+godistbuild "$@"

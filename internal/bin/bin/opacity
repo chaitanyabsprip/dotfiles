@@ -7,14 +7,14 @@ toml="$HOME/.config/alacritty/alacritty.toml"
 [ ! -f "$toml" ] && echo "Could not find alacritty config at $toml" && exit 1
 
 if [ "$#" -ne 1 ]; then
-	echo "Usage: ${0##/} <decimal>"
+	echo "Usage: ${0##*/} <decimal>"
 	exit 1
 fi
 
 decimal="[0-9]\.[0-9]\{1,\}"
 
 if ! expr "$1" : "$decimal" >/dev/null 2>&1; then
-	echo "Usage: ${0##/} <decimal>"
+	echo "Usage: ${0##*/} <decimal>"
 	exit 1
 fi
 

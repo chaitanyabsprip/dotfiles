@@ -3,10 +3,10 @@
 if [ -f /etc/os-release ]; then
 	# shellcheck disable=SC1091
 	. /etc/os-release
-	DISTRO=$NAME
+	DISTRO=$ID
 	VERSION=$VERSION_ID
 elif type lsb_release >/dev/null 2>&1; then
-	DISTRO=$(lsb_release -si)
+	DISTRO=$(lsb_release -si | tr '[:upper:]' '[:lower:]')
 	VERSION=$(lsb_release -sr)
 else
 	DISTRO=$(uname -s)

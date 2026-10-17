@@ -16,12 +16,12 @@ func installZsh() error {
 		fmt.Println(`zsh is already installed`)
 		return nil
 	}
-	switch distro.Name() {
-	case `Arch Linux`:
+	switch distro.ID() {
+	case `arch`:
 		return install.WithRoot(`pacman`, `-S`, `--noconfirm`, `zsh`)
-	case `Ubuntu`, `Debian GNU/Linux`:
+	case `ubuntu`, `debian`:
 		return install.WithRoot(`apt-get`, `install`, `-y`, `zsh`)
-	case `Fedora Linux`:
+	case `fedora`:
 		return run.Exec(`dnf`, `install`, `zsh`, `-y`)
 	case `Darwin`:
 		return run.Exec(`brew`, `install`, `zsh`)

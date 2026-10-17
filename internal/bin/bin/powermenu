@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # used to display the power menu with options like 'Logout, Shutdown,
 # Sleep' etc.
@@ -9,7 +9,7 @@
 
 set -e
 
-[[ -x wofi ]] && exit
+command -v wofi >/dev/null || exit 1
 
 action=$(echo -e '  Shut Down\n  Reboot\n  Log Out\n  Lock Screen\n  Suspend' |
 	wofi -i -dmenu)

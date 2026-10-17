@@ -6,7 +6,6 @@ import (
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/comp"
 
-	"github.com/Chaitanyabsprip/dotfiles/internal/alacritty"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bash"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bat"
 	"github.com/Chaitanyabsprip/dotfiles/internal/bin"
@@ -14,28 +13,25 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/internal/dirs"
 	"github.com/Chaitanyabsprip/dotfiles/internal/fish"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gh"
+	"github.com/Chaitanyabsprip/dotfiles/internal/ghostty"
 	"github.com/Chaitanyabsprip/dotfiles/internal/git"
 	"github.com/Chaitanyabsprip/dotfiles/internal/gitui"
 	"github.com/Chaitanyabsprip/dotfiles/internal/glow"
 	"github.com/Chaitanyabsprip/dotfiles/internal/hypr"
-	"github.com/Chaitanyabsprip/dotfiles/internal/kitty"
 	"github.com/Chaitanyabsprip/dotfiles/internal/leaf"
-	"github.com/Chaitanyabsprip/dotfiles/internal/lsd"
+	"github.com/Chaitanyabsprip/dotfiles/internal/mise"
 	"github.com/Chaitanyabsprip/dotfiles/internal/neovim"
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"
 	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
 	"github.com/Chaitanyabsprip/dotfiles/internal/sqlfluff"
-	"github.com/Chaitanyabsprip/dotfiles/internal/starship"
 	"github.com/Chaitanyabsprip/dotfiles/internal/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/internal/vimium"
 	"github.com/Chaitanyabsprip/dotfiles/internal/waybar"
-	"github.com/Chaitanyabsprip/dotfiles/internal/wezterm"
 	"github.com/Chaitanyabsprip/dotfiles/internal/zsh"
 )
 
-// SetupCmds contains per-tool setup commands composed from all 25 tools.
+// SetupCmds contains per-tool setup commands composed from every tool.
 var SetupCmds = []*bonzai.Cmd{
-	alacritty.SetupCmd.WithName(`alacritty`),
 	bash.SetupCmd.WithName(`bash`),
 	bat.SetupCmd.WithName(`bat`),
 	bin.SetupCmd.WithName(`bin`),
@@ -43,22 +39,20 @@ var SetupCmds = []*bonzai.Cmd{
 	dirs.SetupCmd.WithName(`dirs`),
 	fish.SetupCmd.WithName(`fish`),
 	gh.SetupCmd.WithName(`gh`),
+	ghostty.SetupCmd.WithName(`ghostty`),
 	git.SetupCmd.WithName(`git`),
 	gitui.SetupCmd.WithName(`gitui`),
 	glow.SetupCmd.WithName(`glow`),
 	hypr.SetupCmd.WithName(`hypr`),
-	kitty.SetupCmd.WithName(`kitty`),
 	leaf.SetupCmd.WithName(`leaf`),
-	lsd.SetupCmd.WithName(`lsd`),
+	mise.SetupCmd.WithName(`mise`),
 	neovim.SetupCmd.WithName(`neovim`),
 	ohmyposh.SetupCmd.WithName(`ohmyposh`),
 	shell.SetupCmd.WithName(`shell`),
 	sqlfluff.SetupCmd.WithName(`sqlfluff`),
-	starship.SetupCmd.WithName(`starship`),
 	tmux.SetupCmd.WithName(`tmux`),
 	vimium.SetupCmd.WithName(`vimium`),
 	waybar.SetupCmd.WithName(`waybar`),
-	wezterm.SetupCmd.WithName(`wezterm`),
 	zsh.SetupCmd.WithName(`zsh`),
 }
 

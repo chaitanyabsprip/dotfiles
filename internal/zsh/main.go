@@ -13,6 +13,7 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
+	"github.com/Chaitanyabsprip/dotfiles/internal/shell"
 )
 
 //go:embed all:zsh
@@ -28,6 +29,11 @@ var SetupCmd = &bonzai.Cmd{
 	Name:  `setup`,
 	Alias: `conf`,
 	Do: func(_ *bonzai.Cmd, _ ...string) error {
+		// .zshenv, .zprofile and .zshrc source ~/dotfiles/shell, so set
+		// that up too.
+		if err := shell.SetupCmd.Run(``); err != nil {
+			return err
+		}
 		zshenvPath := filepath.Join(env.Home, `.zshenv`)
 		overrides := map[string]string{
 			`zsh/.zshenv`: zshenvPath,

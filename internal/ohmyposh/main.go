@@ -25,8 +25,10 @@ var SetupCmd = &bonzai.Cmd{
 
 	Short: `setup ohmyposh`,
 	Comp:  comp.Opts,
+	// ~/dotfiles/oh-my-posh.rc.toml: zsh, bash and fish pass
+	// --config "$DOTFILES/oh-my-posh.rc.toml".
 	Do: func(x *bonzai.Cmd, args ...string) error {
-		return e.SetupAll(embedFs, "ohmyposh", oscfg.ConfigDir(), nil)
+		return e.SetupAll(embedFs, "ohmyposh", oscfg.DotfilesDir(), nil)
 	},
 }
 
@@ -35,10 +37,7 @@ var EditCmd = &bonzai.Cmd{
 	Short:  `edit ohmyposh configuration`,
 	NoArgs: true,
 	Do: func(x *bonzai.Cmd, _ ...string) error {
-		filePath := path.Join(
-			oscfg.ConfigDir(),
-			"oh-my-posh.rc.toml",
-		)
+		filePath := path.Join(oscfg.DotfilesDir(), "oh-my-posh.rc.toml")
 		if err := edit.Files(filePath); err != nil {
 			return err
 		}

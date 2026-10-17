@@ -28,16 +28,16 @@ func Pkg(name string, overrides map[string]string) error {
 		}
 		return name, true
 	}
-	switch distro.Name() {
-	case `Arch Linux`:
+	switch distro.ID() {
+	case `arch`:
 		if p, ok := pkgName(`pacman`); ok {
 			return WithRoot(`pacman`, `-S`, `--noconfirm`, p)
 		}
-	case `Ubuntu`, `Debian GNU/Linux`:
+	case `ubuntu`, `debian`:
 		if p, ok := pkgName(`apt`); ok {
 			return WithRoot(`apt-get`, `install`, `-y`, p)
 		}
-	case `Fedora Linux`:
+	case `fedora`:
 		if p, ok := pkgName(`dnf`); ok {
 			return run.Exec(`dnf`, `install`, p, `-y`)
 		}
@@ -58,8 +58,8 @@ func Pkg(name string, overrides map[string]string) error {
 
 // IsApt reports whether Pkg installs with apt on this system.
 func IsApt() bool {
-	switch distro.Name() {
-	case `Ubuntu`, `Debian GNU/Linux`:
+	switch distro.ID() {
+	case `ubuntu`, `debian`:
 		return true
 	}
 	return false
