@@ -17,11 +17,37 @@ const maxDepth = 2
 // Commands is a drop-in replacement for the bonzai mark package's
 // "commands" template func, assignable via bonzai.Cmd.Funcs.
 func Commands(x *bonzai.Cmd) string {
-	lines := renderChildren(x, 0, termWidth())
+	// One column width for the whole tree, not just within a single
+	// parent's sibling list, so unrelated groups (e.g. "color"'s
+	// children and "say"'s children) line up with each other too.
+	widest := widestCell(x, 0)
+	lines := renderChildren(x, 0, termWidth(), widest)
 	return strings.Join(lines, "\n") + "\n"
 }
 
-func renderChildren(parent *bonzai.Cmd, depth, width int) []string {
+func widestCell(parent *bonzai.Cmd, depth int) int {
+	if depth >= maxDepth {
+		return 0
+	}
+	widest := 0
+	for _, c := range visible(parent.Cmds) {
+		cell := c.Name
+		if c.Short != "" {
+			cell += " - " + c.Short
+		}
+		if len(visible(c.Cmds)) == 0 {
+			if l := len([]rune(cell)); l > widest {
+				widest = l
+			}
+		}
+		if l := widestCell(c, depth+1); l > widest {
+			widest = l
+		}
+	}
+	return widest
+}
+
+func renderChildren(parent *bonzai.Cmd, depth, width, widest int) []string {
 	if depth >= maxDepth {
 		return nil
 	}
@@ -31,26 +57,6 @@ func renderChildren(parent *bonzai.Cmd, depth, width int) []string {
 	}
 	indent := strings.Repeat("  ", depth)
 	avail := max(width-len(indent), 10)
-
-	// Cells for leaf siblings share one column width across the whole
-	// list, even when branch siblings split them into separate runs, so
-	// every run of columns lines up with the others.
-	cells := make([]string, len(children))
-	leaf := make([]bool, len(children))
-	widest := 0
-	for i, c := range children {
-		cell := c.Name
-		if c.Short != "" {
-			cell += " - " + c.Short
-		}
-		cells[i] = cell
-		leaf[i] = len(visible(c.Cmds)) == 0
-		if leaf[i] {
-			if l := len([]rune(cell)); l > widest {
-				widest = l
-			}
-		}
-	}
 
 	var out, run []string
 	flush := func() {
@@ -62,14 +68,18 @@ func renderChildren(parent *bonzai.Cmd, depth, width int) []string {
 		}
 		run = nil
 	}
-	for i, c := range children {
-		if leaf[i] {
-			run = append(run, cells[i])
+	for _, c := range children {
+		cell := c.Name
+		if c.Short != "" {
+			cell += " - " + c.Short
+		}
+		if len(visible(c.Cmds)) == 0 {
+			run = append(run, cell)
 			continue
 		}
 		flush()
-		out = append(out, indent+cells[i])
-		out = append(out, renderChildren(c, depth+1, width)...)
+		out = append(out, indent+cell)
+		out = append(out, renderChildren(c, depth+1, width, widest)...)
 	}
 	flush()
 	return out
