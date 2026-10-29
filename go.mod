@@ -23,8 +23,11 @@ require (
 	github.com/rwxrob/bonzai/vars v0.12.0
 	github.com/rwxrob/bonzai/web v0.1.1
 	github.com/rwxrob/bonzai/yq v0.1.0
+	golang.org/x/term v0.36.0
 	gopkg.in/yaml.v3 v3.0.1
 )
+
+replace github.com/rwxrob/bonzai/cmds/help => github.com/chaitanyabsprip/bonzai/cmds/help v0.8.3
 
 require (
 	github.com/a8m/envsubst v1.4.3 // indirect
@@ -79,7 +82,6 @@ require (
 	golang.org/x/crypto v0.43.0 // indirect
 	golang.org/x/net v0.46.0 // indirect
 	golang.org/x/sys v0.37.0 // indirect
-	golang.org/x/term v0.36.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473 // indirect

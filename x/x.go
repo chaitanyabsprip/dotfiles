@@ -4,10 +4,13 @@
 package x
 
 import (
+	"text/template"
+
 	"github.com/rwxrob/bonzai"
 	"github.com/rwxrob/bonzai/cmds/help"
 	"github.com/rwxrob/bonzai/comp"
 
+	"github.com/Chaitanyabsprip/dotfiles/internal/core/cmdhelp"
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/version"
 	"github.com/Chaitanyabsprip/dotfiles/internal/tmux"
 	"github.com/Chaitanyabsprip/dotfiles/x/base64"
@@ -30,6 +33,7 @@ var Cmd = &bonzai.Cmd{
 	Name:  `x`,
 	Short: `x is a utility to manage scripts`,
 	Comp:  comp.Cmds,
+	Funcs: template.FuncMap{`commands`: cmdhelp.Commands},
 	Cmds: []*bonzai.Cmd{
 		base64.Cmd,
 		caseconv.Cmd,
