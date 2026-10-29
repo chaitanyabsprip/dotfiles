@@ -30,28 +30,45 @@ func renderChildren(parent *bonzai.Cmd, depth, width int) []string {
 		return nil
 	}
 	indent := strings.Repeat("  ", depth)
-	var out, leaves []string
-	flush := func() {
-		if len(leaves) == 0 {
-			return
-		}
-		avail := max(width-len(indent), 10)
-		for _, line := range packGrid(leaves, avail) {
-			out = append(out, indent+line)
-		}
-		leaves = nil
-	}
-	for _, c := range children {
+	avail := max(width-len(indent), 10)
+
+	// Cells for leaf siblings share one column width across the whole
+	// list, even when branch siblings split them into separate runs, so
+	// every run of columns lines up with the others.
+	cells := make([]string, len(children))
+	leaf := make([]bool, len(children))
+	widest := 0
+	for i, c := range children {
 		cell := c.Name
 		if c.Short != "" {
 			cell += " - " + c.Short
 		}
-		if len(visible(c.Cmds)) == 0 {
-			leaves = append(leaves, cell)
+		cells[i] = cell
+		leaf[i] = len(visible(c.Cmds)) == 0
+		if leaf[i] {
+			if l := len([]rune(cell)); l > widest {
+				widest = l
+			}
+		}
+	}
+
+	var out, run []string
+	flush := func() {
+		if len(run) == 0 {
+			return
+		}
+		for _, line := range packGrid(run, avail, widest) {
+			out = append(out, indent+line)
+		}
+		run = nil
+	}
+	for i, c := range children {
+		if leaf[i] {
+			run = append(run, cells[i])
 			continue
 		}
 		flush()
-		out = append(out, indent+cell)
+		out = append(out, indent+cells[i])
 		out = append(out, renderChildren(c, depth+1, width)...)
 	}
 	flush()
@@ -59,16 +76,10 @@ func renderChildren(parent *bonzai.Cmd, depth, width int) []string {
 }
 
 // packGrid lays cells out left-to-right, top-to-bottom in as many
-// equal-width columns as fit within width.
-func packGrid(cells []string, width int) []string {
+// columns of the given width as fit within width.
+func packGrid(cells []string, width, widest int) []string {
 	if len(cells) == 0 {
 		return nil
-	}
-	widest := 0
-	for _, c := range cells {
-		if l := len([]rune(c)); l > widest {
-			widest = l
-		}
 	}
 	const gap = 2
 	cols := min(max((width+gap)/(widest+gap), 1), len(cells))
