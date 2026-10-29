@@ -4,11 +4,9 @@
 package dot
 
 import (
-	"text/template"
-
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/cmds/help"
-	"github.com/rwxrob/bonzai/comp"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/cmds/help"
+	"github.com/chaitanyabsprip/bonzai/comp"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/cmdhelp"
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/version"
@@ -21,7 +19,7 @@ var Cmd = &bonzai.Cmd{
 	Alias: `d`,
 	Short: `manage dotfiles`,
 	Comp:  comp.Cmds,
-	Funcs: template.FuncMap{`commands`: cmdhelp.Commands},
+	Funcs: cmdhelp.Funcs,
 	Cmds: []*bonzai.Cmd{
 		idot.SetupCmd,
 		idot.InstallCmd,

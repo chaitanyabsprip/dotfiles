@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rwxrob/bonzai/fn/maps"
-	"github.com/rwxrob/bonzai/run"
-	"github.com/rwxrob/bonzai/to"
+	"github.com/chaitanyabsprip/bonzai/fn/maps"
+	"github.com/chaitanyabsprip/bonzai/run"
+	"github.com/chaitanyabsprip/bonzai/to"
 
 	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )

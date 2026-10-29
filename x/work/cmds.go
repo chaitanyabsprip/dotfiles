@@ -6,8 +6,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/comp"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/comp"
 )
 
 // Cmd provides access to the `work` command suite, which lists work

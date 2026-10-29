@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rwxrob/bonzai"
+	"github.com/chaitanyabsprip/bonzai"
 )
 
 func TestCommands(t *testing.T) {

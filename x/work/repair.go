@@ -8,7 +8,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/rwxrob/bonzai"
+	"github.com/chaitanyabsprip/bonzai"
 )
 
 var repairCmd = &bonzai.Cmd{

@@ -4,7 +4,7 @@ package yq
 import (
 	"fmt"
 
-	"github.com/rwxrob/bonzai"
+	"github.com/chaitanyabsprip/bonzai"
 
 	"github.com/Chaitanyabsprip/dotfiles/x/have"
 	"github.com/Chaitanyabsprip/dotfiles/x/install"

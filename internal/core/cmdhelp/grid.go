@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/chaitanyabsprip/bonzai"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/rwxrob/bonzai"
 	"golang.org/x/term"
 )
 

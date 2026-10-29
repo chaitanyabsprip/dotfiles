@@ -15,10 +15,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/rwxrob/bonzai/futil"
-	"github.com/rwxrob/bonzai/github"
-	"github.com/rwxrob/bonzai/run"
-	"github.com/rwxrob/bonzai/web"
+	"github.com/chaitanyabsprip/bonzai/futil"
+	"github.com/chaitanyabsprip/bonzai/github"
+	"github.com/chaitanyabsprip/bonzai/run"
+	"github.com/chaitanyabsprip/bonzai/web"
 
 	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )

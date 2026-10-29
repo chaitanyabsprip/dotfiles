@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"syscall"
 
-	"github.com/rwxrob/bonzai/term"
+	"github.com/chaitanyabsprip/bonzai/term"
 )
 
 func On(onError func(error), dependencies ...string) {

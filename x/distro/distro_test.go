@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rwxrob/bonzai/futil"
+	"github.com/chaitanyabsprip/bonzai/futil"
 )
 
 // ID and Version read ID/VERSION_ID, not NAME ("Debian GNU/Linux"), and

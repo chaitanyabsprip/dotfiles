@@ -5,10 +5,10 @@ import (
 	_ "embed"
 	"os"
 
-	"github.com/arl/gitstatus"
 	"github.com/Chaitanyabsprip/gitmux"
 	gtmux "github.com/Chaitanyabsprip/gitmux/tmux"
-	"github.com/rwxrob/bonzai"
+	"github.com/arl/gitstatus"
+	"github.com/chaitanyabsprip/bonzai"
 	"gopkg.in/yaml.v3"
 )
 

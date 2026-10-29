@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rwxrob/bonzai"
+	"github.com/chaitanyabsprip/bonzai"
 )
 
 var Cmd = &bonzai.Cmd{

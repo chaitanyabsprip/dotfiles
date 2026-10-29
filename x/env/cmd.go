@@ -10,9 +10,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/cmds/help"
-	"github.com/rwxrob/bonzai/comp"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/cmds/help"
+	"github.com/chaitanyabsprip/bonzai/comp"
 	"gopkg.in/yaml.v3"
 
 	"github.com/Chaitanyabsprip/dotfiles/pkg/prompt"

@@ -6,8 +6,8 @@ package distro
 import (
 	"fmt"
 
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/comp"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/comp"
 )
 
 var Cmd = &bonzai.Cmd{

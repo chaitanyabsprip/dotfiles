@@ -8,7 +8,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/rwxrob/bonzai"
+	"github.com/chaitanyabsprip/bonzai"
 
 	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/fzf"

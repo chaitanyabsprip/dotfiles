@@ -11,8 +11,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/comp"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/comp"
 
 	"github.com/Chaitanyabsprip/dotfiles/pkg/prompt"
 )

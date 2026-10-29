@@ -9,7 +9,7 @@ package version
 import (
 	"fmt"
 
-	"github.com/rwxrob/bonzai"
+	"github.com/chaitanyabsprip/bonzai"
 )
 
 var Version = `dev`

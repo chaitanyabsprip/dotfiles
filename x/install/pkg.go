@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rwxrob/bonzai/run"
+	"github.com/chaitanyabsprip/bonzai/run"
 
 	"github.com/Chaitanyabsprip/dotfiles/x/distro"
 )

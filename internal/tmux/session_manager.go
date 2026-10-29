@@ -1,8 +1,8 @@
 package tmux
 
 import (
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/run"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/run"
 
 	"github.com/Chaitanyabsprip/dotfiles/pkg/fzf"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/tmux"

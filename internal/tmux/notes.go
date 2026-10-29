@@ -4,11 +4,11 @@ import (
 	"io/fs"
 	"path/filepath"
 
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/fn/filt"
+	"github.com/chaitanyabsprip/bonzai/fn/maps"
+	"github.com/chaitanyabsprip/bonzai/run"
 	"github.com/charlievieth/fastwalk"
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/fn/filt"
-	"github.com/rwxrob/bonzai/fn/maps"
-	"github.com/rwxrob/bonzai/run"
 
 	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/fzf"

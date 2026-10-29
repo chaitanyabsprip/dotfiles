@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/arl/gitstatus"
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/term"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/term"
 )
 
 var statusCmd = &bonzai.Cmd{

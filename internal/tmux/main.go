@@ -7,8 +7,8 @@ import (
 
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
 
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/edit"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/edit"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
 	"github.com/Chaitanyabsprip/dotfiles/x/depends"

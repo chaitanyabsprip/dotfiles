@@ -3,8 +3,8 @@ package colors
 import (
 	"fmt"
 
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/comp"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/comp"
 )
 
 var Color255Cmd = &bonzai.Cmd{

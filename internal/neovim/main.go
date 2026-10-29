@@ -12,11 +12,11 @@ import (
 	"path"
 	"path/filepath"
 
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/comp"
-	"github.com/rwxrob/bonzai/edit"
-	"github.com/rwxrob/bonzai/futil"
-	"github.com/rwxrob/bonzai/run"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/comp"
+	"github.com/chaitanyabsprip/bonzai/edit"
+	"github.com/chaitanyabsprip/bonzai/futil"
+	"github.com/chaitanyabsprip/bonzai/run"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
 	"github.com/Chaitanyabsprip/dotfiles/x/have"

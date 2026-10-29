@@ -1,6 +1,6 @@
 package dot
 
-import "github.com/rwxrob/bonzai"
+import "github.com/chaitanyabsprip/bonzai"
 
 var InitCmd = &bonzai.Cmd{
 	Name:    `init`,

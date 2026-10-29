@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/rwxrob/bonzai/github"
+	"github.com/chaitanyabsprip/bonzai/github"
 )
 
 // GhRelease installs bin into BinDir from the latest GitHub release of

@@ -9,9 +9,9 @@ import (
 	"path"
 	"runtime"
 
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/comp"
-	"github.com/rwxrob/bonzai/edit"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/comp"
+	"github.com/chaitanyabsprip/bonzai/edit"
 
 	e "github.com/Chaitanyabsprip/dotfiles/internal/core/embed"
 

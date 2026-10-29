@@ -3,7 +3,7 @@
 // provides appropriate error handling when dependencies are missing.
 package depends
 
-import "github.com/rwxrob/bonzai"
+import "github.com/chaitanyabsprip/bonzai"
 
 var Cmd = &bonzai.Cmd{
 	Name:  `depends`,

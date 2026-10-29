@@ -4,7 +4,7 @@
 // stdout isn't a terminal (see bonzai/term).
 package say
 
-import "github.com/rwxrob/bonzai/term"
+import "github.com/chaitanyabsprip/bonzai/term"
 
 func Error(msg string) string      { return colorize(term.Bold+term.Red, " ❌ "+msg) }
 func Warning(msg string) string    { return colorize(term.Bold+term.Yellow, " ⚠️ "+msg) }

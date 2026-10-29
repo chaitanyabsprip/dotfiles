@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/rwxrob/bonzai"
+	"github.com/chaitanyabsprip/bonzai"
 )
 
 // ApproveCmd is exported so other bonzai trees (e.g. ss) can mount it.

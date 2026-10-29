@@ -5,8 +5,8 @@ package last
 import (
 	"cmp"
 	"os"
-	"slices"
 	"path/filepath"
+	"slices"
 )
 
 // find returns the path to the most recently modified non-hidden entry

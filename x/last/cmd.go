@@ -9,11 +9,11 @@ import (
 	"slices"
 	"strconv"
 
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/cmds/help"
-	"github.com/rwxrob/bonzai/comp"
-	"github.com/rwxrob/bonzai/run"
-	"github.com/rwxrob/bonzai/vars"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/cmds/help"
+	"github.com/chaitanyabsprip/bonzai/comp"
+	"github.com/chaitanyabsprip/bonzai/run"
+	"github.com/chaitanyabsprip/bonzai/vars"
 
 	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/prompt"

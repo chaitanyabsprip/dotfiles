@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rwxrob/bonzai/run"
+	"github.com/chaitanyabsprip/bonzai/run"
 )
 
 type GptOpts struct {

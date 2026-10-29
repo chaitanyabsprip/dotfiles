@@ -3,7 +3,7 @@ package dot
 import (
 	"testing"
 
-	"github.com/rwxrob/bonzai"
+	"github.com/chaitanyabsprip/bonzai"
 )
 
 func TestEditCmdDoNoArgsReturnsError(t *testing.T) {

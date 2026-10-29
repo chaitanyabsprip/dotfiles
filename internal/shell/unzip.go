@@ -3,8 +3,8 @@ package shell
 import (
 	"fmt"
 
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/run"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/run"
 
 	"github.com/Chaitanyabsprip/dotfiles/x/distro"
 	"github.com/Chaitanyabsprip/dotfiles/x/have"

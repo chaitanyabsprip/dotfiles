@@ -4,8 +4,8 @@ package dot
 import (
 	"fmt"
 
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/comp"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/comp"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/bash"
 	"github.com/Chaitanyabsprip/dotfiles/internal/ohmyposh"

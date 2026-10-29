@@ -3,7 +3,7 @@ package x_test
 import (
 	"testing"
 
-	"github.com/rwxrob/bonzai"
+	"github.com/chaitanyabsprip/bonzai"
 
 	"github.com/Chaitanyabsprip/dotfiles/x"
 )

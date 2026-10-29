@@ -5,8 +5,8 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/futil"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/futil"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
 	"github.com/Chaitanyabsprip/dotfiles/internal/shell"

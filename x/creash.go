@@ -5,22 +5,22 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/rwxrob/bonzai"
-	"github.com/rwxrob/bonzai/comp"
-	"github.com/rwxrob/bonzai/fn"
-	"github.com/rwxrob/bonzai/futil"
-	"github.com/rwxrob/bonzai/run"
+	"github.com/chaitanyabsprip/bonzai"
+	"github.com/chaitanyabsprip/bonzai/comp"
+	"github.com/chaitanyabsprip/bonzai/fn"
+	"github.com/chaitanyabsprip/bonzai/futil"
+	"github.com/chaitanyabsprip/bonzai/run"
 
 	"github.com/Chaitanyabsprip/dotfiles/internal/core/oscfg"
 	"github.com/Chaitanyabsprip/dotfiles/pkg/env"
 )
 
 var creashCmd = &bonzai.Cmd{
-	Name:    `creash`,
-	Alias:   "csh",
-	Vers:    "v1.0.0",
-	Short:   `create a new shell script in pwd`,
-	Usage:   `<name>...`,
+	Name:  `creash`,
+	Alias: "csh",
+	Vers:  "v1.0.0",
+	Short: `create a new shell script in pwd`,
+	Usage: `<name>...`,
 	Long: `
 Creates each named file in the current directory with a '#!/bin/sh'
 shebang and makes it executable. Skips a file that already exists. Set
