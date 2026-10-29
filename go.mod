@@ -29,6 +29,8 @@ require (
 
 replace github.com/rwxrob/bonzai/cmds/help => github.com/chaitanyabsprip/bonzai/cmds/help v0.8.3
 
+replace github.com/rwxrob/bonzai/mark => github.com/chaitanyabsprip/bonzai/mark v0.12.1
+
 require (
 	github.com/a8m/envsubst v1.4.3 // indirect
 	github.com/alecthomas/chroma/v2 v2.20.0 // indirect
