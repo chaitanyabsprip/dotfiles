@@ -9,6 +9,7 @@ require (
 	github.com/arl/gitstatus v0.7.0
 	github.com/aymanbagabas/go-udiff v0.2.0
 	github.com/charlievieth/fastwalk v1.0.14
+	github.com/charmbracelet/lipgloss v1.1.1-0.20250404203927-76690c660834
 	github.com/rwxrob/bonzai v0.56.6
 	github.com/rwxrob/bonzai/cmds/help v0.8.2
 	github.com/rwxrob/bonzai/cmds/sunrise v1.0.3
@@ -39,7 +40,6 @@ require (
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/charmbracelet/colorprofile v0.3.2 // indirect
 	github.com/charmbracelet/glamour v0.10.0 // indirect
-	github.com/charmbracelet/lipgloss v1.1.1-0.20250404203927-76690c660834 // indirect
 	github.com/charmbracelet/x/ansi v0.10.2 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.13 // indirect
 	github.com/charmbracelet/x/exp/slice v0.0.0-20251023181713-f594ac034d6b // indirect

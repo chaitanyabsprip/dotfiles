@@ -4,15 +4,19 @@
 package cmdhelp
 
 import (
-	"fmt"
 	"os"
 	"strings"
 
+	"github.com/charmbracelet/lipgloss"
 	"github.com/rwxrob/bonzai"
 	"golang.org/x/term"
 )
 
 const maxDepth = 2
+
+// topLevelStyle highlights root command names (color 5 matches the help
+// style's h2 heading) so they stand out from their subcommands.
+var topLevelStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("5"))
 
 // Commands is a drop-in replacement for the bonzai mark package's
 // "commands" template func, assignable via bonzai.Cmd.Funcs.
@@ -25,18 +29,25 @@ func Commands(x *bonzai.Cmd) string {
 	return strings.Join(lines, "\n") + "\n"
 }
 
+func cellFor(c *bonzai.Cmd, depth int) string {
+	name := c.Name
+	if depth == 0 {
+		name = topLevelStyle.Render(name)
+	}
+	if c.Short != "" {
+		return name + " - " + c.Short
+	}
+	return name
+}
+
 func widestCell(parent *bonzai.Cmd, depth int) int {
 	if depth >= maxDepth {
 		return 0
 	}
 	widest := 0
 	for _, c := range visible(parent.Cmds) {
-		cell := c.Name
-		if c.Short != "" {
-			cell += " - " + c.Short
-		}
 		if len(visible(c.Cmds)) == 0 {
-			if l := len([]rune(cell)); l > widest {
+			if l := lipgloss.Width(cellFor(c, depth)); l > widest {
 				widest = l
 			}
 		}
@@ -69,10 +80,7 @@ func renderChildren(parent *bonzai.Cmd, depth, width, widest int) []string {
 		run = nil
 	}
 	for _, c := range children {
-		cell := c.Name
-		if c.Short != "" {
-			cell += " - " + c.Short
-		}
+		cell := cellFor(c, depth)
 		if len(visible(c.Cmds)) == 0 {
 			run = append(run, cell)
 			continue
@@ -105,7 +113,8 @@ func packGrid(cells []string, width, widest int) []string {
 			if c == cols-1 || i == len(cells)-1 {
 				b.WriteString(cells[i])
 			} else {
-				fmt.Fprintf(&b, "%-*s", widest+gap, cells[i])
+				b.WriteString(cells[i])
+				b.WriteString(strings.Repeat(" ", widest+gap-lipgloss.Width(cells[i])))
 			}
 		}
 		lines = append(lines, b.String())
