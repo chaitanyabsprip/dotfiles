@@ -17,7 +17,8 @@ import (
 	"github.com/Chaitanyabsprip/dotfiles/pkg/prompt"
 )
 
-var prCmd = &bonzai.Cmd{
+// PRCmd is exported so other bonzai trees (e.g. ss) can mount it.
+var PRCmd = &bonzai.Cmd{
 	Name:    `pr`,
 	Short:   `check out a GitHub PR into a worktree`,
 	Usage:   `<number> [path]`,
