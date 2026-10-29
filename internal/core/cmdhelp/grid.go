@@ -18,6 +18,11 @@ const maxDepth = 2
 // style's h2 heading) so they stand out from their subcommands.
 var topLevelStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("5"))
 
+// subCmdStyle highlights nested subcommand names (color 6, cyan) so they
+// read as command names too, distinct from both the bolder top-level
+// names and the plain description text.
+var subCmdStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("6"))
+
 // Commands is a drop-in replacement for the bonzai mark package's
 // "commands" template func, assignable via bonzai.Cmd.Funcs.
 func Commands(x *bonzai.Cmd) string {
@@ -31,8 +36,11 @@ func Commands(x *bonzai.Cmd) string {
 
 func cellFor(c *bonzai.Cmd, depth int) string {
 	name := c.Name
-	if depth == 0 {
+	switch depth {
+	case 0:
 		name = topLevelStyle.Render(name)
+	default:
+		name = subCmdStyle.Render(name)
 	}
 	if c.Short != "" {
 		return name + " - " + c.Short
