@@ -3,3 +3,5 @@ go.work.sum
 go.work.off
 .agents
 .archive
+codebook.toml
+product_requirements.md
