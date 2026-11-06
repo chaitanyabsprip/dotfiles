@@ -38,7 +38,7 @@ require (
 	github.com/chaitanyabsprip/bonzai/ds v0.1.2 // indirect
 	github.com/chaitanyabsprip/bonzai/is v0.3.1 // indirect
 	github.com/chaitanyabsprip/bonzai/json v0.1.1 // indirect
-	github.com/chaitanyabsprip/bonzai/mark v0.12.2 // indirect
+	github.com/chaitanyabsprip/bonzai/mark v0.12.3 // indirect
 	github.com/chaitanyabsprip/bonzai/scanner v0.1.1 // indirect
 	github.com/chaitanyabsprip/bonzai/uniq v0.1.1 // indirect
 	github.com/charmbracelet/colorprofile v0.3.2 // indirect
@@ -70,17 +70,6 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
-	github.com/rwxrob/bonzai v0.56.5 // indirect
-	github.com/rwxrob/bonzai/ds v0.1.1 // indirect
-	github.com/rwxrob/bonzai/fn v0.9.0 // indirect
-	github.com/rwxrob/bonzai/futil v0.4.0 // indirect
-	github.com/rwxrob/bonzai/is v0.3.0 // indirect
-	github.com/rwxrob/bonzai/mark v0.12.0 // indirect
-	github.com/rwxrob/bonzai/mark/funcs v0.8.6 // indirect
-	github.com/rwxrob/bonzai/run v0.7.0 // indirect
-	github.com/rwxrob/bonzai/scanner v0.1.0 // indirect
-	github.com/rwxrob/bonzai/to v0.6.1 // indirect
-	github.com/rwxrob/bonzai/uniq v0.1.0 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	github.com/yuin/goldmark v1.7.8 // indirect
 	github.com/yuin/goldmark-emoji v1.0.4 // indirect
