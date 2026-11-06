@@ -7,6 +7,7 @@ import "github.com/chaitanyabsprip/bonzai"
 
 var Cmd = &bonzai.Cmd{
 	Name:  `depends`,
+	Alias: `deps`,
 	Short: `check dependencies are installed`,
 	Long: `
 Checks that every named program is installed. If any is missing, it

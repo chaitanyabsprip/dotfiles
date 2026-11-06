@@ -14,6 +14,7 @@ import (
 
 var Cmd = &bonzai.Cmd{
 	Name:  `color`,
+	Alias: `colors|c`,
 	Short: `print colors in terminal in different formats`,
 	Long: `
 Prints color tables and demos in different formats. See 'color help'

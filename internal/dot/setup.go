@@ -31,7 +31,7 @@ import (
 )
 
 // SetupCmds contains per-tool setup commands composed from every tool.
-var SetupCmds = []*bonzai.Cmd{
+var SetupCmds = withToolAliases([]*bonzai.Cmd{
 	bash.SetupCmd.WithName(`bash`),
 	bat.SetupCmd.WithName(`bat`),
 	bin.SetupCmd.WithName(`bin`),
@@ -54,7 +54,7 @@ var SetupCmds = []*bonzai.Cmd{
 	vimium.SetupCmd.WithName(`vimium`),
 	waybar.SetupCmd.WithName(`waybar`),
 	zsh.SetupCmd.WithName(`zsh`),
-}
+})
 
 func setupAll() error {
 	for _, cmd := range SetupCmds {
@@ -68,6 +68,7 @@ func setupAll() error {
 // SetupCmd aggregates all tool setup commands.
 var SetupCmd = &bonzai.Cmd{
 	Name:  `setup`,
+	Alias: `s`,
 	Short: `setup tool configurations`,
 	Comp:  comp.Cmds,
 	Cmds:  SetupCmds,
@@ -82,4 +83,27 @@ var SetupCmd = &bonzai.Cmd{
 		}
 		return fmt.Errorf(`unknown tool: %s`, args[0])
 	},
+}
+
+// toolAliases are the aliases a tool answers to under setup, install
+// and edit alike.
+var toolAliases = map[string]string{
+	`gh`:       `github`,
+	`ghostty`:  `gty`,
+	`hypr`:     `hyprland`,
+	`neovim`:   `nvim|vim`,
+	`ohmyposh`: `omp`,
+	`rg`:       `ripgrep`,
+	`sqlfluff`: `sqlf`,
+	`waybar`:   `wb`,
+}
+
+// withToolAliases replaces each tool command's own Alias (e.g. the `i`
+// on every tool's InstallCmd, which would collide once composed as
+// siblings) with its entry in toolAliases.
+func withToolAliases(cmds []*bonzai.Cmd) []*bonzai.Cmd {
+	for _, c := range cmds {
+		c.Alias = toolAliases[c.Name]
+	}
+	return cmds
 }

@@ -13,6 +13,7 @@ import (
 
 var Cmd = &bonzai.Cmd{
 	Name:  `json`,
+	Alias: `j`,
 	Short: `json helpers`,
 	Long: `
 Small JSON helpers. See 'json help' for the commands.`,

@@ -24,6 +24,7 @@ const (
 // create, or update.
 var StatusCmd = &bonzai.Cmd{
 	Name:  `status`,
+	Alias: `st`,
 	Short: `list drifted and un-hydrated config files`,
 	Comp:  comp.Cmds,
 	Do: func(x *bonzai.Cmd, args ...string) error {
@@ -67,6 +68,7 @@ var StatusCmd = &bonzai.Cmd{
 // `dot setup` would create).
 var DiffCmd = &bonzai.Cmd{
 	Name:  `diff`,
+	Alias: `df`,
 	Short: `show diff for a tool's drifted and un-hydrated config files`,
 	Comp:  comp.Cmds,
 	Do: func(x *bonzai.Cmd, args ...string) error {

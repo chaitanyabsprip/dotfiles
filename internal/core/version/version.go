@@ -18,6 +18,7 @@ var Version = `dev`
 // (x/x.go) as `version`.
 var Cmd = &bonzai.Cmd{
 	Name:  `version`,
+	Alias: `v`,
 	Short: `print the build version`,
 	Do: func(_ *bonzai.Cmd, _ ...string) error {
 		fmt.Println(Version)

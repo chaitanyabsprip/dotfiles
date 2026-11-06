@@ -24,6 +24,7 @@ type lookup func(dir string) (string, error)
 
 var Cmd = &bonzai.Cmd{
 	Name:    `last`,
+	Alias:   `l`,
 	Short:   `find, move or copy the newest file or directory`,
 	Usage:   `[path]`,
 	MaxArgs: 1,

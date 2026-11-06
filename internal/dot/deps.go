@@ -26,6 +26,7 @@ var toolDeps = map[string][]depends.Dep{
 // DepsCmd shows a tool's dependency tree, per ADR-0011.
 var DepsCmd = &bonzai.Cmd{
 	Name:  `deps`,
+	Alias: `dep`,
 	Short: `show dependency tree for a tool`,
 	Comp:  comp.Cmds,
 	Do: func(x *bonzai.Cmd, args ...string) error {

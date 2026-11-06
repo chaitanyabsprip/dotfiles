@@ -14,6 +14,7 @@ import (
 
 var Cmd = &bonzai.Cmd{
 	Name:  `url`,
+	Alias: `u`,
 	Short: `percent-encode or decode text`,
 	Long: `
 Percent-encodes or decodes text for safe use in a URL. See 'url help'

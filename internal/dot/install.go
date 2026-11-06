@@ -28,7 +28,7 @@ import (
 )
 
 // InstallCmds contains per-tool install commands composed from tools that have them.
-var InstallCmds = []*bonzai.Cmd{
+var InstallCmds = withToolAliases([]*bonzai.Cmd{
 	bash.InstallCmd.WithName(`bash`),
 	bat.InstallCmd.WithName(`bat`),
 	dirs.InstallCmd.WithName(`dirs`),
@@ -48,7 +48,7 @@ var InstallCmds = []*bonzai.Cmd{
 	waybar.InstallCmd.WithName(`waybar`),
 	yq.InstallCmd.WithName(`yq`),
 	zsh.InstallCmd.WithName(`zsh`),
-}
+})
 
 var allCmd = &bonzai.Cmd{
 	Name:  `all`,
@@ -68,6 +68,7 @@ func installAll() error {
 // InstallCmd aggregates all tool install commands.
 var InstallCmd = &bonzai.Cmd{
 	Name:  `install`,
+	Alias: `i`,
 	Short: `install tools`,
 	Comp:  comp.Cmds,
 	Cmds:  append(InstallCmds, allCmd),

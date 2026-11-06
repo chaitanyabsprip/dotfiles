@@ -20,6 +20,7 @@ import (
 
 var Cmd = &bonzai.Cmd{
 	Name:  `env`,
+	Alias: `e`,
 	Short: `work with env files`,
 	Long: `
 Tools for working with ".env"-style files. See 'env help' for the

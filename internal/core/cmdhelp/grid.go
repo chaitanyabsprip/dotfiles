@@ -23,6 +23,9 @@ var topLevelStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("5"
 // names and the plain description text.
 var subCmdStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("6"))
 
+// aliasStyle dims aliases so they read as secondary to the name.
+var aliasStyle = lipgloss.NewStyle().Faint(true)
+
 // Commands is a drop-in replacement for the bonzai mark package's
 // "commands" template func, assignable via bonzai.Cmd.Funcs.
 func Commands(x *bonzai.Cmd) string {
@@ -41,6 +44,9 @@ func cellFor(c *bonzai.Cmd, depth int) string {
 		name = topLevelStyle.Render(name)
 	default:
 		name = subCmdStyle.Render(name)
+	}
+	if c.Alias != "" {
+		name += aliasStyle.Render("|" + c.Alias)
 	}
 	if c.Short != "" {
 		return name + " - " + c.Short

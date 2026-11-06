@@ -31,7 +31,7 @@ import (
 )
 
 // EditCmds contains per-tool edit commands composed from all tool packages.
-var EditCmds = []*bonzai.Cmd{
+var EditCmds = withToolAliases([]*bonzai.Cmd{
 	bash.EditCmd.WithName(`bash`),
 	bat.EditCmd.WithName(`bat`),
 	bin.EditCmd.WithName(`bin`),
@@ -54,11 +54,12 @@ var EditCmds = []*bonzai.Cmd{
 	vimium.EditCmd.WithName(`vimium`),
 	waybar.EditCmd.WithName(`waybar`),
 	zsh.EditCmd.WithName(`zsh`),
-}
+})
 
 // EditCmd aggregates all tool edit commands under a single verb command.
 var EditCmd = &bonzai.Cmd{
 	Name:  `edit`,
+	Alias: `e`,
 	Short: `edit tool configuration`,
 	Comp:  comp.Cmds,
 	Cmds:  EditCmds,
